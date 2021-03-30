@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_bar_scanBle"
+        android:title="StopScanning"
+        app:showAsAction="always"
+        android:visible="false"
+        />
+
+    <item
+        android:id="@+id/action_bar_scanRefresh"
+        android:title="Refresh"
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/action_bar_bleDisconnect"
+       android:title="Disconnect"
+        app:showAsAction="always"
+        android:visible="false"
+        />
+</menu>

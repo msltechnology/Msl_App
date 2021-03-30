@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--<ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView1"
+        android:layout_weight="1" />-->
+
+    <LinearLayout
+        android:id="@+id/bleListLl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/bleUserdata"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:text="Userdata"
+            android:textSize="30dp"
+            android:textColor="#000000"
+            />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:id="@+id/bleName"
+                android:textSize="15dp"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:layout_weight="1" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address"
+                android:id="@+id/bleAddress"
+                android:textSize="15dp"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:layout_weight="1" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sign"
+                android:id="@+id/bleSign"
+                android:textSize="12dp"
+                android:textColor="#000000"
+                android:gravity="center"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

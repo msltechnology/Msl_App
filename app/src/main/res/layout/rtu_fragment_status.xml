@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/rtu_open_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="open"/>
+
+    <Button
+        android:id="@+id/rtu_send_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="send"/>
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tv_version"/>
+    <TextView
+        android:id="@+id/tv_DevId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tv_version"/>
+    <TextView
+        android:id="@+id/tv_LanternId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tv_version"/>
+    <TextView
+        android:id="@+id/tv_Status_Interval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tv_version"/>
+    <TextView
+        android:id="@+id/tv_server_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="tv_version"/>
+    <TextView
+        android:id="@+id/tv_server_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="tv_version"/>
+
+
+
+</LinearLayout>
