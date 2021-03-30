@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
+
+import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
 
 public class fragment_Ble_Setting extends Fragment {
 
@@ -22,7 +25,7 @@ public class fragment_Ble_Setting extends Fragment {
 
     TextView readTv;
 
-    Button btn_status;
+    Button btn_status, btn_FL_Setting;
 
     View view;
 
@@ -46,10 +49,22 @@ public class fragment_Ble_Setting extends Fragment {
         readTv.setText(data);
     }
 
-    void btnSetting(){
+    void btnSetting() {
         btn_status = view.findViewById(R.id.btn_status);
+        btn_FL_Setting = view.findViewById(R.id.btn_FL_Setting);
+
+
         btn_status.setOnClickListener(v ->
-                ((BleMainActivity) getActivity()).BlewriteData("LICMD,1,255"));
+                ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS));
+        btn_FL_Setting.setOnClickListener(v ->
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setMessage(R.string.ble_setting_FLSetting_message)
+                    .setTitle(R.string.ble_setting_FLSetting_title);
+
+            builder.create();
+        });
     }
 
 

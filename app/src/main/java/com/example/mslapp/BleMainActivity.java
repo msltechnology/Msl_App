@@ -25,10 +25,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
-import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertisingSet;
-import android.bluetooth.le.AdvertisingSetCallback;
-import android.bluetooth.le.AdvertisingSetParameters;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanSettings;
@@ -43,13 +40,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.ParcelUuid;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.mslapp.Ble.BluetoothUtils;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Beginning;
@@ -62,7 +57,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -167,6 +161,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String DATA_TYPE_S = "S"; //설정
     public static final String DATA_TYPE_R = "R"; //Request
     public static final String DATA_TYPE_A = "A"; //
+    public static final String DATA_TYPE_W = "W"; //
+    public static final String DATA_TYPE_Y = "Y"; //
+    public static final String DATA_TYPE_X = "X"; //
+    public static final String DATA_TYPE_Z = "Z"; //
     public static final String DATA_TYPE_SID = "SID"; //ID 설정
     public static final String DATA_TYPE_RMC = "RMC"; //리모컨 모드
     public static final String DATA_TYPE_DIP = "DIP"; //DIP SW 모드
@@ -177,6 +175,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String DATA_TYPE_SNB = "SNB"; //시리얼넘버 확인
     public static final String DATA_TYPE_GP1 = "GP1"; //낮동안 GPS 할성화
     public static final String DATA_TYPE_GP0 = "GP0"; //저녁동안에만 활성화
+    public static final String DATA_TYPE_ADMIN = "ZFVVS"; //저녁동안에만 활성화
     public static final String DATA_TYPE_1 = "1"; //상태요청
     public static final String DATA_TYPE_2 = "2"; //강제점등
     public static final String DATA_TYPE_3 = "3"; //강제소등
@@ -236,6 +235,37 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             + DATA_TYPE_S + DATA_SIGN_COMMA
             + DATA_TYPE_RST + DATA_SIGN_COMMA
             + DATA_ID_255
+            + DATA_SIGN_CHECKSUM;
+    //$LICMD,W,255* : 점등 준비
+    public final static String CDS_LAMP_ON_READY = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_W + DATA_SIGN_COMMA
+            + DATA_ID_255
+            + DATA_SIGN_CHECKSUM;
+    //$LICMD,Y,255* : 점등 설정
+    public final static String CDS_LAMP_ON_SETTING = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_Y + DATA_SIGN_COMMA
+            + DATA_ID_255
+            + DATA_SIGN_CHECKSUM;
+    //$LICMD,X,255* : 소등 준비
+    public final static String CDS_LAMP_OFF_READY = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_X + DATA_SIGN_COMMA
+            + DATA_ID_255
+            + DATA_SIGN_CHECKSUM;
+    //$LICMD,Z,255* : 소등 설정
+    public final static String CDS_LAMP_OFF_SETTING = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_Z + DATA_SIGN_COMMA
+            + DATA_ID_255
+            + DATA_SIGN_CHECKSUM;
+
+    //$PS,A,ZFVVS* : 관리자 패스워드
+    public final static String ADMIN_PASSWORD = DATA_SIGN_START
+            + DATA_TYPE_PS + DATA_SIGN_COMMA
+            + DATA_TYPE_A + DATA_SIGN_COMMA
+            + DATA_TYPE_ADMIN
             + DATA_SIGN_CHECKSUM;
 
     //endregion
@@ -306,7 +336,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     @Override
     public void onPauseFragment_Ble_Scan() {
         Log.d(TAG, "onPauseFragment_Ble_Scan");
-        ScanItem.setTitle("Scan");
+        ScanItem.setTitle(R.string.ble_main_scanItem_scan);
     }
 
     // toolbar 스캔 기능 보이게하기
@@ -355,7 +385,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     }
 
     public void ble_stopscanning(){
-        ScanItem.setTitle("Scan");
+        ScanItem.setTitle(R.string.ble_main_scanItem_scan);
     }
 
 
@@ -375,17 +405,17 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                 if (scanningFlag) {
                     fragment_bleScan.stopScan();
-                    ScanItem.setTitle("Scan");
+                    ScanItem.setTitle(R.string.ble_main_scanItem_scan);
                 } else {
                     fragment_bleScan.Scan();
-                    ScanItem.setTitle("StopScanning");
+                    ScanItem.setTitle(R.string.ble_main_scanItem_stopScanning);
                 }
 
                 return true;
             case R.id.action_bar_scanRefresh:
 
                 fragment_bleScan.reFresh();
-                ScanItem.setTitle("StopScanning");
+                ScanItem.setTitle(R.string.ble_main_scanItem_stopScanning);
 
                 return true;
 
@@ -421,7 +451,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         mBleMain = this;
 
         toolbarMain = (Toolbar) findViewById(R.id.ble_toolbar_main);
-        toolbarMain.setTitle("MSL Bluetooth");
+        toolbarMain.setTitle(R.string.ble_main_title);
         toolbarMain.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbarMain);
 
@@ -526,21 +556,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             Log.d(TAG, "BluetoothSetting getCallbackType() : " + settings.getCallbackType());
         }else{
             settings = new ScanSettings.Builder()
-                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                    .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
-                    .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
+                    .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
                     .build();
         }
 
-
         // 특정 장치만 스캔하도록 할 수 있다. => scanFilter 부분 - .setServiceUuid()대신 .setDeviceAddress(MAC_ADDR)를 사용해 Uuid 말고 특정 mac address만 스캔
         filters.add(scanFilter);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //BluetoothSetting();
-        }
-
-
 
         //region  layout 정의
 
@@ -555,74 +576,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Log.d(TAG, "지원 안함.....");
         }
-
-
-
-
         //region layout 기능
 
         //endregion
 
     }
-
-    AdvertisingSetCallback callback;
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    void BluetoothSetting(){
-
-        mAdvertiser = BluetoothAdapter.getDefaultAdapter().getBluetoothLeAdvertiser();
-
-        AdvertisingSetParameters parameters = (new AdvertisingSetParameters.Builder())
-                .setLegacyMode(true) // True by default, but set here as a reminder.
-                .setConnectable(true)
-                .setInterval(AdvertisingSetParameters.INTERVAL_HIGH)
-                .setTxPowerLevel(AdvertisingSetParameters.TX_POWER_MEDIUM)
-                .build();
-
-        AdvertiseData data = (new AdvertiseData.Builder()).setIncludeDeviceName(true).build();
-
-        callback = new AdvertisingSetCallback() {
-            @Override
-            public void onAdvertisingSetStarted(AdvertisingSet advertisingSet, int txPower, int status) {
-                Log.i(TAG, "onAdvertisingSetStarted(): txPower:"
-                        + txPower + " , status: "
-                        + status);
-                currentAdvertisingSet = advertisingSet;
-            }
-
-            @Override
-            public void onAdvertisingDataSet(AdvertisingSet advertisingSet, int status) {
-                Log.i(TAG, "onAdvertisingDataSet() :status:" + status);
-            }
-
-            @Override
-            public void onScanResponseDataSet(AdvertisingSet advertisingSet, int status) {
-                Log.i(TAG, "onScanResponseDataSet(): status:" + status);
-            }
-
-            @Override
-            public void onAdvertisingSetStopped(AdvertisingSet advertisingSet) {
-                Log.i(TAG, "onAdvertisingSetStopped():");
-            }
-        };
-
-        mAdvertiser.startAdvertisingSet(parameters, data, null, null, null, callback);
-
-        // After onAdvertisingSetStarted callback is called, you can modify the
-        // advertising data and scan response data:
-        currentAdvertisingSet.setAdvertisingData(new AdvertiseData.Builder().
-                setIncludeDeviceName(true).setIncludeTxPowerLevel(true).build());
-        // Wait for onAdvertisingDataSet callback...
-        currentAdvertisingSet.setScanResponseData(new
-                AdvertiseData.Builder().addServiceUuid(new ParcelUuid(UUID.randomUUID())).build());
-        // Wait for onScanResponseDataSet callback...
-
-        // When done with the advertising:
-        mAdvertiser.stopAdvertisingSet(callback);
-
-    }
-
-
 
 
     // fragment 변화
@@ -717,7 +675,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     Log.d(TAG, "RequestPermissions GPS : 거부");
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                    builder.setTitle("권한 요청").setMessage("위치정보 권한 요청을 거절하셨습니다.\n블루투스 스캔 이용이 제한됩니다.\n다시 확인하시겠습니까?");
+                    builder.setTitle(R.string.ble_main_checkPermission_GPS_fail_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_fail_alertDialog_message);
 
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
@@ -757,7 +715,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             case MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE:{
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-                builder.setTitle("권한 요청 실패").setMessage("위치정보 권한 요청을 거절하셨습니다.\n어플리케이션 정보에서 권한을 허용해주십시오.");
+                builder.setTitle(R.string.ble_main_checkPermission_GPS_reFail_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_reFail_alertDialog_message);
                 builder.setPositiveButton("Setting", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -820,7 +778,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("위치정보 ON 요청").setMessage("GPS(위치정보)가 OFF 상태입니다.\n블루투스 스캔 이용이 제한됩니다.\n설정창으로 이동하시겠습니까?");
+            builder.setTitle(R.string.ble_main_checkPermission_GPS_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_alertDialog_message);
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
@@ -997,12 +955,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         if (bleGatt != null) {
             BleConnecting = false;
 
-
             bleGatt.disconnect();
             bleGatt.close();
         }
     }
-
 
     // 연결 및 데이터 들어온거에 따른 결과
     Handler handler = new Handler() {
@@ -1017,12 +973,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 if (readDataTotal.contains("\\n") || readDataTotal.contains("\\r")) {
                     Log.d(TAG, "readDataTotal contain n or r " + readDataTotal);
                     readDataTotal = readDataTotal.replaceAll("(\\n|\\r)", "");
-                    Log.d(TAG, "readDataTotal not contain n or r " + readDataTotal);
                 }
                 if (readDataTotal.contains("\n") || readDataTotal.contains("\r")) {
                     Log.d(TAG, "readDataTotal contain n or r 2" + readDataTotal);
                     readDataTotal = readDataTotal.replaceAll("(\n|\r)", "");
-                    Log.d(TAG, "readDataTotal not contain n or r 2" + readDataTotal);
                 }
 
                 // $ 및 * 등이 포함됐는지.(처음과 끝)
@@ -1095,17 +1049,16 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
         }
 
-        // 연결이 끊겨있다면
+        // 연결이 끊겨있다면 종료
         if (cmdCharacteristic == null) {
             Log.e(TAG, "Unable to find cmd characteristic(writeData)");
             disconnectGattServer("BleMainActivity - BlewriteData - Unable to find cmd characteristic");
             return;
         }
 
-        String sendData = DATA_SIGN_START + data + DATA_SIGN_CHECKSUM;
-        sendData = sendData + ToCheckSum(sendData);
+        String sendData = data + ToCheckSum(data);
 
-        Log.d(TAG, "BlewriteData data : " + data + ", sendDAta : " + sendData);
+        Log.d(TAG, "BlewriteData data : " + data + ", sendData : " + sendData);
 
         cmdCharacteristic.setValue(sendData.getBytes());
 

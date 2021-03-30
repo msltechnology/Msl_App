@@ -17,6 +17,16 @@ import androidx.fragment.app.Fragment;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
+import static com.example.mslapp.BleMainActivity.CDS_LAMP_OFF_READY;
+import static com.example.mslapp.BleMainActivity.CDS_LAMP_OFF_SETTING;
+import static com.example.mslapp.BleMainActivity.CDS_LAMP_ON_READY;
+import static com.example.mslapp.BleMainActivity.CDS_LAMP_ON_SETTING;
+import static com.example.mslapp.BleMainActivity.DATA_DEVICE_RESET;
+import static com.example.mslapp.BleMainActivity.DATA_LAMP_FIXED;
+import static com.example.mslapp.BleMainActivity.DATA_LAMP_OFF;
+import static com.example.mslapp.BleMainActivity.DATA_LAMP_ON;
+import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
+
 public class fragment_Ble_Status extends Fragment {
 
     // 로그 이름 용
@@ -51,7 +61,7 @@ public class fragment_Ble_Status extends Fragment {
 
 
         // 최초 1회 정보 요청
-        ((BleMainActivity) getActivity()).BlewriteData("LICMD,1,255");
+        ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS);
 
         return view;
     }
@@ -59,26 +69,26 @@ public class fragment_Ble_Status extends Fragment {
     void buttonSetting() {
 
         Button statusBtn = view.findViewById(R.id.statusBtn);
-        statusBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,1,255"));
+        statusBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS));
         Button lampOnBtn = view.findViewById(R.id.lampOnBtn);
-        lampOnBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,2,255"));
+        lampOnBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_LAMP_ON));
         Button lampOffBtn = view.findViewById(R.id.lampOffBtn);
-        lampOffBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,3,255"));
+        lampOffBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_LAMP_OFF));
         Button lampFixedBtn = view.findViewById(R.id.lampFixedBtn);
-        lampFixedBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,5,255"));
+        lampFixedBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_LAMP_FIXED));
         Button resetBtn = view.findViewById(R.id.resetBtn);
-        resetBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,4,255"));
+        resetBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));
 
         Button testBtn1 = view.findViewById(R.id.test_bt1);
-        testBtn1.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,W,255"));
+        testBtn1.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_READY));
         Button testBtn2 = view.findViewById(R.id.test_bt2);
-        testBtn2.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,Y,255"));
+        testBtn2.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_SETTING));
         Button testBtn3 = view.findViewById(R.id.test_bt3);
-        testBtn3.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,X,255"));
+        testBtn3.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_OFF_READY));
         Button testBtn4 = view.findViewById(R.id.test_bt4);
-        testBtn4.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,Z,255"));
+        testBtn4.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_OFF_SETTING));
         Button testBtn5 = view.findViewById(R.id.test_bt5);
-        testBtn5.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData("LICMD,4,255"));
+        testBtn5.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));
     }
 
 

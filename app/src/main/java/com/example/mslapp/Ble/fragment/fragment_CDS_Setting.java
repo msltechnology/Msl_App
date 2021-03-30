@@ -16,6 +16,11 @@ import androidx.fragment.app.Fragment;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
+import static com.example.mslapp.BleMainActivity.ADMIN_PASSWORD;
+import static com.example.mslapp.BleMainActivity.CDS_LAMP_OFF_READY;
+import static com.example.mslapp.BleMainActivity.CDS_LAMP_OFF_SETTING;
+import static com.example.mslapp.BleMainActivity.CDS_LAMP_ON_READY;
+import static com.example.mslapp.BleMainActivity.CDS_LAMP_ON_SETTING;
 import static com.example.mslapp.BleMainActivity.cdsFlag;
 
 public class fragment_CDS_Setting extends Fragment {
@@ -43,13 +48,13 @@ public class fragment_CDS_Setting extends Fragment {
         dialog.show();
 
         Button onPrepareBtn = view.findViewById(R.id.on_prepare);
-        onPrepareBtn.setOnClickListener(v -> ((BleMainActivity)getActivity()).BlewriteData("LICMD,W,255"));
+        onPrepareBtn.setOnClickListener(v -> ((BleMainActivity)getActivity()).BlewriteData(CDS_LAMP_ON_READY));
         Button onSetBtn = view.findViewById(R.id.on_set);
-        onSetBtn.setOnClickListener(v -> ((BleMainActivity)getActivity()).BlewriteData("LICMD,Y,255"));
+        onSetBtn.setOnClickListener(v -> ((BleMainActivity)getActivity()).BlewriteData(CDS_LAMP_ON_SETTING));
         Button offPrepareBtn = view.findViewById(R.id.off_prepare);
-        offPrepareBtn.setOnClickListener(v -> ((BleMainActivity)getActivity()).BlewriteData("LICMD,X,255"));
+        offPrepareBtn.setOnClickListener(v -> ((BleMainActivity)getActivity()).BlewriteData(CDS_LAMP_OFF_READY));
         Button offSetBtn = view.findViewById(R.id.off_set);
-        offSetBtn.setOnClickListener(v -> ((BleMainActivity)getActivity()).BlewriteData("LICMD,Z,255"));
+        offSetBtn.setOnClickListener(v -> ((BleMainActivity)getActivity()).BlewriteData(CDS_LAMP_OFF_SETTING));
 
         readData = view.findViewById(R.id.readData_cds);
 
@@ -59,7 +64,7 @@ public class fragment_CDS_Setting extends Fragment {
 
         if(data.contains("$PS,R,")){
             dialog.dismiss();
-            ((BleMainActivity)getActivity()).BlewriteData("PS,A,ZFVVS");
+            ((BleMainActivity)getActivity()).BlewriteData(ADMIN_PASSWORD);
         }
         /*if(data.contains("$PS,A,")){
             dialog.dismiss();

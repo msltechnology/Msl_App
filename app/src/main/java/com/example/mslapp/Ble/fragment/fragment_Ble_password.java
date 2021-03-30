@@ -25,12 +25,12 @@ public class fragment_Ble_password extends Fragment {
 
     String readPassword = "";
 
-    TextView password1,password2,password3,password4,password5;
+    TextView password1, password2, password3, password4, password5;
 
-    Button btn_Q,btn_W,btn_E,btn_R,btn_T,btn_Y,btn_U,btn_I,btn_O,btn_P,
-            btn_A,btn_S,btn_D,btn_F,btn_G,btn_H,btn_J,btn_K,btn_L,
-            btn_Z,btn_X,btn_C,btn_V,btn_B,btn_N,btn_M,
-            btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0;
+    Button btn_Q, btn_W, btn_E, btn_R, btn_T, btn_Y, btn_U, btn_I, btn_O, btn_P,
+            btn_A, btn_S, btn_D, btn_F, btn_G, btn_H, btn_J, btn_K, btn_L,
+            btn_Z, btn_X, btn_C, btn_V, btn_B, btn_N, btn_M,
+            btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_0;
 
     Button btn_delete, btn_connect;
 
@@ -48,7 +48,7 @@ public class fragment_Ble_password extends Fragment {
 
         dialog = new ProgressDialog(view.getContext());
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("Loading");
+        dialog.setMessage(getString(R.string.ble_password_dialog_message));
         dialog.show();
 
         textViewSetting();
@@ -61,8 +61,8 @@ public class fragment_Ble_password extends Fragment {
 
         btn_connect = view.findViewById(R.id.btn_connect);
         btn_connect.setOnClickListener(v -> {
-            if(passwordOrder == 5){
-                String password = password1.getText().toString()+password2.getText().toString()+password3.getText().toString()+password4.getText().toString()+password5.getText().toString();
+            if (passwordOrder == 5) {
+                String password = password1.getText().toString() + password2.getText().toString() + password3.getText().toString() + password4.getText().toString() + password5.getText().toString();
                 Log.d(TAG, "password = " + password);
                 passwordCheck(password);
             }
@@ -72,28 +72,28 @@ public class fragment_Ble_password extends Fragment {
         return view;
     }
 
-    public void readData(String data){
+    public void readData(String data) {
         Log.d(TAG, "fragment_Ble_password readData! : " + data);
 
 
-        if(data.contains("$PS,R")){
+        if (data.contains("$PS,R")) {
             dialog.dismiss();
-            readPassword = data.substring(6,11);
+            readPassword = data.substring(6, 11);
             Log.d(TAG, "readPassword = " + readPassword);
         }
 
 
-        if(data.equals("$PS,A,39427*79")){
+        if (data.equals("$PS,A,39427*79")) {
         }
 
     }
 
-    void passwordCheck(String inputPassword){
+    void passwordCheck(String inputPassword) {
 
-        if(readPassword.equals(psEncryptionTable(inputPassword))){
+        if (readPassword.equals(psEncryptionTable(inputPassword))) {
             Log.d(TAG, "passwordCheck : OK");
-            ((BleMainActivity)getActivity()).BlewriteData("PS,A," + readPassword);
-            ((BleMainActivity)getActivity()).fragmentChange("fragment_ble_function");
+            ((BleMainActivity) getActivity()).BlewriteData("$PS,A," + readPassword + "*");
+            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_function");
         }
     }
 
@@ -105,8 +105,8 @@ public class fragment_Ble_password extends Fragment {
     }
 
 
-    public void deleteClickEvent(){
-        switch (passwordOrder){
+    public void deleteClickEvent() {
+        switch (passwordOrder) {
             case 1:
                 password1.setText("");
                 passwordOrder = 0;
@@ -130,8 +130,8 @@ public class fragment_Ble_password extends Fragment {
         }
     }
 
-    public void btnClickEvent(String word){
-        switch (passwordOrder){
+    public void btnClickEvent(String word) {
+        switch (passwordOrder) {
             case 0:
                 password1.setText(word);
                 passwordOrder = 1;
@@ -156,9 +156,7 @@ public class fragment_Ble_password extends Fragment {
     }
 
 
-
-
-    void textViewSetting(){
+    void textViewSetting() {
         password1 = view.findViewById(R.id.password_insert_1);
         password2 = view.findViewById(R.id.password_insert_2);
         password3 = view.findViewById(R.id.password_insert_3);
@@ -166,7 +164,7 @@ public class fragment_Ble_password extends Fragment {
         password5 = view.findViewById(R.id.password_insert_5);
     }
 
-    public void btnSetting(){
+    public void btnSetting() {
         btn_1 = view.findViewById(R.id.password_key_1);
         btn_2 = view.findViewById(R.id.password_key_2);
         btn_3 = view.findViewById(R.id.password_key_3);
@@ -204,47 +202,47 @@ public class fragment_Ble_password extends Fragment {
         btn_N = view.findViewById(R.id.password_key_n);
         btn_M = view.findViewById(R.id.password_key_m);
 
-        btn_1.setOnClickListener( v -> btnClickEvent("1"));
-        btn_2.setOnClickListener( v -> btnClickEvent("2"));
-        btn_3.setOnClickListener( v -> btnClickEvent("3"));
-        btn_4.setOnClickListener( v -> btnClickEvent("4"));
-        btn_5.setOnClickListener( v -> btnClickEvent("5"));
-        btn_6.setOnClickListener( v -> btnClickEvent("6"));
-        btn_7.setOnClickListener( v -> btnClickEvent("7"));
-        btn_8.setOnClickListener( v -> btnClickEvent("8"));
-        btn_9.setOnClickListener( v -> btnClickEvent("9"));
-        btn_0.setOnClickListener( v -> btnClickEvent("0"));
-        btn_Q.setOnClickListener( v -> btnClickEvent("Q"));
-        btn_W.setOnClickListener( v -> btnClickEvent("W"));
-        btn_E.setOnClickListener( v -> btnClickEvent("E"));
-        btn_R.setOnClickListener( v -> btnClickEvent("R"));
-        btn_T.setOnClickListener( v -> btnClickEvent("T"));
-        btn_Y.setOnClickListener( v -> btnClickEvent("Y"));
-        btn_U.setOnClickListener( v -> btnClickEvent("U"));
-        btn_I.setOnClickListener( v -> btnClickEvent("I"));
-        btn_O.setOnClickListener( v -> btnClickEvent("O"));
-        btn_P.setOnClickListener( v -> btnClickEvent("P"));
-        btn_A.setOnClickListener( v -> btnClickEvent("A"));
-        btn_S.setOnClickListener( v -> btnClickEvent("S"));
-        btn_D.setOnClickListener( v -> btnClickEvent("D"));
-        btn_F.setOnClickListener( v -> btnClickEvent("F"));
-        btn_G.setOnClickListener( v -> btnClickEvent("G"));
-        btn_H.setOnClickListener( v -> btnClickEvent("H"));
-        btn_J.setOnClickListener( v -> btnClickEvent("J"));
-        btn_K.setOnClickListener( v -> btnClickEvent("K"));
-        btn_L.setOnClickListener( v -> btnClickEvent("L"));
-        btn_Z.setOnClickListener( v -> btnClickEvent("Z"));
-        btn_X.setOnClickListener( v -> btnClickEvent("X"));
-        btn_C.setOnClickListener( v -> btnClickEvent("C"));
-        btn_V.setOnClickListener( v -> btnClickEvent("V"));
-        btn_B.setOnClickListener( v -> btnClickEvent("B"));
-        btn_N.setOnClickListener( v -> btnClickEvent("N"));
-        btn_M.setOnClickListener( v -> btnClickEvent("M"));
+        btn_1.setOnClickListener(v -> btnClickEvent("1"));
+        btn_2.setOnClickListener(v -> btnClickEvent("2"));
+        btn_3.setOnClickListener(v -> btnClickEvent("3"));
+        btn_4.setOnClickListener(v -> btnClickEvent("4"));
+        btn_5.setOnClickListener(v -> btnClickEvent("5"));
+        btn_6.setOnClickListener(v -> btnClickEvent("6"));
+        btn_7.setOnClickListener(v -> btnClickEvent("7"));
+        btn_8.setOnClickListener(v -> btnClickEvent("8"));
+        btn_9.setOnClickListener(v -> btnClickEvent("9"));
+        btn_0.setOnClickListener(v -> btnClickEvent("0"));
+        btn_Q.setOnClickListener(v -> btnClickEvent("Q"));
+        btn_W.setOnClickListener(v -> btnClickEvent("W"));
+        btn_E.setOnClickListener(v -> btnClickEvent("E"));
+        btn_R.setOnClickListener(v -> btnClickEvent("R"));
+        btn_T.setOnClickListener(v -> btnClickEvent("T"));
+        btn_Y.setOnClickListener(v -> btnClickEvent("Y"));
+        btn_U.setOnClickListener(v -> btnClickEvent("U"));
+        btn_I.setOnClickListener(v -> btnClickEvent("I"));
+        btn_O.setOnClickListener(v -> btnClickEvent("O"));
+        btn_P.setOnClickListener(v -> btnClickEvent("P"));
+        btn_A.setOnClickListener(v -> btnClickEvent("A"));
+        btn_S.setOnClickListener(v -> btnClickEvent("S"));
+        btn_D.setOnClickListener(v -> btnClickEvent("D"));
+        btn_F.setOnClickListener(v -> btnClickEvent("F"));
+        btn_G.setOnClickListener(v -> btnClickEvent("G"));
+        btn_H.setOnClickListener(v -> btnClickEvent("H"));
+        btn_J.setOnClickListener(v -> btnClickEvent("J"));
+        btn_K.setOnClickListener(v -> btnClickEvent("K"));
+        btn_L.setOnClickListener(v -> btnClickEvent("L"));
+        btn_Z.setOnClickListener(v -> btnClickEvent("Z"));
+        btn_X.setOnClickListener(v -> btnClickEvent("X"));
+        btn_C.setOnClickListener(v -> btnClickEvent("C"));
+        btn_V.setOnClickListener(v -> btnClickEvent("V"));
+        btn_B.setOnClickListener(v -> btnClickEvent("B"));
+        btn_N.setOnClickListener(v -> btnClickEvent("N"));
+        btn_M.setOnClickListener(v -> btnClickEvent("M"));
     }
 
     public static String psEncryptionTable(String ps) {
         String temp = "";
-        for (int n=0; n<ps.length(); n++) {
+        for (int n = 0; n < ps.length(); n++) {
             switch (ps.charAt(n)) {
                 case 'A':
                     temp += "Z";
@@ -360,7 +358,7 @@ public class fragment_Ble_password extends Fragment {
             }
         }
 
-        if (ps.length() == temp.length()){
+        if (ps.length() == temp.length()) {
             return temp;
         }
         return ps;

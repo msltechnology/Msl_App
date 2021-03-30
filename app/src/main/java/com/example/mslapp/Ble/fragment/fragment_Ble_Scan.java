@@ -185,7 +185,6 @@ public class fragment_Ble_Scan extends Fragment {
 
         @Override
         public void onScanFailed(int errorCode) {
-            System.out.println("BLE// onScanFailed");
             Log.e(TAG, "Scan Failed - Error Code: " + errorCode);
         }
 
@@ -254,8 +253,7 @@ public class fragment_Ble_Scan extends Fragment {
                 adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi);
                 adapter.notifyDataSetChanged();
                 //bleListview.setAdapter(adapter);
-                // 하면 추가될때마다 화면이 위로 감.
-
+                
             } catch (Exception e) {
                 Log.d(TAG, "scanResult Error : " + e.getMessage());
             }
