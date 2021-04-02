@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MSLtechnology</string>
+    <string name="ble_setting_FLSetting_message">테스트 중...</string>
+    <string name="ble_setting_FLSetting_title">FL Setting</string>
+    <string name="ble_main_scanItem_scan">Scan</string>
+    <string name="ble_main_scanItem_stopScanning">Stop</string>
+    <string name="ble_main_title">MSL Technology</string>
+    <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">Location information permission request failed</string>
+    <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">You have declined the request for location information.\nBluetooth scanning usage is restricted.\nDo you want to check again?</string>
+    <string name="ble_main_checkPermission_GPS_reFail_alertDialog_title">Denial of requesting permission for location information</string>
+    <string name="ble_main_checkPermission_GPS_reFail_alertDialog_message">You have rejected your request for location information permission.\nPlease allow permission in the application information.</string>
+    <string name="ble_main_checkPermission_GPS_alertDialog_title">Location information permission request</string>
+    <string name="ble_main_checkPermission_GPS_alertDialog_message">GPS (location information) is OFF.\nBluetooth scan usage is restricted.\nDo you want to go to the setting window?</string>
+    <string name="ble_password_dialog_message">Connecting...</string>
+</resources>
