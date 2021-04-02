@@ -62,6 +62,7 @@ public class fragment_Ble_Scan extends Fragment {
 
         View view = inflater.inflate(R.layout.ble_fragment_scan, null);
 
+
         ((Ble_Scan_Listener) activity).onCreateViewFragment_Ble_Scan();
 
         Log.d(TAG, "OnCreateView");

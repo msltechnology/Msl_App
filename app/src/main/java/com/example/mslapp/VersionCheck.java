@@ -27,5 +27,6 @@ public class VersionCheck {
     // 2021-03-26 / setting 값 등 변경하였으나 안됌. 따로 조치를 해야하는듯. 대신 세팅값 바꿔서 스캔하는 능력은 증가시킨대신 배터리 많이 쓰는 모드로 사용.
     // 2021-03-29 / 패스워드 키보드 등 값 입력 및 암호화(맞나?) 작업 함. 기존 시스템을 그대로 이용해야해서 손댈 수 가 없음. 드디어 setting 값에 legacy 값 변경으로 advertising 검색가능함. 대신 들어오는 스캔 값(scanresult)의 변화로 읽어오는 값 확인해야함.
     // 2021-03-30 / github와 연동, 언어 별 string 설정 해야할 필요, ble_setting에서 dialog프래그먼트 사용할 예정. ble beginning 부분 bluetooth 도중에 꺼지거나 하면 체크할 수 있도록 수정해야함.
+    // 2021-04-01 / fragment_setting 의 dialog 어떻게 만들지 및 만드는중. listview 가 문제...
 
 }

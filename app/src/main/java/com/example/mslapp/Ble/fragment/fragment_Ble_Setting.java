@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
@@ -58,15 +59,15 @@ public class fragment_Ble_Setting extends Fragment {
                 ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS));
         btn_FL_Setting.setOnClickListener(v ->
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-            builder.setMessage(R.string.ble_setting_FLSetting_message)
-                    .setTitle(R.string.ble_setting_FLSetting_title);
-
-            builder.create();
+            showEditDialog();
         });
     }
 
+    private void showEditDialog() {
+        FragmentManager fm = this.getChildFragmentManager();
+        dialogFragment_setting editNameDialogFragment = new dialogFragment_setting();
+        editNameDialogFragment.show(fm, "fragment_setting_dialog");
+    }
 
     @Override
     public void onDestroy() {
