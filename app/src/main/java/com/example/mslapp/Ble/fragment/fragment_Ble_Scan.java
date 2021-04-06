@@ -62,7 +62,6 @@ public class fragment_Ble_Scan extends Fragment {
 
         View view = inflater.inflate(R.layout.ble_fragment_scan, null);
 
-
         ((Ble_Scan_Listener) activity).onCreateViewFragment_Ble_Scan();
 
         Log.d(TAG, "OnCreateView");
@@ -196,6 +195,8 @@ public class fragment_Ble_Scan extends Fragment {
                 String deviceAddress = device.getAddress();
                 String name = device.getName();
 
+
+
                 int rssi = result.getRssi();
 
                 // 중복 체크
@@ -218,9 +219,42 @@ public class fragment_Ble_Scan extends Fragment {
                 }
 */
 
+
+                Log.d(TAG,"\nresult.describeContents() : " + result.describeContents() +
+                        "\nresult.getAdvertisingSid() : " + result.getAdvertisingSid() +
+                        "\nresult.getDataStatus() : " + result.getDataStatus() +
+                        "\nresult.getPeriodicAdvertisingInterval() : " + result.getPeriodicAdvertisingInterval() +
+                        "\nresult.getPrimaryPhy() : " + result.getPrimaryPhy() +
+                        "\nresult.getRssi() : " + result.getRssi() +
+                        "\nresult.getSecondaryPhy() : " + result.getSecondaryPhy() +
+                        "\nresult.getTimestampNanos() : " + result.getTimestampNanos() +
+                        "\nresult.getTxPower() : " + result.getTxPower() +
+                        "\nresult.hashCode() : " + result.hashCode() +
+                        "\nresult.isConnectable() : " + result.isConnectable() +
+                        "\nresult.isLegacy() : " + result.isLegacy() +
+                        "\nresult.toString() : " + result.toString() +
+                        "\ndevice.getAddress() : " + device.getAddress() +
+                        "\ndevice.getAlias() : " + device.getAlias() +
+                        "\ndevice.getName() : " + device.getName() +
+                        "\ndevice.getBondState() : " + device.getBondState() +
+                        "\ndevice.getType() : " + device.getType() +
+                        "\ndevice.getUuids() : " + device.getUuids() +
+                        "\ndevice.toString() : " + device.toString()
+                );
+
+
                 Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);
 
-                String userdataAll = stringBuffer.substring(18);
+                String userdataAll = stringBuffer;
+
+                if(stringBuffer.contains("MSL TECH")){
+                    Log.d(TAG, "MSL TECH contain : " + stringBuffer);
+
+                    userdataAll = stringBuffer.substring(18);
+                }
+
+
+
                 String userdata = "";
                 char chrInput;
 

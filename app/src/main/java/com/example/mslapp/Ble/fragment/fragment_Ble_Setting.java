@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_setting;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
@@ -64,6 +64,7 @@ public class fragment_Ble_Setting extends Fragment {
     }
 
     private void showEditDialog() {
+
         FragmentManager fm = this.getChildFragmentManager();
         dialogFragment_setting editNameDialogFragment = new dialogFragment_setting();
         editNameDialogFragment.show(fm, "fragment_setting_dialog");

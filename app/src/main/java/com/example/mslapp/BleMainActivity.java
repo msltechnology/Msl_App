@@ -42,9 +42,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.example.mslapp.Ble.BluetoothUtils;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Beginning;
@@ -141,8 +143,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     // scan 설정을 lowpower로 설정
     public static ScanSettings settings = new ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-            .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
-            .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
             .build();
     //public static ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).setReportDelay(0).setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES).build();
 
@@ -542,7 +542,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             // setLegacy 값 안 바꾸면 장거리 블루투스 못찾음(광고형 블루투스를 못봄)
             settings = new ScanSettings.Builder()
                     .setLegacy(false)
-                    .setScanMode(ScanSettings.SCAN_MODE_BALANCED)
+                    .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                     .build();
 
             Log.d(TAG, "BluetoothAdapter isLe2MPhySupported() : " + mBluetoothAdapter.isLe2MPhySupported());
@@ -554,10 +554,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             Log.d(TAG, "BluetoothSetting getScanMode() : " + settings.getScanMode());
             Log.d(TAG, "BluetoothSetting getScanResultType() : " + settings.getScanResultType());
             Log.d(TAG, "BluetoothSetting getCallbackType() : " + settings.getCallbackType());
-        }else{
-            settings = new ScanSettings.Builder()
-                    .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
-                    .build();
         }
 
         // 특정 장치만 스캔하도록 할 수 있다. => scanFilter 부분 - .setServiceUuid()대신 .setDeviceAddress(MAC_ADDR)를 사용해 Uuid 말고 특정 mac address만 스캔
@@ -834,6 +830,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 return;
             }
             Log.d(TAG, "Services discovery is successful");
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.d(TAG, "gatt.readPhy()");
+                gatt.readPhy();
+            }
 
             // uuid, Characteristic 모르면
             BluetoothDevice device = gatt.getDevice();

@@ -2,7 +2,6 @@ package com.example.mslapp.Ble.fragment;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,14 +18,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_setting;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.BleMainActivity.MY_PERMISSIONS_REQUEST_READ_CONTACTS;
 import static com.example.mslapp.BleMainActivity.adminApp;
 import static com.example.mslapp.BleMainActivity.bluetooth_permission_check;
-import static com.example.mslapp.BleMainActivity.cdsFlag;
 import static com.example.mslapp.BleMainActivity.locationManager;
 import static com.example.mslapp.BleMainActivity.mBluetoothAdapter;
 import static com.example.mslapp.BleMainActivity.mBleContext;
@@ -64,6 +64,15 @@ public class fragment_Ble_Beginning extends Fragment {
 
         return view;
     }
+
+
+    private void showEditDialog() {
+        FragmentManager fm = this.getChildFragmentManager();
+        dialogFragment_setting editNameDialogFragment = new dialogFragment_setting();
+        editNameDialogFragment.show(fm, "fragment_setting_dialog");
+    }
+
+
 
     void fragmentScanChange() {
 
@@ -165,7 +174,8 @@ public class fragment_Ble_Beginning extends Fragment {
     }
 
     private void onClick(View v) {
-        cdsFlag = true;
-        fragmentScanChange();
+        //cdsFlag = true;
+        showEditDialog();
+        //fragmentScanChange();
     }
 }

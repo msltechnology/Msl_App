@@ -12,4 +12,9 @@
     <string name="ble_main_checkPermission_GPS_alertDialog_title">위치정보 권한 요청 </string>
     <string name="ble_main_checkPermission_GPS_alertDialog_message">GPS(위치정보)가 OFF 상태입니다.\n블루투스 스캔 이용이 제한됩니다.\n설정창으로 이동하시겠습니까?</string>
     <string name="ble_password_dialog_message">연결 중...</string>
+    <string name="dialog_setting_second">초</string>
+    <string name="dialog_setting_FL">섬광</string>
+    <string name="dialog_setting_search">검색</string>
+    <string name="dialog_setting_cancel">취소</string>
+    <string name="dialog_setting_confirm">확인</string>
 </resources>

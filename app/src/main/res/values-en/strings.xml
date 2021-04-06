@@ -12,4 +12,9 @@
     <string name="ble_main_checkPermission_GPS_alertDialog_title">Location information permission request</string>
     <string name="ble_main_checkPermission_GPS_alertDialog_message">GPS (location information) is OFF.\nBluetooth scan usage is restricted.\nDo you want to go to the setting window?</string>
     <string name="ble_password_dialog_message">Connecting...</string>
+    <string name="dialog_setting_second">Second</string>
+    <string name="dialog_setting_FL">FL</string>
+    <string name="dialog_setting_search">Search</string>
+    <string name="dialog_setting_cancel">Cancel</string>
+    <string name="dialog_setting_confirm">OK</string>
 </resources>
