@@ -42,18 +42,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.example.mslapp.Ble.BluetoothUtils;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Beginning;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Scan;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Function;
-import com.example.mslapp.Ble.fragment.fragment_Ble_password;
+import com.example.mslapp.Ble.fragment.fragment_Ble_Password;
 import com.example.mslapp.Ble.fragment.fragment_CDS_Setting;
 import com.google.android.material.navigation.NavigationView;
 
@@ -591,7 +589,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 fr = new fragment_Ble_Scan();
                 break;
             case "fragment_ble_password":
-                fr = new fragment_Ble_password();
+                fr = new fragment_Ble_Password();
                 break;
             case "fragment_ble_function":
                 fr = new fragment_Ble_Function();
@@ -1008,9 +1006,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                         Log.d(TAG, "fragment_Ble_Function OK!");
                                         fragment_Ble_Function fragment_ble_function = (fragment_Ble_Function) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
                                         fragment_ble_function.readData(data);
-                                    } else if (currentFragment instanceof fragment_Ble_password) {
+                                    } else if (currentFragment instanceof fragment_Ble_Password) {
                                         Log.d(TAG, "fragment_Ble_password OK!");
-                                        fragment_Ble_password fragment_ble_password = (fragment_Ble_password) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                                        fragment_Ble_Password fragment_ble_password = (fragment_Ble_Password) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
                                         fragment_ble_password.readData(data);
                                     } else if (currentFragment instanceof fragment_CDS_Setting) {
                                         Log.d(TAG, "fragment_Ble_password OK!");

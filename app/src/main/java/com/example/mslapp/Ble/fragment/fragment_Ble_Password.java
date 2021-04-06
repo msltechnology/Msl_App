@@ -16,7 +16,11 @@ import androidx.fragment.app.Fragment;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
-public class fragment_Ble_password extends Fragment {
+import java.util.Objects;
+
+import static com.example.mslapp.BleMainActivity.BlewriteData;
+
+public class fragment_Ble_Password extends Fragment {
 
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-password";
@@ -55,9 +59,7 @@ public class fragment_Ble_password extends Fragment {
         btnSetting();
 
         btn_delete = view.findViewById(R.id.password_key_delete);
-        btn_delete.setOnClickListener(v -> {
-            deleteClickEvent();
-        });
+        btn_delete.setOnClickListener(v -> deleteClickEvent());
 
         btn_connect = view.findViewById(R.id.btn_connect);
         btn_connect.setOnClickListener(v -> {
@@ -81,19 +83,14 @@ public class fragment_Ble_password extends Fragment {
             readPassword = data.substring(6, 11);
             Log.d(TAG, "readPassword = " + readPassword);
         }
-
-
-        if (data.equals("$PS,A,39427*79")) {
-        }
-
     }
 
     void passwordCheck(String inputPassword) {
 
         if (readPassword.equals(psEncryptionTable(inputPassword))) {
             Log.d(TAG, "passwordCheck : OK");
-            ((BleMainActivity) getActivity()).BlewriteData("$PS,A," + readPassword + "*");
-            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_function");
+            BlewriteData("$PS,A," + readPassword + "*");
+            ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_function");
         }
     }
 
@@ -241,125 +238,125 @@ public class fragment_Ble_password extends Fragment {
     }
 
     public static String psEncryptionTable(String ps) {
-        String temp = "";
+        StringBuilder temp = new StringBuilder();
         for (int n = 0; n < ps.length(); n++) {
             switch (ps.charAt(n)) {
                 case 'A':
-                    temp += "Z";
+                    temp.append("Z");
                     break;
                 case 'B':
-                    temp += "U";
+                    temp.append("U");
                     break;
                 case 'C':
-                    temp += "O";
+                    temp.append("O");
                     break;
                 case 'D':
-                    temp += "N";
+                    temp.append("N");
                     break;
                 case 'E':
-                    temp += "H";
+                    temp.append("H");
                     break;
                 case 'F':
-                    temp += "V";
+                    temp.append("V");
                     break;
                 case 'G':
-                    temp += "C";
+                    temp.append("C");
                     break;
                 case 'H':
-                    temp += "F";
+                    temp.append("F");
                     break;
                 case 'I':
-                    temp += "Q";
+                    temp.append("Q");
                     break;
                 case 'J':
-                    temp += "W";
+                    temp.append("W");
                     break;
                 case 'K':
-                    temp += "S";
+                    temp.append("S");
                     break;
                 case 'L':
-                    temp += "B";
+                    temp.append("B");
                     break;
                 case 'M':
-                    temp += "K";
+                    temp.append("K");
                     break;
                 case 'N':
-                    temp += "R";
+                    temp.append("R");
                     break;
                 case 'O':
-                    temp += "I";
+                    temp.append("I");
                     break;
                 case 'P':
-                    temp += "D";
+                    temp.append("D");
                     break;
                 case 'Q':
-                    temp += "G";
+                    temp.append("G");
                     break;
                 case 'R':
-                    temp += "P";
+                    temp.append("P");
                     break;
                 case 'S':
-                    temp += "J";
+                    temp.append("J");
                     break;
                 case 'T':
-                    temp += "X";
+                    temp.append("X");
                     break;
                 case 'U':
-                    temp += "M";
+                    temp.append("M");
                     break;
                 case 'V':
-                    temp += "T";
+                    temp.append("T");
                     break;
                 case 'W':
-                    temp += "L";
+                    temp.append("L");
                     break;
                 case 'X':
-                    temp += "A";
+                    temp.append("A");
                     break;
                 case 'Y':
-                    temp += "E";
+                    temp.append("E");
                     break;
                 case 'Z':
-                    temp += "Y";
+                    temp.append("Y");
                     break;
                 case '0':
-                    temp += "5";
+                    temp.append("5");
                     break;
                 case '1':
-                    temp += "3";
+                    temp.append("3");
                     break;
                 case '2':
-                    temp += "9";
+                    temp.append("9");
                     break;
                 case '3':
-                    temp += "4";
+                    temp.append("4");
                     break;
                 case '4':
-                    temp += "2";
+                    temp.append("2");
                     break;
                 case '5':
-                    temp += "7";
+                    temp.append("7");
                     break;
                 case '6':
-                    temp += "1";
+                    temp.append("1");
                     break;
                 case '7':
-                    temp += "6";
+                    temp.append("6");
                     break;
                 case '8':
-                    temp += "0";
+                    temp.append("0");
                     break;
                 case '9':
-                    temp += "8";
+                    temp.append("8");
                     break;
                 default:
-                    temp += '-';
+                    temp.append('-');
                     break;
             }
         }
 
         if (ps.length() == temp.length()) {
-            return temp;
+            return temp.toString();
         }
         return ps;
     }

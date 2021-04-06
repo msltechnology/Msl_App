@@ -24,7 +24,7 @@ public class fragment_Ble_Setting_Dialog_Second extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "fragment_Ble_Setting_Dialog_Second onCreateView");
 
-        view = inflater.inflate(R.layout.ble_fragment_setting_dialog_second, null);
+        view = inflater.inflate(R.layout.ble_fragment_setting_dialog_fl_setting_second_select, null);
 
         return view;
     }

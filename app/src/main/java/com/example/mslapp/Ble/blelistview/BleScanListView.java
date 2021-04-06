@@ -6,6 +6,7 @@ public class BleScanListView {
     private String bleNameStr ;
     private String bleAddressStr ;
     private String bleSignStr ;
+    private boolean bleCheckMsl = false;
 
     /*public void setIcon(Drawable icon) {
         iconDrawable = icon ;
@@ -21,6 +22,9 @@ public class BleScanListView {
     }
     public void setBleSign(String sign) {
         bleSignStr = sign ;
+    }
+    public void setBleCheck(boolean check) {
+        bleCheckMsl = check ;
     }
 
     /*public Drawable getIcon() {
@@ -39,5 +43,8 @@ public class BleScanListView {
     }
     public String getBleSign() {
         return this.bleSignStr ;
+    }
+    public Boolean getBleCheck() {
+        return this.bleCheckMsl ;
     }
 }

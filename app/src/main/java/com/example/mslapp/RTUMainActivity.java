@@ -8,12 +8,9 @@ import android.graphics.Color;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,19 +18,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.mslapp.Ble.fragment.adapter_Ble_Tab;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Beginning;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Function;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Scan;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Setting;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Test;
-import com.example.mslapp.Ble.fragment.fragment_Ble_password;
 import com.example.mslapp.RTU.fragment.adapter_RTU_Tab;
 import com.example.mslapp.RTU.fragment.fragment_RTU_Setting;
 import com.example.mslapp.RTU.fragment.fragment_RTU_Status;
@@ -43,16 +30,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.io.IOException;
-import java.util.Random;
-
 public class RTUMainActivity extends AppCompatActivity {
 
 
     // 로그 이름 용
     public static final String TAG = "Msl-RTU-MainAct";
 
-    public static Context mRTUContext = null;
+    public Context mRTUContext = null;
     public static AppCompatActivity mRTUMain = null;
 
     // d2xx - RTU 통신 간 필요
@@ -72,8 +56,6 @@ public class RTUMainActivity extends AppCompatActivity {
     int mReadSize=0;
 
     boolean mThreadIsStopped = true;
-    Handler mHandler = new Handler();
-    Thread mThread;
 
     // rtu 탭 (기능)
     TabLayout tabLayout_rtu;
@@ -155,23 +137,18 @@ public class RTUMainActivity extends AppCompatActivity {
         drawerToggle.syncState(); // 메뉴 버튼 추가
 
         // 사이드바(네비게이션) 아이템 선택 시
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.menu_bluetooth:
-                        Intent intent = new Intent(mRTUContext, BleMainActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-                    case R.id.menu_rtu:
-                        break;
-                }
-                // 사이드바 닫기
-                rtuMainLayout.closeDrawer(navigationView);
+        navigationView.setNavigationItemSelectedListener(item -> {
+            if(item.getItemId() == R.id.menu_bluetooth){
+                Intent intent = new Intent(mRTUContext, BleMainActivity.class);
+                startActivity(intent);
+                finish();
+            }else if(item.getItemId() == R.id.menu_rtu){
 
-                return false;
             }
+            // 사이드바 닫기
+            rtuMainLayout.closeDrawer(navigationView);
+
+            return false;
         });
 
         // RTU 연결
@@ -202,7 +179,7 @@ public class RTUMainActivity extends AppCompatActivity {
         }
 
         synchronized (ftDev) {
-            if(ftDev.isOpen() == false) {
+            if(!ftDev.isOpen()) {
                 Log.e(TAG, "onClickWrite : Device is not open");
                 return;
             }
@@ -224,10 +201,10 @@ public class RTUMainActivity extends AppCompatActivity {
             }
         }
 
-        int devCount = 0;
+        int devCount;
         devCount = ftD2xx.createDeviceInfoList(this);
 
-        Log.d(TAG, "Device number : "+ Integer.toString(devCount));
+        Log.d(TAG, "Device number : "+ devCount);
 
         D2xxManager.FtDeviceInfoListNode[] deviceList = new D2xxManager.FtDeviceInfoListNode[devCount];
         ftD2xx.getDeviceInfoList(devCount, deviceList);
@@ -327,7 +304,7 @@ public class RTUMainActivity extends AppCompatActivity {
                     fragment_rtu_status.readData(data);
                 }catch (Exception e){
                     Log.e(TAG, "readData Error : " + e.toString());
-                };
+                }
                 break;
             case 1:
                 Log.d(TAG, "currentPage : Setting");
@@ -335,7 +312,7 @@ public class RTUMainActivity extends AppCompatActivity {
                     fragment_rtu_setting.readData(data);
                 }catch (Exception e){
                     Log.e(TAG, "readData Error : " + e.toString());
-                };
+                }
                 break;
         }
     }
@@ -354,7 +331,7 @@ public class RTUMainActivity extends AppCompatActivity {
 
     public void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
         Log.d(TAG, "SetConfig start");
-        if (ftDev.isOpen() == false) {
+        if (!ftDev.isOpen()) {
             Log.e(TAG, "SetConfig: device not open");
             return;
         }
@@ -443,7 +420,7 @@ public class RTUMainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         openDevice();
-    };
+    }
 
     BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {

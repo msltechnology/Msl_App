@@ -20,7 +20,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_setting;
+import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_Ble_Setting_FL_Setting;
+import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_Ble_Setting_ID_Setting;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
@@ -68,7 +69,7 @@ public class fragment_Ble_Beginning extends Fragment {
 
     private void showEditDialog() {
         FragmentManager fm = this.getChildFragmentManager();
-        dialogFragment_setting editNameDialogFragment = new dialogFragment_setting();
+        dialogFragment_Ble_Setting_ID_Setting editNameDialogFragment = new dialogFragment_Ble_Setting_ID_Setting();
         editNameDialogFragment.show(fm, "fragment_setting_dialog");
     }
 
@@ -174,8 +175,8 @@ public class fragment_Ble_Beginning extends Fragment {
     }
 
     private void onClick(View v) {
-        //cdsFlag = true;
         showEditDialog();
+        //cdsFlag = true;
         //fragmentScanChange();
     }
 }

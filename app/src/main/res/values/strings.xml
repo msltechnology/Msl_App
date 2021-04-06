@@ -1,20 +1,57 @@
 <resources>
-    <string name="app_name">MSLtechnology</string>
-    <string name="ble_setting_FLSetting_message">테스트 중...</string>
+    <string name="app_name" translatable="false">MSLtechnology</string>
+    <string name="ble_setting_FLSetting_message">테스트 중</string>
     <string name="ble_setting_FLSetting_title">FL Setting</string>
     <string name="ble_main_scanItem_scan">찾기</string>
     <string name="ble_main_scanItem_stopScanning">중지</string>
     <string name="ble_main_title">MSL Technology</string>
     <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">위치정보 권한 요청 실패</string>
-    <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">위치정보 권한 요청을 거절하셨습니다.\n블루투스 스캔 이용이 제한됩니다.\n다시 확인하시겠습니까?</string>
+    <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">위치정보 권한 요청을 거절하셨습니다.\n블루투스 스캔
+        이용이 제한됩니다.\n다시 확인하시겠습니까?</string>
     <string name="ble_main_checkPermission_GPS_reFail_alertDialog_title">위치정보 권한 요청 거부</string>
     <string name="ble_main_checkPermission_GPS_reFail_alertDialog_message">위치정보 권한 요청을 거부하셨습니다.\n어플리케이션 정보에서 권한을 허용해주십시오.</string>
     <string name="ble_main_checkPermission_GPS_alertDialog_title">위치정보 권한 요청 </string>
     <string name="ble_main_checkPermission_GPS_alertDialog_message">GPS(위치정보)가 OFF 상태입니다.\n블루투스 스캔 이용이 제한됩니다.\n설정창으로 이동하시겠습니까?</string>
-    <string name="ble_password_dialog_message">연결 중...</string>
+    <string name="ble_password_dialog_message">연결 중</string>
     <string name="dialog_setting_second">초</string>
     <string name="dialog_setting_FL">섬광</string>
     <string name="dialog_setting_search">검색</string>
     <string name="dialog_setting_cancel">취소</string>
     <string name="dialog_setting_confirm">확인</string>
+    <string name="ID_setting">ID 설정</string>
+    <string name="FL_setting">FL 설정</string>
+    <string name="_1" translatable="false">1</string>
+    <string name="_2" translatable="false">2</string>
+    <string name="_3" translatable="false">3</string>
+    <string name="_4" translatable="false">4</string>
+    <string name="_5" translatable="false">5</string>
+    <string name="_6" translatable="false">6</string>
+    <string name="_7" translatable="false">7</string>
+    <string name="_8" translatable="false">8</string>
+    <string name="_9" translatable="false">9</string>
+    <string name="_10" translatable="false">10</string>
+    <string name="_12" translatable="false">12</string>
+    <string name="_15" translatable="false">15</string>
+    <string name="_16" translatable="false">16</string>
+    <string name="_20" translatable="false">20</string>
+    <string name="_25" translatable="false">25</string>
+    <string name="_30" translatable="false">30</string>
+    <string name="_0_5" translatable="false">0.5</string>
+    <string name="_0_6" translatable="false">0.6</string>
+    <string name="_0_75" translatable="false">0.75</string>
+    <string name="_1_2" translatable="false">1.2</string>
+    <string name="_1_25" translatable="false">1.25</string>
+    <string name="_1_5" translatable="false">1.5</string>
+    <string name="_2_5" translatable="false">2.5</string>
+    <string name="_3_5" translatable="false">3.5</string>
+    <string name="_4_3" translatable="false">4.3</string>
+    <string name="_4_5" translatable="false">4.5</string>
+    <string name="_5_5" translatable="false">5.5</string>
+    <string name="_15_75" translatable="false">15.75</string>
+    <string name="status">상태확인</string>
+    <string name="lampOn">강제점등</string>
+    <string name="lampOff">강제소등</string>
+    <string name="lampFix">부동광</string>
+    <string name="Reset">리셋</string>
+    <string name="_0" translatable="false">0</string>
 </resources>

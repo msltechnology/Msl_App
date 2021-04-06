@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/tv_setting_dialog_id"
+            android:text="@string/_2" />
+
+        <TextView
+            style="@style/tv_setting_dialog_id"
+            android:text="@string/_5" />
+
+        <TextView
+            style="@style/tv_setting_dialog_id"
+            android:text="@string/_5" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            tools:ignore="NestedWeights">
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_1"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_1" />
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_2"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_2" />
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_3"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_2" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_4"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_4" />
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_5"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_5" />
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_6"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_6" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_7"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_7" />
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_8"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_8" />
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_9"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_9" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button style="@style/btn_setting_dialog_id" />
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_0"
+                style="@style/btn_setting_dialog_id"
+                android:text="@string/_0" />
+
+            <Button
+                android:id="@+id/btn_dialog_setting_ID_cancel"
+                style="@style/btn_setting_dialog_id"
+                android:text="-" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+            <Button
+                style="@style/btn_setting_dialog_id"
+                android:text="X" />
+
+            <Button style="@style/btn_setting_dialog_id" />
+
+            <Button
+                style="@style/btn_setting_dialog_id"
+                android:text="OK" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

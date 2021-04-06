@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_1"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_1" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_2"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_2" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_3"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_3" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_4"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_4" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_5"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_5" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_6"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_6" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_7"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_7" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_8"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_8" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_9"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_9" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_10"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_10" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_11"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_12" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_12"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_15" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_13"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_16" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_14"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_20" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_15"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_25" />
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_16"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_30" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_17"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_0_5"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_18"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_0_6"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_19"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_0_75"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_20"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_1_2"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_21"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_1_25"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_22"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_1_5"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_23"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_2_5"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_24"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_3_5" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_25"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_4_3"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_26"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_4_5"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_27"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_5_5"/>
+
+        <Button
+            android:id="@+id/btn_dialog_setting_second_28"
+            style="@style/btn_setting_dialog"
+            android:text="@string/_15_75"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

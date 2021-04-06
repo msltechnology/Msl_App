@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -21,40 +19,28 @@
 
             <Button
                 android:id="@+id/statusBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Status"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
+                android:text="@string/status"
+                style="@style/btn_status" />
 
             <Button
                 android:id="@+id/lampOnBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="강제점등"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
+                android:text="@string/lampOn"
+                style="@style/btn_status" />
+
             <Button
                 android:id="@+id/lampOffBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="강제소등"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
+                android:text="@string/lampOff"
+                style="@style/btn_status" />
+
             <Button
                 android:id="@+id/lampFixedBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="부동광"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
+                android:text="@string/lampFix"
+                style="@style/btn_status" />
+
             <Button
                 android:id="@+id/resetBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="리셋"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
+                android:text="@string/Reset"
+                style="@style/btn_status" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,42 +49,6 @@
             android:orientation="horizontal"
             >
 
-            <Button
-                android:id="@+id/test_bt1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="점등 준비"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
-
-            <Button
-                android:id="@+id/test_bt2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="점등 설정"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
-            <Button
-                android:id="@+id/test_bt3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="소등 준비"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
-            <Button
-                android:id="@+id/test_bt4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="소등 설정"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
-            <Button
-                android:id="@+id/test_bt5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="미등록"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></Button>
         </LinearLayout>
 
     </LinearLayout>

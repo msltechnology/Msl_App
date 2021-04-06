@@ -12,21 +12,15 @@
 
         <Button
             android:id="@+id/btn_dialog_setting_FL_1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/btn_setting_dialog"
             />
         <Button
             android:id="@+id/btn_dialog_setting_FL_2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/btn_setting_dialog"
             />
         <Button
             android:id="@+id/btn_dialog_setting_FL_3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/btn_setting_dialog"
             />
 
     </LinearLayout>
@@ -37,21 +31,15 @@
 
         <Button
             android:id="@+id/btn_dialog_setting_FL_4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/btn_setting_dialog"
             />
         <Button
             android:id="@+id/btn_dialog_setting_FL_5"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/btn_setting_dialog"
             />
         <Button
             android:id="@+id/btn_dialog_setting_FL_6"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/btn_setting_dialog"
             />
 
     </LinearLayout>
@@ -61,19 +49,13 @@
         android:layout_weight="1">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            style="@style/btn_setting_dialog"/>
         <Button
             android:id="@+id/btn_dialog_setting_FL_9"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            style="@style/btn_setting_dialog"
             />
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            style="@style/btn_setting_dialog"/>
 
     </LinearLayout>
 

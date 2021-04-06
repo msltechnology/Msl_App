@@ -79,7 +79,7 @@ public class fragment_Ble_Status extends Fragment {
         Button resetBtn = view.findViewById(R.id.resetBtn);
         resetBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));
 
-        Button testBtn1 = view.findViewById(R.id.test_bt1);
+        /*Button testBtn1 = view.findViewById(R.id.test_bt1);
         testBtn1.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_READY));
         Button testBtn2 = view.findViewById(R.id.test_bt2);
         testBtn2.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_SETTING));
@@ -88,7 +88,7 @@ public class fragment_Ble_Status extends Fragment {
         Button testBtn4 = view.findViewById(R.id.test_bt4);
         testBtn4.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_OFF_SETTING));
         Button testBtn5 = view.findViewById(R.id.test_bt5);
-        testBtn5.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));
+        testBtn5.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));*/
     }
 
 

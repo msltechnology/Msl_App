@@ -1,21 +1,15 @@
 package com.example.mslapp.Ble.Setting_Dialog;
 
-import android.app.ActionBar;
-import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,18 +19,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.mslapp.Ble.fragment.fragment_Ble_Beginning;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Scan;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
-import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.BleMainActivity.mBleContext;
 
-public class dialogFragment_setting extends DialogFragment {
+public class dialogFragment_Ble_Setting_ID_Setting extends DialogFragment {
 
     // 로그 이름 용
-    public static final String TAG = "Msl-Ble-Setting-Dialog";
+    public static final String TAG = "Msl-Ble-Setting-Dialog-ID";
 
     Button btn_Second, btn_FL, btn_Cancel, btn_Confirm;
     TextView tv_Selected_FL;
@@ -44,43 +34,34 @@ public class dialogFragment_setting extends DialogFragment {
 
     View view;
 
-    private EditText mEditText;
-
-    public dialogFragment_setting() {
+    public dialogFragment_Ble_Setting_ID_Setting() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e(TAG, "dialogFragment_setting onCreateView");
+        Log.e(TAG, "dialogFragment_Ble_Setting_ID_Setting onCreateView");
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         //getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //배경 투명화
         getDialog().setCanceledOnTouchOutside(true);
 
-        view = inflater.inflate(R.layout.ble_fragment_setting_dialog, null);
+        view = inflater.inflate(R.layout.ble_fragment_setting_dialog_id_setting, null);
 
         btnSetting();
-
-        Log.d(TAG, "fragment 작업");
-        FragmentManager fm = this.getChildFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.fl_dialog_setting_fragmentSpace, new fragment_Ble_Setting_Dialog_Listview());
-        ft.commit();
-
 
         return view;
     }
 
     void btnSetting(){
-        btn_Second = view.findViewById(R.id.btn_dialog_setting_second);
+        /*btn_Second = view.findViewById(R.id.btn_dialog_setting_second);
         btn_FL = view.findViewById(R.id.btn_dialog_setting_FL);
         ll_Search = view.findViewById(R.id.ll_dialog_setting_search);
 
         btn_Second.setOnClickListener(v -> fragmentChange("dialog_setting_second"));
         btn_FL.setOnClickListener(v -> fragmentChange("dialog_setting_FL"));
-        ll_Search.setOnClickListener(v -> fragmentChange("dialog_setting_Listview"));
+        ll_Search.setOnClickListener(v -> fragmentChange("dialog_setting_Listview"));*/
     }
 
 
@@ -128,8 +109,8 @@ public class dialogFragment_setting extends DialogFragment {
         Point size = new Point();
         display.getSize(size);
 
-        final String x = String.valueOf(Math.round((size.x * 0.9)));
-        final String y = String.valueOf(Math.round((size.y * 0.8)));
+        final String x = String.valueOf(Math.round((size.x * 0.8)));
+        final String y = String.valueOf(Math.round((size.y * 0.7)));
         int dialogWidth =Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

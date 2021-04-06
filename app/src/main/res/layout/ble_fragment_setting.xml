@@ -17,9 +17,14 @@
         android:text="Status" />
 
     <Button
+        android:id="@+id/btn_ID_Setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ID_setting" />
+    <Button
         android:id="@+id/btn_FL_Setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="FL setting" />
+        android:text="@string/FL_setting" />
 
 </LinearLayout>

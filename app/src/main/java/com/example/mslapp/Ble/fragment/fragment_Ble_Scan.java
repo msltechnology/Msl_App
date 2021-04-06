@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.example.mslapp.Ble.blelistview.ListViewAdapter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.example.mslapp.BleMainActivity.cdsFlag;
 import static com.example.mslapp.BleMainActivity.filters;
@@ -71,34 +73,28 @@ public class fragment_Ble_Scan extends Fragment {
         bleListview = view.findViewById(R.id.bleList);
         bleListview.setAdapter(adapter);
 
-        bleListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        bleListview.setOnItemClickListener((parent, v, position, id) -> {
 
-            @Override
-            public void onItemClick(AdapterView parent, View v, int position, long id) {
+            if (!BleMainActivity.BleConnecting) {
+                BleMainActivity.BleConnecting = true;
 
-                if (!BleMainActivity.BleConnecting) {
-                    BleMainActivity.BleConnecting = true;
+                //BluetoothDevice device =(BluetoothDevice) parent.getItemAtPosition(position);
+                BluetoothDevice device = scanResults.get(position);
 
-                    //BluetoothDevice device =(BluetoothDevice) parent.getItemAtPosition(position);
-                    BluetoothDevice device = scanResults.get(position);
+                ((Ble_Scan_Listener) activity).onSelectBleDevice(device);
 
-                    ((Ble_Scan_Listener) activity).onSelectBleDevice(device);
-
-                    stopScan();
-                    if (cdsFlag) {
-                        ((BleMainActivity) getActivity()).fragmentChange("fragment_cds_setting");
-                    } else {
-                        ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_password");
-                    }
-
-
+                stopScan();
+                if (cdsFlag) {
+                    ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_cds_setting");
+                } else {
+                    ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_password");
                 }
-
-                /*// get TextView's Text.
-                BluetoothDevice device =(BluetoothDevice) parent.getItemAtPosition(position);
-                String deviceAddress = device.getAddress();
-                String name = device.getName();*/
             }
+
+            /*// get TextView's Text.
+            BluetoothDevice device =(BluetoothDevice) parent.getItemAtPosition(position);
+            String deviceAddress = device.getAddress();
+            String name = device.getName();*/
         });
 
 
@@ -196,7 +192,6 @@ public class fragment_Ble_Scan extends Fragment {
                 String name = device.getName();
 
 
-
                 int rssi = result.getRssi();
 
                 // 중복 체크
@@ -220,7 +215,8 @@ public class fragment_Ble_Scan extends Fragment {
 */
 
 
-                Log.d(TAG,"\nresult.describeContents() : " + result.describeContents() +
+
+                /*Log.d(TAG,"\nresult.describeContents() : " + result.describeContents() +
                         "\nresult.getAdvertisingSid() : " + result.getAdvertisingSid() +
                         "\nresult.getDataStatus() : " + result.getDataStatus() +
                         "\nresult.getPeriodicAdvertisingInterval() : " + result.getPeriodicAdvertisingInterval() +
@@ -239,21 +235,35 @@ public class fragment_Ble_Scan extends Fragment {
                         "\ndevice.getBondState() : " + device.getBondState() +
                         "\ndevice.getType() : " + device.getType() +
                         "\ndevice.getUuids() : " + device.getUuids() +
-                        "\ndevice.toString() : " + device.toString()
-                );
+                        "\ndevice.toString() : " + device.toString() +
+                        "\nresult.getScanRecord().toString() : " + result.getScanRecord().getManufacturerSpecificData()
+                );*/
 
 
                 Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);
 
                 String userdataAll = stringBuffer;
 
-                if(stringBuffer.contains("MSL TECH")){
+                // MSL 과 관련된 제품일 경우
+                if (stringBuffer.contains("MSL TECH")) {
                     Log.d(TAG, "MSL TECH contain : " + stringBuffer);
 
-                    userdataAll = stringBuffer.substring(18);
+                    try {
+                        // MSL의 각 제품 코드는 데이터의 19번째 데이터부터 이기에 거기부터 자른다.
+                        userdataAll = stringBuffer.substring(18);
+                    } catch (Exception e) {
+                        // 제품의 켜진지 얼마 안되어 정상동작 상태가 아니거나 리셋 현상 등 문제가 있을 시 데이터가 안나오므로 getManufacturerSpecificData 값을 확인한다.
+                        if (result.getScanRecord().getManufacturerSpecificData() != null) {
+                            SparseArray<byte[]> mSparseArray = result.getScanRecord().getManufacturerSpecificData();
+                            int key = mSparseArray.keyAt(0);
+                            Log.d(TAG, "mSparseArray.keyAt(0) : " + key);
+                            byte[] resultData = mSparseArray.get(key);
+                            userdataAll = new String(resultData);
+                        }else{
+                            Log.d(TAG, "getManufacturerSpecificData null");
+                        }
+                    }
                 }
-
-
 
                 String userdata = "";
                 char chrInput;
@@ -285,12 +295,22 @@ public class fragment_Ble_Scan extends Fragment {
                 if (name == null) {
                     userdata = "";
                 }
-                adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi);
+                try {
+                    if (name.contains("MSL TECH")) {
+                        adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi, true);
+                    } else {
+                        adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi);
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "scanResult name Null : " + e.getMessage());
+                    adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi);
+                }
+
                 adapter.notifyDataSetChanged();
                 //bleListview.setAdapter(adapter);
-                
+
             } catch (Exception e) {
-                Log.d(TAG, "scanResult Error : " + e.getMessage());
+                Log.e(TAG, "scanResult Error : " + e.getMessage());
             }
         }
 
