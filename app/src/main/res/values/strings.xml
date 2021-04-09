@@ -54,4 +54,22 @@
     <string name="lampFix">부동광</string>
     <string name="Reset">리셋</string>
     <string name="_0" translatable="false">0</string>
+    <string name="toastMsg_bluetooth_Off">블루투스 기능이 꺼졌습니다. 확인 바랍니다.</string>
+    <string name="ble_main_scanItem_refresh">새로고침</string>
+    <string name="ble_main_scanItem_Disconnect">연결끊기</string>
+    <string name="ID">ID</string>
+    <string name="FL">FL</string>
+    <string name="input_V">입력전압</string>
+    <string name="output_A">출력전류</string>
+    <string name="CDS">CDS</string>
+    <string name="lantern_status">점소등 상태</string>
+    <string name="solar_V">솔라 전압</string>
+    <string name="output_V">출력 전압</string>
+    <string name="receive_date">날짜</string>
+    <string name="gps_latitude">위도</string>
+    <string name="battery_v">배터리 전압</string>
+    <string name="charge_dischar_A">충방전 전류</string>
+    <string name="receive_time">시각</string>
+    <string name="gps_longtitude">경도</string>
+    <string name="battery_percent">배터리 잔량</string>
 </resources>

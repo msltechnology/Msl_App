@@ -91,7 +91,7 @@ public class fragment_Ble_Function extends Fragment {
                 try {
                     fragment_ble_status.readData(data);
                 }catch (Exception e){
-                    Log.e(TAG, "fragment_Ble_Function readData Error : " + e.toString());
+                    Log.e(TAG, "fragment_Ble_Function readData Error - Status : " + e.toString());
                 };
                 break;
             case 1:
@@ -100,7 +100,7 @@ public class fragment_Ble_Function extends Fragment {
                 try {
                     fragment_ble_setting.readData(data);
                 }catch (Exception e){
-                    Log.e(TAG, "fragment_Ble_Function readData Error : " + e.toString());
+                    Log.e(TAG, "fragment_Ble_Function readData Error - Setting : " + e.toString());
                 };
                 break;
             case 2:
@@ -109,7 +109,7 @@ public class fragment_Ble_Function extends Fragment {
                 try {
                     fragment_ble_test.readData(data);
                 }catch (Exception e){
-                    Log.e(TAG, "fragment_Ble_Function readData Error : " + e.toString());
+                    Log.e(TAG, "fragment_Ble_Function readData Error - Test: " + e.toString());
                 };
                 break;
         }

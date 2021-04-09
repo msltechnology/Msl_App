@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/readData_test"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="fragment_test"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="fragment_test" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/lampOnBtn"
+        style="@style/btn_status"
+        android:text="@string/lampOn" />
+
+    <Button
+        android:id="@+id/lampOffBtn"
+        style="@style/btn_status"
+        android:text="@string/lampOff" />
+
+    <Button
+        android:id="@+id/lampFixedBtn"
+        style="@style/btn_status"
+        android:text="@string/lampFix" />
+
+    <Button
+        android:id="@+id/resetBtn"
+        style="@style/btn_status"
+        android:text="@string/Reset" />
+
+</LinearLayout>

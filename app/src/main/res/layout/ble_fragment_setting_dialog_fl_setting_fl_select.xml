@@ -12,15 +12,18 @@
 
         <Button
             android:id="@+id/btn_dialog_setting_FL_1"
-            style="@style/btn_setting_dialog"
+            style="@style/btn_setting_dialog_fl"
+            android:text="@string/_1"
             />
         <Button
             android:id="@+id/btn_dialog_setting_FL_2"
-            style="@style/btn_setting_dialog"
+            style="@style/btn_setting_dialog_fl"
+            android:text="@string/_2"
             />
         <Button
             android:id="@+id/btn_dialog_setting_FL_3"
-            style="@style/btn_setting_dialog"
+            style="@style/btn_setting_dialog_fl"
+            android:text="@string/_3"
             />
 
     </LinearLayout>
@@ -31,15 +34,18 @@
 
         <Button
             android:id="@+id/btn_dialog_setting_FL_4"
-            style="@style/btn_setting_dialog"
+            style="@style/btn_setting_dialog_fl"
+            android:text="@string/_4"
             />
         <Button
             android:id="@+id/btn_dialog_setting_FL_5"
-            style="@style/btn_setting_dialog"
+            style="@style/btn_setting_dialog_fl"
+            android:text="@string/_5"
             />
         <Button
             android:id="@+id/btn_dialog_setting_FL_6"
-            style="@style/btn_setting_dialog"
+            style="@style/btn_setting_dialog_fl"
+            android:text="@string/_6"
             />
 
     </LinearLayout>
@@ -49,19 +55,20 @@
         android:layout_weight="1">
 
         <LinearLayout
-            style="@style/btn_setting_dialog"/>
+            style="@style/btn_setting_dialog_fl"/>
         <Button
             android:id="@+id/btn_dialog_setting_FL_9"
-            style="@style/btn_setting_dialog"
+            style="@style/btn_setting_dialog_fl"
+            android:text="@string/_9"
             />
         <LinearLayout
-            style="@style/btn_setting_dialog"/>
+            style="@style/btn_setting_dialog_fl"/>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="2"/>
 
 </LinearLayout>

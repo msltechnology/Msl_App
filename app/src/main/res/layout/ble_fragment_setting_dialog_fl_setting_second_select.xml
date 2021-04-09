@@ -74,12 +74,12 @@
             android:text="@string/_10" />
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_11"
+            android:id="@+id/btn_dialog_setting_second_12"
             style="@style/btn_setting_dialog"
             android:text="@string/_12" />
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_12"
+            android:id="@+id/btn_dialog_setting_second_15"
             style="@style/btn_setting_dialog"
             android:text="@string/_15" />
 
@@ -91,22 +91,22 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_13"
+            android:id="@+id/btn_dialog_setting_second_16"
             style="@style/btn_setting_dialog"
             android:text="@string/_16" />
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_14"
+            android:id="@+id/btn_dialog_setting_second_20"
             style="@style/btn_setting_dialog"
             android:text="@string/_20" />
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_15"
+            android:id="@+id/btn_dialog_setting_second_25"
             style="@style/btn_setting_dialog"
             android:text="@string/_25" />
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_16"
+            android:id="@+id/btn_dialog_setting_second_30"
             style="@style/btn_setting_dialog"
             android:text="@string/_30" />
 
@@ -118,22 +118,22 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_17"
+            android:id="@+id/btn_dialog_setting_second_0_5"
             style="@style/btn_setting_dialog"
             android:text="@string/_0_5"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_18"
+            android:id="@+id/btn_dialog_setting_second_0_6"
             style="@style/btn_setting_dialog"
             android:text="@string/_0_6"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_19"
+            android:id="@+id/btn_dialog_setting_second_0_75"
             style="@style/btn_setting_dialog"
             android:text="@string/_0_75"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_20"
+            android:id="@+id/btn_dialog_setting_second_1_2"
             style="@style/btn_setting_dialog"
             android:text="@string/_1_2"/>
 
@@ -145,22 +145,22 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_21"
+            android:id="@+id/btn_dialog_setting_second_1_25"
             style="@style/btn_setting_dialog"
             android:text="@string/_1_25"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_22"
+            android:id="@+id/btn_dialog_setting_second_1_5"
             style="@style/btn_setting_dialog"
             android:text="@string/_1_5"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_23"
+            android:id="@+id/btn_dialog_setting_second_2_5"
             style="@style/btn_setting_dialog"
             android:text="@string/_2_5"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_24"
+            android:id="@+id/btn_dialog_setting_second_3_5"
             style="@style/btn_setting_dialog"
             android:text="@string/_3_5" />
 
@@ -172,22 +172,22 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_25"
+            android:id="@+id/btn_dialog_setting_second_4_3"
             style="@style/btn_setting_dialog"
             android:text="@string/_4_3"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_26"
+            android:id="@+id/btn_dialog_setting_second_4_5"
             style="@style/btn_setting_dialog"
             android:text="@string/_4_5"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_27"
+            android:id="@+id/btn_dialog_setting_second_5_5"
             style="@style/btn_setting_dialog"
             android:text="@string/_5_5"/>
 
         <Button
-            android:id="@+id/btn_dialog_setting_second_28"
+            android:id="@+id/btn_dialog_setting_second_15_75"
             style="@style/btn_setting_dialog"
             android:text="@string/_15_75"/>
 

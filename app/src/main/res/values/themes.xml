@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Bluetooth" parent="Theme.AppCompat.Light.NoActionBar">
-        <!--상단 타이틀 바 제거-->
+        <item name="actionMenuTextColor">@color/white</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>

@@ -8,57 +8,213 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/statusBtn"
-                android:text="@string/status"
-                style="@style/btn_status" />
+                style="@style/btn_status"
+                android:text="@string/status" />
 
-            <Button
-                android:id="@+id/lampOnBtn"
-                android:text="@string/lampOn"
-                style="@style/btn_status" />
-
-            <Button
-                android:id="@+id/lampOffBtn"
-                android:text="@string/lampOff"
-                style="@style/btn_status" />
-
-            <Button
-                android:id="@+id/lampFixedBtn"
-                android:text="@string/lampFix"
-                style="@style/btn_status" />
-
-            <Button
-                android:id="@+id/resetBtn"
-                android:text="@string/Reset"
-                style="@style/btn_status" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_bt_read"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="readData" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/ID" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/input_V" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/CDS" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/solar_V" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/output_V" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/receive_date" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/gps_latitude" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_id"
+                        style="@style/tv_fragment_status"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_input_v"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_cds"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_solar_v"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_output_v"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_receive_date"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_gps_latitude"
+                        style="@style/tv_fragment_status" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/FL" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/output_A" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/lantern_status" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/battery_v" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/charge_dischar_A" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/receive_time" />
+
+                    <TextView
+                        style="@style/tv_fragment_status"
+                        android:text="@string/gps_longtitude" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_fl"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_output_a"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_lantern_status"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_battery_v"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_charge_dischar_a"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_recieve_time"
+                        style="@style/tv_fragment_status" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_framgment_status_gps_longtitude"
+                        style="@style/tv_fragment_status" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/battery_percent" />
+
+            <TextView
+                android:id="@+id/tv_ble_framgment_status_battery_percent"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" />
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_bt_read"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_weight="1"
-        android:text="readData"/>
 
 
 </LinearLayout>

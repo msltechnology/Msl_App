@@ -17,14 +17,6 @@ import androidx.fragment.app.Fragment;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
-import static com.example.mslapp.BleMainActivity.CDS_LAMP_OFF_READY;
-import static com.example.mslapp.BleMainActivity.CDS_LAMP_OFF_SETTING;
-import static com.example.mslapp.BleMainActivity.CDS_LAMP_ON_READY;
-import static com.example.mslapp.BleMainActivity.CDS_LAMP_ON_SETTING;
-import static com.example.mslapp.BleMainActivity.DATA_DEVICE_RESET;
-import static com.example.mslapp.BleMainActivity.DATA_LAMP_FIXED;
-import static com.example.mslapp.BleMainActivity.DATA_LAMP_OFF;
-import static com.example.mslapp.BleMainActivity.DATA_LAMP_ON;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
 
 public class fragment_Ble_Status extends Fragment {
@@ -33,6 +25,9 @@ public class fragment_Ble_Status extends Fragment {
     public static final String TAG = "Msl-Ble-Status";
 
     TextView readDataTv;
+    TextView tv_ble_status_id, tv_ble_status_input_v, tv_ble_status_output_a, tv_ble_status_cds, tv_ble_status_lantern_status, tv_ble_status_fl,
+            tv_ble_status_solar_v, tv_ble_status_battery_v, tv_ble_status_output_v, tv_ble_status_charge_dischar_a, tv_ble_status_battery_percent,
+            tv_ble_status_receive_data, tv_ble_status_receive_time, tv_ble_status_gps_latitude, tv_ble_status_gps_longtitude;
 
     View view;
 
@@ -56,6 +51,7 @@ public class fragment_Ble_Status extends Fragment {
         ((Ble_Status_Listener) activity).onCreateViewFragment_Ble_Status();
 
         buttonSetting();
+        textviewSetting();
 
         readDataTv = view.findViewById(R.id.tv_bt_read);
 
@@ -70,14 +66,6 @@ public class fragment_Ble_Status extends Fragment {
 
         Button statusBtn = view.findViewById(R.id.statusBtn);
         statusBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS));
-        Button lampOnBtn = view.findViewById(R.id.lampOnBtn);
-        lampOnBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_LAMP_ON));
-        Button lampOffBtn = view.findViewById(R.id.lampOffBtn);
-        lampOffBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_LAMP_OFF));
-        Button lampFixedBtn = view.findViewById(R.id.lampFixedBtn);
-        lampFixedBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_LAMP_FIXED));
-        Button resetBtn = view.findViewById(R.id.resetBtn);
-        resetBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));
 
         /*Button testBtn1 = view.findViewById(R.id.test_bt1);
         testBtn1.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_READY));
@@ -91,8 +79,56 @@ public class fragment_Ble_Status extends Fragment {
         testBtn5.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));*/
     }
 
+    void textviewSetting() {
+
+        tv_ble_status_id = view.findViewById(R.id.tv_ble_framgment_status_id);
+        tv_ble_status_input_v = view.findViewById(R.id.tv_ble_framgment_status_input_v);
+        tv_ble_status_output_a = view.findViewById(R.id.tv_ble_framgment_status_output_a);
+        tv_ble_status_cds = view.findViewById(R.id.tv_ble_framgment_status_cds);
+        tv_ble_status_lantern_status = view.findViewById(R.id.tv_ble_framgment_status_lantern_status);
+        tv_ble_status_fl = view.findViewById(R.id.tv_ble_framgment_status_fl);
+        tv_ble_status_solar_v = view.findViewById(R.id.tv_ble_framgment_status_solar_v);
+        tv_ble_status_battery_v = view.findViewById(R.id.tv_ble_framgment_status_battery_v);
+        tv_ble_status_output_v = view.findViewById(R.id.tv_ble_framgment_status_output_v);
+        tv_ble_status_charge_dischar_a = view.findViewById(R.id.tv_ble_framgment_status_charge_dischar_a);
+        tv_ble_status_battery_percent = view.findViewById(R.id.tv_ble_framgment_status_battery_percent);
+        tv_ble_status_receive_data = view.findViewById(R.id.tv_ble_framgment_status_receive_date);
+        tv_ble_status_receive_time = view.findViewById(R.id.tv_ble_framgment_status_recieve_time);
+        tv_ble_status_gps_latitude = view.findViewById(R.id.tv_ble_framgment_status_gps_latitude);
+        tv_ble_status_gps_longtitude = view.findViewById(R.id.tv_ble_framgment_status_gps_longtitude);
+
+    }
+
 
     public void readData(String data) {
+        if (data.substring(1, 6).contains("LISTS")) {
+            if(data.startsWith("S", 7)){
+
+            }else{
+                Log.d(TAG, "readData 데이터 읽기");
+                String[] data_arr = data.split(",");
+                Log.d(TAG, "data_arr length" + data_arr.length);
+
+
+
+                tv_ble_status_id.setText(data_arr[1]);
+                tv_ble_status_input_v.setText(data_arr[2]);
+                tv_ble_status_output_a.setText(data_arr[3]);
+                tv_ble_status_cds.setText(data_arr[4]);
+                tv_ble_status_lantern_status.setText(data_arr[5]);
+                tv_ble_status_fl.setText(data_arr[6]);
+                tv_ble_status_solar_v.setText(data_arr[7]);
+                tv_ble_status_battery_v.setText(data_arr[8]);
+                tv_ble_status_output_v.setText(data_arr[9]);
+                tv_ble_status_charge_dischar_a.setText(data_arr[10]);
+                tv_ble_status_battery_percent.setText(data_arr[11]);
+                tv_ble_status_receive_data.setText(data_arr[12]);
+                tv_ble_status_receive_time.setText(data_arr[13]);
+                tv_ble_status_gps_latitude.setText(data_arr[14]);
+                tv_ble_status_gps_longtitude.setText(data_arr[15]);
+            }
+
+        }
         readDataTv.setText(data);
     }
 

@@ -16,6 +16,14 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:textSize">25dp</item>
+    </style>
+
+    <style name="btn_setting_dialog_fl">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">45dp</item>
     </style>
 
     <style name="btn_status">
@@ -39,6 +47,13 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:autoSizeTextType">uniform</item>
+    </style>
+
+    <style name="tv_fragment_status">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
     </style>
 
 

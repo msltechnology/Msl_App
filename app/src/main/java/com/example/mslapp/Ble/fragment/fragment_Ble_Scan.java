@@ -10,11 +10,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -31,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static com.example.mslapp.BleMainActivity.cdsFlag;
+import static com.example.mslapp.BleMainActivity.CdsFlag;
 import static com.example.mslapp.BleMainActivity.filters;
 import static com.example.mslapp.BleMainActivity.mBluetoothAdapter;
 import static com.example.mslapp.BleMainActivity.scanningFlag;
@@ -84,7 +82,7 @@ public class fragment_Ble_Scan extends Fragment {
                 ((Ble_Scan_Listener) activity).onSelectBleDevice(device);
 
                 stopScan();
-                if (cdsFlag) {
+                if (CdsFlag) {
                     ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_cds_setting");
                 } else {
                     ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_password");
@@ -106,6 +104,7 @@ public class fragment_Ble_Scan extends Fragment {
 
     public void Scan() {
         Log.d(TAG, "Scan");
+        stopScan();
         scanningFlag = true;
         // 필터(특정 uuid 등 조건으로 검색), 세팅(저전력, 풀파워 검색할지) 등 설정.
         mBluetoothAdapter.getBluetoothLeScanner().startScan(filters, settings, BLEScanCallback);
@@ -128,13 +127,17 @@ public class fragment_Ble_Scan extends Fragment {
 
     public void stopScan() {
         Log.d(TAG, "stopScan");
-        if (scanningFlag) {
-            backThread.interrupt();
-            Log.d(TAG, "stopScan in Flag");
-            scanningFlag = false;
+        try {
+            if (scanningFlag) {
+                backThread.interrupt();
+                Log.d(TAG, "stopScan in Flag");
+                scanningFlag = false;
 
-            ((BleMainActivity) getActivity()).ble_stopscanning();
-            mBluetoothAdapter.getBluetoothLeScanner().stopScan(BLEScanCallback);
+                ((BleMainActivity) getActivity()).ble_stopscanning();
+                mBluetoothAdapter.getBluetoothLeScanner().stopScan(BLEScanCallback);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
         }
     }
 
@@ -144,7 +147,7 @@ public class fragment_Ble_Scan extends Fragment {
             Log.d(TAG, "BackThread");
 
             try {
-                Thread.sleep(10000);
+                Thread.sleep(20000);
                 Message msg = handler.obtainMessage();
                 handler.sendMessage(msg);
             } catch (InterruptedException e) {
@@ -201,9 +204,23 @@ public class fragment_Ble_Scan extends Fragment {
                     }
                 }
 
+                String testString = null;
+
                 // userdata 받기(등명기 시리얼)
                 byte[] scanRecord = result.getScanRecord().getBytes();
                 byte[] advertisedData = Arrays.copyOfRange(scanRecord, 0, scanRecord.length);
+
+                for (int i = 0; i < advertisedData.length; i++) {
+                    byte a = advertisedData[i];
+
+                    try {
+                        testString += String.valueOf(a) + " , ";
+                    } catch (Exception e) {
+                        Log.d(TAG, "Error!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    }
+
+                }
+                Log.d(TAG, "testString : " + testString);
 
                 String stringBuffer = new String(advertisedData); //모든 데이터를 문자열로 받아온다
 /*
@@ -215,8 +232,7 @@ public class fragment_Ble_Scan extends Fragment {
 */
 
 
-
-                /*Log.d(TAG,"\nresult.describeContents() : " + result.describeContents() +
+                Log.d(TAG, "\nresult.describeContents() : " + result.describeContents() +
                         "\nresult.getAdvertisingSid() : " + result.getAdvertisingSid() +
                         "\nresult.getDataStatus() : " + result.getDataStatus() +
                         "\nresult.getPeriodicAdvertisingInterval() : " + result.getPeriodicAdvertisingInterval() +
@@ -237,7 +253,7 @@ public class fragment_Ble_Scan extends Fragment {
                         "\ndevice.getUuids() : " + device.getUuids() +
                         "\ndevice.toString() : " + device.toString() +
                         "\nresult.getScanRecord().toString() : " + result.getScanRecord().getManufacturerSpecificData()
-                );*/
+                );
 
 
                 Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);
@@ -252,16 +268,10 @@ public class fragment_Ble_Scan extends Fragment {
                         // MSL의 각 제품 코드는 데이터의 19번째 데이터부터 이기에 거기부터 자른다.
                         userdataAll = stringBuffer.substring(18);
                     } catch (Exception e) {
-                        // 제품의 켜진지 얼마 안되어 정상동작 상태가 아니거나 리셋 현상 등 문제가 있을 시 데이터가 안나오므로 getManufacturerSpecificData 값을 확인한다.
-                        if (result.getScanRecord().getManufacturerSpecificData() != null) {
-                            SparseArray<byte[]> mSparseArray = result.getScanRecord().getManufacturerSpecificData();
-                            int key = mSparseArray.keyAt(0);
-                            Log.d(TAG, "mSparseArray.keyAt(0) : " + key);
-                            byte[] resultData = mSparseArray.get(key);
-                            userdataAll = new String(resultData);
-                        }else{
-                            Log.d(TAG, "getManufacturerSpecificData null");
-                        }
+                        // 제품이 켜진지 얼마 안되었거나 문제가 생겼을 시(아직 보드가 블루투스에게 데이터 전달이 안된 상태)
+                        userdataAll = "Loading";
+                        Log.d(TAG, "getManufacturerSpecificData null");
+
                     }
                 }
 
@@ -272,6 +282,7 @@ public class fragment_Ble_Scan extends Fragment {
                 for (int i = 0; i < userdataAll.length(); i++) {
 
                     chrInput = userdataAll.charAt(i); // 입력받은 텍스트에서 문자 하나하나 가져와서 체크
+
 
                     if (chrInput >= 0x61 && chrInput <= 0x7A) {
                         // 영문(소문자)
@@ -286,12 +297,10 @@ public class fragment_Ble_Scan extends Fragment {
 
                     }
                 }
+
                 // 중복되지 않은 주소는 list에 추가
                 scanResults.add(result.getDevice());
 
-                // 갱신
-                //adapter.notifyDataSetChanged();
-                //adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, scanResults);
                 if (name == null) {
                     userdata = "";
                 }
@@ -307,8 +316,6 @@ public class fragment_Ble_Scan extends Fragment {
                 }
 
                 adapter.notifyDataSetChanged();
-                //bleListview.setAdapter(adapter);
-
             } catch (Exception e) {
                 Log.e(TAG, "scanResult Error : " + e.getMessage());
             }

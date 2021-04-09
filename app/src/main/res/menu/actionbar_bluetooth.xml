@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_bar_scanBle"
-        android:title="StopScanning"
+        android:title="@string/ble_main_scanItem_stopScanning"
         app:showAsAction="always"
         android:visible="false"
         />
 
     <item
         android:id="@+id/action_bar_scanRefresh"
-        android:title="Refresh"
+        android:title="@string/ble_main_scanItem_refresh"
         app:showAsAction="never"
         android:visible="false"/>
 
     <item
         android:id="@+id/action_bar_bleDisconnect"
-       android:title="Disconnect"
+       android:title="@string/ble_main_scanItem_Disconnect"
         app:showAsAction="always"
         android:visible="false"
         />

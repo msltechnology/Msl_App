@@ -81,12 +81,22 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
 
         switch (callFragment) {
             case "dialog_setting_second":
+                if(currentFragment() == 1){
+                    fr = new fragment_Ble_Setting_Dialog_Listview();
+                    break;
+                }
                 fr = new fragment_Ble_Setting_Dialog_Second();
                 break;
             case "dialog_setting_FL":
+                if(currentFragment() == 2) {
+                    fr = new fragment_Ble_Setting_Dialog_Listview();
+                    break;
+                }
                 fr = new fragment_Ble_Setting_Dialog_FL();
                 break;
             default:
+                if(currentFragment() == 0)
+                    return;
                 fr = new fragment_Ble_Setting_Dialog_Listview();
                 break;
         }
@@ -101,6 +111,32 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         }
     }
 
+    public void btnSetText(int i, String num){
+        if(i == 1){
+            btn_Second.setText(num);
+        }else if(i == 2){
+            btn_FL.setText(num);
+        }
+
+        fragmentChange("dialog_setting_Listview");
+
+    }
+
+    int currentFragment(){
+        Fragment fragment = getChildFragmentManager().findFragmentById(R.id.fl_dialog_setting_fragmentSpace);
+        if(fragment instanceof fragment_Ble_Setting_Dialog_FL){
+            Log.e(TAG, "fragmentChange 중 fragment_Ble_Setting_Dialog_FL 임!");
+            return 2;
+        }else if(fragment instanceof  fragment_Ble_Setting_Dialog_Second){
+            Log.e(TAG, "fragmentChange 중 fragment_Ble_Setting_Dialog_Second 임!");
+            return 1;
+        }else if (fragment instanceof  fragment_Ble_Setting_Dialog_Listview){
+            Log.e(TAG, "fragmentChange 중 fragment_Ble_Setting_Dialog_Listview 임!");
+            return 0;
+        }
+
+        return 0;
+    }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

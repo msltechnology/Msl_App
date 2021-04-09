@@ -29,5 +29,10 @@ public class VersionCheck {
     // 2021-03-30 / github 와 연동, 언어 별 string 설정 해야할 필요, ble_setting 에서 dialog 프래그먼트 사용할 예정. ble beginning 부분 bluetooth 도중에 꺼지거나 하면 체크할 수 있도록 수정해야함.
     // 2021-04-01 / fragment_setting 의 dialog 어떻게 만들지 및 만드는중. listview 가 문제...
     // 2021-04-05 / setting 관련 dialog 대략 틀 만듬. LG x4가 bluetooth advertising 인식 못하는게 대부분 최신폰 아니면 인식 못함. 삼성 S10 이후 부터 가능. 아이폰도 안됨. 할려면 중국폰(하웨이, 원플러스, 샤오미 등)이나 삼성폰인데 어차피 둘다 비쌈(60만원이상)
+    // 2021-04-06 / beginning의 권한 확인 할려고 main 권한 확인 static 작업 중. 할까 말까.
+    // 2021-04-07 / beginning의 버튼 누를 시 bluetooth 켜져있는지 상태 받아서 그다음 넘어 갈지 말지 설정. Bluetooth 온오프 간 해당 플래그 값 변경되게 함.
+    // 2021-04-09 / setting dialog 만드는중. 각 초, 섬광 누를 시 표 등장하여 해당 값 누를 시 해당 값 버튼에 표시, 이후 검색 누를 시 해당 값에 맞는 리스트가 뜨도록 할 예정.(많은 노가다가 될꺼 같음).
+    //              초 관련 fragment는 weight 항목을 많이 넣어서 그런지 로딩 시간이 길다. list쪽은 tablelayout으로 할 예정. 더불어 password쪽도 table로 바꿀까 생각 중.(weight 항목이 많아서 켜지는데 시간 걸림)
+
 
 }

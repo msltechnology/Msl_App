@@ -21,7 +21,7 @@ import static com.example.mslapp.BleMainActivity.CDS_LAMP_OFF_READY;
 import static com.example.mslapp.BleMainActivity.CDS_LAMP_OFF_SETTING;
 import static com.example.mslapp.BleMainActivity.CDS_LAMP_ON_READY;
 import static com.example.mslapp.BleMainActivity.CDS_LAMP_ON_SETTING;
-import static com.example.mslapp.BleMainActivity.cdsFlag;
+import static com.example.mslapp.BleMainActivity.CdsFlag;
 
 public class fragment_CDS_Setting extends Fragment {
 
@@ -77,7 +77,7 @@ public class fragment_CDS_Setting extends Fragment {
 
     @Override
     public void onDetach() {
-        cdsFlag = false;
+        CdsFlag = false;
         dialog.dismiss();
         super.onDetach();
     }

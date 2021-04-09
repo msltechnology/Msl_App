@@ -25,12 +25,14 @@ import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_Ble_Setting_ID_Setti
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
+import static com.example.mslapp.BleMainActivity.BluetoothStatus;
 import static com.example.mslapp.BleMainActivity.MY_PERMISSIONS_REQUEST_READ_CONTACTS;
 import static com.example.mslapp.BleMainActivity.adminApp;
 import static com.example.mslapp.BleMainActivity.bluetooth_permission_check;
 import static com.example.mslapp.BleMainActivity.locationManager;
-import static com.example.mslapp.BleMainActivity.mBluetoothAdapter;
 import static com.example.mslapp.BleMainActivity.mBleContext;
+import static com.example.mslapp.BleMainActivity.SnFlag;
+import static com.example.mslapp.BleMainActivity.CdsFlag;
 
 public class fragment_Ble_Beginning extends Fragment {
 
@@ -52,24 +54,28 @@ public class fragment_Ble_Beginning extends Fragment {
         Log.d(TAG, "fragment_Ble_Beginning onCreateView");
 
         Button bleScanBtn = view.findViewById(R.id.bleScan);
-        Button bleScanCDSBtn = view.findViewById(R.id.bleScan_cds);
+        Button bleScanCDSBtn = view.findViewById(R.id.btn_beginning_cds);
+        Button bleScanSNBtn = view.findViewById(R.id.btn_beginning_SN);
+
+
         if (adminApp) {
             bleScanCDSBtn.setVisibility(View.VISIBLE);
+            bleScanSNBtn.setVisibility(View.VISIBLE);
         } else {
             bleScanCDSBtn.setVisibility(View.GONE);
+            bleScanSNBtn.setVisibility(View.GONE);
         }
 
         bleScanBtn.setOnClickListener(v -> fragmentScanChange());
-
-        bleScanCDSBtn.setOnClickListener(this::onClick);
-
+        bleScanCDSBtn.setOnClickListener(v -> bleScanCDSBtnOnClick());
+        bleScanSNBtn.setOnClickListener(v -> bleScanSNBtnOnClick());
         return view;
     }
 
 
     private void showEditDialog() {
         FragmentManager fm = this.getChildFragmentManager();
-        dialogFragment_Ble_Setting_ID_Setting editNameDialogFragment = new dialogFragment_Ble_Setting_ID_Setting();
+        dialogFragment_Ble_Setting_FL_Setting editNameDialogFragment = new dialogFragment_Ble_Setting_FL_Setting();
         editNameDialogFragment.show(fm, "fragment_setting_dialog");
     }
 
@@ -79,22 +85,11 @@ public class fragment_Ble_Beginning extends Fragment {
 
         Log.d(TAG, "bleScanBtn Click");
 
-        permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-
-
-        // 블루투스 및 gps 켜져있는지 확인
-        if (mBluetoothAdapter == null || !mBluetoothAdapter.enable()) {
-            Log.d(TAG, "mBluetoothAdapter null");
+        if(BluetoothStatus.contains("On")){
+            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_scan");
+        }else{
             checkBluetoothPermission();
-            return;
-        } else if (permissionCheck < 0) {
-            Log.d(TAG, "mBluetoothAdapter null");
-            checkGPSserviceOn();
-            return;
         }
-
-        ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_scan");
     }
 
     public void checkBluetoothPermission() {
@@ -174,9 +169,14 @@ public class fragment_Ble_Beginning extends Fragment {
         //((BleMainActivity)getActivity()).disconnectGattServer("fragment_Ble_Beginning - onDestroy");
     }
 
-    private void onClick(View v) {
+    private void bleScanCDSBtnOnClick() {
         showEditDialog();
-        //cdsFlag = true;
+        //CdsFlag = true;
         //fragmentScanChange();
+    }
+    private void bleScanSNBtnOnClick() {
+        //showEditDialog();
+        SnFlag = true;
+        fragmentScanChange();
     }
 }

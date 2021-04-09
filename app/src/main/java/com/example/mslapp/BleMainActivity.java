@@ -29,9 +29,11 @@ import android.bluetooth.le.AdvertisingSet;
 import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanSettings;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
@@ -45,6 +47,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.mslapp.Ble.BluetoothUtils;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Beginning;
@@ -69,6 +72,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-MainAct";
+
+    // 관리자용 앱 설정
     public static final boolean adminApp = true;
 
     public static Context mBleContext = null;
@@ -77,7 +82,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static BluetoothAdapter mBluetoothAdapter = null;
     public BluetoothDevice bleConnectDevice = null;
     public static BluetoothGatt bleGatt = null;
-    BluetoothManager bluetoothManager = null;
+    public static BluetoothManager bluetoothManager = null;
+    public static String BluetoothStatus = "";
     BluetoothLeAdvertiser mAdvertiser;
     AdvertisingSet currentAdvertisingSet;
     // gps 권한
@@ -94,8 +100,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     //Ble search
     // 현재 스캔중인지 확인하는 플래그, true일 경우 - 스캔중
     public static boolean scanningFlag = false;
-    // CDS 전용
-    public static boolean cdsFlag = false;
+    // CDS 설정 전용
+    public static boolean CdsFlag = false;
+    // SN 설정 전용
+    public static boolean SnFlag = false;
 
     // 읽기 쓰기 케릭터
     public static BluetoothGattCharacteristic respCharacteristic = null;
@@ -302,7 +310,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         Log.d(TAG, "선택한 디바이스 이름 : " + device.getName());
 
         bleConnectDevice = device;
-        connectToDevice(mBleContext, device, gattClientCallback);
+        connectToDevice(mBleContext, bleConnectDevice, gattClientCallback);
         //bleGatt = bleConnectDevice.connectGatt(mBleContext, false, gattClientCallback);
     }
 
@@ -315,7 +323,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 /*bleGatt = device.connectGatt(context, false, mGattCallBack,
                         BluetoothDevice.DEVICE_TYPE_LE,BluetoothDevice.PHY_LE_2M | BluetoothDevice.PHY_LE_1M);*/
                 bleGatt = device.connectGatt(context, false, mGattCallBack,
-                        BluetoothDevice.DEVICE_TYPE_LE,BluetoothDevice.PHY_LE_2M | BluetoothDevice.PHY_LE_1M);
+                        BluetoothDevice.DEVICE_TYPE_LE, BluetoothDevice.PHY_LE_2M | BluetoothDevice.PHY_LE_1M);
             } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                 Log.d(TAG, "connectToDevice - M up");
                 bleGatt = device.connectGatt(context, false, mGattCallBack,
@@ -349,7 +357,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     @Override
     public void onDetachFragment_Ble_Scan() {
         Log.d(TAG, "onDetachFragment_Ble_Scan");
-        ScanItem.setTitle("StopScanning");
+        ScanItem.setTitle(R.string.ble_main_scanItem_stopScanning);
         ScanItem.setVisible(false);
         reFreshItem.setVisible(false);
     }
@@ -382,7 +390,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         return true;
     }
 
-    public void ble_stopscanning(){
+    public void ble_stopscanning() {
         ScanItem.setTitle(R.string.ble_main_scanItem_scan);
     }
 
@@ -431,7 +439,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         }
     }
-
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -490,50 +497,25 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             }
         });
 
-
-        Log.d(TAG, "buile Version : " + Build.VERSION.SDK_INT);
-        if (Build.VERSION.SDK_INT >= 29) {
-            int permissionCheck = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
-
-            Log.d(TAG, "GPS 권한 ACCESS_FINE_LOCATION" + permissionCheck);
-
-            //
-            if (permissionCheck < 0) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-            }
-        } else {
-
-            int permissionCheck = ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
-
-            Log.d(TAG, "GPS 권한 ACCESS_COARSE_LOCATION" + permissionCheck);
-
-            //
-            if (permissionCheck < 0) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-            }
-        }
-
-
         //endregion
 
-        // gps on 시키는데 사용
-        locationManager = (LocationManager) mBleContext.getSystemService(LOCATION_SERVICE);
 
-        bluetoothManager =
-                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mBroadcastReceiver1, filter1);
 
-        //region Bluetooth 연결 시 필요한 사항
-        //mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mBluetoothAdapter = bluetoothManager.getAdapter();
+        /*IntentFilter filter2 = new IntentFilter();
+        filter2.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter2.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        filter2.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+        registerReceiver(mBroadcastReceiver2, filter2);*/
+
+        IntentFilter filter3 = new IntentFilter();
+        filter3.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter3.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        registerReceiver(mBroadcastReceiver3, filter3);
 
 
-
+        permission_check();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -574,6 +556,44 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         //endregion
 
+    }
+
+    public static void permission_check() {
+        Log.d(TAG, "buile Version : " + Build.VERSION.SDK_INT);
+        if (Build.VERSION.SDK_INT >= 29) {
+            int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+
+            Log.d(TAG, "GPS 권한 ACCESS_FINE_LOCATION" + permissionCheck);
+
+            //
+            if (permissionCheck < 0) {
+                ActivityCompat.requestPermissions(mBleMain,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            }
+        } else {
+
+            int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION);
+
+            Log.d(TAG, "GPS 권한 ACCESS_COARSE_LOCATION" + permissionCheck);
+
+            if (permissionCheck < 0) {
+                ActivityCompat.requestPermissions(mBleMain,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+            }
+        }
+
+        // gps on 시키는데 사용
+        locationManager = (LocationManager) mBleContext.getSystemService(LOCATION_SERVICE);
+
+        bluetoothManager = (BluetoothManager) mBleContext.getSystemService(Context.BLUETOOTH_SERVICE);
+
+        //region Bluetooth 연결 시 필요한 사항
+        //mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter = bluetoothManager.getAdapter();
     }
 
 
@@ -620,8 +640,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         switch (requestCode) {
             case bluetooth_permission_check: // 블루투스 권한 확인
                 if (resultCode == RESULT_OK) {
-                    // 블루투스 기능을 켰을 때
-
                     // 이후 GPS 상태 요청
                     checkGPSserviceOn();
                 } else {
@@ -706,7 +724,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 return;
             }
 
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE:{
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
                 builder.setTitle(R.string.ble_main_checkPermission_GPS_reFail_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_reFail_alertDialog_message);
@@ -742,25 +760,24 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     }
 
     // 블루투스 권한 확인
-    public void checkBluetoothPermission() {
+    public static void checkBluetoothPermission() {
         // 블루투스 권한 확인 시작
         Intent intent;
 
         if (mBluetoothAdapter.isEnabled()) {
-            // 블루투스 관련 실행 진행
-
+            BluetoothStatus = "On";
             // 이후 GPS 상태 요청
             checkGPSserviceOn();
         } else {
             // 블루투스 활성화 하도록
             intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(intent, bluetooth_permission_check);
+            mBleMain.startActivityForResult(intent, bluetooth_permission_check);
         }
         // 블루투스 권한 확인 끝
     }
 
     // 위치정보(GPS) 확인
-    public void checkGPSserviceOn() {
+    public static void checkGPSserviceOn() {
 
         // 위치정보 on 확인 시작
         Intent intent;
@@ -770,14 +787,14 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         if (!locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(mBleContext);
 
             builder.setTitle(R.string.ble_main_checkPermission_GPS_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_alertDialog_message);
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
-                    startActivity(intent);
+                    mBleMain.startActivity(intent);
                 }
             });
 
@@ -795,7 +812,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         // 위치정보 on 확인 끝
     }
 
-    private BluetoothGattCallback gattClientCallback = new BluetoothGattCallback() {
+    private BluetoothGattCallback
+            gattClientCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
@@ -1093,6 +1111,84 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     }
 
+    // 블루투스가 꺼지는 중, 꺼짐 or 켜지는 중, 켜짐 상태 알려줌.
+    private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+                switch (state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        Log.d(TAG, "Bluetooth.STATE_OFF");
+                        BluetoothStatus = "Off";
+                        fragmentChange("fragment_ble_beginning");
+                        Toast.makeText(mBleContext, getString(R.string.toastMsg_bluetooth_Off), Toast.LENGTH_SHORT).show();
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        Log.d(TAG, "Bluetooth.STATE_TURNING_OFF");
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        Log.d(TAG, "Bluetooth.STATE_ON");
+                        BluetoothStatus = "On";
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        Log.d(TAG, "Bluetooth.STATE_TURNING_ON");
+                        break;
+                }
+
+            }
+        }
+    };
+
+    // 블루투스 검색 or 검색 중이 아닐 때
+    private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+
+            if (action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
+
+                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, BluetoothAdapter.ERROR);
+
+                switch (mode) {
+                    case BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE:
+                        Log.d(TAG, "Bluetooth.SCAN_MODE_CONNECTABLE_DISCOVERABLE");
+                        break;
+                    case BluetoothAdapter.SCAN_MODE_CONNECTABLE:
+                        Log.d(TAG, "Bluetooth.SCAN_MODE_CONNECTABLE");
+                        break;
+                    case BluetoothAdapter.SCAN_MODE_NONE:
+                        Log.d(TAG, "Bluetooth.SCAN_MODE_NONE");
+                        break;
+                }
+            }
+        }
+    };
+
+    // 블루투스 연결 시 or 해제 시
+    private final BroadcastReceiver mBroadcastReceiver3 = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action) {
+                case BluetoothDevice.ACTION_ACL_CONNECTED:
+                    Log.d(TAG, "Bluetooth.ACTION_ACL_CONNECTED");
+                    // 연결 시
+
+                    break;
+                case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                    Log.d(TAG, "Bluetooth.ACTION_ACL_DISCONNECTED");
+                    // 해제 시
+                    break;
+            }
+        }
+    };
+
     // 각 기능 별 로그값을 리스트에 올리면서 볼 수 있게하기(예정 03-15)
     public void LogList(String tag, String contents) {
         Log.d(tag, contents);
@@ -1111,6 +1207,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public void onResume() {
         super.onResume();
         // bluetooth Low Energy 지원안할 경우
+
+        permission_check();
+
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Log.d(TAG, "BLUETOOTH_LE no sup");
             //finish();
@@ -1121,6 +1220,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver1);
+        //unregisterReceiver(mBroadcastReceiver2);
+        unregisterReceiver(mBroadcastReceiver3);
         disconnectGattServer("BleMainActivity - onDestroy");
     }
 }
