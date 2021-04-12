@@ -33,6 +33,10 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
     TextView tv_Selected_FL;
     LinearLayout ll_Search;
 
+    public static String select_Sec = "0";
+    public static String select_FL = "0";
+
+
     View view;
 
     private EditText mEditText;
@@ -113,8 +117,10 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
 
     public void btnSetText(int i, String num){
         if(i == 1){
+            select_Sec = num;
             btn_Second.setText(num);
         }else if(i == 2){
+            select_FL = num;
             btn_FL.setText(num);
         }
 
@@ -155,8 +161,8 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         Point size = new Point();
         display.getSize(size);
 
-        final String x = String.valueOf(Math.round((size.x * 0.9)));
-        final String y = String.valueOf(Math.round((size.y * 0.8)));
+        final String x = String.valueOf(Math.round((size.x * 0.95)));
+        final String y = String.valueOf(Math.round((size.y * 0.9)));
         int dialogWidth =Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

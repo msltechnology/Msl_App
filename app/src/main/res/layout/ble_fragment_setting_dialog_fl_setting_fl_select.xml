@@ -25,6 +25,11 @@
             style="@style/btn_setting_dialog_fl"
             android:text="@string/_3"
             />
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_4"
+            style="@style/btn_setting_dialog_fl"
+            android:text="@string/_4"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -32,11 +37,6 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/btn_dialog_setting_FL_4"
-            style="@style/btn_setting_dialog_fl"
-            android:text="@string/_4"
-            />
         <Button
             android:id="@+id/btn_dialog_setting_FL_5"
             style="@style/btn_setting_dialog_fl"
@@ -47,6 +47,14 @@
             style="@style/btn_setting_dialog_fl"
             android:text="@string/_6"
             />
+        <LinearLayout
+            style="@style/btn_setting_dialog_fl"
+            />
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_2_1"
+            style="@style/btn_setting_dialog_fl_s"
+            android:text="FL\n(2+1)"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -54,21 +62,59 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <LinearLayout
-            style="@style/btn_setting_dialog_fl"/>
         <Button
-            android:id="@+id/btn_dialog_setting_FL_9"
+            android:id="@+id/btn_dialog_setting_FL_ISO"
             style="@style/btn_setting_dialog_fl"
-            android:text="@string/_9"
+            android:text="ISO"
             />
-        <LinearLayout
-            style="@style/btn_setting_dialog_fl"/>
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_LFL"
+            style="@style/btn_setting_dialog_fl"
+            android:text="LFL"
+            />
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_FFL"
+            style="@style/btn_setting_dialog_fl"
+            android:text="FFL"
+            />
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_MO"
+            style="@style/btn_setting_dialog_fl"
+            android:text="MO"
+            />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"/>
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_OC"
+            style="@style/btn_setting_dialog_fl"
+            android:text="OC"
+            />
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_Q"
+            style="@style/btn_setting_dialog_fl"
+            android:text="Q"
+            />
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_VQ"
+            style="@style/btn_setting_dialog_fl"
+            android:text="VQ"
+            />
+        <Button
+            android:id="@+id/btn_dialog_setting_FL_AI"
+            style="@style/btn_setting_dialog_fl"
+            android:text="AI"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>

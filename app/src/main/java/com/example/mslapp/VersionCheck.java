@@ -33,6 +33,7 @@ public class VersionCheck {
     // 2021-04-07 / beginning의 버튼 누를 시 bluetooth 켜져있는지 상태 받아서 그다음 넘어 갈지 말지 설정. Bluetooth 온오프 간 해당 플래그 값 변경되게 함.
     // 2021-04-09 / setting dialog 만드는중. 각 초, 섬광 누를 시 표 등장하여 해당 값 누를 시 해당 값 버튼에 표시, 이후 검색 누를 시 해당 값에 맞는 리스트가 뜨도록 할 예정.(많은 노가다가 될꺼 같음).
     //              초 관련 fragment는 weight 항목을 많이 넣어서 그런지 로딩 시간이 길다. list쪽은 tablelayout으로 할 예정. 더불어 password쪽도 table로 바꿀까 생각 중.(weight 항목이 많아서 켜지는데 시간 걸림)
+    // 2021-04-12 / setting dialog list tablelayout 만들었으며 각 선택한 등질 및 초 에 맞게 검색되게함(구현만하고 다 추가하지는 않음. 추가중). 등질에서 특수 등질도 선택하게함.
 
 
 }

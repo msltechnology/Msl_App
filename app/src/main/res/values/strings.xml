@@ -68,8 +68,12 @@
     <string name="receive_date">날짜</string>
     <string name="gps_latitude">위도</string>
     <string name="battery_v">배터리 전압</string>
-    <string name="charge_dischar_A">충방전 전류</string>
+    <string name="charge_discharge_A">충방전 전류</string>
     <string name="receive_time">시각</string>
-    <string name="gps_longtitude">경도</string>
+    <string name="gps_longitude">경도</string>
     <string name="battery_percent">배터리 잔량</string>
+    <string name="Number_No">No.</string>
+    <string name="Second_Sec">Sec</string>
+    <string name="division">구분</string>
+    <string name="remarks">비고</string>
 </resources>

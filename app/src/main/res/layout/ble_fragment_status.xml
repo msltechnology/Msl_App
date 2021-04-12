@@ -138,7 +138,7 @@
 
                     <TextView
                         style="@style/tv_fragment_status"
-                        android:text="@string/charge_dischar_A" />
+                        android:text="@string/charge_discharge_A" />
 
                     <TextView
                         style="@style/tv_fragment_status"
@@ -146,7 +146,7 @@
 
                     <TextView
                         style="@style/tv_fragment_status"
-                        android:text="@string/gps_longtitude" />
+                        android:text="@string/gps_longitude" />
 
                 </LinearLayout>
 
