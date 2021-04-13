@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="10dp">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -29,153 +30,179 @@
                     tools:ignore="UselessParent">
 
                     <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="30dp"
+                        android:background="@color/dialog_select_title"
+                        android:gravity="center"
+                        android:text="@string/select" />
+
+                    <TextView
                         android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/teal_200"
+                        android:layout_height="30dp"
+                        android:background="@color/dialog_Num_title"
                         android:gravity="center"
                         android:text="@string/Number_No" />
 
                     <TextView
-                        android:layout_width="40dp"
+                        android:layout_width="65dp"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
+                        android:background="@color/dialog_FL_title"
                         android:gravity="center"
-                        android:text="@string/FL"/>
-
-                    <TextView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:gravity="center"
-                        android:text="@string/Second_Sec"/>
+                        android:text="@string/FL" />
 
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
+                        android:background="@color/dialog_Sec_title"
                         android:gravity="center"
-                        android:text="ON1"/>
+                        android:text="@string/Second_Sec" />
 
                     <TextView
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
+                        android:background="@color/dialog_light_On_title"
                         android:gravity="center"
-                        android:text="OFF1"/>
+                        android:text="ON1" />
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF1" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
-                        android:text="ON2"/>
+                        android:background="@color/dialog_light_On_title"
+                        android:gravity="center"
+                        android:text="ON2" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:text="OFF2"/>
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF2" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
-                        android:text="ON3"/>
+                        android:background="@color/dialog_light_On_title"
+                        android:gravity="center"
+                        android:text="ON3" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:text="OFF3"/>
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF3" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
-                        android:text="ON4"/>
+                        android:background="@color/dialog_light_On_title"
+                        android:gravity="center"
+                        android:text="ON4" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:text="OFF4"/>
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF4" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
-                        android:text="ON5"/>
+                        android:background="@color/dialog_light_On_title"
+                        android:gravity="center"
+                        android:text="ON5" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:text="OFF5"/>
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF5" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
-                        android:text="ON6"/>
+                        android:background="@color/dialog_light_On_title"
+                        android:gravity="center"
+                        android:text="ON6" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:text="OFF6"/>
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF6" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
-                        android:text="ON7"/>
+                        android:background="@color/dialog_light_On_title"
+                        android:gravity="center"
+                        android:text="ON7" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:text="OFF7"/>
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF7" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
-                        android:text="ON8"/>
+                        android:background="@color/dialog_light_On_title"
+                        android:gravity="center"
+                        android:text="ON8" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:text="OFF8"/>
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF8" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_700"
-                        android:text="ON9"/>
+                        android:background="@color/dialog_light_On_title"
+                        android:gravity="center"
+                        android:text="ON9" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/teal_200"
-                        android:text="OFF9"/>
+                        android:background="@color/dialog_light_Off_title"
+                        android:gravity="center"
+                        android:text="OFF9" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/cardview_light_background"
-                        android:text="DIP SW"/>
+                        android:background="@color/dialog_Dip_SW_title"
+                        android:gravity="center"
+                        android:text="DIP SW" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="70dp"
                         android:layout_height="match_parent"
-                        android:background="@color/bleListViewMsl"
-                        android:text="@string/division"/>
+                        android:background="@color/dialog_division_title"
+                        android:gravity="center"
+                        android:text="@string/division" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:background="@color/purple_500"
-                        android:text="@string/remarks"/>
+                        android:background="@color/dialog_remarks_title"
+                        android:gravity="center"
+                        android:text="@string/remarks" />
 
 
                 </TableRow>

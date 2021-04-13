@@ -10,4 +10,26 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    <color name="dialog_select">#C1C8C8</color>
+    <color name="dialog_light_On">#FAD912</color>
+    <color name="dialog_light_Off">#AE9B2B</color>
+    <color name="dialog_Num">#9DC8C8</color>
+    <color name="dialog_FL">#58C9B9</color>
+    <color name="dialog_Sec">#519D9E</color>
+    <color name="dialog_Dip_SW">#D1B6E1</color>
+    <color name="dialog_division">#D4DFE6</color>
+    <color name="dialog_remarks">#8EC0E4</color>
+
+    <color name="dialog_select_title">#CCC1C8C8</color>
+    <color name="dialog_light_On_title">#CCFAD912</color>
+    <color name="dialog_light_Off_title">#CCAE9B2B</color>
+    <color name="dialog_Num_title">#CC9DC8C8</color>
+    <color name="dialog_FL_title">#CC58C9B9</color>
+    <color name="dialog_Sec_title">#CC519D9E</color>
+    <color name="dialog_Dip_SW_title">#CCD1B6E1</color>
+    <color name="dialog_division_title">#CCD4DFE6</color>
+    <color name="dialog_remarks_title">#CC8EC0E4</color>
+
 </resources>

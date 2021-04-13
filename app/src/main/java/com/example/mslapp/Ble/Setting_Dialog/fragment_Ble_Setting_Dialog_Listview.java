@@ -1,5 +1,7 @@
 package com.example.mslapp.Ble.Setting_Dialog;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,12 +10,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.mslapp.R;
@@ -26,11 +30,17 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-Setting-Dialog-ListView";
 
+    Context settingDialogContext;
+
     TableLayout tableLayout;
     private TableRow tableRowData = null;
+    private TableRow tableRowBlank = null;
     TextView tv_FL_Data;
+    Button btn_FL_Data;
 
     String[][] FL_list_String;
+
+    dialogFragment_Ble_Setting_FL_Setting dialogFragment_Ble_Setting_FL_Setting_fragment;
 
     View view;
 
@@ -41,7 +51,11 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
 
         view = inflater.inflate(R.layout.ble_fragment_setting_dialog_fl_setting_listview, null);
 
+        settingDialogContext = this.getContext();
+
         tableLayout = view.findViewById(R.id.tl_ble_fragment_setting_dialog);
+
+        dialogFragment_Ble_Setting_FL_Setting_fragment = (dialogFragment_Ble_Setting_FL_Setting) getParentFragment();
 
         tableTitleSetting();
 
@@ -49,65 +63,152 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
         return view;
     }
 
+    @SuppressLint("ResourceAsColor")
     void tableTitleSetting() {
 
-        switch (select_FL){
+        switch (select_FL) {
             case "1":
                 FL_list_String = FL_List.FL_list_1;
                 break;
             case "2":
                 FL_list_String = FL_List.FL_list_2;
                 break;
+            case "3":
+                FL_list_String = FL_List.FL_list_3;
+                break;
+            case "4":
+                FL_list_String = FL_List.FL_list_4;
+                break;
+            case "5":
+                FL_list_String = FL_List.FL_list_5;
+                break;
+            case "6":
+                FL_list_String = FL_List.FL_list_6;
+                break;
+            case "2_1":
+                FL_list_String = FL_List.FL_list_2_1;
+                break;
+            case "ISO":
+                FL_list_String = FL_List.FL_list_ISO;
+                break;
+            case "LFL":
+                FL_list_String = FL_List.FL_list_LFL;
+                break;
+            case "FFL":
+                FL_list_String = FL_List.FL_list_FFL;
+                break;
+            case "MO":
+                FL_list_String = FL_List.FL_list_MO;
+                break;
+            case "OC":
+                FL_list_String = FL_List.FL_list_OC;
+                break;
+            case "Q":
+                FL_list_String = FL_List.FL_list_Q;
+                break;
+            case "VQ":
+                FL_list_String = FL_List.FL_list_VQ;
+                break;
+            case "AI":
+                FL_list_String = FL_List.FL_list_AI;
+                break;
             default:
-                FL_list_String = FL_List.FL_list_1;
+                FL_list_String = FL_List.FL_list_Default;
                 break;
         }
 
 
-        for(int i = 0; i < FL_list_String.length; i++){
+        for (int i = 0; i < FL_list_String.length; i++) {
             // 부를때 마다 초기화
             tableRowData = new TableRow(getActivity());
             tableRowData.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-            for(int j = 0; j < 24; j++){
 
-                Log.d(TAG,select_Sec + " , " + (FL_list_String[i][2]).replace("S",""));
+            for (int j = 0; j < 24; j++) {
+                if(select_Sec.equals("0") && select_FL.equals("0")){
+                    listSetting(i,j);
+                }
 
-                if(select_Sec.equals((FL_list_String[i][2]).replace(" S",""))){
-                    tv_FL_Data = new TextView(getActivity());
-                    tv_FL_Data.setTextSize(14);
-                    tv_FL_Data.setTextColor(0xFF000000);
-                    tv_FL_Data.setText(FL_list_String[i][j]);
-                    tv_FL_Data.setGravity(Gravity.CENTER);
-                    tv_FL_Data.setLayoutParams(new TableRow.LayoutParams(
-                            (int) TypedValue.applyDimension
-                                    (TypedValue.COMPLEX_UNIT_DIP, 54, getResources().getDisplayMetrics()),
-                            (int) TypedValue.applyDimension
-                                    (TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics())));
-                    if(j == 0){
-                        tv_FL_Data.setBackgroundColor(0xFF90CAF9);
-                    }else if(j == 1){
-                        tv_FL_Data.setBackgroundColor(Color.BLUE);
-                    }else if(j == 2){
-                        tv_FL_Data.setBackgroundColor(Color.YELLOW);
-                    }else if(j == 21){
-                        tv_FL_Data.setBackgroundColor(Color.MAGENTA);
-                    }else if(j == 22){
-                        tv_FL_Data.setBackgroundColor(Color.CYAN);
-                    }else if(j == 23){
-                        tv_FL_Data.setBackgroundColor(Color.DKGRAY);
-                    }else if((j%2) == 0){
-                        tv_FL_Data.setBackgroundColor(Color.GREEN);
-                    }else if((j%2) == 1){
-                        tv_FL_Data.setBackgroundColor(Color.RED);
-                    }
-
-                    tableRowData.addView(tv_FL_Data);
-                }else{
-
+                if (select_Sec.equals((FL_list_String[i][2]).replace(" S", ""))) {
+                    listSetting(i,j);
                 }
             }
-            tableLayout.addView(tableRowData);
+
+            if (tableRowData.getVirtualChildCount() != 0) {
+                tableRowBlank = new TableRow(getActivity());
+                tableRowBlank.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+                tv_FL_Data = new TextView(getActivity());
+                tv_FL_Data.setLayoutParams(new TableRow.LayoutParams(
+                        (int) TypedValue.applyDimension
+                                (TypedValue.COMPLEX_UNIT_DIP, 54, getResources().getDisplayMetrics()),
+                        (int) TypedValue.applyDimension
+                                (TypedValue.COMPLEX_UNIT_DIP, 2
+                                        , getResources().getDisplayMetrics())));
+
+                tableRowBlank.addView(tv_FL_Data);
+                tableLayout.addView(tableRowBlank);
+
+                tableLayout.addView(tableRowData);
+            }
         }
     }
 
+
+    public void btnOnClick(String FL_code) {
+        dialogFragment_Ble_Setting_FL_Setting_fragment.btnSelectFL(FL_code);
+    }
+
+    public void listSetting(int i, int j){
+        if (j == 0) {
+            String FL_code = FL_list_String[i][j];
+
+            btn_FL_Data = new Button(getActivity());
+
+            btn_FL_Data.setTextSize(14);
+            btn_FL_Data.setTextColor(0xFF000000);
+            btn_FL_Data.setText(FL_code);
+            btn_FL_Data.setGravity(Gravity.CENTER);
+            btn_FL_Data.setOnClickListener(view -> btnOnClick(FL_code));
+            btn_FL_Data.setLayoutParams(new TableRow.LayoutParams(
+                    (int) TypedValue.applyDimension
+                            (TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics()),
+                    (int) TypedValue.applyDimension
+                            (TypedValue.COMPLEX_UNIT_DIP, 52
+                                    , getResources().getDisplayMetrics())));
+            btn_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_select));
+
+            tableRowData.addView(btn_FL_Data);
+        }
+
+        tv_FL_Data = new TextView(getActivity());
+        tv_FL_Data.setTextSize(14);
+        tv_FL_Data.setTextColor(0xFF000000);
+        tv_FL_Data.setText(FL_list_String[i][j]);
+        tv_FL_Data.setGravity(Gravity.CENTER);
+        tv_FL_Data.setLayoutParams(new TableRow.LayoutParams(
+                (int) TypedValue.applyDimension
+                        (TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension
+                        (TypedValue.COMPLEX_UNIT_DIP, 52
+                                , getResources().getDisplayMetrics())));
+        if (j == 0) {
+            tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_Num));
+        } else if (j == 1) {
+            tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_FL));
+        } else if (j == 2) {
+            tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_Sec));
+        } else if (j == 21) {
+            tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_Dip_SW));
+        } else if (j == 22) {
+            tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_division));
+        } else if (j == 23) {
+            tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_remarks));
+        } else if ((j % 2) == 0) {
+            tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_light_Off));
+        } else if ((j % 2) == 1) {
+            tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_light_On));
+        }
+
+        tableRowData.addView(tv_FL_Data);
+    }
 }

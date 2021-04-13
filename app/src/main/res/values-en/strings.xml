@@ -45,4 +45,6 @@
     <string name="Second_Sec">Sec</string>
     <string name="division">division</string>
     <string name="remarks">remarks</string>
+    <string name="Fixed">부동광</string>
+    <string name="select">select</string>
 </resources>

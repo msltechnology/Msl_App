@@ -76,4 +76,6 @@
     <string name="Second_Sec">Sec</string>
     <string name="division">구분</string>
     <string name="remarks">비고</string>
+    <string name="Fixed">부동광</string>
+    <string name="select">select</string>
 </resources>

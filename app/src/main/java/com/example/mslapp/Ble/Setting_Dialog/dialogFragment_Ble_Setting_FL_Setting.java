@@ -64,6 +64,8 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         ft.add(R.id.fl_dialog_setting_fragmentSpace, new fragment_Ble_Setting_Dialog_Listview());
         ft.commit();
 
+        tv_Selected_FL = view.findViewById(R.id.tv_dialog_setting_selectFL);
+
 
         return view;
     }
@@ -125,7 +127,10 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         }
 
         fragmentChange("dialog_setting_Listview");
+    }
 
+    public void btnSelectFL(String FL_Code){
+        tv_Selected_FL.setText(FL_Code);
     }
 
     int currentFragment(){
@@ -167,6 +172,13 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
         // 창크기 지정
+    }
 
+    @Override
+    public void onDetach() {
+        select_FL = "0";
+        select_Sec = "0";
+
+        super.onDetach();
     }
 }
