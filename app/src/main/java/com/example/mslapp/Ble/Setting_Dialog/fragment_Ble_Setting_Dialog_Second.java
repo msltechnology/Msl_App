@@ -1,5 +1,6 @@
 package com.example.mslapp.Ble.Setting_Dialog;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,5 +95,25 @@ public class fragment_Ble_Setting_Dialog_Second extends Fragment {
         btn_second_4_5.setOnClickListener(v -> dialogFragment_Ble_Setting_FL_Setting_fragment.btnSetText(1,"4.5"));
         btn_second_5_5.setOnClickListener(v -> dialogFragment_Ble_Setting_FL_Setting_fragment.btnSetText(1,"5.5"));
         btn_second_15_75.setOnClickListener(v -> dialogFragment_Ble_Setting_FL_Setting_fragment.btnSetText(1,"15.75"));
+
+        switch (dialogFragment_Ble_Setting_FL_Setting.select_FL) {
+            case "1":
+
+                break;
+        }
+
+
+
+
+
     }
+
+    void btnTextColorSet(Button... btn) {
+        for (int i = 0; i < btn.length; i++) {
+            btn[i].setTextColor(Color.BLACK);
+        }
+    }
+
+
+
 }

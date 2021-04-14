@@ -54,6 +54,7 @@ public class fragment_Ble_Scan extends Fragment {
     private Ble_Scan_Listener selecetBleListener;
     private Activity activity;
 
+
     BackThread backThread;
 
     @Nullable

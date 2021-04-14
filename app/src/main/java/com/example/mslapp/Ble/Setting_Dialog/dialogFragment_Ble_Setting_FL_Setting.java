@@ -1,5 +1,8 @@
 package com.example.mslapp.Ble.Setting_Dialog;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,12 +17,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.mslapp.Ble.fragment.fragment_Ble_Setting;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.BleMainActivity.mBleContext;
@@ -29,12 +34,15 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-Setting-Dialog-FL";
 
-    Button btn_Second, btn_FL, btn_Cancel, btn_Confirm;
-    TextView tv_Selected_FL;
-    LinearLayout ll_Search;
+    private static final int Ble_Setting_dialog_FL = 1;
 
-    public static String select_Sec = "0";
-    public static String select_FL = "0";
+
+    Button btn_Second, btn_FL;
+    TextView tv_Cancel, tv_Confirm;
+    TextView tv_Selected_FL;
+
+    public static String select_Sec = "-1";
+    public static String select_FL = "-1";
 
 
     View view;
@@ -70,14 +78,29 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         return view;
     }
 
-    void btnSetting(){
+    void btnSetting() {
         btn_Second = view.findViewById(R.id.btn_dialog_setting_second);
         btn_FL = view.findViewById(R.id.btn_dialog_setting_FL);
-        ll_Search = view.findViewById(R.id.ll_dialog_setting_search);
+        tv_Cancel = view.findViewById(R.id.tv_dialog_setting_cancel);
+        tv_Confirm = view.findViewById(R.id.tv_dialog_setting_confirm);
+
 
         btn_Second.setOnClickListener(v -> fragmentChange("dialog_setting_second"));
         btn_FL.setOnClickListener(v -> fragmentChange("dialog_setting_FL"));
-        ll_Search.setOnClickListener(v -> fragmentChange("dialog_setting_Listview"));
+        tv_Cancel.setOnClickListener(v -> dismiss());
+        tv_Confirm.setOnClickListener(v -> {
+            if( getParentFragment() == null ) {
+                Log.d(TAG, "getParentFragment Null");
+                dismiss();
+                return;
+            }
+
+            Intent intent = fragment_Ble_Setting.newIntent(tv_Selected_FL.getText().toString());
+            getParentFragment().onActivityResult(Ble_Setting_dialog_FL, Activity.RESULT_OK, intent);
+
+            dismiss();
+            Log.d(TAG, "tv_Confirm Click");
+        });
     }
 
 
@@ -87,21 +110,21 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
 
         switch (callFragment) {
             case "dialog_setting_second":
-                if(currentFragment() == 1){
+                if (currentFragment() == 1) {
                     fr = new fragment_Ble_Setting_Dialog_Listview();
                     break;
                 }
                 fr = new fragment_Ble_Setting_Dialog_Second();
                 break;
             case "dialog_setting_FL":
-                if(currentFragment() == 2) {
+                if (currentFragment() == 2) {
                     fr = new fragment_Ble_Setting_Dialog_Listview();
                     break;
                 }
                 fr = new fragment_Ble_Setting_Dialog_FL();
                 break;
             default:
-                if(currentFragment() == 0)
+                if (currentFragment() == 0)
                     return;
                 fr = new fragment_Ble_Setting_Dialog_Listview();
                 break;
@@ -117,11 +140,11 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         }
     }
 
-    public void btnSetText(int i, String num){
-        if(i == 1){
+    public void btnSetText(int i, String num) {
+        if (i == 1) {
             select_Sec = num;
             btn_Second.setText(num);
-        }else if(i == 2){
+        } else if (i == 2) {
             select_FL = num;
             btn_FL.setText(num);
         }
@@ -129,19 +152,18 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         fragmentChange("dialog_setting_Listview");
     }
 
-    public void btnSelectFL(String FL_Code){
+    public void btnSelectFL(String FL_Code) {
         tv_Selected_FL.setText(FL_Code);
     }
-
-    int currentFragment(){
+    int currentFragment() {
         Fragment fragment = getChildFragmentManager().findFragmentById(R.id.fl_dialog_setting_fragmentSpace);
-        if(fragment instanceof fragment_Ble_Setting_Dialog_FL){
+        if (fragment instanceof fragment_Ble_Setting_Dialog_FL) {
             Log.e(TAG, "fragmentChange 중 fragment_Ble_Setting_Dialog_FL 임!");
             return 2;
-        }else if(fragment instanceof  fragment_Ble_Setting_Dialog_Second){
+        } else if (fragment instanceof fragment_Ble_Setting_Dialog_Second) {
             Log.e(TAG, "fragmentChange 중 fragment_Ble_Setting_Dialog_Second 임!");
             return 1;
-        }else if (fragment instanceof  fragment_Ble_Setting_Dialog_Listview){
+        } else if (fragment instanceof fragment_Ble_Setting_Dialog_Listview) {
             Log.e(TAG, "fragmentChange 중 fragment_Ble_Setting_Dialog_Listview 임!");
             return 0;
         }
@@ -168,7 +190,7 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
 
         final String x = String.valueOf(Math.round((size.x * 0.95)));
         final String y = String.valueOf(Math.round((size.y * 0.9)));
-        int dialogWidth =Integer.parseInt(x);
+        int dialogWidth = Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
         // 창크기 지정
@@ -176,9 +198,29 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
 
     @Override
     public void onDetach() {
-        select_FL = "0";
-        select_Sec = "0";
+        select_FL = "-1";
+        select_Sec = "-1";
 
         super.onDetach();
+    }
+
+    // 다른 곳에서 해당 다이어로그를 호출 시 newinstance를 사용해서 데이터를 dialog에 보낼 수 있음.
+    // 보내는 곳 : DialogFragment newFragment = MyDialogFragment.newInstance(num); 이후 show 호출
+    // 받을 때 : onCreate에 getArguments().getInt("num"); 사용
+    public static dialogFragment_Ble_Setting_FL_Setting newInstance(int num) {
+        dialogFragment_Ble_Setting_FL_Setting f = new dialogFragment_Ble_Setting_FL_Setting();
+
+        // Supply num input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("num", num);
+        f.setArguments(args);
+
+        return f;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+
+        super.onDismiss(dialog);
     }
 }

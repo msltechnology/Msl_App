@@ -13,6 +13,7 @@
 
 
     <color name="dialog_select">#C1C8C8</color>
+    <color name="dialog_select_special">#01F6F6</color>
     <color name="dialog_light_On">#FAD912</color>
     <color name="dialog_light_Off">#AE9B2B</color>
     <color name="dialog_Num">#9DC8C8</color>

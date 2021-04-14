@@ -67,6 +67,9 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
     void tableTitleSetting() {
 
         switch (select_FL) {
+            case "-1":
+                FL_list_String = FL_List.FL_list_Default;
+                break;
             case "1":
                 FL_list_String = FL_List.FL_list_1;
                 break;
@@ -113,9 +116,11 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
                 FL_list_String = FL_List.FL_list_AI;
                 break;
             default:
-                FL_list_String = FL_List.FL_list_Default;
+
                 break;
         }
+
+        Log.d(TAG, "select_sec : " + select_Sec + " and select_FL : " + select_FL);
 
 
         for (int i = 0; i < FL_list_String.length; i++) {
@@ -124,11 +129,14 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
             tableRowData.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
             for (int j = 0; j < 24; j++) {
-                if(select_Sec.equals("0") && select_FL.equals("0")){
+                // 초기값일 경우 대표적 섬광표 보이게
+                if(select_Sec.equals("-1") && select_FL.equals("-1")){
                     listSetting(i,j);
+                }else if(select_Sec.equals("-1") || select_FL.equals("-1")){
+                    return;
                 }
-
-                if (select_Sec.equals((FL_list_String[i][2]).replace(" S", ""))) {
+                // 해당 초 값을 가진 값만 나오게 / 만약에 포값만 변경했을 시 해당 초 값을 가진 모든 표 보임.
+                else if (select_Sec.equals((FL_list_String[i][2]).replace(" S", ""))) {
                     listSetting(i,j);
                 }
             }
@@ -175,8 +183,11 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
                     (int) TypedValue.applyDimension
                             (TypedValue.COMPLEX_UNIT_DIP, 52
                                     , getResources().getDisplayMetrics())));
-            btn_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_select));
-
+            if(!(FL_list_String[i][22]).equals("") || !(FL_list_String[i][23]).equals("")){
+                btn_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_select_special));
+            }else{
+                btn_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_select));
+            }
             tableRowData.addView(btn_FL_Data);
         }
 

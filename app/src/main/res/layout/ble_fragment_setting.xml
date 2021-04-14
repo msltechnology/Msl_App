@@ -10,6 +10,20 @@
         android:layout_height="wrap_content"
         android:text="fragment_setting" />
 
+    <TextView
+        android:id="@+id/tv_ble_framgment_setting_selected_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tv_ble_framgment_setting_selected_ID" />
+
+    <TextView
+        android:id="@+id/tv_ble_framgment_setting_selected_FL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tv_ble_framgment_setting_selected_FL" />
+
+
+
     <Button
         android:id="@+id/btn_status"
         android:layout_width="wrap_content"

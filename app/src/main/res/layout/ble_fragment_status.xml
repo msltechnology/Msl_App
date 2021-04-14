@@ -10,14 +10,32 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/battery_percent" />
+
+            <TextView
+                android:id="@+id/tv_ble_framgment_status_battery_percent"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center" />
 
             <Button
                 android:id="@+id/statusBtn"
-                style="@style/btn_status"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
                 android:text="@string/status" />
 
         </LinearLayout>
@@ -27,12 +45,6 @@
             android:layout_height="0dp"
             android:layout_weight="8"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_bt_read"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="readData" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -182,7 +194,7 @@
                         style="@style/tv_fragment_status" />
 
                     <TextView
-                        android:id="@+id/tv_ble_framgment_status_gps_longtitude"
+                        android:id="@+id/tv_ble_framgment_status_gps_longitude"
                         style="@style/tv_fragment_status" />
 
 
@@ -192,27 +204,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/battery_percent" />
-
-            <TextView
-                android:id="@+id/tv_ble_framgment_status_battery_percent"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center" />
-
-        </LinearLayout>
 
     </LinearLayout>
 

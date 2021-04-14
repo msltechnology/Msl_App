@@ -1,5 +1,7 @@
 package com.example.mslapp.Ble.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,11 +28,15 @@ public class fragment_Ble_Setting extends Fragment {
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-Setting";
 
-    TextView readTv;
+    TextView readTv, selected_FL, selected_ID;
 
     Button btn_status, btn_FL_Setting, btn_ID_Setting;
 
     View view;
+
+    private static final int Ble_Setting_dialog_FL = 1;
+    private static final int Ble_Setting_dialog_ID = 2;
+    private static final String EXTRA_GREETING_MESSAGE = "message";
 
     @Nullable
     @Override
@@ -40,10 +46,18 @@ public class fragment_Ble_Setting extends Fragment {
         view = inflater.inflate(R.layout.ble_fragment_setting, null);
 
         readTv = view.findViewById(R.id.readData_setting);
+        selected_FL = view.findViewById(R.id.tv_ble_framgment_setting_selected_FL);
+        selected_ID = view.findViewById(R.id.tv_ble_framgment_setting_selected_ID);
 
         btnSetting();
 
         return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     public void readData(String data) {
@@ -67,23 +81,61 @@ public class fragment_Ble_Setting extends Fragment {
                 showDialogFragment_ID());
     }
 
+    public void setSelected_FL(String selected_fl){
+        Log.d(TAG, "fragment_Ble_Setting setSelected_FL : " + selected_fl);
+        selected_FL.setText(selected_fl);
+    }
+
+    public void setSelected_ID(String selected_fl){
+        Log.d(TAG, "fragment_Ble_Setting setSelected_ID : " + selected_fl);
+        selected_ID.setText(selected_fl);
+    }
+
     private void showDialogFragment_FL() {
 
         FragmentManager fm = this.getChildFragmentManager();
-        dialogFragment_Ble_Setting_FL_Setting editNameDialogFragment = new dialogFragment_Ble_Setting_FL_Setting();
-        editNameDialogFragment.show(fm, "fragment_setting_dialog_FL");
+        dialogFragment_Ble_Setting_FL_Setting setting_FL_DialogFragment = new dialogFragment_Ble_Setting_FL_Setting();
+        setting_FL_DialogFragment.show(fm, "fragment_setting_dialog_FL");
     }
 
     private void showDialogFragment_ID() {
 
         FragmentManager fm = this.getChildFragmentManager();
-        dialogFragment_Ble_Setting_ID_Setting editNameDialogFragment = new dialogFragment_Ble_Setting_ID_Setting();
-        editNameDialogFragment.show(fm, "fragment_setting_dialog_ID");
+        dialogFragment_Ble_Setting_ID_Setting setting_ID_DialogFragment = new dialogFragment_Ble_Setting_ID_Setting();
+        setting_ID_DialogFragment.show(fm, "fragment_setting_dialog_ID");
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if( resultCode != Activity.RESULT_OK ) {
+            Log.d(TAG, "fragment_Ble_Setting onActivityResult RESULT_OK : Fail ");
+            return;
+        }
+        Log.d(TAG, "fragment_Ble_Setting onActivityResult RESULT_OK : Success ");
+        if( requestCode == Ble_Setting_dialog_FL ) {
+            Log.d(TAG, "fragment_Ble_Setting onActivityResult Code : Ble_Setting_dialog_FL ");
+            String greeting = data.getStringExtra(EXTRA_GREETING_MESSAGE);
+            setSelected_FL(greeting);
+        }else if( requestCode == Ble_Setting_dialog_ID ){
+            Log.d(TAG, "fragment_Ble_Setting onActivityResult Code : Ble_Setting_dialog_ID ");
+            String greeting = data.getStringExtra(EXTRA_GREETING_MESSAGE);
+            setSelected_ID(greeting);
+        }
+    }
+
+    public static Intent newIntent(String message) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_GREETING_MESSAGE, message);
+        return intent;
+    }
+
+
 
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
+
+
 
 }

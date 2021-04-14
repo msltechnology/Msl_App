@@ -47,4 +47,5 @@
     <string name="remarks">remarks</string>
     <string name="Fixed">부동광</string>
     <string name="select">select</string>
+    <string name="btnSelectID_Error1">최대값은 255입니다.</string>
 </resources>

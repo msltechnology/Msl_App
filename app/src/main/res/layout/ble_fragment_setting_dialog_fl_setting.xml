@@ -84,21 +84,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_dialog_setting_search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMaxTextSize="35dp"
-                android:gravity="center"
-                android:text="@string/dialog_setting_search" />
-
-        </LinearLayout>
 
 
     </LinearLayout>
@@ -124,7 +109,6 @@
         android:baselineAligned="false">
 
         <LinearLayout
-            android:id="@+id/ll_dialog_setting_cancel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -132,6 +116,7 @@
             tools:ignore="NestedWeights">
 
             <TextView
+                android:id="@+id/tv_dialog_setting_cancel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:autoSizeTextType="uniform"
@@ -151,19 +136,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:autoSizeTextType="uniform"
-                android:gravity="center"
-                tools:text="선택한 FL 값" />
+                android:gravity="center" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_dialog_setting_confirm"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="5dp">
 
             <TextView
+                android:id="@+id/tv_dialog_setting_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:autoSizeTextType="uniform"

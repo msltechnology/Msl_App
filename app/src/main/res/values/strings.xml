@@ -78,4 +78,5 @@
     <string name="remarks">비고</string>
     <string name="Fixed">부동광</string>
     <string name="select">select</string>
+    <string name="btnSelectID_Error1">값의 범위는 001 ~ 256 입니다.</string>
 </resources>

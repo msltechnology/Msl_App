@@ -24,10 +24,9 @@ public class fragment_Ble_Status extends Fragment {
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-Status";
 
-    TextView readDataTv;
     TextView tv_ble_status_id, tv_ble_status_input_v, tv_ble_status_output_a, tv_ble_status_cds, tv_ble_status_lantern_status, tv_ble_status_fl,
             tv_ble_status_solar_v, tv_ble_status_battery_v, tv_ble_status_output_v, tv_ble_status_charge_dischar_a, tv_ble_status_battery_percent,
-            tv_ble_status_receive_data, tv_ble_status_receive_time, tv_ble_status_gps_latitude, tv_ble_status_gps_longtitude;
+            tv_ble_status_receive_data, tv_ble_status_receive_time, tv_ble_status_gps_latitude, tv_ble_status_gps_longitude;
 
     View view;
 
@@ -52,9 +51,6 @@ public class fragment_Ble_Status extends Fragment {
 
         buttonSetting();
         textviewSetting();
-
-        readDataTv = view.findViewById(R.id.tv_bt_read);
-
 
         // 최초 1회 정보 요청
         ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS);
@@ -95,7 +91,7 @@ public class fragment_Ble_Status extends Fragment {
         tv_ble_status_receive_data = view.findViewById(R.id.tv_ble_framgment_status_receive_date);
         tv_ble_status_receive_time = view.findViewById(R.id.tv_ble_framgment_status_recieve_time);
         tv_ble_status_gps_latitude = view.findViewById(R.id.tv_ble_framgment_status_gps_latitude);
-        tv_ble_status_gps_longtitude = view.findViewById(R.id.tv_ble_framgment_status_gps_longtitude);
+        tv_ble_status_gps_longitude = view.findViewById(R.id.tv_ble_framgment_status_gps_longitude);
 
     }
 
@@ -125,11 +121,14 @@ public class fragment_Ble_Status extends Fragment {
                 tv_ble_status_receive_data.setText(data_arr[12]);
                 tv_ble_status_receive_time.setText(data_arr[13]);
                 tv_ble_status_gps_latitude.setText(data_arr[14]);
-                tv_ble_status_gps_longtitude.setText(data_arr[15]);
+                String longitude = data_arr[15];
+                if(longitude.contains("*")){
+                    longitude = longitude.substring(0,longitude.indexOf("*"));
+                }
+                tv_ble_status_gps_longitude.setText(longitude);
             }
 
         }
-        readDataTv.setText(data);
     }
 
     @Override
