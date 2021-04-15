@@ -170,9 +170,9 @@ public class fragment_Ble_Beginning extends Fragment {
     }
 
     private void bleScanCDSBtnOnClick() {
-        showEditDialog();
-        //CdsFlag = true;
-        //fragmentScanChange();
+        //showEditDialog();
+        CdsFlag = true;
+        fragmentScanChange();
     }
     private void bleScanSNBtnOnClick() {
         //showEditDialog();

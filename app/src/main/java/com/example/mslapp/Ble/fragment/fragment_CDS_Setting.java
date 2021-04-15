@@ -1,6 +1,8 @@
 package com.example.mslapp.Ble.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,11 +31,14 @@ public class fragment_CDS_Setting extends Fragment {
     public static final String TAG = "Msl-Ble-CDS";
 
     View view;
+    private Activity activity;
 
     TextView readData;
 
     // 로딩바
     ProgressDialog dialog;
+
+    // 일단 이대로 두고 직접 사용한다음 수정할 예정.
 
     @Nullable
     @Override
@@ -41,6 +46,8 @@ public class fragment_CDS_Setting extends Fragment {
 
         Log.d(TAG, "onCreateView");
         view = inflater.inflate(R.layout.ble_fragment_cds, null);
+
+        ((CDS_Setting_Listener) activity).onCreateViewFragment_CDS_Setting();
 
         dialog = new ProgressDialog(view.getContext());
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -76,9 +83,27 @@ public class fragment_CDS_Setting extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        if (context instanceof CDS_Setting_Listener) {
+            //selecetBleListener = (Ble_Status_Listener) context;
+            this.activity = (Activity) context;
+        } else {
+            throw new RuntimeException((context.toString() + " must implement SelectBleListener"));
+        }
+        super.onAttach(context);
+    }
+
+    @Override
     public void onDetach() {
         CdsFlag = false;
         dialog.dismiss();
+        ((CDS_Setting_Listener) activity).onDetachFragment_CDS_Setting();
         super.onDetach();
+    }
+
+    public interface CDS_Setting_Listener {
+        void onCreateViewFragment_CDS_Setting();
+
+        void onDetachFragment_CDS_Setting();
     }
 }

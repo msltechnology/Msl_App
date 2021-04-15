@@ -32,7 +32,7 @@ public class fragment_Ble_Status extends Fragment {
 
 
     // 상위Activity 에게 데이터 주는 용도
-    private Ble_Status_Listener selecetBleListener;
+    //private Ble_Status_Listener selecetBleListener;
     private Activity activity;
 
 
@@ -141,7 +141,7 @@ public class fragment_Ble_Status extends Fragment {
         super.onAttach(context);
         Log.d(TAG, "onAttach");
         if (context instanceof Ble_Status_Listener) {
-            selecetBleListener = (Ble_Status_Listener) context;
+            //selecetBleListener = (Ble_Status_Listener) context;
             this.activity = (Activity) context;
         } else {
             throw new RuntimeException((context.toString() + " must implement SelectBleListener"));
@@ -153,7 +153,7 @@ public class fragment_Ble_Status extends Fragment {
         super.onDetach();
         Log.d(TAG, "onDetach");
         ((Ble_Status_Listener) activity).onDetachFragment_Ble_Status();
-        selecetBleListener = null;
+        //selecetBleListener = null;
     }
 
     public interface Ble_Status_Listener {

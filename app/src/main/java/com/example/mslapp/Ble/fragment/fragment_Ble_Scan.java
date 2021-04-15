@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.mslapp.Ble.blelistview.BleScanListView;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 import com.example.mslapp.Ble.blelistview.ListViewAdapter;
@@ -30,12 +31,15 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.example.mslapp.BleMainActivity.CdsFlag;
+import static com.example.mslapp.BleMainActivity.SnFlag;
 import static com.example.mslapp.BleMainActivity.filters;
 import static com.example.mslapp.BleMainActivity.mBluetoothAdapter;
 import static com.example.mslapp.BleMainActivity.scanningFlag;
 import static com.example.mslapp.BleMainActivity.settings;
 
 public class fragment_Ble_Scan extends Fragment {
+
+    public static String selectedSerialNum = "";
 
     //scan results
     public ArrayList<BluetoothDevice> scanResults = new ArrayList();
@@ -82,12 +86,22 @@ public class fragment_Ble_Scan extends Fragment {
 
                 ((Ble_Scan_Listener) activity).onSelectBleDevice(device);
 
+                BleScanListView listView = (BleScanListView) adapter.getItem(position);
+
+                selectedSerialNum = listView.getBleUserdata();
+
+                Log.d(TAG, "selectedSerialNum : " + selectedSerialNum);
+
                 stopScan();
                 if (CdsFlag) {
                     ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_cds_setting");
-                } else {
+                } else if (SnFlag) {
+                    ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_sn_setting");
+                }else {
                     ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_password");
                 }
+
+
             }
 
             /*// get TextView's Text.
@@ -211,7 +225,7 @@ public class fragment_Ble_Scan extends Fragment {
                 byte[] scanRecord = result.getScanRecord().getBytes();
                 byte[] advertisedData = Arrays.copyOfRange(scanRecord, 0, scanRecord.length);
 
-                for (int i = 0; i < advertisedData.length; i++) {
+                /*for (int i = 0; i < advertisedData.length; i++) {
                     byte a = advertisedData[i];
 
                     try {
@@ -221,7 +235,7 @@ public class fragment_Ble_Scan extends Fragment {
                     }
 
                 }
-                Log.d(TAG, "testString : " + testString);
+                Log.d(TAG, "testString : " + testString);*/
 
                 String stringBuffer = new String(advertisedData); //모든 데이터를 문자열로 받아온다
 /*
@@ -323,6 +337,53 @@ public class fragment_Ble_Scan extends Fragment {
         }
 
     };
+
+    String getUserData(ScanResult result){
+        byte[] scanRecord = result.getScanRecord().getBytes();
+        byte[] advertisedData = Arrays.copyOfRange(scanRecord, 0, scanRecord.length);
+        String stringBuffer = new String(advertisedData); //모든 데이터를 문자열로 받아온다
+        String userdataAll = stringBuffer;
+
+        // MSL 과 관련된 제품일 경우
+        if (stringBuffer.contains("MSL TECH")) {
+            Log.d(TAG, "MSL TECH contain : " + stringBuffer);
+
+            try {
+                // MSL의 각 제품 코드는 데이터의 19번째 데이터부터 이기에 거기부터 자른다.
+                userdataAll = stringBuffer.substring(18);
+            } catch (Exception e) {
+                // 제품이 켜진지 얼마 안되었거나 문제가 생겼을 시(아직 보드가 블루투스에게 데이터 전달이 안된 상태)
+                userdataAll = "Loading";
+                Log.d(TAG, "getManufacturerSpecificData null");
+
+            }
+        }
+
+        String userdata = "";
+        char chrInput;
+
+        // userdata의 글자 깨진거 제거
+        for (int i = 0; i < userdataAll.length(); i++) {
+
+            chrInput = userdataAll.charAt(i); // 입력받은 텍스트에서 문자 하나하나 가져와서 체크
+
+
+            if (chrInput >= 0x61 && chrInput <= 0x7A) {
+                // 영문(소문자)
+                userdata += chrInput;
+            } else if (chrInput >= 0x41 && chrInput <= 0x5A) {
+                // 영문(대문자)
+                userdata += chrInput;
+            } else if (chrInput >= 0x30 && chrInput <= 0x39) {
+                // 숫자
+                userdata += chrInput;
+            } else {
+
+            }
+        }
+
+        return userdata;
+    }
 
     @Override
     public void onPause() {

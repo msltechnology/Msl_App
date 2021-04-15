@@ -56,6 +56,7 @@ import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Function;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Password;
 import com.example.mslapp.Ble.fragment.fragment_CDS_Setting;
+import com.example.mslapp.Ble.fragment.fragment_SN_Setting;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -66,7 +67,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import static com.example.mslapp.Ble.BluetoothUtils.findBLECharacteristics;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
-public class BleMainActivity extends AppCompatActivity implements fragment_Ble_Scan.Ble_Scan_Listener, fragment_Ble_Status.Ble_Status_Listener {
+public class BleMainActivity extends AppCompatActivity implements fragment_Ble_Scan.Ble_Scan_Listener, fragment_Ble_Status.Ble_Status_Listener,
+        fragment_SN_Setting.SN_Setting_Listener, fragment_CDS_Setting.CDS_Setting_Listener {
 
     //region 변수 및 상수 정의
 
@@ -377,6 +379,30 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         //tabLayout_ble.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onCreateViewFragment_SN_Setting() {
+        Log.d(TAG, "onCreateViewFragment_SN_Setting");
+        bleDisconnectItem.setVisible(true);
+    }
+
+    @Override
+    public void onDetachFragment_SN_Setting() {
+        Log.d(TAG, "onDetachFragment_SN_Setting");
+        bleDisconnectItem.setVisible(false);
+    }
+
+    @Override
+    public void onCreateViewFragment_CDS_Setting() {
+        Log.d(TAG, "onCreateViewFragment_CDS_Setting");
+        bleDisconnectItem.setVisible(true);
+    }
+
+    @Override
+    public void onDetachFragment_CDS_Setting() {
+        Log.d(TAG, "onDetachFragment_CDS_Setting");
+        bleDisconnectItem.setVisible(false);
+    }
+
 
     // toolbar 생성
     @Override
@@ -616,6 +642,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 break;
             case "fragment_cds_setting":
                 fr = new fragment_CDS_Setting();
+                break;
+            case "fragment_sn_setting":
+                fr = new fragment_SN_Setting();
                 break;
             default:
                 fr = new fragment_Ble_Status();
@@ -1032,6 +1061,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                         Log.d(TAG, "fragment_Ble_password OK!");
                                         fragment_CDS_Setting fragment_cds_setting = (fragment_CDS_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
                                         fragment_cds_setting.readData(data);
+                                    } else if (currentFragment instanceof fragment_SN_Setting) {
+                                        Log.d(TAG, "fragment_Ble_password OK!");
+                                        fragment_SN_Setting fragment_sn_setting = (fragment_SN_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                                        fragment_sn_setting.readData(data);
                                     }
 
                                 }
@@ -1060,6 +1093,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         }
     };
 
+    static String sendBlewriteData;
+
     public static void BlewriteData(String data) {
 
         if (cmdCharacteristic == null) {
@@ -1073,11 +1108,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             return;
         }
 
-        String sendData = data + ToCheckSum(data);
+        sendBlewriteData = data + ToCheckSum(data);
 
-        Log.d(TAG, "BlewriteData data : " + data + ", sendData : " + sendData);
+        Log.d(TAG, "BlewriteData data : " + data + ", sendData : " + sendBlewriteData);
 
-        cmdCharacteristic.setValue(sendData.getBytes());
+        mSendHandler.sendEmptyMessage(0);
 
         Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
         if (!success) {
@@ -1110,6 +1145,31 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         }
 
     }
+
+
+    // 한번에 입력가능한 글자수가 제한되어있어서 잘라서 보내야한다.
+    public static final Handler mSendHandler = new Handler() {
+        public void handleMessage(Message message) {
+
+            int sendStringLen = sendBlewriteData.length();
+
+            try {
+                if (sendBlewriteData.length() < 21) {
+                    cmdCharacteristic.setValue(sendBlewriteData.getBytes());
+                } else if (sendBlewriteData.length() < 41) {
+                    Log.d(TAG, "sendBlewriteData 의 글자 수 초과 : " + sendBlewriteData.length());
+                    cmdCharacteristic.setValue(sendBlewriteData.substring(0, 20));
+                    Log.d(TAG, "sendBlewriteData 의 글자 수 초과 데이터 1 : " + sendBlewriteData.substring(0, 20));
+                    Thread.sleep(100);
+                    cmdCharacteristic.setValue(sendBlewriteData.substring(20, sendStringLen));
+                    Log.d(TAG, "sendBlewriteData 의 글자 수 초과 데이터 2 : " + sendBlewriteData.substring(20, sendStringLen));
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
 
     // 블루투스가 꺼지는 중, 꺼짐 or 켜지는 중, 켜짐 상태 알려줌.
     private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
@@ -1225,4 +1285,5 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         unregisterReceiver(mBroadcastReceiver3);
         disconnectGattServer("BleMainActivity - onDestroy");
     }
+
 }
