@@ -338,53 +338,6 @@ public class fragment_Ble_Scan extends Fragment {
 
     };
 
-    String getUserData(ScanResult result){
-        byte[] scanRecord = result.getScanRecord().getBytes();
-        byte[] advertisedData = Arrays.copyOfRange(scanRecord, 0, scanRecord.length);
-        String stringBuffer = new String(advertisedData); //모든 데이터를 문자열로 받아온다
-        String userdataAll = stringBuffer;
-
-        // MSL 과 관련된 제품일 경우
-        if (stringBuffer.contains("MSL TECH")) {
-            Log.d(TAG, "MSL TECH contain : " + stringBuffer);
-
-            try {
-                // MSL의 각 제품 코드는 데이터의 19번째 데이터부터 이기에 거기부터 자른다.
-                userdataAll = stringBuffer.substring(18);
-            } catch (Exception e) {
-                // 제품이 켜진지 얼마 안되었거나 문제가 생겼을 시(아직 보드가 블루투스에게 데이터 전달이 안된 상태)
-                userdataAll = "Loading";
-                Log.d(TAG, "getManufacturerSpecificData null");
-
-            }
-        }
-
-        String userdata = "";
-        char chrInput;
-
-        // userdata의 글자 깨진거 제거
-        for (int i = 0; i < userdataAll.length(); i++) {
-
-            chrInput = userdataAll.charAt(i); // 입력받은 텍스트에서 문자 하나하나 가져와서 체크
-
-
-            if (chrInput >= 0x61 && chrInput <= 0x7A) {
-                // 영문(소문자)
-                userdata += chrInput;
-            } else if (chrInput >= 0x41 && chrInput <= 0x5A) {
-                // 영문(대문자)
-                userdata += chrInput;
-            } else if (chrInput >= 0x30 && chrInput <= 0x39) {
-                // 숫자
-                userdata += chrInput;
-            } else {
-
-            }
-        }
-
-        return userdata;
-    }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -413,6 +366,8 @@ public class fragment_Ble_Scan extends Fragment {
         ((Ble_Scan_Listener) activity).onDetachFragment_Ble_Scan();
         selecetBleListener = null;
     }
+
+
 
     public interface Ble_Scan_Listener {
         void onSelectBleDevice(BluetoothDevice device);

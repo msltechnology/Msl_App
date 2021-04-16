@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
+import java.util.Objects;
+
 import static com.example.mslapp.Ble.fragment.fragment_Ble_Scan.selectedSerialNum;
 import static com.example.mslapp.BleMainActivity.ADMIN_PASSWORD;
 import static com.example.mslapp.BleMainActivity.BlewriteData;
@@ -36,6 +38,7 @@ import static com.example.mslapp.BleMainActivity.DATA_SIGN_START;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_LICMD;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_S;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_SNB;
+import static com.example.mslapp.BleMainActivity.disconnectGattServer;
 
 public class fragment_SN_Setting extends Fragment {
 
@@ -83,12 +86,18 @@ public class fragment_SN_Setting extends Fragment {
 
     public void readData(String data) {
 
-        if (data.contains("$PS,R,")) {
-            dialog.dismiss();
-            ((BleMainActivity) getActivity()).BlewriteData(ADMIN_PASSWORD);
-        }
-
         Log.d(TAG, "readData! : " + data);
+
+        if (data.contains("$PS,R,")) {
+            Log.d(TAG, "readData : $PS,R");
+            BlewriteData(ADMIN_PASSWORD);
+            if(dialog != null){
+                Log.d(TAG, "dialog not null");
+                dialog.dismiss();
+            }else{
+                Log.d(TAG, "dialog null");
+            }
+        }
     }
 
     void changeSerialNum() {
@@ -113,18 +122,29 @@ public class fragment_SN_Setting extends Fragment {
                 + DATA_TYPE_SNB + DATA_SIGN_COMMA
                 + editData + DATA_SIGN_CHECKSUM;
 
-        mSendHandler.sendEmptyMessage(0);
+
+        mSNSendHandler.sendEmptyMessage(0);
 
     }
 
-    private final Handler mSendHandler = new Handler() {
+    private final Handler mSNSendHandler = new Handler() {
         public void handleMessage(Message message) {
 
             try {
-                BlewriteData(sendData);
-                Thread.sleep(1000);
+                if(sendData.length() < 21){
+                    BlewriteData(sendData);
+                }else{
+
+                    BlewriteData(sendData.substring(0,20));
+                    Thread.sleep(100);
+                    BlewriteData(sendData.substring(20));
+                }
+                Thread.sleep(100);
                 BlewriteData(DATA_DEVICE_RESET);
-            } catch (InterruptedException e) {
+                Thread.sleep(1000);
+                disconnectGattServer("fragment_SN_Setting - handleMessage - DATA_DEVICE_RESET");
+                ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_beginning");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

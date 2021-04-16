@@ -955,7 +955,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.d(TAG, "Characteristic written successfully");
+                Log.d(TAG, "Characteristic written successfully : " + characteristic.getStringValue(0));
+
             } else {
                 Log.e(TAG, "Characteristic write unsuccessful, status: $status");
                 disconnectGattServer("BleMainActivity - gattClientCallback - onCharacteristicWrite unsuccessful");
@@ -1093,11 +1094,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         }
     };
 
-    static String sendBlewriteData;
-
     public static void BlewriteData(String data) {
 
         if (cmdCharacteristic == null) {
+            Log.d(TAG, "BlewriteData - cmdCharacteristic : null");
             cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
         }
 
@@ -1108,11 +1108,13 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             return;
         }
 
-        sendBlewriteData = data + ToCheckSum(data);
+        String sendBlewriteData = data + ToCheckSum(data);
+        sendBlewriteData = sendBlewriteData + DATA_SIGN_CR + DATA_SIGN_LF;
 
         Log.d(TAG, "BlewriteData data : " + data + ", sendData : " + sendBlewriteData);
 
-        mSendHandler.sendEmptyMessage(0);
+        cmdCharacteristic.setValue(sendBlewriteData.getBytes());
+
 
         Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
         if (!success) {
@@ -1145,30 +1147,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         }
 
     }
-
-
-    // 한번에 입력가능한 글자수가 제한되어있어서 잘라서 보내야한다.
-    public static final Handler mSendHandler = new Handler() {
-        public void handleMessage(Message message) {
-
-            int sendStringLen = sendBlewriteData.length();
-
-            try {
-                if (sendBlewriteData.length() < 21) {
-                    cmdCharacteristic.setValue(sendBlewriteData.getBytes());
-                } else if (sendBlewriteData.length() < 41) {
-                    Log.d(TAG, "sendBlewriteData 의 글자 수 초과 : " + sendBlewriteData.length());
-                    cmdCharacteristic.setValue(sendBlewriteData.substring(0, 20));
-                    Log.d(TAG, "sendBlewriteData 의 글자 수 초과 데이터 1 : " + sendBlewriteData.substring(0, 20));
-                    Thread.sleep(100);
-                    cmdCharacteristic.setValue(sendBlewriteData.substring(20, sendStringLen));
-                    Log.d(TAG, "sendBlewriteData 의 글자 수 초과 데이터 2 : " + sendBlewriteData.substring(20, sendStringLen));
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    };
 
 
     // 블루투스가 꺼지는 중, 꺼짐 or 켜지는 중, 켜짐 상태 알려줌.
@@ -1284,6 +1262,20 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         //unregisterReceiver(mBroadcastReceiver2);
         unregisterReceiver(mBroadcastReceiver3);
         disconnectGattServer("BleMainActivity - onDestroy");
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+            //additional code
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
+
     }
 
 }

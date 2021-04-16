@@ -53,6 +53,9 @@ public class fragment_Ble_Beginning extends Fragment {
 
         Log.d(TAG, "fragment_Ble_Beginning onCreateView");
 
+        CdsFlag = false;
+        SnFlag = false;
+
         Button bleScanBtn = view.findViewById(R.id.bleScan);
         Button bleScanCDSBtn = view.findViewById(R.id.btn_beginning_cds);
         Button bleScanSNBtn = view.findViewById(R.id.btn_beginning_SN);
