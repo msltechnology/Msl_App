@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">MSLtechnology</string>
     <string name="ble_setting_FLSetting_message">테스트 중</string>
     <string name="ble_setting_FLSetting_title">FL Setting</string>
     <string name="ble_main_scanItem_scan">찾기</string>
@@ -20,40 +19,11 @@
     <string name="dialog_setting_confirm">확인</string>
     <string name="ID_setting">ID 설정</string>
     <string name="FL_setting">FL 설정</string>
-    <string name="_1" translatable="false">1</string>
-    <string name="_2" translatable="false">2</string>
-    <string name="_3" translatable="false">3</string>
-    <string name="_4" translatable="false">4</string>
-    <string name="_5" translatable="false">5</string>
-    <string name="_6" translatable="false">6</string>
-    <string name="_7" translatable="false">7</string>
-    <string name="_8" translatable="false">8</string>
-    <string name="_9" translatable="false">9</string>
-    <string name="_10" translatable="false">10</string>
-    <string name="_12" translatable="false">12</string>
-    <string name="_15" translatable="false">15</string>
-    <string name="_16" translatable="false">16</string>
-    <string name="_20" translatable="false">20</string>
-    <string name="_25" translatable="false">25</string>
-    <string name="_30" translatable="false">30</string>
-    <string name="_0_5" translatable="false">0.5</string>
-    <string name="_0_6" translatable="false">0.6</string>
-    <string name="_0_75" translatable="false">0.75</string>
-    <string name="_1_2" translatable="false">1.2</string>
-    <string name="_1_25" translatable="false">1.25</string>
-    <string name="_1_5" translatable="false">1.5</string>
-    <string name="_2_5" translatable="false">2.5</string>
-    <string name="_3_5" translatable="false">3.5</string>
-    <string name="_4_3" translatable="false">4.3</string>
-    <string name="_4_5" translatable="false">4.5</string>
-    <string name="_5_5" translatable="false">5.5</string>
-    <string name="_15_75" translatable="false">15.75</string>
     <string name="status">상태확인</string>
     <string name="lantern_On">강제점등</string>
     <string name="lantern_Off">강제소등</string>
     <string name="lantern_Fix">부동광</string>
     <string name="Reset">리셋</string>
-    <string name="_0" translatable="false">0</string>
     <string name="toastMsg_bluetooth_Off">블루투스 기능이 꺼졌습니다. 확인 바랍니다.</string>
     <string name="ble_main_scanItem_refresh">새로고침</string>
     <string name="ble_main_scanItem_Disconnect">연결끊기</string>
@@ -81,5 +51,5 @@
     <string name="btnSelectID_Error1">값의 범위는 001 ~ 256 입니다.</string>
     <string name="GPS_On">항상 키기</string>
     <string name="GPS_Off">밤에만 키기</string>
-    <string name="tv_ble_fragment_beginning_manual">Manual</string>
+    <string name="tv_ble_fragment_beginning_manual">사용방법</string>
 </resources>

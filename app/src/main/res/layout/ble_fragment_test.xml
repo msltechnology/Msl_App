@@ -4,6 +4,79 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/lampOnBtn"
+            style="@style/ble_fragment_test_btn"
+            android:text="@string/lantern_On" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/lampOffBtn"
+            style="@style/ble_fragment_test_btn"
+            android:text="@string/lantern_Off" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/lampFixedBtn"
+            style="@style/ble_fragment_test_btn"
+            android:text="@string/lantern_Fix" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/resetBtn"
+            style="@style/ble_fragment_test_btn"
+            android:text="@string/Reset" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/readData_test"
         android:layout_width="wrap_content"
@@ -11,24 +84,7 @@
         android:text="fragment_test" />
 
 
-    <Button
-        android:id="@+id/lampOnBtn"
-        style="@style/btn_status"
-        android:text="@string/lampOn" />
 
-    <Button
-        android:id="@+id/lampOffBtn"
-        style="@style/btn_status"
-        android:text="@string/lampOff" />
 
-    <Button
-        android:id="@+id/lampFixedBtn"
-        style="@style/btn_status"
-        android:text="@string/lampFix" />
-
-    <Button
-        android:id="@+id/resetBtn"
-        style="@style/btn_status"
-        android:text="@string/Reset" />
 
 </LinearLayout>

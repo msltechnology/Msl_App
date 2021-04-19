@@ -18,9 +18,9 @@
     <string name="ID_setting">ID_Set</string>
     <string name="FL_setting">FL_Set</string>
     <string name="status">Status</string>
-    <string name="lampOn">LampOn</string>
-    <string name="lampOff">LampOff</string>
-    <string name="lampFix">LampFix</string>
+    <string name="lantern_On">lantern On</string>
+    <string name="lantern_Off">lantern Off</string>
+    <string name="lantern_Fix">lantern Fix</string>
     <string name="Reset">Reset</string>
     <string name="ble_main_title">MSLtechnology</string>
     <string name="toastMsg_bluetooth_Off">Bluetooth OFF! Please Check Bluetooth</string>
@@ -45,7 +45,10 @@
     <string name="Second_Sec">Sec</string>
     <string name="division">division</string>
     <string name="remarks">remarks</string>
-    <string name="Fixed">부동광</string>
+    <string name="Fixed">Fixed</string>
     <string name="select">select</string>
-    <string name="btnSelectID_Error1">최대값은 255입니다.</string>
+    <string name="btnSelectID_Error1">The maximum is 256.</string>
+    <string name="GPS_On">Always On</string>
+    <string name="GPS_Off">Only Night</string>
+    <string name="tv_ble_fragment_beginning_manual">Manual</string>
 </resources>

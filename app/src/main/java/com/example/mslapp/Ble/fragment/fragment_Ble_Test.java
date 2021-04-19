@@ -1,6 +1,8 @@
 package com.example.mslapp.Ble.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +17,15 @@ import androidx.fragment.app.Fragment;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
+import java.util.Objects;
+
+import static com.example.mslapp.BleMainActivity.BlewriteData;
 import static com.example.mslapp.BleMainActivity.DATA_DEVICE_RESET;
 import static com.example.mslapp.BleMainActivity.DATA_LAMP_FIXED;
 import static com.example.mslapp.BleMainActivity.DATA_LAMP_OFF;
 import static com.example.mslapp.BleMainActivity.DATA_LAMP_ON;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
+import static com.example.mslapp.BleMainActivity.disconnectGattServer;
 
 public class fragment_Ble_Test extends Fragment {
 
@@ -54,7 +60,7 @@ public class fragment_Ble_Test extends Fragment {
         Button lampFixedBtn = view.findViewById(R.id.lampFixedBtn);
         lampFixedBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_LAMP_FIXED));
         Button resetBtn = view.findViewById(R.id.resetBtn);
-        resetBtn.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));
+        resetBtn.setOnClickListener(v -> mSNSendHandler.sendEmptyMessage(0));
 
         /*Button testBtn1 = view.findViewById(R.id.test_bt1);
         testBtn1.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_READY));
@@ -74,6 +80,22 @@ public class fragment_Ble_Test extends Fragment {
 
         readTv.setText(data);
     }
+
+    private final Handler mSNSendHandler = new Handler() {
+        public void handleMessage(Message message) {
+
+            try {
+                BlewriteData(DATA_DEVICE_RESET);
+                Thread.sleep(100);
+                disconnectGattServer("fragment_Ble_Test - handleMessage - DATA_DEVICE_RESET");
+                ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_beginning");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+
 
     @Override
     public void onDestroy() {

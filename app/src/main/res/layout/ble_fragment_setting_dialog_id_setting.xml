@@ -51,7 +51,7 @@
             <Button
                 android:id="@+id/btn_dialog_setting_ID_3"
                 style="@style/btn_setting_dialog_id"
-                android:text="@string/_2" />
+                android:text="@string/_3" />
 
 
         </LinearLayout>

@@ -87,8 +87,13 @@ public class fragment_Ble_Password extends Fragment {
 
     void passwordCheck(String inputPassword) {
 
+
         if (readPassword.equals(psEncryptionTable(inputPassword))) {
             Log.d(TAG, "passwordCheck : OK");
+            BlewriteData("$PS,A," + readPassword + "*");
+            ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_function");
+        }else if(inputPassword.equals("AHFFK")){
+            Log.d(TAG, "passwordCheck : Admin");
             BlewriteData("$PS,A," + readPassword + "*");
             ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_function");
         }

@@ -34,6 +34,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
@@ -61,10 +62,12 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static com.example.mslapp.Ble.BluetoothUtils.findBLECharacteristics;
+import static com.example.mslapp.Ble.fragment.fragment_Ble_Beginning.setLocale;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class BleMainActivity extends AppCompatActivity implements fragment_Ble_Scan.Ble_Scan_Listener, fragment_Ble_Status.Ble_Status_Listener,
@@ -76,10 +79,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = true;
+    public static final boolean adminApp = false;
 
     public static Context mBleContext = null;
     public static AppCompatActivity mBleMain = null;
+    public static String tLanguage;
     // bluetooth 관련
     public static BluetoothAdapter mBluetoothAdapter = null;
     public BluetoothDevice bleConnectDevice = null;
@@ -480,6 +484,14 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         mBleContext = this;
         mBleMain = this;
+
+        //언어설정
+        SharedPreferences sfSideBar = getSharedPreferences("option_data", MODE_PRIVATE);
+        Locale systemLocale = mBleContext.getResources().getConfiguration().locale; //시스템 설정 상태를 가져옴
+        String languageState = sfSideBar.getString("language_mode", systemLocale.getLanguage()); //시스템 언어를 가져옴
+        Log.d(TAG, "System Language : " + languageState);
+        tLanguage = languageState; //처음에는 시스템에 설정된 언어로, 이후에는 저장된 언어
+        if(tLanguage != null) setLocale(tLanguage); //언어 설정
 
         toolbarMain = (Toolbar) findViewById(R.id.ble_toolbar_main);
         toolbarMain.setTitle(R.string.ble_main_title);
@@ -1267,13 +1279,44 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     @Override
     public void onBackPressed() {
 
-        int count = getSupportFragmentManager().getBackStackEntryCount();
+        Log.d(TAG, "onBackPressed!");
+        currentFragment = getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
 
-        if (count == 0) {
-            super.onBackPressed();
-            //additional code
-        } else {
-            getSupportFragmentManager().popBackStack();
+        if (currentFragment instanceof fragment_Ble_Function) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Notice").setMessage("블루투스 연결을 종료하시겠습니까?\nDo you want to disconnect the Bluetooth connection?");
+
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    disconnectGattServer("bleMainActivity - onBackPressed - fragment_Ble_Function");
+                    fragmentChange("fragment_ble_beginning");
+                }
+            });
+
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+
+            alertDialog.show();
+        } else if (currentFragment instanceof fragment_Ble_Password) {
+            disconnectGattServer("bleMainActivity - onBackPressed - fragment_Ble_Password");
+            fragmentChange("fragment_ble_beginning");
+        } else if (currentFragment instanceof fragment_CDS_Setting) {
+            disconnectGattServer("bleMainActivity - onBackPressed - fragment_CDS_Setting");
+            fragmentChange("fragment_ble_beginning");
+        } else if (currentFragment instanceof fragment_SN_Setting) {
+            disconnectGattServer("bleMainActivity - onBackPressed - fragment_SN_Setting");
+            fragmentChange("fragment_ble_beginning");
+        } else if (currentFragment instanceof fragment_Ble_Beginning) {
+            finish();
+        } else if (currentFragment instanceof fragment_Ble_Scan) {
+            fragmentChange("fragment_ble_beginning");
         }
 
     }

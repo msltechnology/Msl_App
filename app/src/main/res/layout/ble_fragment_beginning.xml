@@ -1,32 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/bleScan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
         android:text="Scan"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:visibility="visible"></Button>
 
-    <Button
-        android:id="@+id/btn_beginning_cds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan_cds"></Button>
-    <Button
-        android:id="@+id/btn_beginning_SN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan_SN"></Button>
+    <LinearLayout
+        android:id="@+id/ll_beginning_Admin"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_beginning_cds"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Scan_cds" />
+
+        <Button
+            android:id="@+id/btn_beginning_SN"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Scan_SN" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_beginning_noAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_beginning_Language"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Language" />
+
+        <Button
+            android:id="@+id/btn_beginning_Manual"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/tv_ble_fragment_beginning_manual" />
+
+    </LinearLayout>
 
 
 </LinearLayout>
