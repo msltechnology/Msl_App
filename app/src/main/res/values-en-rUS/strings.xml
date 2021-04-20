@@ -51,4 +51,9 @@
     <string name="GPS_On">Always On</string>
     <string name="GPS_Off">Only Night</string>
     <string name="tv_ble_fragment_beginning_manual">Manual</string>
+    <string name="notice_current_password">Please enter your current password</string>
+    <string name="notice_change_password">Please enter the password to be changed.</string>
+    <string name="notice_change_password_check">Please enter the changed password again.</string>
+    <string name="notice_passwordChange_fail">The password you entered is different.</string>
+    <string name="change_password">Change Password</string>
 </resources>

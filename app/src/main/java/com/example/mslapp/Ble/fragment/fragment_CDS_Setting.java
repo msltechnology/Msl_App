@@ -95,7 +95,7 @@ public class fragment_CDS_Setting extends Fragment {
 
     @Override
     public void onDetach() {
-        CdsFlag = false;
+        //CdsFlag = false;
         dialog.dismiss();
         ((CDS_Setting_Listener) activity).onDetachFragment_CDS_Setting();
         super.onDetach();

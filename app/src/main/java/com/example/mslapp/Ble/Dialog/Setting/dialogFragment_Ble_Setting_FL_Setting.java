@@ -1,4 +1,4 @@
-package com.example.mslapp.Ble.Setting_Dialog;
+package com.example.mslapp.Ble.Dialog.Setting;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -14,7 +14,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;

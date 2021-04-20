@@ -59,10 +59,10 @@ public class ListViewAdapter extends BaseAdapter {
         tv_bleSign.setText(listViewItem.getBleSign());
         // 배경색 변경하여 MSL TECH 이름의 제품 찾기 쉽게
         if (listViewItem.getBleCheck()) {
-            bleListLl.setBackgroundColor(context.getResources().getColor(R.color.bleListViewMsl));
+            bleListLl.setBackgroundColor(context.getResources().getColor(R.color.ble_scan_list_MSL));
 
         } else {
-            bleListLl.setBackgroundColor(context.getResources().getColor(R.color.bleListViewBack));
+            bleListLl.setBackgroundColor(context.getResources().getColor(R.color.ble_scan_list));
         }
 
         return convertView;

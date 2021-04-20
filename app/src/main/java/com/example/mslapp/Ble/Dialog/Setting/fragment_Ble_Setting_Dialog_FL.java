@@ -1,4 +1,4 @@
-package com.example.mslapp.Ble.Setting_Dialog;
+package com.example.mslapp.Ble.Dialog.Setting;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,9 +11,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
 import com.example.mslapp.R;
 
 public class fragment_Ble_Setting_Dialog_FL extends Fragment {

@@ -1,115 +1,160 @@
-package com.example.mslapp.Ble.fragment;
+package com.example.mslapp.Ble.Dialog.Setting;
 
-import android.app.ProgressDialog;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.fragment.app.DialogFragment;
 
-import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
-import java.util.Objects;
-
-import static com.example.mslapp.Ble.fragment.fragment_Ble_Scan.selectedSerialNum;
+import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.psEncryptionTable;
+import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.readPassword;
 import static com.example.mslapp.BleMainActivity.BlewriteData;
+import static com.example.mslapp.BleMainActivity.mBleContext;
 
-public class fragment_Ble_Password extends Fragment {
+public class dialogFragment_Ble_Setting_Password_Change extends DialogFragment {
 
     // 로그 이름 용
-    public static final String TAG = "Msl-Ble-password";
+    public static final String TAG = "Msl-Ble-Setting-Dialog-PasswordChange";
 
-    View view;
-
-    public static String readPassword = "";
-
-    TextView password1, password2, password3, password4, password5, tv_userdata;
+    TextView password1, password2, password3, password4, password5, tv_notice;
 
     Button btn_Q, btn_W, btn_E, btn_R, btn_T, btn_Y, btn_U, btn_I, btn_O, btn_P,
             btn_A, btn_S, btn_D, btn_F, btn_G, btn_H, btn_J, btn_K, btn_L,
             btn_Z, btn_X, btn_C, btn_V, btn_B, btn_N, btn_M,
             btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_0;
 
-    Button btn_delete, btn_connect;
+    Button btn_delete, btn_OK;
+
+    String passwordBackup = "";
+
+    int passwordLevel = 0;
 
     int passwordOrder = 0;
 
-    // 로딩바
-    ProgressDialog dialog;
+    View view;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Log.e(TAG, "dialogFragment_Ble_Setting_Password_Change onCreateView");
 
-        Log.d(TAG, "fragment_Ble_Function onCreateView");
-        view = inflater.inflate(R.layout.ble_fragment_password, null);
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
 
+        view = inflater.inflate(R.layout.ble_fragment_password_change, null);
 
-        dialog = new ProgressDialog(view.getContext());
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage(getString(R.string.ble_password_dialog_message));
-        dialog.show();
 
         textViewSetting();
         btnSetting();
 
-        tv_userdata.setText(selectedSerialNum);
-
         btn_delete = view.findViewById(R.id.password_key_delete);
         btn_delete.setOnClickListener(v -> deleteClickEvent());
 
-        btn_connect = view.findViewById(R.id.btn_connect);
-        btn_connect.setOnClickListener(v -> {
+        btn_OK = view.findViewById(R.id.btn_connect);
+        btn_OK.setOnClickListener(v -> {
             if (passwordOrder == 5) {
-                String password = password1.getText().toString() + password2.getText().toString() + password3.getText().toString() + password4.getText().toString() + password5.getText().toString();
+                String password = password1.getText().toString() + password2.getText().toString() + password3.getText().toString() +
+                        password4.getText().toString() + password5.getText().toString();
                 Log.d(TAG, "password = " + password);
                 passwordCheck(password);
             }
         });
 
-
         return view;
-    }
-
-    public void readData(String data) {
-        Log.d(TAG, "fragment_Ble_password readData! : " + data);
-
-
-        if (data.contains("$PS,R")) {
-            dialog.dismiss();
-            readPassword = data.substring(6, 11);
-            Log.d(TAG, "readPassword = " + readPassword);
-        }
     }
 
     void passwordCheck(String inputPassword) {
 
+        Log.d(TAG, "passwordBackup : " + passwordBackup + " and readData : " + readPassword);
 
-        if (readPassword.equals(psEncryptionTable(inputPassword))) {
-            Log.d(TAG, "passwordCheck : OK");
-            BlewriteData("$PS,A," + readPassword + "*");
-            ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_function");
-        }else if(inputPassword.equals("AHFFK")){
-            Log.d(TAG, "passwordCheck : Admin");
-            BlewriteData("$PS,A," + readPassword + "*");
-            ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_function");
+        if(passwordLevel == 0){
+            if (readPassword.equals(psEncryptionTable(inputPassword))) {
+                Log.d(TAG, "passwordCheck : OK");
+                tv_notice.setText(getString(R.string.notice_change_password));
+                passwordLevel = 1;
+                resetPassword();
+            }else if(inputPassword.equals("AHFFK")){
+                Log.d(TAG, "passwordCheck : Admin");
+                tv_notice.setText(getString(R.string.notice_change_password));
+                passwordLevel = 1;
+                resetPassword();
+            }
+        }else if(passwordLevel == 1){
+            Log.d(TAG, "new password : " + inputPassword);
+            passwordBackup = inputPassword;
+            tv_notice.setText(getString(R.string.notice_change_password_check));
+            passwordLevel = 2;
+            resetPassword();
+        }else if(passwordLevel == 2){
+            Log.d(TAG, "new password check : " + passwordBackup + " / " + inputPassword);
+            if(passwordBackup.equals(inputPassword)){
+                BlewriteData("$PS,S," + passwordBackup + "*");
+                readPassword = psEncryptionTable(passwordBackup);
+                this.dismiss();
+            }else{
+                Toast.makeText(mBleContext, getString(R.string.notice_passwordChange_fail), Toast.LENGTH_SHORT).show();
+            }
+
         }
+    }
+
+    void resetPassword(){
+        password1.setText("");
+        password2.setText("");
+        password3.setText("");
+        password4.setText("");
+        password5.setText("");
+        passwordOrder = 0;
     }
 
 
     @Override
-    public void onDetach() {
-        dialog.dismiss();
-        super.onDetach();
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Get field from view
+        getDialog().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // 창크기 지정
+        Display display = mBleContext.getDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        final String x = String.valueOf(Math.round((size.x * 0.95)));
+        final String y = String.valueOf(Math.round((size.y * 0.95)));
+        int dialogWidth = Integer.parseInt(x);
+        int dialogHeight = Integer.parseInt(y);
+        getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
+        // 창크기 지정
+    }
+
+    @Override
+    public void onDetach() {
+        passwordBackup = "";
+
+        passwordLevel = 0;
+
+        passwordOrder = 0;
+        super.onDetach();
+    }
 
     public void deleteClickEvent() {
         switch (passwordOrder) {
@@ -168,7 +213,7 @@ public class fragment_Ble_Password extends Fragment {
         password3 = view.findViewById(R.id.password_insert_3);
         password4 = view.findViewById(R.id.password_insert_4);
         password5 = view.findViewById(R.id.password_insert_5);
-        tv_userdata = view.findViewById(R.id.tv_ble_fragment_password_userdata);
+        tv_notice = view.findViewById(R.id.tv_ble_framgment_password_change_notice);
     }
 
     public void btnSetting() {
@@ -245,130 +290,6 @@ public class fragment_Ble_Password extends Fragment {
         btn_B.setOnClickListener(v -> btnClickEvent("B"));
         btn_N.setOnClickListener(v -> btnClickEvent("N"));
         btn_M.setOnClickListener(v -> btnClickEvent("M"));
-    }
-
-    public static String psEncryptionTable(String ps) {
-        StringBuilder temp = new StringBuilder();
-        for (int n = 0; n < ps.length(); n++) {
-            switch (ps.charAt(n)) {
-                case 'A':
-                    temp.append("Z");
-                    break;
-                case 'B':
-                    temp.append("U");
-                    break;
-                case 'C':
-                    temp.append("O");
-                    break;
-                case 'D':
-                    temp.append("N");
-                    break;
-                case 'E':
-                    temp.append("H");
-                    break;
-                case 'F':
-                    temp.append("V");
-                    break;
-                case 'G':
-                    temp.append("C");
-                    break;
-                case 'H':
-                    temp.append("F");
-                    break;
-                case 'I':
-                    temp.append("Q");
-                    break;
-                case 'J':
-                    temp.append("W");
-                    break;
-                case 'K':
-                    temp.append("S");
-                    break;
-                case 'L':
-                    temp.append("B");
-                    break;
-                case 'M':
-                    temp.append("K");
-                    break;
-                case 'N':
-                    temp.append("R");
-                    break;
-                case 'O':
-                    temp.append("I");
-                    break;
-                case 'P':
-                    temp.append("D");
-                    break;
-                case 'Q':
-                    temp.append("G");
-                    break;
-                case 'R':
-                    temp.append("P");
-                    break;
-                case 'S':
-                    temp.append("J");
-                    break;
-                case 'T':
-                    temp.append("X");
-                    break;
-                case 'U':
-                    temp.append("M");
-                    break;
-                case 'V':
-                    temp.append("T");
-                    break;
-                case 'W':
-                    temp.append("L");
-                    break;
-                case 'X':
-                    temp.append("A");
-                    break;
-                case 'Y':
-                    temp.append("E");
-                    break;
-                case 'Z':
-                    temp.append("Y");
-                    break;
-                case '0':
-                    temp.append("5");
-                    break;
-                case '1':
-                    temp.append("3");
-                    break;
-                case '2':
-                    temp.append("9");
-                    break;
-                case '3':
-                    temp.append("4");
-                    break;
-                case '4':
-                    temp.append("2");
-                    break;
-                case '5':
-                    temp.append("7");
-                    break;
-                case '6':
-                    temp.append("1");
-                    break;
-                case '7':
-                    temp.append("6");
-                    break;
-                case '8':
-                    temp.append("0");
-                    break;
-                case '9':
-                    temp.append("8");
-                    break;
-                default:
-                    temp.append('-');
-                    break;
-            }
-        }
-
-        if (ps.length() == temp.length()) {
-            return temp.toString();
-        }
-        return ps;
     }
 
 }

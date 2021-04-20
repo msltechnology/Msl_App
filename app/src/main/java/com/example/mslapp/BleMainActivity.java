@@ -51,6 +51,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.mslapp.Ble.BluetoothUtils;
+import com.example.mslapp.Ble.Dialog.Beginning.dialogFragment_Ble_Beginning_LanguageChange;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Beginning;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Scan;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
@@ -526,6 +527,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         intent = new Intent(mBleContext, RTUMainActivity.class);
                         startActivity(intent);
                         finish();
+                        break;
+                    case R.id.menu_language:
+                        FragmentManager fm = getSupportFragmentManager();
+                        dialogFragment_Ble_Beginning_LanguageChange customDialogLanguageChange = new dialogFragment_Ble_Beginning_LanguageChange();
+                        customDialogLanguageChange.show(fm,"fragment_beginning_dialog_LanguageChange");
                         break;
                 }
                 // 사이드바 닫기

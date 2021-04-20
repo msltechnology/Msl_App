@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_Password_Change;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
@@ -38,6 +39,7 @@ import static com.example.mslapp.BleMainActivity.DATA_SIGN_START;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_LICMD;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_S;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_SNB;
+import static com.example.mslapp.BleMainActivity.SnFlag;
 import static com.example.mslapp.BleMainActivity.disconnectGattServer;
 
 public class fragment_SN_Setting extends Fragment {
@@ -143,7 +145,7 @@ public class fragment_SN_Setting extends Fragment {
                 BlewriteData(DATA_DEVICE_RESET);
                 Thread.sleep(1000);
                 disconnectGattServer("fragment_SN_Setting - handleMessage - DATA_DEVICE_RESET");
-                ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_beginning");
+                ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_scan");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -165,7 +167,7 @@ public class fragment_SN_Setting extends Fragment {
 
     @Override
     public void onDetach() {
-        CdsFlag = false;
+        //SnFlag = false;
         dialog.dismiss();
         ((SN_Setting_Listener) activity).onDetachFragment_SN_Setting();
         super.onDetach();

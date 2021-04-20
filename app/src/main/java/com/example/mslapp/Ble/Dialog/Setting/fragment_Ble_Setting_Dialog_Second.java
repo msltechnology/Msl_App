@@ -1,4 +1,4 @@
-package com.example.mslapp.Ble.Setting_Dialog;
+package com.example.mslapp.Ble.Dialog.Setting;
 
 import android.graphics.Color;
 import android.os.Bundle;

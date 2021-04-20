@@ -22,7 +22,7 @@
                 android:id="@+id/ble_toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/purple_700"
+                android:background="@color/MSL_Blue"
                 android:theme="@style/Appbar"
                 />
 

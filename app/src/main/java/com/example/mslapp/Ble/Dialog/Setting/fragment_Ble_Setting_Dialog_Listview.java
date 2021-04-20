@@ -1,8 +1,7 @@
-package com.example.mslapp.Ble.Setting_Dialog;
+package com.example.mslapp.Ble.Dialog.Setting;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -22,8 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mslapp.R;
 
-import static com.example.mslapp.Ble.Setting_Dialog.dialogFragment_Ble_Setting_FL_Setting.select_FL;
-import static com.example.mslapp.Ble.Setting_Dialog.dialogFragment_Ble_Setting_FL_Setting.select_Sec;
+import static com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting.select_FL;
+import static com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting.select_Sec;
 
 public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
 

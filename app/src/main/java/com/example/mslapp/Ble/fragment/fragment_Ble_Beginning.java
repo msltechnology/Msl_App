@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +23,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_Ble_Setting_FL_Setting;
+import com.example.mslapp.Ble.Dialog.Beginning.dialogFragment_Ble_Beginning_LanguageChange;
+import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
@@ -37,6 +39,7 @@ import static com.example.mslapp.BleMainActivity.mBleContext;
 import static com.example.mslapp.BleMainActivity.SnFlag;
 import static com.example.mslapp.BleMainActivity.CdsFlag;
 import static com.example.mslapp.BleMainActivity.mBleMain;
+import static com.example.mslapp.BleMainActivity.tLanguage;
 
 public class fragment_Ble_Beginning extends Fragment {
 
@@ -63,34 +66,39 @@ public class fragment_Ble_Beginning extends Fragment {
         Button bleScanBtn = view.findViewById(R.id.bleScan);
         Button bleScanCDSBtn = view.findViewById(R.id.btn_beginning_cds);
         Button bleScanSNBtn = view.findViewById(R.id.btn_beginning_SN);
-        Button bleLanguageBtn = view.findViewById(R.id.btn_beginning_Language);
-        Button bleManualBtn = view.findViewById(R.id.btn_beginning_Manual);
+        LinearLayout llBleLanguage = view.findViewById(R.id.ll_beginning_Language);
+        TextView tvBleManual = view.findViewById(R.id.tv_beginning_Manual);
         LinearLayout llAdmin = view.findViewById(R.id.ll_beginning_Admin);
         LinearLayout llNoAdmin = view.findViewById(R.id.ll_beginning_noAdmin);
-
+        TextView tvLanguage = view.findViewById(R.id.tv_beginning_Language);
+        if(tLanguage.equals("ko")){
+            tvLanguage.setText("Korean");
+        }else if(tLanguage.equals("en")){
+            tvLanguage.setText("English");
+        }
 
         if (adminApp) {
             bleScanCDSBtn.setVisibility(View.VISIBLE);
             bleScanSNBtn.setVisibility(View.VISIBLE);
             llAdmin.setVisibility(View.VISIBLE);
-            bleLanguageBtn.setVisibility(View.GONE);
-            bleManualBtn.setVisibility(View.GONE);
+            llBleLanguage.setVisibility(View.GONE);
+            tvBleManual.setVisibility(View.GONE);
             llNoAdmin.setVisibility(View.GONE);
 
         } else {
             bleScanCDSBtn.setVisibility(View.GONE);
             bleScanSNBtn.setVisibility(View.GONE);
             llAdmin.setVisibility(View.GONE);
-            bleLanguageBtn.setVisibility(View.VISIBLE);
-            bleManualBtn.setVisibility(View.VISIBLE);
+            llBleLanguage.setVisibility(View.VISIBLE);
+            tvBleManual.setVisibility(View.VISIBLE);
             llNoAdmin.setVisibility(View.VISIBLE);
         }
 
         bleScanBtn.setOnClickListener(v -> fragmentScanChange());
         bleScanCDSBtn.setOnClickListener(v -> bleScanCDSBtnOnClick());
         bleScanSNBtn.setOnClickListener(v -> bleScanSNBtnOnClick());
-        bleLanguageBtn.setOnClickListener(v -> bleLanguageBtnOnClick());
-        bleManualBtn.setOnClickListener(v -> bleManualBtnOnClick());
+        llBleLanguage.setOnClickListener(v -> bleLanguageBtnOnClick());
+        tvBleManual.setOnClickListener(v -> bleManualBtnOnClick());
         return view;
     }
 
@@ -204,15 +212,17 @@ public class fragment_Ble_Beginning extends Fragment {
 
     private void bleLanguageBtnOnClick() {
         // 다이어로그를 통해 언어 변환-setlocale 이용
+        FragmentManager fm = this.getChildFragmentManager();
+        dialogFragment_Ble_Beginning_LanguageChange customDialogLanguageChange = new dialogFragment_Ble_Beginning_LanguageChange();
+        customDialogLanguageChange.show(fm,"fragment_beginning_dialog_LanguageChange");
 
 
-
-        setLocale("ko");
-        reset();
+        /*setLocale("ko");
+        ble_Beginning_reset();*/
     }
     private void bleManualBtnOnClick() {
         setLocale("en");
-        reset();
+        ble_Beginning_reset();
     }
 
 
@@ -233,10 +243,10 @@ public class fragment_Ble_Beginning extends Fragment {
         Configuration config = new Configuration();
         config.locale = locale;
         mBleContext.getResources().updateConfiguration(config, mBleContext.getResources().getDisplayMetrics());
-        BleMainActivity.tLanguage = char_select; //설정된 언어 저장 변수에 저장
+        tLanguage = char_select; //설정된 언어 저장 변수에 저장
     }
 
-    public void reset(){
+    public static void ble_Beginning_reset(){
         Intent intent = mBleContext.getPackageManager().getLaunchIntentForPackage(mBleContext.getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

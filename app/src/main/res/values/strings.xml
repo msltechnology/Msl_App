@@ -82,4 +82,9 @@
     <string name="GPS_On">항상 키기</string>
     <string name="GPS_Off">밤에만 키기</string>
     <string name="tv_ble_fragment_beginning_manual">Manual</string>
+    <string name="notice_current_password">현재 비밀번호를 입력해주세요</string>
+    <string name="notice_change_password">변경할 비밀번호를 입력해주세요.</string>
+    <string name="notice_change_password_check">변경한 비밀번호를 다시한번 입력해주세요.</string>
+    <string name="notice_passwordChange_fail">입력하신 비밀번호가 다릅니다.</string>
+    <string name="change_password">비밀번호 변경</string>
 </resources>

@@ -3,9 +3,27 @@
 
     <item
         android:id="@+id/menu_bluetooth"
-        android:title="Bluetooth"/>
+        android:title="Bluetooth" />
     <item
         android:id="@+id/menu_rtu"
         android:title="RTU"/>
+    <item
+        android:title=""
+        android:visible="false"/>
+    <item
+        android:visible="false"/>
+    <item
+        android:visible="false"/>
+    <item
+        android:visible="false"/>
+    <item
+        android:visible="false"/>
+    <item
+        android:visible="false"/>
+    <item
+        android:visible="false"/>
+    <item
+        android:id="@+id/menu_language"
+        android:title="Language"/>
 
 </menu>

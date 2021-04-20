@@ -1,8 +1,4 @@
-package com.example.mslapp.Ble.Setting_Dialog;
-
-import android.content.res.Resources;
-
-import com.example.mslapp.R;
+package com.example.mslapp.Ble.Dialog.Setting;
 
 public class FL_List {
 

@@ -1,4 +1,4 @@
-package com.example.mslapp.Ble.Setting_Dialog;
+package com.example.mslapp.Ble.Dialog.Setting;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,15 +12,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mslapp.Ble.fragment.fragment_Ble_Setting;
 import com.example.mslapp.R;

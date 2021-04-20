@@ -9,17 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_Ble_Setting_FL_Setting;
-import com.example.mslapp.Ble.Setting_Dialog.dialogFragment_Ble_Setting_ID_Setting;
-import com.example.mslapp.BleMainActivity;
+import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
+import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_ID_Setting;
+import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_Password_Change;
 import com.example.mslapp.R;
 
+import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.psEncryptionTable;
+import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.readPassword;
 import static com.example.mslapp.BleMainActivity.*;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
 
@@ -30,7 +33,7 @@ public class fragment_Ble_Setting extends Fragment {
 
     TextView readTv, selected_FL, selected_ID;
 
-    Button btn_status, btn_FL_Setting, btn_ID_Setting;
+    Button btn_status, btn_FL_Setting, btn_ID_Setting, btn_Password_Change;
 
     View view;
 
@@ -63,6 +66,10 @@ public class fragment_Ble_Setting extends Fragment {
     public void readData(String data) {
         Log.d(TAG, "fragment_Ble_Setting readData!");
 
+        String passwordchangeCheck = "$PS,A," + psEncryptionTable(readPassword);
+
+        if(data.contains(passwordchangeCheck))
+            Toast.makeText(mBleContext, "Password Change Success", Toast.LENGTH_SHORT).show();
         readTv.setText(data);
     }
 
@@ -70,15 +77,17 @@ public class fragment_Ble_Setting extends Fragment {
         btn_status = view.findViewById(R.id.btn_status);
         btn_FL_Setting = view.findViewById(R.id.btn_FL_Setting);
         btn_ID_Setting = view.findViewById(R.id.btn_ID_Setting);
+        btn_Password_Change = view.findViewById(R.id.btn_Password_Change);
 
 
         btn_status.setOnClickListener(v ->
                 BlewriteData(DATA_REQUEST_STATUS));
         btn_FL_Setting.setOnClickListener(v ->
                 showDialogFragment_FL());
-
         btn_ID_Setting.setOnClickListener(v ->
                 showDialogFragment_ID());
+        btn_Password_Change.setOnClickListener(v ->
+                showPasswordChangeDialog());
     }
 
     public void setSelected_FL(String selected_fl){
@@ -103,6 +112,12 @@ public class fragment_Ble_Setting extends Fragment {
         FragmentManager fm = this.getChildFragmentManager();
         dialogFragment_Ble_Setting_ID_Setting setting_ID_DialogFragment = new dialogFragment_Ble_Setting_ID_Setting();
         setting_ID_DialogFragment.show(fm, "fragment_setting_dialog_ID");
+    }
+    private void showPasswordChangeDialog() {
+
+        FragmentManager fm = this.getChildFragmentManager();
+        dialogFragment_Ble_Setting_Password_Change setting_PasswordChange_DialogFragment = new dialogFragment_Ble_Setting_Password_Change();
+        setting_PasswordChange_DialogFragment.show(fm, "fragment_setting_dialog_Password");
     }
 
     @Override

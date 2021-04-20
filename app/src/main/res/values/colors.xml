@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
+    <color name="purple_500">#112EED</color>
     <color name="passwordBackGround">#BAAAEDE7</color>
     <color name="bleListViewBack">#E6FFFD</color>
     <color name="bleListViewMsl">#4777FF</color>
@@ -10,6 +9,22 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="green">#00FF00</color>
+    <color name="blue">#0000FF</color>
+
+
+    <color name="MSL_Blue">#1731B5</color>
+
+    <color name="ble_color1">#12997C</color>
+    <color name="ble_color2">#5A3CF0</color>
+    <color name="ble_color3">#3E5EFA</color>
+    <color name="ble_color4">#4496E3</color>
+    <color name="ble_color5">#3EE1FA</color>
+
+    <color name="ble_scan_list">#D6E3E8</color>
+    <color name="ble_scan_list_MSL">#1C52EF</color>
 
 
     <color name="dialog_select">#C1C8C8</color>

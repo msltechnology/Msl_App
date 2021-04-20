@@ -93,6 +93,7 @@ public class fragment_Ble_Scan extends Fragment {
                 Log.d(TAG, "selectedSerialNum : " + selectedSerialNum);
 
                 stopScan();
+
                 if (CdsFlag) {
                     ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_cds_setting");
                 } else if (SnFlag) {
