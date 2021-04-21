@@ -3,7 +3,7 @@
     <string name="ble_setting_FLSetting_title">FL Setting</string>
     <string name="ble_main_scanItem_scan">찾기</string>
     <string name="ble_main_scanItem_stopScanning">중지</string>
-    <string name="ble_main_title">MSL Technology</string>
+    <string name="ble_main_title">MSL Bluetooth</string>
     <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">위치정보 권한 요청 실패</string>
     <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">위치정보 권한 요청을 거절하셨습니다.\n블루투스 스캔
         이용이 제한됩니다.\n다시 확인하시겠습니까?</string>
@@ -19,7 +19,7 @@
     <string name="dialog_setting_confirm">확인</string>
     <string name="ID_setting">ID 설정</string>
     <string name="FL_setting">FL 설정</string>
-    <string name="status">상태확인</string>
+    <string name="once_status">상태요청</string>
     <string name="lantern_On">강제점등</string>
     <string name="lantern_Off">강제소등</string>
     <string name="lantern_Fix">부동광</string>
@@ -28,7 +28,7 @@
     <string name="ble_main_scanItem_refresh">새로고침</string>
     <string name="ble_main_scanItem_Disconnect">연결끊기</string>
     <string name="ID">ID</string>
-    <string name="FL">FL</string>
+    <string name="FL">등질</string>
     <string name="input_V">입력전압</string>
     <string name="output_A">출력전류</string>
     <string name="CDS">CDS</string>
@@ -39,7 +39,7 @@
     <string name="gps_latitude">위도</string>
     <string name="battery_v">배터리 전압</string>
     <string name="charge_discharge_A">충방전 전류</string>
-    <string name="receive_time">시각</string>
+    <string name="receive_time">시간</string>
     <string name="gps_longitude">경도</string>
     <string name="battery_percent">배터리 잔량</string>
     <string name="Number_No">No.</string>
@@ -57,4 +57,19 @@
     <string name="notice_change_password_check">변경한 비밀번호를 다시한번 입력해주세요.</string>
     <string name="notice_passwordChange_fail">입력하신 비밀번호가 다릅니다.</string>
     <string name="change_password">비밀번호 변경</string>
+    <string name="cycle_status">자동요청(3초)</string>
+    <string name="year">년</string>
+    <string name="month">월</string>
+    <string name="day">일</string>
+    <string name="hour">시</string>
+    <string name="min">분</string>
+    <string name="sec">초</string>
+    <string name="ble_status_cds_0">낮</string>
+    <string name="ble_status_cds_1">밤</string>
+    <string name="ble_status_lantern_status_0">소등</string>
+    <string name="ble_status_lantern_status_1">점등</string>
+    <string name="battery_v_detail">베터리\n자세히</string>
+    <string name="solar_v_detail">솔라\n자세히</string>
+    <string name="GPS_Set">GPS\n전원</string>
+    <string name="btn_ble_setting_change_password">변경</string>
 </resources>

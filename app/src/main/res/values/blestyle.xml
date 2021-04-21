@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="password_keyboard">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -45,25 +46,13 @@
         <item name="android:textSize">25dp</item>
     </style>
 
-    <style name="btn_status">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
-    </style>
-
-    <style name="ble_fragment_test_btn">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-    </style>
-
     <style name="tv_setting_dialog_id">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">3</item>
         <item name="android:gravity">center</item>
         <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:padding">3dp</item>
     </style>
 
     <style name="btn_setting_dialog_id">
@@ -72,16 +61,84 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:background">@drawable/custom_ble_setting_dialog_id_btn</item>
     </style>
 
-    <style name="tv_fragment_status">
+    <style name="btn_ble_fragment_status_detail">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/custom_ble_status_detail_btn</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="tv_ble_fragment_status">
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="tv_ble_fragment_status_value">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/ble_color1</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="tv_ble_fragment_status_value2">
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/ble_color1</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="btn_ble_fragment_test">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/custom_ble_status_detail_btn</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="tv_ble_fragment_setting">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="tv_ble_fragment_setting_value">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/ble_color1</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="btn_ble_fragment_setting_setting">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/custom_ble_status_detail_btn</item>
+        <item name="android:layout_margin">5dp</item>
     </style>
 
 
-    
-    
 </resources>

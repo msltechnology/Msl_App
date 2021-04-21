@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/ble_color5">
+    android:background="@color/ble_color4">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

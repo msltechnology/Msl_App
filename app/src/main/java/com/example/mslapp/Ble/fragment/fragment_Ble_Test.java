@@ -32,8 +32,6 @@ public class fragment_Ble_Test extends Fragment {
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-Test";
 
-    TextView readTv;
-
     View view;
 
     @Nullable
@@ -43,8 +41,6 @@ public class fragment_Ble_Test extends Fragment {
         Log.d(TAG, "fragment_Ble_Test onCreateView" + this.getTag());
 
         view = inflater.inflate(R.layout.ble_fragment_test, null);
-
-        readTv = view.findViewById(R.id.readData_test);
 
         buttonSetting();
 
@@ -77,8 +73,6 @@ public class fragment_Ble_Test extends Fragment {
 
     public void readData(String data){
         Log.d(TAG, "fragment_Ble_Test readData!");
-
-        readTv.setText(data);
     }
 
     private final Handler mSNSendHandler = new Handler() {

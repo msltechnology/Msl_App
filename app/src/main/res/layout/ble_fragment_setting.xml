@@ -5,11 +5,18 @@
     android:orientation="vertical"
     android:padding="10dp">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="#ffb0e0e6" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -23,29 +30,32 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="0dp"
+                    style="@style/tv_ble_fragment_setting"
+                    android:text="@string/ID" />
+
+                <View
+                    android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/ID"
-                    android:gravity="center"/>
+                    android:layout_marginVertical="15dp"
+                    android:background="#ffb0e0e6" />
 
                 <TextView
                     android:id="@+id/tv_ble_framgment_setting_selected_ID"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="selected_ID" />
+                    style="@style/tv_ble_fragment_setting_value"
+                    android:text=""/>
 
                 <Button
                     android:id="@+id/btn_ID_Setting"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    style="@style/btn_ble_fragment_setting_setting"
                     android:text="@string/ID_setting" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="5dp"
+                android:background="#ffb0e0e6" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,26 +65,23 @@
 
 
                 <TextView
-                    android:layout_width="0dp"
+                    style="@style/tv_ble_fragment_setting"
+                    android:text="@string/FL" />
+
+                <View
+                    android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/FL"
-                    android:gravity="center"/>
+                    android:layout_marginVertical="15dp"
+                    android:background="#ffb0e0e6" />
 
                 <TextView
                     android:id="@+id/tv_ble_framgment_setting_selected_FL"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="selected_FL" />
+                    style="@style/tv_ble_fragment_setting_value"
+                    android:text=""/>
 
                 <Button
                     android:id="@+id/btn_FL_Setting"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
+                    style="@style/btn_ble_fragment_setting_setting"
                     android:text="@string/FL_setting" />
             </LinearLayout>
 
@@ -86,22 +93,26 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Status" />
+            android:background="@drawable/custom_ble_status_call_btn"
+            android:layout_margin="5dp"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="@string/once_status" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="5dp"
+        android:background="#ffb0e0e6" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="GPS Set" />
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <Button
             android:id="@+id/btn_GPS_On"
@@ -109,7 +120,14 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/GPS_On" />
+            android:background="@drawable/custom_ble_setting_gps_on"
+            android:text="@string/GPS_On"
+            android:textStyle="bold"/>
+
+        <TextView
+            style="@style/tv_ble_fragment_setting"
+            android:text="@string/GPS_Set" />
+
 
         <Button
             android:id="@+id/btn_GPS_Off"
@@ -117,32 +135,17 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/GPS_Off" />
+            android:background="@drawable/custom_ble_setting_gps_off"
+            android:text="@string/GPS_Off"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/change_password" />
-
-        <Button
-            android:id="@+id/btn_Password_Change"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="변경" />
-
-    </LinearLayout>
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="5dp"
+        android:background="#ffb0e0e6" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -153,17 +156,45 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="#ffb0e0e6" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
+        <TextView
+            style="@style/tv_ble_fragment_setting"
+            android:text="@string/change_password" />
 
-    <TextView
-        android:id="@+id/readData_setting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="fragment_setting" />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="15dp"
+            android:background="#ffb0e0e6" />
 
+        <Button
+            android:id="@+id/btn_Password_Change"
+            style="@style/btn_ble_fragment_setting_setting"
+            android:text="@string/btn_ble_setting_change_password"
+            android:layout_margin="20dp"/>
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
 
+    </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="10dp"
+        android:background="#ffb0e0e6" />
 
 </LinearLayout>

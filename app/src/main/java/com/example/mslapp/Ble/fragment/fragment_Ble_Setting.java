@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -31,9 +32,9 @@ public class fragment_Ble_Setting extends Fragment {
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-Setting";
 
-    TextView readTv, selected_FL, selected_ID;
+    TextView selected_FL, selected_ID;
 
-    Button btn_status, btn_FL_Setting, btn_ID_Setting, btn_Password_Change;
+    Button btn_status, btn_FL_Setting, btn_ID_Setting, btn_Password_Change, btn_GPS_ON, btn_GPS_OFF;
 
     View view;
 
@@ -48,7 +49,6 @@ public class fragment_Ble_Setting extends Fragment {
 
         view = inflater.inflate(R.layout.ble_fragment_setting, null);
 
-        readTv = view.findViewById(R.id.readData_setting);
         selected_FL = view.findViewById(R.id.tv_ble_framgment_setting_selected_FL);
         selected_ID = view.findViewById(R.id.tv_ble_framgment_setting_selected_ID);
 
@@ -66,11 +66,24 @@ public class fragment_Ble_Setting extends Fragment {
     public void readData(String data) {
         Log.d(TAG, "fragment_Ble_Setting readData!");
 
+        // 비밀번호 변경 시 확인
         String passwordchangeCheck = "$PS,A," + psEncryptionTable(readPassword);
 
         if(data.contains(passwordchangeCheck))
             Toast.makeText(mBleContext, "Password Change Success", Toast.LENGTH_SHORT).show();
-        readTv.setText(data);
+
+        if (data.substring(1, 6).contains("LISTS")) {
+            if (data.startsWith("S", 7)) {
+
+            } else {
+                Log.d(TAG, "readData 데이터 읽기");
+                String[] data_arr = data.split(",");
+                Log.d(TAG, "data_arr length" + data_arr.length);
+
+                selected_ID.setText(data_arr[1]);
+                selected_FL.setText(data_arr[6]);
+            }
+        }
     }
 
     void btnSetting() {
@@ -78,6 +91,8 @@ public class fragment_Ble_Setting extends Fragment {
         btn_FL_Setting = view.findViewById(R.id.btn_FL_Setting);
         btn_ID_Setting = view.findViewById(R.id.btn_ID_Setting);
         btn_Password_Change = view.findViewById(R.id.btn_Password_Change);
+        btn_GPS_ON = view.findViewById(R.id.btn_GPS_On);
+        btn_GPS_OFF = view.findViewById(R.id.btn_GPS_Off);
 
 
         btn_status.setOnClickListener(v ->
@@ -88,6 +103,14 @@ public class fragment_Ble_Setting extends Fragment {
                 showDialogFragment_ID());
         btn_Password_Change.setOnClickListener(v ->
                 showPasswordChangeDialog());
+        btn_GPS_ON.setOnClickListener(v -> {
+            btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext,R.drawable.custom_ble_setting_gps_on_clicked));
+            btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext,R.drawable.custom_ble_setting_gps_off));
+        });
+        btn_GPS_OFF.setOnClickListener(v -> {
+            btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext,R.drawable.custom_ble_setting_gps_on));
+            btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext,R.drawable.custom_ble_setting_gps_off_clicked));
+        });
     }
 
     public void setSelected_FL(String selected_fl){
