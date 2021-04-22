@@ -10,9 +10,9 @@
         android:id="@+id/tab_bluetooth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="#A098B1"
-        app:tabSelectedTextColor="@color/ble_color1"
-        app:tabIndicatorColor="@color/ble_color1"
+        app:tabTextColor="@color/black"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIndicatorColor="@color/white"
         app:tabIndicatorHeight="3dp"
         app:tabBackground="@color/bleFunctionTabBack">
     </com.google.android.material.tabs.TabLayout>

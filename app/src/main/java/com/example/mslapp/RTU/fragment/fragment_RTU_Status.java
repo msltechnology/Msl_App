@@ -47,52 +47,51 @@ public class fragment_RTU_Status extends Fragment {
 
 
         Button open_btn = view.findViewById(R.id.rtu_open_btn);
-        open_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((RTUMainActivity)getActivity()).openDevice();
-            }
-        });
+        open_btn.setOnClickListener(v -> {
+                    ((RTUMainActivity) getActivity()).openDevice();
+                    ((RTUMainActivity) getActivity()).sendData("$MUCMD,8,1*11\r\n");
+                }
+        );
         Button send_btn = view.findViewById(R.id.rtu_send_btn);
-        send_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((RTUMainActivity)getActivity()).sendData("$MUCMD,8,1*11\r\n");
-            }
-        });
+        send_btn.setOnClickListener(v -> ((RTUMainActivity) getActivity()).sendData("$MUCMD,8,1*11\r\n"));
 
         return view;
     }
 
-    public void readData(String data){
+    public static void testData(String data) {
+        Log.d(TAG, "fragment_RTU_Status testData 들어옴 : " + data);
+    }
+
+    public void readData(String data) {
+        Log.d(TAG, "fragment_RTU_Status readData 들어옴 : " + data);
         TotalReadData += data;
 
         //TotalReadData.replace("\n","");
 
-        Log.d(TAG, "fragment_RTU_Status TotalReadData : " +  TotalReadData);
+        Log.d(TAG, "fragment_RTU_Status TotalReadData : " + TotalReadData);
 
 
         int configIndex = 0;
         int lfIndex = 0;
 
-        if(TotalReadData.contains("[ ConfMsg]") && TotalReadData.contains("\n")){
+        if (TotalReadData.contains("[ ConfMsg]") && TotalReadData.contains("\n")) {
 
             Log.d(TAG, "fragment_RTU_Status Test1");
 
             configIndex = TotalReadData.indexOf("[ ConfMsg]");
             lfIndex = TotalReadData.indexOf("\n", configIndex);
             Log.d(TAG, "fragment_RTU_Status Test2 : " + configIndex + " / " + lfIndex);
-            while (configIndex < lfIndex){
+            while (configIndex < lfIndex) {
 
-                String readData = TotalReadData.substring(configIndex,lfIndex);
+                String readData = TotalReadData.substring(configIndex, lfIndex);
 
-                Log.d(TAG, "fragment_RTU_Status readData : " +  readData);
+                Log.d(TAG, "fragment_RTU_Status readData : " + readData);
 
                 try {
-                    TotalReadData = TotalReadData.substring(lfIndex+1);
-                }catch (Exception e){
+                    TotalReadData = TotalReadData.substring(lfIndex + 1);
+                } catch (Exception e) {
                     TotalReadData = "";
-                    Log.e(TAG, "fragment_RTU_Status readData Error : " +  e.toString());
+                    Log.e(TAG, "fragment_RTU_Status readData Error : " + e.toString());
                 }
 
                 readData = readData.replace("[ ConfMsg] ", "");
@@ -115,15 +114,15 @@ public class fragment_RTU_Status extends Fragment {
                 } else if (readData.contains("Server #01")) {
                     readData = readData.replace("Server #01 ", "");
                     String[] serverData = readData.split(":");
-                    for(int i = 0; i < serverData.length; i++){
-                        Log.d(TAG, "fragment_RTU_Status serverData : " + i + "번째 : " +  serverData[i]);
+                    for (int i = 0; i < serverData.length; i++) {
+                        Log.d(TAG, "fragment_RTU_Status serverData : " + i + "번째 : " + serverData[i]);
                     }
                     readData5.setText(serverData[0] + " : " + serverData[1]);
                 } else if (readData.contains("Server #02")) {
                     readData = readData.replace("Server #02 ", "");
                     String[] serverData = readData.split(":");
-                    for(int i = 0; i < serverData.length; i++){
-                        Log.d(TAG, "fragment_RTU_Status serverData2 : " + i + "번째 : " +  serverData[i]);
+                    for (int i = 0; i < serverData.length; i++) {
+                        Log.d(TAG, "fragment_RTU_Status serverData2 : " + i + "번째 : " + serverData[i]);
                     }
                     readData6.setText(serverData[0] + " : " + serverData[1]);
                 }
@@ -131,7 +130,7 @@ public class fragment_RTU_Status extends Fragment {
 
                 configIndex = TotalReadData.indexOf("[ ConfMsg]");
                 lfIndex = TotalReadData.indexOf("\n", configIndex);
-                if(configIndex<0 | lfIndex<0){
+                if (configIndex < 0 | lfIndex < 0) {
                     break;
                 }
 

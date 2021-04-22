@@ -113,7 +113,7 @@ public class RTUMainActivity extends AppCompatActivity {
 
         viewPager_rtu = findViewById(R.id.RTU_ViewpageSpace);
 
-        fragmentManager_rtu = this.getSupportFragmentManager();
+        fragmentManager_rtu = getSupportFragmentManager();
 
         Log.d(TAG, "Viewpage 작업");
         adapter_rtu_tab = new adapter_RTU_Tab(this,2);
@@ -162,10 +162,6 @@ public class RTUMainActivity extends AppCompatActivity {
         filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         registerReceiver(mUsbReceiver, filter);
-
-
-        fragment_rtu_status = (fragment_RTU_Status) fragmentManager_rtu.findFragmentByTag("f0");
-        fragment_rtu_setting = (fragment_RTU_Setting) fragmentManager_rtu.findFragmentByTag("f1");
 
 
     }
@@ -299,14 +295,17 @@ public class RTUMainActivity extends AppCompatActivity {
 
         switch (viewPager_rtu.getCurrentItem()){
             case 0:
-                Log.d(TAG, "currentPage : Status");
+                Log.d(TAG, "currentPage : Status , viewPager_rtu.getCurrentItem() : " + viewPager_rtu.getCurrentItem());
+                fragment_rtu_status = (fragment_RTU_Status) fragmentManager_rtu.findFragmentByTag("f"+viewPager_rtu.getCurrentItem());
                 try {
+                    Log.d(TAG, "Status 정의");
                     fragment_rtu_status.readData(data);
                 }catch (Exception e){
                     Log.e(TAG, "readData Error : " + e.toString());
                 }
                 break;
             case 1:
+                fragment_rtu_setting = (fragment_RTU_Setting) fragmentManager_rtu.findFragmentByTag("f1");
                 Log.d(TAG, "currentPage : Setting");
                 try {
                     fragment_rtu_setting.readData(data);

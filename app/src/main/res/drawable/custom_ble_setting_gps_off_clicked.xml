@@ -6,7 +6,7 @@
 
     <gradient
         android:angle="180"
-        android:startColor="@color/bleFunctionBack"
+        android:startColor="@color/white"
         android:endColor="#44E4C2" />
 
     <stroke

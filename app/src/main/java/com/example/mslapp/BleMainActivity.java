@@ -281,6 +281,18 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             + DATA_TYPE_ADMIN
             + DATA_SIGN_CHECKSUM;
 
+    public final static String DATA_REQUEST_BTV = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_S + DATA_SIGN_COMMA
+            + DATA_TYPE_BTV + DATA_SIGN_COMMA
+            + DATA_ID_255 + DATA_SIGN_CHECKSUM;
+
+    public final static String DATA_REQUEST_SLV = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_S + DATA_SIGN_COMMA
+            + DATA_TYPE_SLV + DATA_SIGN_COMMA
+            + DATA_ID_255 + DATA_SIGN_CHECKSUM;
+
     //endregion
 
     //endregion 변수 및 상수 정의 끝
@@ -492,7 +504,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         String languageState = sfSideBar.getString("language_mode", systemLocale.getLanguage()); //시스템 언어를 가져옴
         Log.d(TAG, "System Language : " + languageState);
         tLanguage = languageState; //처음에는 시스템에 설정된 언어로, 이후에는 저장된 언어
-        if(tLanguage != null) setLocale(tLanguage); //언어 설정
+        if (tLanguage != null) setLocale(tLanguage); //언어 설정
 
         toolbarMain = (Toolbar) findViewById(R.id.ble_toolbar_main);
         toolbarMain.setTitle(R.string.ble_main_title);
@@ -531,7 +543,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     case R.id.menu_language:
                         FragmentManager fm = getSupportFragmentManager();
                         dialogFragment_Ble_Beginning_LanguageChange customDialogLanguageChange = new dialogFragment_Ble_Beginning_LanguageChange();
-                        customDialogLanguageChange.show(fm,"fragment_beginning_dialog_LanguageChange");
+                        customDialogLanguageChange.show(fm, "fragment_beginning_dialog_LanguageChange");
                         break;
                 }
                 // 사이드바 닫기

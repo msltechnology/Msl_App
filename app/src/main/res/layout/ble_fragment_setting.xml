@@ -6,10 +6,7 @@
     android:padding="10dp">
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="10dp"
-        android:background="#ffb0e0e6" />
+         style="@style/view_vertical_line_5"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,11 +30,8 @@
                     style="@style/tv_ble_fragment_setting"
                     android:text="@string/ID" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="15dp"
-                    android:background="#ffb0e0e6" />
+
+                <View style="@style/view_horizontal_line_5" />
 
                 <TextView
                     android:id="@+id/tv_ble_framgment_setting_selected_ID"
@@ -51,11 +45,7 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="5dp"
-                android:background="#ffb0e0e6" />
+            <View style="@style/view_vertical_line_5" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,11 +58,8 @@
                     style="@style/tv_ble_fragment_setting"
                     android:text="@string/FL" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="15dp"
-                    android:background="#ffb0e0e6" />
+
+                <View style="@style/view_horizontal_line_5" />
 
                 <TextView
                     android:id="@+id/tv_ble_framgment_setting_selected_FL"
@@ -101,11 +88,7 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="5dp"
-        android:background="#ffb0e0e6" />
+    <View style="@style/view_vertical_line_5" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -142,10 +125,7 @@
     </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="5dp"
-        android:background="#ffb0e0e6" />
+         style="@style/view_vertical_line_5"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -156,11 +136,7 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="10dp"
-        android:background="#ffb0e0e6" />
+    <View style="@style/view_vertical_line_5"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -176,7 +152,7 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="15dp"
-            android:background="#ffb0e0e6" />
+            android:background="@color/view_line_color" />
 
         <Button
             android:id="@+id/btn_Password_Change"
@@ -191,10 +167,6 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="10dp"
-        android:background="#ffb0e0e6" />
+    <View style="@style/view_vertical_line_5"  />
 
 </LinearLayout>

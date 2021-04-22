@@ -15,8 +15,10 @@
     <color name="blue">#0000FF</color>
 
     <color name="bleFunctionBack">#DFF9FAFF</color>
-    <color name="bleFunctionTabBack">#9AF9FAFF</color>
+
+    <color name="bleFunctionTabBack">#8AD0FF</color>
     <color name="bleSettingGPSBack">#F3FBFF</color>
+    <color name="ble_status_name_black">#EB2E2E2E</color>
 
 
     <color name="MSL_Blue">#1731B5</color>
@@ -27,7 +29,7 @@
     <color name="ble_color4">#4496E3</color>
     <color name="ble_color5">#3EE1FA</color>
 
-    <color name="ble_scan_list">#D6E3E8</color>
+    <color name="ble_scan_list">#C6EBFA</color>
     <color name="ble_scan_list_MSL">#1C52EF</color>
 
     <color name="view_line_color">#ffb0e0e6</color>

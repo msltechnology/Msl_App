@@ -102,4 +102,10 @@
     <string name="solar_v_detail">솔라\n자세히</string>
     <string name="GPS_Set">GPS\n전원</string>
     <string name="btn_ble_setting_change_password">변경</string>
+    <string name="tv_ble_fragment_status_dialog_battery_bat1" translatable="false">Bat1</string>
+    <string name="tv_ble_fragment_status_dialog_battery_bat2" translatable="false">Bat2</string>
+    <string name="tv_ble_fragment_status_dialog_battery_bat3" translatable="false">Bat3</string>
+    <string name="tv_ble_fragment_status_dialog_battery_bat4" translatable="false">Bat4</string>
+    <string name="tv_ble_fragment_status_dialog_battery_bat5" translatable="false">Bat5</string>
+    <string name="tv_ble_fragment_status_dialog_battery_bat6" translatable="false">Bat6</string>
 </resources>
