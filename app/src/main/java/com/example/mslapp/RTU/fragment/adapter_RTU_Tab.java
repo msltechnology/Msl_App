@@ -19,8 +19,8 @@ public class adapter_RTU_Tab extends FragmentStateAdapter {
 
     public int mCount;
 
-    public adapter_RTU_Tab(AppCompatActivity activity, int count){
-        super(activity);
+    public adapter_RTU_Tab(Fragment fa, int count){
+        super(fa);
         mCount = count;
     }
 
@@ -44,6 +44,7 @@ public class adapter_RTU_Tab extends FragmentStateAdapter {
     @Override
     public void onBindViewHolder(@NonNull FragmentViewHolder holder, int position, @NonNull List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
+
 
         //holder.t
 

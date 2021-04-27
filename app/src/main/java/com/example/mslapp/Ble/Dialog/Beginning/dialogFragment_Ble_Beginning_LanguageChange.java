@@ -1,7 +1,9 @@
 package com.example.mslapp.Ble.Dialog.Beginning;
 
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -35,6 +37,8 @@ public class dialogFragment_Ble_Beginning_LanguageChange extends DialogFragment 
         Log.d(TAG, "fragment_Ble_Setting_Dialog_FL onCreateView");
 
         view = inflater.inflate(R.layout.ble_fragment_beginning_dialog_languagechange, null);
+
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         ImageView im_kor = view.findViewById(R.id.language_kor);
         ImageView im_eng = view.findViewById(R.id.language_eng);

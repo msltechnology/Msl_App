@@ -108,4 +108,11 @@
     <string name="tv_ble_fragment_status_dialog_battery_bat4" translatable="false">Bat4</string>
     <string name="tv_ble_fragment_status_dialog_battery_bat5" translatable="false">Bat5</string>
     <string name="tv_ble_fragment_status_dialog_battery_bat6" translatable="false">Bat6</string>
+    <string name="tv_ble_fragment_status_dialog_solar_sol1" translatable="false">Sol1</string>
+    <string name="tv_ble_fragment_status_dialog_solar_sol2" translatable="false">Sol2</string>
+    <string name="tv_ble_fragment_status_dialog_solar_sol3" translatable="false">Sol3</string>
+    <string name="tv_ble_fragment_status_dialog_solar_sol4" translatable="false">Sol4</string>
+    <string name="tv_ble_fragment_status_dialog_solar_sol5" translatable="false">Sol5</string>
+    <string name="tv_ble_fragment_status_dialog_solar_sol6" translatable="false">Sol6</string>
+    <string name="devices" translatable="false">USB Devices</string>
 </resources>

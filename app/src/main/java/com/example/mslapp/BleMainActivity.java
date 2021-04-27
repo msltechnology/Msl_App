@@ -184,7 +184,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String DATA_TYPE_RST = "RST"; //공장 초기화
     public static final String DATA_TYPE_BTV = "BTV"; //배터리 데이터 확인
     public static final String DATA_TYPE_SLV = "SLV"; //솔라전압 데이터 확인
-    public static final String DATA_TYPE_SOL = "SOL"; //태양광 테이터 확인
     public static final String DATA_TYPE_SNB = "SNB"; //시리얼넘버 확인
     public static final String DATA_TYPE_GP1 = "GP1"; //낮동안 GPS 할성화
     public static final String DATA_TYPE_GP0 = "GP0"; //저녁동안에만 활성화
@@ -281,17 +280,35 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             + DATA_TYPE_ADMIN
             + DATA_SIGN_CHECKSUM;
 
+    // $LICMD,S,BTV,255* : 배터리 각 전압 확인
     public final static String DATA_REQUEST_BTV = DATA_SIGN_START
             + DATA_TYPE_LICMD + DATA_SIGN_COMMA
             + DATA_TYPE_S + DATA_SIGN_COMMA
             + DATA_TYPE_BTV + DATA_SIGN_COMMA
             + DATA_ID_255 + DATA_SIGN_CHECKSUM;
 
+    // $LICMD,S,SLV,255* : 솔라판 각 전압 확인
     public final static String DATA_REQUEST_SLV = DATA_SIGN_START
             + DATA_TYPE_LICMD + DATA_SIGN_COMMA
             + DATA_TYPE_S + DATA_SIGN_COMMA
             + DATA_TYPE_SLV + DATA_SIGN_COMMA
             + DATA_ID_255 + DATA_SIGN_CHECKSUM;
+
+    // $LICMD,S,GP0,255* : GPS 밤에만 작동
+    public final static String GPS_SET_OFF = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_S + DATA_SIGN_COMMA
+            + DATA_TYPE_GP0 + DATA_SIGN_COMMA
+            + DATA_ID_255 + DATA_SIGN_CHECKSUM;;
+
+    // $LICMD,S,GP1,255* : GPS 낮에도 작동
+    public final static String GPS_SET_ON = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_S + DATA_SIGN_COMMA
+            + DATA_TYPE_GP1 + DATA_SIGN_COMMA
+            + DATA_ID_255 + DATA_SIGN_CHECKSUM;;
+
+
 
     //endregion
 

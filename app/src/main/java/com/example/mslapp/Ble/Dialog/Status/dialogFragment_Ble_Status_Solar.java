@@ -22,17 +22,17 @@ import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.BleMainActivity.BlewriteData;
-import static com.example.mslapp.BleMainActivity.DATA_REQUEST_BTV;
+import static com.example.mslapp.BleMainActivity.DATA_REQUEST_SLV;
 import static com.example.mslapp.BleMainActivity.mBleContext;
 
-public class dialogFragment_Ble_Status_Battery extends DialogFragment {
+public class dialogFragment_Ble_Status_Solar extends DialogFragment {
 
     // 로그 이름 용
-    public static final String TAG = "Msl-Ble-Status-Dialog-Battery";
+    public static final String TAG = "Msl-Ble-Status-Dialog-Solar";
 
     Button btn_call_status;
-    public static TextView tv_ble_status_bat_value1, tv_ble_status_bat_value2, tv_ble_status_bat_value3, tv_ble_status_bat_value4, tv_ble_status_bat_value5, tv_ble_status_bat_value6;
-    public static ImageView iv_ble_status_bat1, iv_ble_status_bat2, iv_ble_status_bat3, iv_ble_status_bat4, iv_ble_status_bat5, iv_ble_status_bat6;
+    public static TextView tv_ble_status_sol_value1, tv_ble_status_sol_value2, tv_ble_status_sol_value3, tv_ble_status_sol_value4, tv_ble_status_sol_value5, tv_ble_status_sol_value6;
+    public static ImageView iv_ble_status_sol1, iv_ble_status_sol2, iv_ble_status_sol3, iv_ble_status_sol4, iv_ble_status_sol5, iv_ble_status_sol6;
 
     fragment_Ble_Status fragment_ble_status;
 
@@ -43,9 +43,9 @@ public class dialogFragment_Ble_Status_Battery extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e(TAG, "dialogFragment_Ble_Status_Battery onCreateView");
+        Log.e(TAG, "dialogFragment_Ble_Status_Solar onCreateView");
 
-        view = inflater.inflate(R.layout.ble_fragment_status_dialog_battery, null);
+        view = inflater.inflate(R.layout.ble_fragment_status_dialog_solar, null);
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -59,32 +59,32 @@ public class dialogFragment_Ble_Status_Battery extends DialogFragment {
         btnSetting();
         imageViewSetting();
         // 최초 1회 데이터 요청하기
-        BlewriteData(DATA_REQUEST_BTV);
+        BlewriteData(DATA_REQUEST_SLV);
 
         return view;
     }
 
     void textSetting(){
-        tv_ble_status_bat_value1 = view.findViewById(R.id.tv_ble_fragment_status_dialog_battery_bat_value1);
-        tv_ble_status_bat_value2 = view.findViewById(R.id.tv_ble_fragment_status_dialog_battery_bat_value2);
-        tv_ble_status_bat_value3 = view.findViewById(R.id.tv_ble_fragment_status_dialog_battery_bat_value3);
-        tv_ble_status_bat_value4 = view.findViewById(R.id.tv_ble_fragment_status_dialog_battery_bat_value4);
-        tv_ble_status_bat_value5 = view.findViewById(R.id.tv_ble_fragment_status_dialog_battery_bat_value5);
-        tv_ble_status_bat_value6 = view.findViewById(R.id.tv_ble_fragment_status_dialog_battery_bat_value6);
+        tv_ble_status_sol_value1 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value1);
+        tv_ble_status_sol_value2 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value2);
+        tv_ble_status_sol_value3 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value3);
+        tv_ble_status_sol_value4 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value4);
+        tv_ble_status_sol_value5 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value5);
+        tv_ble_status_sol_value6 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value6);
     }
 
     void imageViewSetting(){
-        iv_ble_status_bat1 = view.findViewById(R.id.iv_ble_fragment_status_dialog_battery_bat1);
-        iv_ble_status_bat2 = view.findViewById(R.id.iv_ble_fragment_status_dialog_battery_bat2);
-        iv_ble_status_bat3 = view.findViewById(R.id.iv_ble_fragment_status_dialog_battery_bat3);
-        iv_ble_status_bat4 = view.findViewById(R.id.iv_ble_fragment_status_dialog_battery_bat4);
-        iv_ble_status_bat5 = view.findViewById(R.id.iv_ble_fragment_status_dialog_battery_bat5);
-        iv_ble_status_bat6 = view.findViewById(R.id.iv_ble_fragment_status_dialog_battery_bat6);
+        iv_ble_status_sol1 = view.findViewById(R.id.iv_ble_fragment_status_dialog_Solar_sol1);
+        iv_ble_status_sol2 = view.findViewById(R.id.iv_ble_fragment_status_dialog_Solar_sol2);
+        iv_ble_status_sol3 = view.findViewById(R.id.iv_ble_fragment_status_dialog_Solar_sol3);
+        iv_ble_status_sol4 = view.findViewById(R.id.iv_ble_fragment_status_dialog_Solar_sol4);
+        iv_ble_status_sol5 = view.findViewById(R.id.iv_ble_fragment_status_dialog_Solar_sol5);
+        iv_ble_status_sol6 = view.findViewById(R.id.iv_ble_fragment_status_dialog_Solar_sol6);
     }
 
     void btnSetting() {
-        btn_call_status = view.findViewById(R.id.btn_dialogFragment_Ble_Status_Battery_callStatus);
-        btn_call_status.setOnClickListener(v -> BlewriteData(DATA_REQUEST_BTV));
+        btn_call_status = view.findViewById(R.id.btn_dialogFragment_Ble_Status_Solar_callStatus);
+        btn_call_status.setOnClickListener(v -> BlewriteData(DATA_REQUEST_SLV));
     }
 
     @Override

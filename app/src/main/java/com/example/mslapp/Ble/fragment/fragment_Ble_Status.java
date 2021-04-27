@@ -1,7 +1,11 @@
 package com.example.mslapp.Ble.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,12 +23,39 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
 import com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery;
+import com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat1;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat2;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat3;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat4;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat5;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat6;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.tv_ble_status_bat_value1;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.tv_ble_status_bat_value2;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.tv_ble_status_bat_value3;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.tv_ble_status_bat_value4;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.tv_ble_status_bat_value5;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.tv_ble_status_bat_value6;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.iv_ble_status_sol1;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.iv_ble_status_sol2;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.iv_ble_status_sol3;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.iv_ble_status_sol4;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.iv_ble_status_sol5;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.iv_ble_status_sol6;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value1;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value2;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value3;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value4;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value5;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
+import static com.example.mslapp.BleMainActivity.DATA_TYPE_BTV;
+import static com.example.mslapp.BleMainActivity.DATA_TYPE_LISTS;
+import static com.example.mslapp.BleMainActivity.DATA_TYPE_S;
 import static com.example.mslapp.BleMainActivity.mBleContext;
 
 public class fragment_Ble_Status extends Fragment {
@@ -91,14 +122,15 @@ public class fragment_Ble_Status extends Fragment {
 
     void battery_Detail_Clicked() {
         FragmentManager fm = this.getChildFragmentManager();
+
         dialogFragment_Ble_Status_Battery dialogFragment_ble_status_battery = new dialogFragment_Ble_Status_Battery();
         dialogFragment_ble_status_battery.show(fm, "fragment_status_dialog_bat");
     }
 
     void solar_Detail_Clicked() {
         FragmentManager fm = this.getChildFragmentManager();
-        dialogFragment_Ble_Status_Battery dialogFragment_ble_status_battery = new dialogFragment_Ble_Status_Battery();
-        dialogFragment_ble_status_battery.show(fm, "fragment_status_dialog_solar");
+        dialogFragment_Ble_Status_Solar dialogFragment_ble_status_solar = new dialogFragment_Ble_Status_Solar();
+        dialogFragment_ble_status_solar.show(fm, "fragment_status_dialog_solar");
     }
 
     int check = 0;
@@ -175,14 +207,149 @@ public class fragment_Ble_Status extends Fragment {
     }
 
 
+    @SuppressLint("SetTextI18n")
     public void readData(String data) {
-        if (data.substring(1, 6).contains("LISTS")) {
-            if (data.startsWith("S", 7)) {
-                if(data.substring(9,12).contains("BTV")){
+        if (data.substring(1, 6).contains(DATA_TYPE_LISTS)) {
+            if (data.startsWith(DATA_TYPE_S, 7)) {
+                if (data.substring(9, 12).contains(DATA_TYPE_BTV)) {
                     Log.d(TAG, "readData BTV 들어옴");
                     // 다이얼로그한테 데이터를 보내야함.
-                }else if(data.substring(9,12).contains("SLV")){
+                    String[] data_arr = data.split(",");
+                    String tv_bat_value6_value = "";
+                    if (data_arr[9].contains("*")) {
+                        tv_bat_value6_value = data_arr[9].substring(0, data_arr[9].indexOf("*"));
+                    }
+                    try {
+                        tv_ble_status_bat_value1.setText(data_arr[4] + "V");
+                        tv_ble_status_bat_value2.setText(data_arr[5] + "V");
+                        tv_ble_status_bat_value3.setText(data_arr[6] + "V");
+                        tv_ble_status_bat_value4.setText(data_arr[7] + "V");
+                        tv_ble_status_bat_value5.setText(data_arr[8] + "V");
+                        tv_ble_status_bat_value6.setText(tv_bat_value6_value + "V");
+                    } catch (Exception e) {
+                        Log.d(TAG, "tv_ble_status_bat_value 설정 간 문제 발생 : " + e);
+                    }
+
+                    try {
+                        // 배터리 값에 따른 이미지 변경
+                        for (int i = 0; i <= 5; i++) {
+                            ImageView imageView;
+                            switch (i) {
+                                case 0:
+                                    imageView = iv_ble_status_bat1;
+                                    break;
+                                case 1:
+                                    imageView = iv_ble_status_bat2;
+                                    break;
+                                case 2:
+                                    imageView = iv_ble_status_bat3;
+                                    break;
+                                case 3:
+                                    imageView = iv_ble_status_bat4;
+                                    break;
+                                case 4:
+                                    imageView = iv_ble_status_bat5;
+                                    break;
+                                default:
+                                    imageView = iv_ble_status_bat6;
+                                    break;
+                            }
+
+                            Double bat_value;
+
+                            if (i != 5) {
+                                bat_value = Double.parseDouble(data_arr[i + 4]);
+                            } else {
+                                bat_value = Double.parseDouble(tv_bat_value6_value);
+                            }
+
+                            if (bat_value >= 4) {
+                                imageView.setBackgroundResource(R.drawable.green_battery);
+                            } else if (bat_value >= 3.8) {
+                                imageView.setBackgroundResource(R.drawable.yellow_battery);
+                            } else if (bat_value >= 3.6) {
+                                imageView.setBackgroundResource(R.drawable.brown_battery);
+                            } else {
+                                imageView.setBackgroundResource(R.drawable.red_battery);
+                            }
+
+
+                        }
+
+
+                    } catch (Exception e) {
+                        Log.d(TAG, "iv_ble_status_bat 설정 간 문제 발생 : " + e);
+                    }
+
+                } else if (data.substring(9, 12).contains("SLV")) {
                     Log.d(TAG, "readData SLV 들어옴");
+                    // 다이얼로그한테 데이터를 보내야함.
+                    String[] data_arr = data.split(",");
+                    String tv_sol_value6_value = "";
+                    if (data_arr[9].contains("*")) {
+                        tv_sol_value6_value = data_arr[9].substring(0, data_arr[9].indexOf("*"));
+                    }
+                    try {
+                        tv_ble_status_sol_value1.setText(data_arr[4] + "V");
+                        tv_ble_status_sol_value2.setText(data_arr[5] + "V");
+                        tv_ble_status_sol_value3.setText(data_arr[6] + "V");
+                        tv_ble_status_sol_value4.setText(data_arr[7] + "V");
+                        tv_ble_status_sol_value5.setText(data_arr[8] + "V");
+                        tv_ble_status_sol_value6.setText(tv_sol_value6_value + "V");
+                    } catch (Exception e) {
+                        Log.d(TAG, "tv_ble_status_bat_value 설정 간 문제 발생 : " + e);
+                    }
+
+                    try {
+                        // 배터리 값에 따른 이미지 변경
+                        for (int i = 0; i <= 5; i++) {
+                            ImageView imageView;
+                            switch (i) {
+                                case 0:
+                                    imageView = iv_ble_status_sol1;
+                                    break;
+                                case 1:
+                                    imageView = iv_ble_status_sol2;
+                                    break;
+                                case 2:
+                                    imageView = iv_ble_status_sol3;
+                                    break;
+                                case 3:
+                                    imageView = iv_ble_status_sol4;
+                                    break;
+                                case 4:
+                                    imageView = iv_ble_status_sol5;
+                                    break;
+                                default:
+                                    imageView = iv_ble_status_sol6;
+                                    break;
+                            }
+
+                            Double sol_value;
+
+                            if (i != 5) {
+                                sol_value = Double.parseDouble(data_arr[i + 4]);
+                            } else {
+                                sol_value = Double.parseDouble(tv_sol_value6_value);
+                            }
+
+                            if (sol_value >= 5) {
+                                imageView.setBackgroundResource(R.drawable.green_battery);
+                            } else if (sol_value >= 4) {
+                                imageView.setBackgroundResource(R.drawable.yellow_battery);
+                            } else if (sol_value >= 3) {
+                                imageView.setBackgroundResource(R.drawable.brown_battery);
+                            } else {
+                                imageView.setBackgroundResource(R.drawable.red_battery);
+                            }
+
+
+                        }
+
+
+                    } catch (Exception e) {
+                        Log.d(TAG, "iv_ble_status_bat 설정 간 문제 발생 : " + e);
+                    }
 
                 }
 

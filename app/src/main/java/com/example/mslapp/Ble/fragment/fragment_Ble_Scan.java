@@ -248,7 +248,7 @@ public class fragment_Ble_Scan extends Fragment {
 */
 
 
-                Log.d(TAG, "\nresult.describeContents() : " + result.describeContents() +
+                /*Log.d(TAG, "\nresult.describeContents() : " + result.describeContents() +
                         "\nresult.getAdvertisingSid() : " + result.getAdvertisingSid() +
                         "\nresult.getDataStatus() : " + result.getDataStatus() +
                         "\nresult.getPeriodicAdvertisingInterval() : " + result.getPeriodicAdvertisingInterval() +
@@ -269,7 +269,7 @@ public class fragment_Ble_Scan extends Fragment {
                         "\ndevice.getUuids() : " + device.getUuids() +
                         "\ndevice.toString() : " + device.toString() +
                         "\nresult.getScanRecord().toString() : " + result.getScanRecord().getManufacturerSpecificData()
-                );
+                );*/
 
 
                 Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);

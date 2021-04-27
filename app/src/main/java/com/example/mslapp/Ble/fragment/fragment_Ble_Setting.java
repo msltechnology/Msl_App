@@ -72,17 +72,50 @@ public class fragment_Ble_Setting extends Fragment {
         if(data.contains(passwordchangeCheck))
             Toast.makeText(mBleContext, "Password Change Success", Toast.LENGTH_SHORT).show();
 
-        if (data.substring(1, 6).contains("LISTS")) {
-            if (data.startsWith("S", 7)) {
+        String[] data_arr = data.split(",");
+
+
+        if (data_arr[0].contains(DATA_TYPE_LISTS)) {
+            if (data_arr[1].equals("S")) {
 
             } else {
                 Log.d(TAG, "readData 데이터 읽기");
-                String[] data_arr = data.split(",");
-                Log.d(TAG, "data_arr length" + data_arr.length);
 
                 selected_ID.setText(data_arr[1]);
                 selected_FL.setText(data_arr[6]);
             }
+        }
+
+        if(data_arr[0].contains(DATA_TYPE_LICMD)){
+            if(data_arr[1].equals(DATA_TYPE_S)){
+
+                switch (data_arr[2]){
+                    case DATA_TYPE_SID:
+                        Toast.makeText(mBleContext,"Set ID : " + data_arr[3].substring(0,3), Toast.LENGTH_SHORT).show();
+                        break;
+                    case DATA_TYPE_GP1:
+                        Toast.makeText(mBleContext,"GPS Set : Always", Toast.LENGTH_SHORT).show();
+                        break;
+                    case DATA_TYPE_GP0:
+                        Toast.makeText(mBleContext,"GPS Set : Only Night", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        if(checkDouble(data_arr[2])){
+                            Toast.makeText(mBleContext,"Set FL : " + data_arr[2].substring(0,3), Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                }
+
+            }
+        }
+    }
+
+    Boolean checkDouble(String data){
+        try{
+            Double.parseDouble(data);
+            return true;
+        }catch (NumberFormatException e){
+            return false;
         }
     }
 
@@ -104,10 +137,12 @@ public class fragment_Ble_Setting extends Fragment {
         btn_Password_Change.setOnClickListener(v ->
                 showPasswordChangeDialog());
         btn_GPS_ON.setOnClickListener(v -> {
+            BlewriteData(GPS_SET_ON);
             btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext,R.drawable.custom_ble_setting_gps_on_clicked));
             btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext,R.drawable.custom_ble_setting_gps_off));
         });
         btn_GPS_OFF.setOnClickListener(v -> {
+            BlewriteData(GPS_SET_OFF);
             btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext,R.drawable.custom_ble_setting_gps_on));
             btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext,R.drawable.custom_ble_setting_gps_off_clicked));
         });
@@ -115,12 +150,32 @@ public class fragment_Ble_Setting extends Fragment {
 
     public void setSelected_FL(String selected_fl){
         Log.d(TAG, "fragment_Ble_Setting setSelected_FL : " + selected_fl);
+
+        if(selected_fl.equals("")){
+            Toast.makeText(mBleContext,"Set FL blank!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String sendData = DATA_SIGN_START + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+                + DATA_TYPE_S + DATA_SIGN_COMMA
+                + selected_fl + DATA_SIGN_COMMA
+                + DATA_ID_255 + DATA_SIGN_CHECKSUM;
+
         selected_FL.setText(selected_fl);
+        BlewriteData(sendData);
+
     }
 
     public void setSelected_ID(String selected_fl){
         Log.d(TAG, "fragment_Ble_Setting setSelected_ID : " + selected_fl);
+
+        String sendData = DATA_SIGN_START + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+                        + "S" + DATA_SIGN_COMMA
+                        + "SID" + DATA_SIGN_COMMA
+                        + selected_fl + DATA_SIGN_CHECKSUM;
+
         selected_ID.setText(selected_fl);
+        BlewriteData(sendData);
     }
 
     private void showDialogFragment_FL() {

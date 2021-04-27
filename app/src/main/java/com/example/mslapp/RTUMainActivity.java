@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.mslapp.RTU.fragment.adapter_RTU_Tab;
+import com.example.mslapp.RTU.fragment.fragment_RTU_Function;
+import com.example.mslapp.RTU.fragment.fragment_RTU_Scan;
 import com.example.mslapp.RTU.fragment.fragment_RTU_Setting;
 import com.example.mslapp.RTU.fragment.fragment_RTU_Status;
 import com.ftdi.j2xx.D2xxManager;
@@ -30,7 +33,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class RTUMainActivity extends AppCompatActivity {
+public class RTUMainActivity extends AppCompatActivity implements FragmentManager.OnBackStackChangedListener {
 
 
     // 로그 이름 용
@@ -40,9 +43,6 @@ public class RTUMainActivity extends AppCompatActivity {
     public static AppCompatActivity mRTUMain = null;
 
     // d2xx - RTU 통신 간 필요
-
-    private static D2xxManager ftD2xx = null;
-    private FT_Device ftDev;
 
     int BaudSpeed = 115200;
     byte dataBits = 8;
@@ -71,10 +71,6 @@ public class RTUMainActivity extends AppCompatActivity {
     // Tablayout title 이름
     String[] tavTitle = new String[]{"Status", "Setting"};
 
-    // data
-    String sendData = "";
-    String readData = "";
-
     //toolbar
     Toolbar toolbarMain;
     NavigationView navigationView;
@@ -91,8 +87,6 @@ public class RTUMainActivity extends AppCompatActivity {
     public static String DATA_CR = "\r"; //<CR>
     public static String DATA_LF = "\n"; //<LF>
 
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +102,7 @@ public class RTUMainActivity extends AppCompatActivity {
         toolbarMain.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbarMain);
 
-        // 탭바
+        /*// 탭바
         tabLayout_rtu = findViewById(R.id.tab_RTU);
 
         viewPager_rtu = findViewById(R.id.RTU_ViewpageSpace);
@@ -124,7 +118,13 @@ public class RTUMainActivity extends AppCompatActivity {
 
         new TabLayoutMediator(tabLayout_rtu, viewPager_rtu,
                 (tab, position) -> tab.setText(tavTitle[position])
-        ).attach();
+        ).attach();*/
+
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+        if (savedInstanceState == null)
+            getSupportFragmentManager().beginTransaction().add(R.id.rtu_Fragment_Space, new fragment_RTU_Scan(), "devices").commit();
+        else
+            onBackStackChanged();
 
 
         // 사이드바 관련
@@ -151,328 +151,9 @@ public class RTUMainActivity extends AppCompatActivity {
             return false;
         });
 
-        // RTU 연결
-        try {
-            ftD2xx = D2xxManager.getInstance(this);
-        } catch (D2xxManager.D2xxException ex) {
-            Log.e(TAG,ex.toString());
-        }
-
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
-        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-        registerReceiver(mUsbReceiver, filter);
-
-
     }
 
 
-    // 데이터 보내기
-    public void sendData(String sendData) {
-        if(ftDev == null) {
-            Log.e(TAG, "ftDev is null");
-            return;
-        }
-
-        synchronized (ftDev) {
-            if(!ftDev.isOpen()) {
-                Log.e(TAG, "onClickWrite : Device is not open");
-                return;
-            }
-
-            ftDev.setLatencyTimer((byte)16);
-
-            byte[] writeByte = sendData.getBytes();
-            ftDev.write(writeByte, sendData.length());
-            Log.d(TAG, "sendData : " + sendData);
-        }
-    }
-
-
-    public void openDevice() {
-        if(ftDev != null) {
-            if(ftDev.isOpen()) {
-                ftDev_setConfig();
-                return;
-            }
-        }
-
-        int devCount;
-        devCount = ftD2xx.createDeviceInfoList(this);
-
-        Log.d(TAG, "Device number : "+ devCount);
-
-        D2xxManager.FtDeviceInfoListNode[] deviceList = new D2xxManager.FtDeviceInfoListNode[devCount];
-        ftD2xx.getDeviceInfoList(devCount, deviceList);
-
-        if(devCount <= 0) {
-            return;
-        }
-
-        if(ftDev == null) {
-            ftDev = ftD2xx.openByIndex(this, 0);
-        } else {
-            synchronized (ftDev) {
-                ftDev = ftD2xx.openByIndex(this, 0);
-            }
-        }
-
-        if(ftDev.isOpen()) {
-            ftDev_setConfig();
-        }else{
-            Log.d(TAG, "openDevice - frDev.isOpen - false");
-        }
-    }
-
-    public void ftDev_setConfig(){
-        Log.d(TAG, "ftDev_setConfig start");
-        if(mThreadIsStopped) {
-            SetConfig(BaudSpeed, (byte)dataBits, (byte)stopBits, (byte)parity, (byte)flowControl);
-            ftDev.purge((byte) (D2xxManager.FT_PURGE_TX | D2xxManager.FT_PURGE_RX));
-            ftDev.restartInTask();
-            new Thread(mLoop).start();
-        }
-        Log.d(TAG, "ftDev_setConfig end");
-    }
-
-
-
-    private Runnable mLoop = new Runnable() {
-        @Override
-        public void run() {
-            int i;
-            int readSize;
-            mThreadIsStopped = false;
-            while(true) {
-                if(mThreadIsStopped) {
-                    Log.d(TAG, "mLoop mThreadIsStopped : true");
-                    break;
-                }
-
-/*                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                }
-*/
-                synchronized (ftDev) {
-                    readSize = ftDev.getQueueStatus();
-                    if(readSize>0) {
-                        mReadSize = readSize;
-                        if(mReadSize > READBUF_SIZE) {
-                            mReadSize = READBUF_SIZE;
-                        }
-                        ftDev.read(rbuf,mReadSize);
-
-                        // cannot use System.arraycopy
-                        for(i=0; i<mReadSize; i++) {
-                            rchar[i] = (char)rbuf[i];
-                        }
-
-                        String data = new String(rchar, 0, mReadSize);
-
-                        Log.d(TAG, "readData : " + data);
-
-                        readData(data);
-
-                        // activity의 layout을 변경할려면 이걸 통해서
-                        /*mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                tvRead.append(String.copyValueOf(rchar,0,mReadSize));
-                                tvRead2.setText(data);
-                            }
-                        });*/
-
-                    } // end of if(readSize>0)
-                } // end of synchronized
-            }
-        }
-    };
-
-    public void readData(String data){
-
-        Log.d(TAG, "readData! : " + data);
-
-        switch (viewPager_rtu.getCurrentItem()){
-            case 0:
-                Log.d(TAG, "currentPage : Status , viewPager_rtu.getCurrentItem() : " + viewPager_rtu.getCurrentItem());
-                fragment_rtu_status = (fragment_RTU_Status) fragmentManager_rtu.findFragmentByTag("f"+viewPager_rtu.getCurrentItem());
-                try {
-                    Log.d(TAG, "Status 정의");
-                    fragment_rtu_status.readData(data);
-                }catch (Exception e){
-                    Log.e(TAG, "readData Error : " + e.toString());
-                }
-                break;
-            case 1:
-                fragment_rtu_setting = (fragment_RTU_Setting) fragmentManager_rtu.findFragmentByTag("f1");
-                Log.d(TAG, "currentPage : Setting");
-                try {
-                    fragment_rtu_setting.readData(data);
-                }catch (Exception e){
-                    Log.e(TAG, "readData Error : " + e.toString());
-                }
-                break;
-        }
-    }
-
-
-    private void closeDevice() {
-        Log.d(TAG, "closeDevice start");
-        mThreadIsStopped = true;
-        if(ftDev != null) {
-            ftDev.close();
-        }else{
-            Log.d(TAG, "closeDevice : ftDev null");
-        }
-        Log.d(TAG, "closeDevice end");
-    }
-
-    public void SetConfig(int baud, byte dataBits, byte stopBits, byte parity, byte flowControl) {
-        Log.d(TAG, "SetConfig start");
-        if (!ftDev.isOpen()) {
-            Log.e(TAG, "SetConfig: device not open");
-            return;
-        }
-
-        // configure our port
-        // reset to UART mode for 232 devices
-        ftDev.setBitMode((byte) 0, D2xxManager.FT_BITMODE_RESET);
-
-        ftDev.setBaudRate(baud);
-
-        switch (dataBits) {
-            case 7:
-                dataBits = D2xxManager.FT_DATA_BITS_7;
-                break;
-            case 8:
-                dataBits = D2xxManager.FT_DATA_BITS_8;
-                break;
-            default:
-                dataBits = D2xxManager.FT_DATA_BITS_8;
-                break;
-        }
-
-        switch (stopBits) {
-            case 1:
-                stopBits = D2xxManager.FT_STOP_BITS_1;
-                break;
-            case 2:
-                stopBits = D2xxManager.FT_STOP_BITS_2;
-                break;
-            default:
-                stopBits = D2xxManager.FT_STOP_BITS_1;
-                break;
-        }
-
-        switch (parity) {
-            case 0:
-                parity = D2xxManager.FT_PARITY_NONE;
-                break;
-            case 1:
-                parity = D2xxManager.FT_PARITY_ODD;
-                break;
-            case 2:
-                parity = D2xxManager.FT_PARITY_EVEN;
-                break;
-            case 3:
-                parity = D2xxManager.FT_PARITY_MARK;
-                break;
-            case 4:
-                parity = D2xxManager.FT_PARITY_SPACE;
-                break;
-            default:
-                parity = D2xxManager.FT_PARITY_NONE;
-                break;
-        }
-
-        ftDev.setDataCharacteristics(dataBits, stopBits, parity);
-
-        short flowCtrlSetting;
-        switch (flowControl) {
-            case 0:
-                flowCtrlSetting = D2xxManager.FT_FLOW_NONE;
-                break;
-            case 1:
-                flowCtrlSetting = D2xxManager.FT_FLOW_RTS_CTS;
-                break;
-            case 2:
-                flowCtrlSetting = D2xxManager.FT_FLOW_DTR_DSR;
-                break;
-            case 3:
-                flowCtrlSetting = D2xxManager.FT_FLOW_XON_XOFF;
-                break;
-            default:
-                flowCtrlSetting = D2xxManager.FT_FLOW_NONE;
-                break;
-        }
-
-        // TODO : flow ctrl: XOFF/XOM
-        // TODO : flow ctrl: XOFF/XOM
-        ftDev.setFlowControl(flowCtrlSetting, (byte) 0x0b, (byte) 0x0d);
-        Log.d(TAG, "SetConfig end");
-    }
-
-
-    // done when ACTION_USB_DEVICE_ATTACHED
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        openDevice();
-    }
-
-    BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            Log.d(TAG, "mUsbReceiver start and action : " + action);
-            if (UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)) {
-                openDevice();
-            } else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
-                closeDevice();
-            }
-        }
-    };
-
-
-
-    public class ZoomOutPageTransformer implements ViewPager2.PageTransformer {
-        private static final float MIN_SCALE = 0.85f;
-        private static final float MIN_ALPHA = 0.5f;
-
-        public void transformPage(View view, float position) {
-            int pageWidth = view.getWidth();
-            int pageHeight = view.getHeight();
-
-            if (position < -1) { // [-Infinity,-1)
-                // This page is way off-screen to the left.
-                view.setAlpha(0f);
-
-            } else if (position <= 1) { // [-1,1]
-                // Modify the default slide transition to shrink the page as well
-                float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
-                float vertMargin = pageHeight * (1 - scaleFactor) / 2;
-                float horzMargin = pageWidth * (1 - scaleFactor) / 2;
-                if (position < 0) {
-                    view.setTranslationX(horzMargin - vertMargin / 2);
-                } else {
-                    view.setTranslationX(-horzMargin + vertMargin / 2);
-                }
-
-                // Scale the page down (between MIN_SCALE and 1)
-                view.setScaleX(scaleFactor);
-                view.setScaleY(scaleFactor);
-
-                // Fade the page relative to its size.
-                view.setAlpha(MIN_ALPHA +
-                        (scaleFactor - MIN_SCALE) /
-                                (1 - MIN_SCALE) * (1 - MIN_ALPHA));
-
-            } else { // (1,+Infinity]
-                // This page is way off-screen to the right.
-                view.setAlpha(0f);
-            }
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -486,9 +167,28 @@ public class RTUMainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "start onDestroy");
-        mThreadIsStopped = true;
-        unregisterReceiver(mUsbReceiver);
-        closeDevice();
+
         Log.d(TAG, "Leave onDestroy");
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(getSupportFragmentManager().getBackStackEntryCount()>0);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if("android.hardware.usb.action.USB_DEVICE_ATTACHED".equals(intent.getAction())) {
+            fragment_RTU_Function terminal = (fragment_RTU_Function)getSupportFragmentManager().findFragmentByTag("terminal");
+            if (terminal != null)
+                terminal.status("USB device detected");
+        }
+        super.onNewIntent(intent);
     }
 }

@@ -28,6 +28,13 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <FrameLayout
+            android:id="@+id/rtu_Fragment_Space"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="14"/>
+
+<!--
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_RTU"
             android:layout_width="match_parent"
@@ -42,7 +49,7 @@
             android:id="@+id/RTU_ViewpageSpace"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            ></androidx.viewpager2.widget.ViewPager2>
+            ></androidx.viewpager2.widget.ViewPager2>-->
 
 
     </LinearLayout>

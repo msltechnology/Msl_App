@@ -29,7 +29,7 @@ public class fragment_Ble_Function extends Fragment {
     // bluetooth 탭 (기능)
     TabLayout tabLayout_ble;
     // Viewpager
-    public static ViewPager2 viewPager;
+    private ViewPager2 viewPager;
     adapter_Ble_Tab adapter_ble_tab;
 
     // 자식 프래그먼트
@@ -83,6 +83,9 @@ public class fragment_Ble_Function extends Fragment {
     public void readData(String data){
 
         Log.d(TAG, "fragment_Ble_Function readData! : " + data);
+
+        String[] data_arr = data.split(",");
+
 
         switch (viewPager.getCurrentItem()){
             case 0:

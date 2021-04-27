@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.mslapp.R;
 import com.example.mslapp.RTUMainActivity;
 
+import static com.example.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.example.mslapp.RTUMainActivity.DATA_CR;
 import static com.example.mslapp.RTUMainActivity.DATA_LF;
 
@@ -47,13 +48,9 @@ public class fragment_RTU_Status extends Fragment {
 
 
         Button open_btn = view.findViewById(R.id.rtu_open_btn);
-        open_btn.setOnClickListener(v -> {
-                    ((RTUMainActivity) getActivity()).openDevice();
-                    ((RTUMainActivity) getActivity()).sendData("$MUCMD,8,1*11\r\n");
-                }
-        );
+        open_btn.setOnClickListener(v -> send("$MUCMD,8,1*11\r\n"));
         Button send_btn = view.findViewById(R.id.rtu_send_btn);
-        send_btn.setOnClickListener(v -> ((RTUMainActivity) getActivity()).sendData("$MUCMD,8,1*11\r\n"));
+        //send_btn.setOnClickListener(v -> read());
 
         return view;
     }
