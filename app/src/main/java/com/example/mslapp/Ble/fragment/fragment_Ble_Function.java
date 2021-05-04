@@ -50,7 +50,6 @@ public class fragment_Ble_Function extends Fragment {
         Log.d(TAG, "fragment_Ble_Function onCreateView");
         view = inflater.inflate(R.layout.ble_fragment_function, null);
 
-        tavTitle = new String[]{"Status", "Setting", "Test"};
 
         fragmentManager = this.getChildFragmentManager();
 
@@ -61,6 +60,8 @@ public class fragment_Ble_Function extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        tavTitle = new String[]{"Status", "Setting", "Test"};
 
         tabLayout_ble = view.findViewById(R.id.tab_bluetooth);
 

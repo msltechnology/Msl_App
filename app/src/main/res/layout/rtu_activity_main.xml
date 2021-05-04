@@ -22,7 +22,7 @@
                 android:id="@+id/rtu_toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#000000"
+                android:background="@color/ble_color1"
                 android:theme="@style/Appbar"
                 />
 
@@ -54,13 +54,17 @@
 
     </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
+    <include
+        layout="@layout/navigation_main"
+        />
+
+    <!--<com.google.android.material.navigation.NavigationView
         android:id="@+id/rtu_sidebar"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/sidebar_menu"/>
+        app:menu="@menu/sidebar_menu"/>-->
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

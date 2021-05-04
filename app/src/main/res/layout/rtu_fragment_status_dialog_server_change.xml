@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/custom_ble_status_dialog_background">
+
+    <TextView
+        android:id="@+id/tv_rtu_status_dialog_server_name"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:autoSizeTextType="uniform"/>
+
+    <View style="@style/rtu_view_vertical_line_5"  />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:text="IP Address"
+            android:gravity="center"/>
+
+        <View style="@style/rtu_view_vertical_line_5"  />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_5_3"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_5_3"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_7"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_9"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_5_3"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_10"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_11"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_change_12"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+        </LinearLayout>
+
+        <View style="@style/rtu_view_vertical_line_5"  />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:text="Port"
+            android:gravity="center"/>
+
+        <View style="@style/rtu_view_vertical_line_5"  />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_port_change_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_port_change_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_port_change_3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_port_change_4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+            <View style="@style/rtu_view_horizontal_line_35"  />
+
+            <TextView
+                android:id="@+id/tv_rtu_status_server_port_change_5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:layout_margin="2dp"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View style="@style/rtu_view_vertical_line_5"  />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_1"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_1"/>
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_2"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_2"/>
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_3"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_3"/>
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_4"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_4"/>
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_5"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_5"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_6"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_6"/>
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_7"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_7"/>
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_8"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_8"/>
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_9"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_9"/>
+            <Button
+                android:id="@+id/btn_rtu_status_server_change_0"
+                style="@style/rtu_btn_status_dialog"
+                android:text="@string/_0"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/btn_rtu_status_server_change_cancel"
+            style="@style/rtu_btn_status_dialog"
+            android:text="@string/dialog_setting_cancel"/>
+
+        <Button
+            android:id="@+id/btn_rtu_status_server_change_clear"
+            style="@style/rtu_btn_status_dialog"
+            android:text="@string/dialog_clear"/>
+
+        <Button
+            android:id="@+id/btn_rtu_status_server_change_confirm"
+            style="@style/rtu_btn_status_dialog"
+            android:text="@string/dialog_setting_confirm"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

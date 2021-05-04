@@ -34,7 +34,7 @@ public class dialogFragment_Ble_Beginning_LanguageChange extends DialogFragment 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "fragment_Ble_Setting_Dialog_FL onCreateView");
+        Log.d(TAG, "dialogFragment_Ble_Beginning_LanguageChange onCreateView");
 
         view = inflater.inflate(R.layout.ble_fragment_beginning_dialog_languagechange, null);
 

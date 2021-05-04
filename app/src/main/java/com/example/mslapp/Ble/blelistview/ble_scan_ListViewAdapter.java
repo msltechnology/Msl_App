@@ -12,13 +12,13 @@ import com.example.mslapp.R;
 
 import java.util.ArrayList;
 
-public class ListViewAdapter extends BaseAdapter {
+public class ble_scan_ListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<BleScanListView> blelistViewList = new ArrayList<>();
     private LinearLayout bleListLl;
 
     // ListViewAdapter의 생성자
-    public ListViewAdapter() {
+    public ble_scan_ListViewAdapter() {
 
     }
 

@@ -36,13 +36,21 @@
 
     </LinearLayout>
 
-    <com.google.android.material.navigation.NavigationView
+
+    <include
+        layout="@layout/navigation_main"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <!--<com.google.android.material.navigation.NavigationView
         android:id="@+id/ble_sidebar"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/drawer_header"
-        app:menu="@menu/sidebar_menu"/>
+        app:menu="@menu/sidebar_menu"/>-->
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

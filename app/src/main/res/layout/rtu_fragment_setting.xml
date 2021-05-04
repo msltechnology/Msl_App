@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/rtuFunctionBack"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btn_rtu_setting_send"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/custom_rtu_status_call_btn"
+            android:text="@string/rtu_send" />
+
+        <Button
+            android:id="@+id/btn_rtu_setting_reset"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/custom_rtu_status_call_btn"
+            android:text="@string/rtu_reset" />
+
+        <Button
+            android:id="@+id/btn_rtu_setting_status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/custom_rtu_status_call_btn"
+            android:text="@string/rtu_status" />
+
+    </LinearLayout>
+
+    <View style="@style/rtu_view_vertical_line_5"  />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="11"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/rtu_tv_status_name"
+                    android:text="@string/Modem_power" />
+
+                <View style="@style/rtu_view_horizontal_line_5"  />
+
+                <TextView
+                    android:id="@+id/tv_modem_power"
+                    style="@style/rtu_tv_status_value"/>
+
+
+                <Button
+                    android:id="@+id/btn_modem_power"
+                    style="@style/rtu_btn_status_change"
+                    android:text="@string/change" />
+
+            </LinearLayout>
+
+            <View style="@style/rtu_view_vertical_line_5"  />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/rtu_tv_status_name"
+                    android:text="@string/GMT" />
+
+                <View style="@style/rtu_view_horizontal_line_5"  />
+
+                <TextView
+                    android:id="@+id/tv_GMT"
+                    style="@style/rtu_tv_status_value"/>
+
+
+                <Button
+                    android:id="@+id/btn_GMT"
+                    style="@style/rtu_btn_status_change"
+                    android:text="@string/change"/>
+
+            </LinearLayout>
+
+            <View style="@style/rtu_view_vertical_line_5"  />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/rtu_tv_status_name"
+                    android:text="@string/protocol" />
+
+                <View style="@style/rtu_view_horizontal_line_5"  />
+
+                <TextView
+                    android:id="@+id/tv_protocol"
+                    style="@style/rtu_tv_status_value"/>
+
+
+                <Button
+                    android:id="@+id/btn_protocol"
+                    style="@style/rtu_btn_status_change"
+                    android:text="@string/change" />
+
+            </LinearLayout>
+
+            <View style="@style/rtu_view_vertical_line_5"  />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

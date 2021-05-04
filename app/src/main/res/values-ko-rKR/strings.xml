@@ -72,4 +72,27 @@
     <string name="solar_v_detail">솔라\n자세히</string>
     <string name="GPS_Set">GPS\n전원</string>
     <string name="btn_ble_setting_change_password">변경</string>
+    <string name="change">변경</string>
+    <string name="lantern_id">lantern ID</string>
+    <string name="RTU_ID">RTU ID</string>
+    <string name="send_cycle" >전송 주기</string>
+    <string name="reset_cycle">리셋 주기</string>
+    <string name="server_1">Server 1</string>
+    <string name="server_2">Server 2</string>
+    <string name="dialog_clear">지우기</string>
+    <string name="rtu_status">상태조회</string>
+    <string name="rtu_reset">모뎀리셋</string>
+    <string name="rtu_send">모국전송</string>
+    <string name="Modem_power">모뎀 전원</string>
+    <string name="GMT" translatable="false">시간 설정\n(GMT)</string>
+    <string name="next" >다음</string>
+    <string name="skip" >스킵</string>
+    <string name="start">확인</string>
+    <string name="RTU_protocol_standard">표준형</string>
+    <string name="RTU_protocol_private">일체형</string>
+    <string name="Delay_Time">지연 시간</string>
+    <string name="Hardware_Version">Version</string>
+    <string name="information_status">설정정보</string>
+    <string name="Lantern">등명기</string>
+    <string name="RTU">RTU</string>
 </resources>

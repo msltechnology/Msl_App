@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import com.example.mslapp.Ble.Dialog.Beginning.dialogFragment_Ble_Beginning_Lang
 import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
+import com.example.mslapp.MenualActivity;
 
 import java.util.Locale;
 
@@ -40,10 +42,15 @@ import static com.example.mslapp.BleMainActivity.SnFlag;
 import static com.example.mslapp.BleMainActivity.CdsFlag;
 import static com.example.mslapp.BleMainActivity.mBleMain;
 import static com.example.mslapp.BleMainActivity.tLanguage;
+import static com.example.mslapp.MenualActivity.callMenual;
 
 public class fragment_Ble_Beginning extends Fragment {
 
     int permissionCheck = 0;
+
+    // 중복 클릭 방지용
+    private long mLastClickTime = 0;
+
 
     public fragment_Ble_Beginning() {
 
@@ -98,7 +105,13 @@ public class fragment_Ble_Beginning extends Fragment {
         bleScanCDSBtn.setOnClickListener(v -> bleScanCDSBtnOnClick());
         bleScanSNBtn.setOnClickListener(v -> bleScanSNBtnOnClick());
         llBleLanguage.setOnClickListener(v -> bleLanguageBtnOnClick());
-        tvBleManual.setOnClickListener(v -> bleManualBtnOnClick());
+        tvBleManual.setOnClickListener(v -> {
+            if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                return;
+            }
+            mLastClickTime = SystemClock.elapsedRealtime();
+            //bleManualBtnOnClick();
+        });
         return view;
     }
 
@@ -221,8 +234,10 @@ public class fragment_Ble_Beginning extends Fragment {
         ble_Beginning_reset();*/
     }
     private void bleManualBtnOnClick() {
-        setLocale("en");
-        ble_Beginning_reset();
+        callMenual = true;
+        Intent intent = new Intent(mBleContext, MenualActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
 

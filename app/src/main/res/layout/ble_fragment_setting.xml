@@ -5,8 +5,7 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <View
-         style="@style/view_vertical_line_5"  />
+    <View style="@style/view_vertical_line_5" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,9 +33,9 @@
                 <View style="@style/view_horizontal_line_5" />
 
                 <TextView
-                    android:id="@+id/tv_ble_framgment_setting_selected_ID"
+                    android:id="@+id/tv_ble_fragment_setting_selected_ID"
                     style="@style/tv_ble_fragment_setting_value"
-                    android:text=""/>
+                    android:text="" />
 
                 <Button
                     android:id="@+id/btn_ID_Setting"
@@ -62,9 +61,9 @@
                 <View style="@style/view_horizontal_line_5" />
 
                 <TextView
-                    android:id="@+id/tv_ble_framgment_setting_selected_FL"
+                    android:id="@+id/tv_ble_fragment_setting_selected_FL"
                     style="@style/tv_ble_fragment_setting_value"
-                    android:text=""/>
+                    android:text="" />
 
                 <Button
                     android:id="@+id/btn_FL_Setting"
@@ -74,17 +73,35 @@
 
         </LinearLayout>
 
-
-        <Button
-            android:id="@+id/btn_status"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/custom_ble_status_call_btn"
-            android:layout_margin="5dp"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:text="@string/once_status" />
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_status"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_ble_status_call_btn"
+                android:text="@string/once_status"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_information"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_ble_status_call_btn"
+                android:text="@string/information_status"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -102,10 +119,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@drawable/custom_ble_setting_gps_on"
+            android:gravity="center"
             android:text="@string/GPS_On"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             style="@style/tv_ble_fragment_setting"
@@ -117,26 +134,89 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@drawable/custom_ble_setting_gps_off"
+            android:gravity="center"
             android:text="@string/GPS_Off"
             android:textStyle="bold" />
 
     </LinearLayout>
 
-    <View
-         style="@style/view_vertical_line_5"  />
+    <View style="@style/view_vertical_line_5" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            style="@style/tv_ble_fragment_setting"
+            android:text="@string/Delay_Time" />
+
+        <View style="@style/view_horizontal_line_5" />
+
+        <TextView
+            android:id="@+id/tv_ble_fragment_setting_delay_time"
+            style="@style/tv_ble_fragment_setting" />
+
+        <Button
+            android:id="@+id/btn_Delay_Time"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/custom_ble_setting_gps_off"
+            android:gravity="center"
+            android:text="@string/change"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <View style="@style/view_vertical_line_5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         android:orientation="horizontal">
 
 
     </LinearLayout>
 
-    <View style="@style/view_vertical_line_5"  />
+    <View style="@style/view_vertical_line_5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            style="@style/tv_ble_fragment_setting"
+            android:text="@string/Hardware_Version" />
+
+        <View style="@style/view_horizontal_line_5" />
+
+        <TextView
+            android:id="@+id/tv_ble_fragment_setting_version_num"
+            style="@style/tv_ble_fragment_setting" />
+
+        <View style="@style/view_horizontal_line_5" />
+
+        <TextView
+            android:id="@+id/tv_ble_fragment_setting_version_rtu"
+            style="@style/tv_ble_fragment_setting" />
+
+        <View style="@style/view_horizontal_line_5" />
+
+        <TextView
+            android:id="@+id/tv_ble_fragment_setting_version_gps_speed"
+            style="@style/tv_ble_fragment_setting" />
+
+    </LinearLayout>
+
+    <View style="@style/view_vertical_line_5" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -152,21 +232,21 @@
             android:layout_width="1dp"
             android:layout_height="match_parent"
             android:layout_marginVertical="15dp"
-            android:background="@color/view_line_color" />
+            android:background="@color/ble_view_line_color" />
 
         <Button
             android:id="@+id/btn_Password_Change"
             style="@style/btn_ble_fragment_setting_setting"
-            android:text="@string/btn_ble_setting_change_password"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:text="@string/btn_ble_setting_change_password" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
     </LinearLayout>
 
-    <View style="@style/view_vertical_line_5"  />
+    <View style="@style/view_vertical_line_5" />
 
 </LinearLayout>

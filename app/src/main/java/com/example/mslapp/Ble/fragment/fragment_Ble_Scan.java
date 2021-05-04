@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.example.mslapp.Ble.blelistview.BleScanListView;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
-import com.example.mslapp.Ble.blelistview.ListViewAdapter;
+import com.example.mslapp.Ble.blelistview.ble_scan_ListViewAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +52,7 @@ public class fragment_Ble_Scan extends Fragment {
     public static final String TAG = "Msl-Ble-Scan";
 
     ListView bleListview;
-    ListViewAdapter adapter;
+    ble_scan_ListViewAdapter adapter;
 
     // 상위Activity 에게 데이터 주는 용도
     private Ble_Scan_Listener selecetBleListener;
@@ -71,7 +71,7 @@ public class fragment_Ble_Scan extends Fragment {
 
         Log.d(TAG, "OnCreateView");
 
-        adapter = new ListViewAdapter();
+        adapter = new ble_scan_ListViewAdapter();
 
         bleListview = view.findViewById(R.id.bleList);
         bleListview.setAdapter(adapter);
@@ -136,7 +136,7 @@ public class fragment_Ble_Scan extends Fragment {
         Log.d(TAG, "reSearch");
         stopScan();
         scanResults = new ArrayList();
-        adapter = new ListViewAdapter();
+        adapter = new ble_scan_ListViewAdapter();
         bleListview.setAdapter(adapter);
         Scan();
     }

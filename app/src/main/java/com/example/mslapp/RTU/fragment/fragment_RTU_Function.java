@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
@@ -35,6 +36,7 @@ import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
 import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.BuildConfig;
 import com.example.mslapp.R;
+import com.example.mslapp.RTUMainActivity;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.hoho.android.usbserial.driver.UsbSerialDriver;
@@ -46,10 +48,16 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
+import static com.example.mslapp.BleMainActivity.mBleContext;
+import static com.example.mslapp.BleMainActivity.mBleMain;
+import static com.example.mslapp.BleMainActivity.tLanguage;
 import static com.example.mslapp.RTU.fragment.Constants.INTENT_ACTION_GRANT_USB;
+import static com.example.mslapp.RTUMainActivity.logData_RTU;
+import static com.example.mslapp.RTUMainActivity.mRTUContext;
 import static com.example.mslapp.RTUMainActivity.mRTUMain;
 
 public class fragment_RTU_Function extends Fragment implements SerialInputOutputManager.Listener {
@@ -185,7 +193,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     public void onResume() {
         Log.d(TAG, "fragment_RTU_Function - onResume start");
         super.onResume();
-        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
+        mRTUMain.registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
 
         if (usbPermission == UsbPermission.Unknown || usbPermission == UsbPermission.Granted) {
             mainLooper.post(this::connect);
@@ -200,7 +208,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
         if (connected) {
             disconnect();
         }
-        getActivity().unregisterReceiver(broadcastReceiver);
+        mRTUMain.unregisterReceiver(broadcastReceiver);
         super.onPause();
         Log.d(TAG, "fragment_RTU_Function - onPause leave");
     }
@@ -234,7 +242,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     // 시리얼 연결
     private void connect() {
         UsbDevice device = null;
-        UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+        UsbManager usbManager = (UsbManager) mRTUMain.getSystemService(Context.USB_SERVICE);
         for (UsbDevice v : usbManager.getDeviceList().values())
             if (v.getDeviceId() == deviceId)
                 device = v;
@@ -258,7 +266,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
         UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
         if (usbConnection == null && usbPermission == UsbPermission.Unknown && !usbManager.hasPermission(driver.getDevice())) {
             usbPermission = UsbPermission.Requested;
-            PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(getActivity(), 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
+            PendingIntent usbPermissionIntent = PendingIntent.getBroadcast(mRTUMain, 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
             usbManager.requestPermission(driver.getDevice(), usbPermissionIntent);
             return;
         }
@@ -280,6 +288,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
             status("connected");
             connected = true;
             send("$MUCMD,8,1*11\r\n");
+            Toast.makeText(mRTUMain, "Connect Success!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             status("connection failed: " + e.getMessage());
             disconnect();
@@ -288,11 +297,17 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
 
     // 연결 끊기
     public void disconnect() {
+        Toast.makeText(mRTUMain, "Disconnect!", Toast.LENGTH_SHORT).show();
         status("disconnect");
         connected = false;
+        if(usbSerialPort == null){
+            status("disconnect usbSerialPort null");
+            return;
+        }
         try {
             usbSerialPort.close();
-        } catch (IOException ignored) {
+        } catch (Exception e) {
+            status("disconnect usbSerialPort close error : " + e.toString());
         }
         usbSerialPort = null;
     }
@@ -307,8 +322,9 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
             byte[] data = (str).getBytes();
             usbSerialPort.write(data, WRITE_WAIT_MILLIS);
             Log.d(TAG, "send : " + new String(data));
+            logData_RTU(new String(data), "write");
         } catch (Exception e) {
-            Log.d(TAG, "send error" + e.toString());
+            Log.d(TAG, "send error : " + e.toString());
         }
     }
 
@@ -458,5 +474,34 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
                 view.setAlpha(0f);
             }
         }
+    }
+
+    // 언어 변경
+    public static void setLocale(String char_select) {
+        switch (char_select) {
+            case "ko":
+                break;
+            case "en":
+                break;
+            default:
+                char_select = "en";
+                break;
+        }
+
+        Locale locale = new Locale(char_select);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        mRTUContext.getResources().updateConfiguration(config, mRTUContext.getResources().getDisplayMetrics());
+        tLanguage = char_select; //설정된 언어 저장 변수에 저장
+    }
+
+    public static void rtu_Beginning_reset(){
+        //Intent intent = mRTUContext.getPackageManager().getLaunchIntentForPackage(mRTUContext.getPackageName());
+        Intent intent = new Intent(mRTUContext, RTUMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mRTUMain.finish();
+        mRTUMain.startActivity(intent);
     }
 }

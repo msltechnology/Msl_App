@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:background="@drawable/ble_fragment_status_dialog_background">
+    android:background="@drawable/custom_ble_status_dialog_background">
 
     <ImageView
         android:id="@+id/language_kor"

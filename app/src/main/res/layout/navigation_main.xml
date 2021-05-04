@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.navigation.NavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rtu_sidebar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="start">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_Navigation_Move"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            >
+
+            <include layout="@layout/drawer_header"/>
+
+            <View style="@style/view_vertical_line"  />
+
+            <LinearLayout
+                android:id="@+id/ll_Navigation_Move_Ble"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_ble" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:paddingStart="15dp"
+                    android:text="Bluetooth"
+                    android:autoSizeTextType="uniform"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Navigation_Move_RTU"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_rtu"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:paddingStart="15dp"
+                    android:text="RTU"
+                    android:autoSizeTextType="uniform"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line"  />
+
+            <LinearLayout
+                android:id="@+id/ll_Navigation_Show_Language"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/language_eng_on"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:paddingStart="15dp"
+                    android:text="Language"
+                    android:autoSizeTextType="uniform"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Navigation_Show_FL_List"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_fl_list"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:paddingStart="15dp"
+                    android:text="FL List"
+                    android:autoSizeTextType="uniform"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Navigation_Show_Log"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_log"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:paddingStart="15dp"
+                    android:text="Log"
+                    android:autoSizeTextType="uniform"
+                    android:padding="10dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_Navigation_Log"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingTop="50dp"
+            android:visibility="invisible">
+
+            <ListView
+                android:id="@+id/lv_Navigation_Log"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:transcriptMode="normal"/>
+
+            <Button
+                android:id="@+id/btn_Navigation_Log_Close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Log Close"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</com.google.android.material.navigation.NavigationView>

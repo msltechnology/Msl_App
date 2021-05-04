@@ -71,4 +71,27 @@
     <string name="solar_v_detail">Solar\nDetail</string>
     <string name="GPS_Set">GPS\nPower</string>
     <string name="btn_ble_setting_change_password">Change</string>
+    <string name="change">change</string>
+    <string name="lantern_id">lantern ID</string>
+    <string name="RTU_ID">RTU ID</string>
+    <string name="send_cycle" >Send cycle</string>
+    <string name="reset_cycle">reset cycle</string>
+    <string name="server_1">Server 1</string>
+    <string name="server_2">Server 2</string>
+    <string name="dialog_clear">Clear</string>
+    <string name="rtu_status">status</string>
+    <string name="rtu_reset">reset</string>
+    <string name="rtu_send">send</string>
+    <string name="Modem_power">Modem Power</string>
+    <string name="GMT">GMT Set</string>
+    <string name="next" >Next</string>
+    <string name="skip" >Skip</string>
+    <string name="start">Got it</string>
+    <string name="RTU_protocol_standard">standard</string>
+    <string name="RTU_protocol_private">private</string>
+    <string name="Delay_Time">Delay Time</string>
+    <string name="Hardware_Version">Version</string>
+    <string name="information_status">Information\nRequest</string>
+    <string name="Lantern">Lantern</string>
+    <string name="RTU">RTU</string>
 </resources>

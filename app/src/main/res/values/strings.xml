@@ -115,4 +115,46 @@
     <string name="tv_ble_fragment_status_dialog_solar_sol5" translatable="false">Sol5</string>
     <string name="tv_ble_fragment_status_dialog_solar_sol6" translatable="false">Sol6</string>
     <string name="devices" translatable="false">USB Devices</string>
+    <string name="change">변경</string>
+    <string name="lantern_id">lantern ID</string>
+    <string name="RTU_ID">RTU ID</string>
+    <string name="send_cycle" >전송 주기</string>
+    <string name="reset_cycle">리셋 주기</string>
+    <string name="server_1">Server 1</string>
+    <string name="server_2">Server 2</string>
+    <string name="dialog_clear">지우기</string>
+    <string name="protocol" translatable="false">Protocol</string>
+    <string name="GMT">시간 설정\n(GMT)</string>
+    <string name="Modem_power">모뎀 전원</string>
+    <string name="rtu_status">상태조회</string>
+    <string name="rtu_reset">모뎀리셋</string>
+    <string name="rtu_send">모국전송</string>
+    <string name="next" >다음</string>
+    <string name="skip" >스킵</string>
+    <string name="start">확인</string>
+
+
+    <string name="slide_1_title" translatable="false">Hello Food!</string>
+    <string name="slide_1_desc" translatable="false">The easiest way to order food from your favourite restaurant!</string>
+
+    <string name="slide_2_title" translatable="false">Movie Tickets</string>
+    <string name="slide_2_desc" translatable="false">Book movie tickets for your family and friends!</string>
+
+    <string name="slide_3_title" translatable="false">Great Discounts</string>
+    <string name="slide_3_desc" translatable="false">Best discounts on every single service we offer!</string>
+
+    <string name="slide_4_title" translatable="false">World Travel</string>
+    <string name="slide_4_desc" translatable="false">Book tickets of any transportation and travel the world!</string>
+
+    <string name="play_again_desc" translatable="false">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again" translatable="false">Play Again</string>
+    <string name="RTU_protocol_standard">표준형</string>
+    <string name="RTU_protocol_private">일체형</string>
+    <string name="Delay_Time">지연 시간</string>
+    <string name="Hardware_Version">Version</string>
+    <string name="information_status">설정정보</string>
+    <string name="Lantern">등명기</string>
+    <string name="RTU">RTU</string>
+
+
 </resources>
