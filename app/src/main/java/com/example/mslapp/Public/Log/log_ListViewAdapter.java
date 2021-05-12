@@ -12,10 +12,19 @@ import com.example.mslapp.R;
 
 import java.util.ArrayList;
 
+import static com.example.mslapp.BleMainActivity.mBleMain;
+
 public class log_ListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<navigation_Log_ListView> log_ListViewList = new ArrayList<>();
     private LinearLayout ll_navigation_log;
+
+    private int nListCnt = 0;
+
+    log_ListViewAdapter log_listViewAdapter;
+
+
+    navigation_Log_ListView item = new navigation_Log_ListView();
 
     String dataType_read = "Read : ";
     String dataType_write = "Write : ";
@@ -23,13 +32,13 @@ public class log_ListViewAdapter extends BaseAdapter {
 
     // ListViewAdapter의 생성자
     public log_ListViewAdapter() {
-
+        log_listViewAdapter = this;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
-        return log_ListViewList.size();
+        return nListCnt;
     }
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
@@ -72,9 +81,9 @@ public class log_ListViewAdapter extends BaseAdapter {
                 ll_navigation_log.setBackgroundColor(context.getResources().getColor(R.color.white));
         }
 
-
         return convertView;
     }
+
 
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
@@ -89,23 +98,63 @@ public class log_ListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
+    // Activity 에서 notifyDataSetChanged 를 안하고 adapter 에서 실행. 에러가 떠서. 매번 size 를 측정하여 에러나는걸 줄임.
     public void addItem(String currentTime, String Data) {
-        navigation_Log_ListView item = new navigation_Log_ListView();
+        // 너무 많으면 초기화
+        if(nListCnt >= 300){
+            log_ListViewList = new ArrayList<>();
+        }
+
+        // 메인 activity 를 통해서 ui를 변경해야 에러가 안뜸.
+        mBleMain.runOnUiThread(() -> {
+            item = new navigation_Log_ListView();
+
+            item.setLogCurrentTime(currentTime);
+            item.setLogData(Data);
+
+            log_ListViewList.add(item);
+            nListCnt = log_ListViewList.size();
+            log_listViewAdapter.notifyDataSetChanged();
+        });
+
+
+/*
+        item = new navigation_Log_ListView();
 
         item.setLogCurrentTime(currentTime);
         item.setLogData(Data);
 
         log_ListViewList.add(item);
+        nListCnt = log_ListViewList.size();
+        this.notifyDataSetChanged();*/
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
     public void addItem(String currentTime, String Data, String Color) {
-        navigation_Log_ListView item = new navigation_Log_ListView();
+        if(nListCnt >= 300){
+            log_ListViewList = new ArrayList<>();
+        }
+
+        mBleMain.runOnUiThread(() -> {
+            item = new navigation_Log_ListView();
+
+            item.setLogCurrentTime(currentTime);
+            item.setLogData(Data);
+            item.setLogBackColor(Color);
+
+            log_ListViewList.add(item);
+            nListCnt = log_ListViewList.size();
+            log_listViewAdapter.notifyDataSetChanged();
+        });
+
+        /*item = new navigation_Log_ListView();
 
         item.setLogCurrentTime(currentTime);
         item.setLogData(Data);
         item.setLogBackColor(Color);
 
         log_ListViewList.add(item);
+        nListCnt = log_ListViewList.size();
+        this.notifyDataSetChanged();*/
     }
 }

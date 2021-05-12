@@ -21,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Setting;
 import com.example.mslapp.R;
 
+import static com.example.mslapp.Ble.fragment.fragment_Ble_Setting.delay_time;
 import static com.example.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment {
@@ -28,10 +29,10 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-Setting-Dialog-DelayTime";
 
-    private static final int Ble_Setting_dialog_ID = 3;
+    private static final int Ble_Setting_dialog_DelayTime = 3;
 
-    Button btn_hundred_up, btn_ten_up, btn_one_up, btn_hundred_down, btn_ten_down, btn_one_down, btn_ce, btn_ok;
-    TextView tv_hundred, tv_ten, tv_one;
+    Button btn_plus_change, btn_hundred_up, btn_ten_up, btn_one_up, btn_minus_change, btn_hundred_down, btn_ten_down, btn_one_down, btn_ce, btn_ok;
+    TextView tv_sign, tv_hundred, tv_ten, tv_one;
 
     View view;
 
@@ -50,9 +51,16 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
 
         view = inflater.inflate(R.layout.ble_fragment_setting_dialog_delaytime_setting, null);
 
+        tv_sign = view.findViewById(R.id.tv_dialog_delaytime_sign);
         tv_hundred = view.findViewById(R.id.tv_dialog_delaytime_hundred);
         tv_ten = view.findViewById(R.id.tv_dialog_delaytime_ten);
         tv_one = view.findViewById(R.id.tv_dialog_delaytime_one);
+
+        String[] dataArr5 = delay_time.split("");
+        tv_sign.setText(dataArr5[1]);
+        tv_hundred.setText(dataArr5[2]);
+        tv_ten.setText(dataArr5[3]);
+        tv_one.setText(dataArr5[4]);
 
         btnSetting();
 
@@ -60,6 +68,8 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
     }
 
     void btnSetting() {
+        btn_plus_change = view.findViewById(R.id.btn_plus_change);
+        btn_minus_change = view.findViewById(R.id.btn_minus_change);
         btn_hundred_up = view.findViewById(R.id.btn_hundred_up);
         btn_hundred_down = view.findViewById(R.id.btn_hundred_down);
         btn_ten_up = view.findViewById(R.id.btn_ten_up);
@@ -69,6 +79,35 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
         btn_ce = view.findViewById(R.id.btn_dialog_delaytime_cancel);
         btn_ok = view.findViewById(R.id.btn_dialog_delaytime_OK);
 
+
+
+        if(tv_sign.getText().toString().equals("-")){
+            btn_plus_change.setVisibility(View.VISIBLE);
+            btn_minus_change.setVisibility(View.INVISIBLE);
+        } else if(tv_sign.getText().toString().equals("+")){
+            btn_plus_change.setVisibility(View.INVISIBLE);
+            btn_minus_change.setVisibility(View.VISIBLE);
+        }
+
+
+        if(tv_one.getText().toString().equals("0")){
+            btn_one_up.setVisibility(View.VISIBLE);
+            btn_one_down.setVisibility(View.INVISIBLE);
+        } else if(tv_one.getText().toString().equals("5")){
+            btn_one_up.setVisibility(View.INVISIBLE);
+            btn_one_down.setVisibility(View.VISIBLE);
+        }
+
+        btn_plus_change.setOnClickListener(v -> {
+            tv_sign.setText("+");
+            btn_minus_change.setVisibility(View.VISIBLE);
+            btn_plus_change.setVisibility(View.INVISIBLE);
+        });
+        btn_minus_change.setOnClickListener(v -> {
+            tv_sign.setText("-");
+            btn_minus_change.setVisibility(View.INVISIBLE);
+            btn_plus_change.setVisibility(View.VISIBLE);
+        });
         btn_hundred_up.setOnClickListener(v -> {
             int hundred = Integer.parseInt(tv_hundred.getText().toString());
             if (hundred < 9) {
@@ -98,18 +137,14 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
             }
         });
         btn_one_up.setOnClickListener(v -> {
-            int one = Integer.parseInt(tv_one.getText().toString());
-            if (one < 9) {
-                one += 1;
-                tv_one.setText(Integer.toString(one));
-            }
+            tv_one.setText("5");
+            btn_one_down.setVisibility(View.VISIBLE);
+            btn_one_up.setVisibility(View.INVISIBLE);
         });
         btn_one_down.setOnClickListener(v -> {
-            int one = Integer.parseInt(tv_one.getText().toString());
-            if (one > 0) {
-                one -= 1;
-                tv_one.setText(Integer.toString(one));
-            }
+            tv_one.setText("0");
+            btn_one_down.setVisibility(View.INVISIBLE);
+            btn_one_up.setVisibility(View.VISIBLE);
         });
         btn_ce.setOnClickListener(v -> dismiss());
         btn_ok.setOnClickListener(v -> {
@@ -120,10 +155,18 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
                 return;
             }
 
-            String delayTimeData = tv_hundred.getText().toString() + tv_ten.getText().toString() + tv_one.getText().toString();
+            String delayTimeData = tv_sign.getText().toString() + tv_hundred.getText().toString() + tv_ten.getText().toString() + tv_one.getText().toString();
+
+            int hundred = Integer.parseInt(tv_hundred.getText().toString());
+            int ten = Integer.parseInt(tv_ten.getText().toString());
+            int one = Integer.parseInt(tv_one.getText().toString());
+
+            if(hundred == 0 && ten == 0 && one == 0){
+                delayTimeData = "+000";
+            }
 
             Intent intent = fragment_Ble_Setting.newIntent(delayTimeData);
-            getParentFragment().onActivityResult(Ble_Setting_dialog_ID, Activity.RESULT_OK, intent);
+            getParentFragment().onActivityResult(Ble_Setting_dialog_DelayTime, Activity.RESULT_OK, intent);
 
             dismiss();
             Log.d(TAG, "btn_ok Click");

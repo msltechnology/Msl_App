@@ -216,11 +216,12 @@ public class fragment_Ble_Scan extends Fragment {
                 // 중복 체크
                 for (BluetoothDevice dev : scanResults) {
                     if (dev.getAddress().equals(deviceAddress)) {
+
+
+
                         return;
                     }
                 }
-
-                String testString = null;
 
                 // userdata 받기(등명기 시리얼)
                 byte[] scanRecord = result.getScanRecord().getBytes();
@@ -248,6 +249,7 @@ public class fragment_Ble_Scan extends Fragment {
 */
 
 
+                // 블루투스 result 의 각 자료
                 /*Log.d(TAG, "\nresult.describeContents() : " + result.describeContents() +
                         "\nresult.getAdvertisingSid() : " + result.getAdvertisingSid() +
                         "\nresult.getDataStatus() : " + result.getDataStatus() +

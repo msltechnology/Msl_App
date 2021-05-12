@@ -1,6 +1,9 @@
 package com.example.mslapp.RTU.fragment;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +22,15 @@ import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Setting_GMT_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Modem_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Protocol_Change;
 
+import java.util.Date;
+
+import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.example.mslapp.RTUMainActivity.DATA_NUM_1;
+import static com.example.mslapp.RTUMainActivity.DATA_NUM_2;
 import static com.example.mslapp.RTUMainActivity.DATA_NUM_6;
 import static com.example.mslapp.RTUMainActivity.DATA_NUM_7;
+import static com.example.mslapp.RTUMainActivity.DATA_NUM_99;
 import static com.example.mslapp.RTUMainActivity.DATA_SIGN_CHECKSUM;
 import static com.example.mslapp.RTUMainActivity.DATA_SIGN_COMMA;
 import static com.example.mslapp.RTUMainActivity.DATA_SIGN_CR;
@@ -40,8 +48,29 @@ public class fragment_RTU_Setting extends Fragment {
 
     String TotalReadData = "";
 
-    TextView tv_modem_power, tv_GMT, tv_protocol;
-    Button btn_rtu_setting_send, btn_rtu_setting_reset, btn_rtu_setting_status, btn_modem_power, btn_GMT, btn_protocol;
+    TextView tv_modem_power, tv_GMT, tv_protocol, tv_TCP, tv_Modem_Num, tv_Lantern_Info;
+    Button btn_rtu_setting_send, btn_rtu_setting_reset, btn_rtu_setting_status, btn_modem_power, btn_GMT, btn_protocol, btn_TCP, btn_Modem_Num, btn_Lantern_Info;
+
+    String call_TCP = "AT$$TCP_STATE??"+
+            DATA_SIGN_CR + DATA_SIGN_LF;
+
+    String call_Modem_Num = "AT$$MDN"+
+            DATA_SIGN_CR + DATA_SIGN_LF;
+
+    String call_Lantern_Info = DATA_REQUEST_STATUS + "4C" +
+            DATA_SIGN_CR + DATA_SIGN_LF;
+
+    String RUT_Debug_On = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
+            DATA_NUM_99 + DATA_SIGN_COMMA +
+            DATA_NUM_1 + DATA_SIGN_CHECKSUM +
+            DATA_NUM_1 + DATA_NUM_1 +
+            DATA_SIGN_CR + DATA_SIGN_LF;
+
+    String RUT_Debug_Off = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
+            DATA_NUM_99 + DATA_SIGN_COMMA +
+            DATA_NUM_2 + DATA_SIGN_CHECKSUM +
+            DATA_NUM_1 + DATA_NUM_1 +
+            DATA_SIGN_CR + DATA_SIGN_LF;
 
     View view;
     @Nullable
@@ -61,6 +90,9 @@ public class fragment_RTU_Setting extends Fragment {
         tv_modem_power = view.findViewById(R.id.tv_modem_power);
         tv_GMT = view.findViewById(R.id.tv_GMT);
         tv_protocol = view.findViewById(R.id.tv_protocol);
+        tv_TCP = view.findViewById(R.id.tv_TCP);
+        tv_Modem_Num = view.findViewById(R.id.tv_Modem_Num);
+        tv_Lantern_Info = view.findViewById(R.id.tv_Lantern_Info);
 
     }
 
@@ -72,6 +104,9 @@ public class fragment_RTU_Setting extends Fragment {
         btn_modem_power = view.findViewById(R.id.btn_modem_power);
         btn_GMT = view.findViewById(R.id.btn_GMT);
         btn_protocol = view.findViewById(R.id.btn_protocol);
+        btn_TCP = view.findViewById(R.id.btn_TCP);
+        btn_Modem_Num = view.findViewById(R.id.btn_Modem_Num);
+        btn_Lantern_Info = view.findViewById(R.id.btn_Lantern_Info);
 
         btn_rtu_setting_status.setOnClickListener(v -> {
             send(STATUS_CALL);
@@ -113,8 +148,27 @@ public class fragment_RTU_Setting extends Fragment {
             customDialog_Protocol_Change.show(fm, "dialogFragment_rtu_Setting_Protocol_Change");
         });
 
+        btn_TCP.setOnClickListener(v -> {
+            send(call_TCP);
+        });
+
+        btn_Modem_Num.setOnClickListener(v -> {
+            send(call_Modem_Num);
+        });
+
+        btn_Lantern_Info.setOnClickListener(v -> {
+
+            send(RUT_Debug_On);
+
+            mHandler.postDelayed(() -> send(call_Lantern_Info), 50);
+
+            mHandler.postDelayed(() -> send(RUT_Debug_Off), 400);
+        });
 
     }
+
+    Handler mHandler = new Handler();
+
 
     public void readData(String data) {
         Log.d(TAG, "fragment_RTU_Setting readData 들어옴 : " + data);
@@ -133,21 +187,6 @@ public class fragment_RTU_Setting extends Fragment {
 
                 String readData = TotalReadData.substring(configIndex, lfIndex);
 
-                if(readData.contains("Low Power"))
-                    return;
-
-                if(readData.contains("DebugMode"))
-                    return;
-
-                if(readData.contains("Phone Number"))
-                    return;
-
-                if(readData.contains("Reset Time"))
-                    return;
-
-                logData_RTU(readData, "read");
-                Log.d(TAG, "fragment_RTU_Setting readData : " + readData);
-
                 try {
                     TotalReadData = TotalReadData.substring(lfIndex + 1);
                 } catch (Exception e) {
@@ -155,6 +194,18 @@ public class fragment_RTU_Setting extends Fragment {
                     TotalReadData = "";
                     Log.e(TAG, "fragment_RTU_Setting readData Error : " + e.toString());
                 }
+
+                if(readData.contains("Low Power") || readData.contains("DebugMode") || readData.contains("Phone Number") || readData.contains("Reset Time")){
+                    configIndex = TotalReadData.indexOf("[ ConfMsg]");
+                    lfIndex = TotalReadData.indexOf("\n", configIndex);
+                    if (configIndex < 0 | lfIndex < 0) {
+                        break;
+                    }
+                }else{
+                    logData_RTU(readData, "read");
+                }
+
+                Log.d(TAG, "fragment_RTU_Setting readData : " + readData);
 
                 readData = readData.replace("[ ConfMsg] ", "");
 
@@ -229,6 +280,89 @@ public class fragment_RTU_Setting extends Fragment {
                 }
 
             }
+        } else if(TotalReadData.contains("[ModemMsg]") && TotalReadData.contains("\n")){
+            configIndex = TotalReadData.indexOf("[ModemMsg]");
+            lfIndex = TotalReadData.indexOf("\n", configIndex);
+            while (configIndex < lfIndex) {
+
+                String readData = TotalReadData.substring(configIndex, lfIndex);
+
+                Log.d(TAG, "fragment_RTU_Setting readData : " + readData);
+
+                try {
+                    TotalReadData = TotalReadData.substring(lfIndex + 1);
+                } catch (Exception e) {
+                    logData_RTU("readData Error! - TotalReadData","error");
+                    TotalReadData = "";
+                    Log.e(TAG, "fragment_RTU_Setting readData Error : " + e.toString());
+                }
+
+                readData = readData.replace("[ModemMsg] ", "");
+
+                if (readData.contains("$$TCP_STATE: ")) { // TCP 상태 확인
+                    logData_RTU(readData, "read");
+                    readData = readData.replace("$$TCP_STATE: ", "");
+                    readData = readData.trim();
+                    String[] readDataArr = readData.split(",");
+
+                    if(readDataArr[0].equals("1")){
+                        tv_TCP.setText("Closed");
+                    }else if(readDataArr[0].equals("2")){
+                        tv_TCP.setText("Opened");
+                    }
+                } else if (readData.contains("Phone Number")) { //GMT 설정 상태
+                    logData_RTU(readData, "read");
+                    readData = readData.replace("Phone Number: ", "");
+                    readData = readData.trim();
+
+                    tv_Modem_Num.setText(readData);
+                }
+
+                configIndex = TotalReadData.indexOf("[ModemMsg]");
+                lfIndex = TotalReadData.indexOf("\n", configIndex);
+                if (configIndex < 0 | lfIndex < 0) {
+                    break;
+                }
+            }
+        } else if(TotalReadData.contains("$LISTS") && TotalReadData.contains("\n")){
+            configIndex = TotalReadData.indexOf("$LISTS");
+            lfIndex = TotalReadData.indexOf("\n", configIndex);
+            while (configIndex < lfIndex) {
+
+                String readData = TotalReadData.substring(configIndex, lfIndex);
+
+                Log.d(TAG, "fragment_RTU_Setting readData : " + readData);
+
+                try {
+                    TotalReadData = TotalReadData.substring(lfIndex + 1);
+                } catch (Exception e) {
+                    logData_RTU("readData Error! - TotalReadData","error");
+                    TotalReadData = "";
+                    Log.e(TAG, "fragment_RTU_Setting readData Error : " + e.toString());
+                }
+
+                long now = System.currentTimeMillis();
+                Date mDate = new Date(now);
+                SimpleDateFormat simpleDate = new SimpleDateFormat("hh:mm:ss");
+                String getTime = simpleDate.format(mDate);
+
+                logData_RTU(readData, "read");
+
+                readData = readData.replace("$LISTS,", "");
+                readData = readData.substring(0,readData.indexOf("*"));
+
+                tv_Lantern_Info.setText("" +
+                        "Time : "+getTime + "\n" +readData);
+
+                configIndex = TotalReadData.indexOf("$LISTS");
+                lfIndex = TotalReadData.indexOf("\n", configIndex);
+                if (configIndex < 0 | lfIndex < 0) {
+                    break;
+                }
+            }
         }
+
+
+
     }
 }

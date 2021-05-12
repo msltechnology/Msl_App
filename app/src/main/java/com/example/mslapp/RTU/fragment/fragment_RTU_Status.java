@@ -98,9 +98,7 @@ public class fragment_RTU_Status extends Fragment {
         Button btn_rtu_server1_change = view.findViewById(R.id.btn_server_1);
         Button btn_rtu_server2_change = view.findViewById(R.id.btn_server_2);
 
-        btn_rtu_status_call.setOnClickListener(v -> {
-            send(STATUS_CALL);
-        });
+        btn_rtu_status_call.setOnClickListener(v -> send(STATUS_CALL));
         btn_rtu_status_send.setOnClickListener(v -> {
             String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
                     DATA_NUM_7 + DATA_SIGN_CHECKSUM +
@@ -171,22 +169,6 @@ public class fragment_RTU_Status extends Fragment {
 
                 String readData = TotalReadData.substring(configIndex, lfIndex);
 
-                if(readData.contains("Low Power"))
-                    return;
-
-                if(readData.contains("DebugMode"))
-                    return;
-
-                if(readData.contains("Phone Number"))
-                    return;
-
-                if(readData.contains("Reset Time"))
-                    return;
-
-
-                logData_RTU(readData, "read");
-                Log.d(TAG, "fragment_RTU_Status readData : " + readData);
-
                 try {
                     TotalReadData = TotalReadData.substring(lfIndex + 1);
                 } catch (Exception e) {
@@ -194,6 +176,20 @@ public class fragment_RTU_Status extends Fragment {
                     logData_RTU("readData Error! - TotalReadData", "error");
                     Log.e(TAG, "fragment_RTU_Status readData Error : " + e.toString());
                 }
+
+                if (readData.contains("Low Power") || readData.contains("DebugMode") || readData.contains("Phone Number") || readData.contains("Reset Time")) {
+                    configIndex = TotalReadData.indexOf("[ ConfMsg]");
+                    lfIndex = TotalReadData.indexOf("\n", configIndex);
+                    if (configIndex < 0 | lfIndex < 0) {
+                        break;
+                    }
+                } else {
+                    logData_RTU(readData, "read");
+                }
+
+
+                Log.d(TAG, "fragment_RTU_Status readData : " + readData);
+
 
                 readData = readData.replace("[ ConfMsg] ", "");
 
@@ -280,7 +276,6 @@ public class fragment_RTU_Status extends Fragment {
                     readData = readData.replace("DebugMode:", "");
 
                 }
-
 
                 configIndex = TotalReadData.indexOf("[ ConfMsg]");
                 lfIndex = TotalReadData.indexOf("\n", configIndex);

@@ -13,6 +13,14 @@
         tools:ignore="NestedWeights">
 
         <Button
+            android:id="@+id/btn_plus_change"
+            style="@style/btn_setting_dialog_id"
+            android:background="@drawable/ic_sign_up"
+            android:visibility="invisible"/>
+
+        <View style="@style/view_horizontal_line_5" />
+
+        <Button
             android:id="@+id/btn_hundred_up"
             style="@style/btn_setting_dialog_id"
             android:background="@drawable/ic_sign_up"/>
@@ -39,6 +47,31 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_dialog_delaytime_sign"
+                style="@style/tv_setting_dialog_id"
+                android:text="+"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="#ffb0e0e6" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -129,6 +162,11 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_minus_change"
+                style="@style/btn_setting_dialog_id"
+                android:background="@drawable/ic_sign_down"/>
 
             <Button
                 android:id="@+id/btn_hundred_down"

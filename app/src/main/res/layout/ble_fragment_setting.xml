@@ -158,7 +158,8 @@
 
         <TextView
             android:id="@+id/tv_ble_fragment_setting_delay_time"
-            style="@style/tv_ble_fragment_setting" />
+            style="@style/tv_ble_fragment_setting"
+            android:text="@string/Delay_Time_value"/>
 
         <Button
             android:id="@+id/btn_Delay_Time"
@@ -240,7 +241,7 @@
             android:layout_margin="20dp"
             android:text="@string/btn_ble_setting_change_password" />
 
-        <TextView
+        <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />

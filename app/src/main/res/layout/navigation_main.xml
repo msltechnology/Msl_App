@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.navigation.NavigationView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rtu_sidebar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -144,21 +145,24 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingTop="50dp"
+            android:paddingTop="30dp"
             android:visibility="invisible">
 
             <ListView
                 android:id="@+id/lv_Navigation_Log"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="3"
-                android:transcriptMode="normal"/>
+                android:layout_weight="1"
+                android:transcriptMode="normal"
+                tools:ignore="NestedWeights" />
 
             <Button
                 android:id="@+id/btn_Navigation_Log_Close"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Log Close"/>
+                android:background="@drawable/custom_ble_setting_gps_off"
+                android:layout_margin="1dp"
+                android:text="@string/log_close"/>
 
         </LinearLayout>
 

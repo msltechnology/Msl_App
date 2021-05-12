@@ -50,6 +50,8 @@ public class fragment_RTU_Scan extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        // 리스트 정의
         listAdapter = new ArrayAdapter<ListItem>(getActivity(), 0, listItems) {
             @NonNull
             @Override
@@ -88,6 +90,7 @@ public class fragment_RTU_Scan extends ListFragment {
         refresh();
     }
 
+    // USB 연결 후 해당 어플 선택 시 해당 값 실행. USB 가 연결 되 있는 상태라면 해당 데이터 받아서 리스트로 보여줌.
     void refresh() {
         UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
         UsbSerialProber usbDefaultProber = UsbSerialProber.getDefaultProber();
@@ -114,6 +117,7 @@ public class fragment_RTU_Scan extends ListFragment {
         if(item.driver == null) {
             Toast.makeText(getActivity(), "no driver", Toast.LENGTH_SHORT).show();
         } else {
+            // 선택한 리스트의 데이터를 bundle에 넣어서 넘겨줌.
             Bundle args = new Bundle();
             args.putInt("device", item.device.getDeviceId());
             args.putInt("port", item.port);

@@ -30,6 +30,7 @@ public class ble_scan_ListViewAdapter extends BaseAdapter {
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
     @Override
+
     public View getView(int position, View convertView, ViewGroup parent) {
         //final int pos = position;
         final Context context = parent.getContext();
@@ -66,6 +67,7 @@ public class ble_scan_ListViewAdapter extends BaseAdapter {
         return convertView;
     }
 
+
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {
@@ -92,6 +94,19 @@ public class ble_scan_ListViewAdapter extends BaseAdapter {
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
     public void addItem(String userdata, String name, String address, String sign, boolean check) {
+        BleScanListView item = new BleScanListView();
+
+        item.setBleUserdata(userdata);
+        item.setBleName(name);
+        item.setBleAddress(address);
+        item.setBleSign(sign);
+        item.setBleCheck(check);
+
+        blelistViewList.add(item);
+    }
+
+    // 아이템을 최신 데이터로 갱신
+    public void updateItem(String userdata, String name, String address, String sign, boolean check) {
         BleScanListView item = new BleScanListView();
 
         item.setBleUserdata(userdata);

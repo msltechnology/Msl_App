@@ -44,6 +44,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
@@ -65,6 +66,7 @@ import com.example.mslapp.Ble.fragment.fragment_Ble_Password;
 import com.example.mslapp.Ble.fragment.fragment_CDS_Setting;
 import com.example.mslapp.Ble.fragment.fragment_SN_Setting;
 import com.example.mslapp.Public.Log.log_ListViewAdapter;
+import com.example.mslapp.Public.Log.navigation_Log_ListView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -87,7 +89,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = false;
+    public static final boolean adminApp = true;
 
     public static Context mBleContext = null;
     public static AppCompatActivity mBleMain = null;
@@ -337,7 +339,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     Toolbar toolbarMain;
     NavigationView navigationView;
 
-    ListView log_Listview;
+    public static ListView log_Listview;
     public static log_ListViewAdapter log_listViewAdapter;
     LinearLayout ll_navigation_move, ll_navigation_log;
 
@@ -628,31 +630,49 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         navigationView.getLayoutParams().width = x_log_off;
 
         // Ble 이동
-        navigationView.findViewById(R.id.ll_Navigation_Move_Ble).setOnClickListener(v -> {
-            Intent intent = new Intent(mBleContext, BleMainActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        navigationView.findViewById(R.id.ll_Navigation_Move_Ble).setOnClickListener(
+                new OnSingleClickListener() {
+                    @Override
+                    public void onSingleClick(View v) {
+                        Intent intent = new Intent(mBleContext, BleMainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+        );
 
         // RTU로 이동
-        navigationView.findViewById(R.id.ll_Navigation_Move_RTU).setOnClickListener(v -> {
-            Intent intent = new Intent(mBleContext, RTUMainActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        navigationView.findViewById(R.id.ll_Navigation_Move_RTU).setOnClickListener(
+                new OnSingleClickListener() {
+                    @Override
+                    public void onSingleClick(View v) {
+                        Intent intent = new Intent(mBleContext, RTUMainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                });
 
         // 언어변환 키기
-        navigationView.findViewById(R.id.ll_Navigation_Show_Language).setOnClickListener(v -> {
-            FragmentManager fm = getSupportFragmentManager();
-            dialogFragment_Ble_Beginning_LanguageChange customDialogLanguageChange = new dialogFragment_Ble_Beginning_LanguageChange();
-            customDialogLanguageChange.show(fm, "fragment_beginning_dialog_LanguageChange");
+        navigationView.findViewById(R.id.ll_Navigation_Show_Language).setOnClickListener(
+                new OnSingleClickListener() {
+                    @Override
+                    public void onSingleClick(View v) {
+                        FragmentManager fm = getSupportFragmentManager();
+                        dialogFragment_Ble_Beginning_LanguageChange customDialogLanguageChange = new dialogFragment_Ble_Beginning_LanguageChange();
+                        customDialogLanguageChange.show(fm, "fragment_beginning_dialog_LanguageChange");
+                    }
         });
 
         // FL List 창 키기
-        navigationView.findViewById(R.id.ll_Navigation_Show_FL_List).setOnClickListener(v -> {
-            FragmentManager fm = getSupportFragmentManager();
-            dialogFragment_Ble_Setting_FL_Setting customDialog_FL_Setting = new dialogFragment_Ble_Setting_FL_Setting();
-            customDialog_FL_Setting.show(fm, "dialogFragment_Ble_Setting_FL_Setting");
+        navigationView.findViewById(R.id.ll_Navigation_Show_FL_List).setOnClickListener(
+                new OnSingleClickListener() {
+                    @Override
+                    public void onSingleClick(View v) {
+                        FragmentManager fm = getSupportFragmentManager();
+                        dialogFragment_Ble_Setting_FL_Setting customDialog_FL_Setting = new dialogFragment_Ble_Setting_FL_Setting();
+                        customDialog_FL_Setting.show(fm, "dialogFragment_Ble_Setting_FL_Setting");
+                    }
         });
 
         // Log 보기
@@ -723,7 +743,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         Log.d(TAG, "log_data : " + getTime);
         log_listViewAdapter.addItem(getTime, data);
-        log_listViewAdapter.notifyDataSetChanged();
+        //log_listViewAdapter.refreshAdapter(log_Listview);
+        //log_listViewAdapter.notifyDataSetChanged();
 
     }
 
@@ -736,12 +757,19 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         Log.d(TAG, "log_data : " + getTime);
 
+        if (data.contains("*")) {
+            data = data.substring(0, data.indexOf("*"));
+            Log.d(TAG, "data *  : " + data);
+        }
+
         String[] dataArr = data.split(DATA_SIGN_COMMA);
 
+        // 각 특정 별 데이터 별 확인해서 로그 값을 다르게 나타냄(해당 데이터 값은 안보여줌)
         if (color.equals("read")) {
             if (dataArr[0].contains(DATA_TYPE_PS)) {
                 log_listViewAdapter.addItem(getTime, "Request a Password", color);
-                log_listViewAdapter.notifyDataSetChanged();
+                //log_Listview.requestLayout();
+                //log_listViewAdapter.notifyDataSetChanged();
                 return;
             } else if (dataArr[0].contains(DATA_TYPE_LISTS)) {
                 switch (dataArr[1]) {
@@ -759,7 +787,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         log_listViewAdapter.addItem(getTime, "Status Request Confirm", color);
                         break;
                 }
-                log_listViewAdapter.notifyDataSetChanged();
+                //log_listViewAdapter.notifyDataSetChanged();
+                //log_Listview.requestLayout();
                 return;
             } else if (dataArr[0].contains(DATA_TYPE_LICMD)) {
                 switch (dataArr[1]) {
@@ -778,7 +807,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     case "S":
                         switch (dataArr[2]) {
                             case DATA_TYPE_SID:
-                                log_listViewAdapter.addItem(getTime, "Lantern ID : " + dataArr[3].substring(0,dataArr[3].indexOf("*")) + " Confirm", color);
+                                log_listViewAdapter.addItem(getTime, "Lantern ID : " + dataArr[3] + " Confirm", color);
                                 break;
                             case DATA_TYPE_GP0:
                                 log_listViewAdapter.addItem(getTime, "GPS Only Night Confirm", color);
@@ -791,18 +820,21 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         }
                         break;
                 }
-                log_listViewAdapter.notifyDataSetChanged();
+                //log_listViewAdapter.notifyDataSetChanged();
+                //log_Listview.requestLayout();
                 return;
             } else if (dataArr[0].contains(DATA_TYPE_LISET)) {
                 log_listViewAdapter.addItem(getTime, "Information Data Confirm", color);
-                log_listViewAdapter.notifyDataSetChanged();
+                //log_Listview.requestLayout();
+                //log_listViewAdapter.notifyDataSetChanged();
                 return;
             }
 
         } else if (color.equals("write")) {
             if (dataArr[0].contains(DATA_TYPE_PS)) {
                 log_listViewAdapter.addItem(getTime, "Enter a Password", color);
-                log_listViewAdapter.notifyDataSetChanged();
+                //log_Listview.requestLayout();
+                //log_listViewAdapter.notifyDataSetChanged();
                 return;
             } else if (dataArr[0].contains(DATA_TYPE_LICMD)) {
                 switch (dataArr[1]) {
@@ -830,7 +862,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                 log_listViewAdapter.addItem(getTime, "Solar Status Request", color);
                                 break;
                             case DATA_TYPE_SID:
-                                log_listViewAdapter.addItem(getTime, "Lantern ID : " + dataArr[3].substring(0,dataArr[3].indexOf("*")), color);
+                                log_listViewAdapter.addItem(getTime, "Lantern ID : " + dataArr[3], color);
                                 break;
                             case DATA_TYPE_GP0:
                                 log_listViewAdapter.addItem(getTime, "GPS Only Night", color);
@@ -838,19 +870,29 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                             case DATA_TYPE_GP1:
                                 log_listViewAdapter.addItem(getTime, "GPS Always", color);
                                 break;
+                            case DATA_TYPE_DEL:
+                                log_listViewAdapter.addItem(getTime, "Delay Time : " + dataArr[3], color);
+                                break;
                             default:
                                 log_listViewAdapter.addItem(getTime, "FL : " + dataArr[2], color);
+                                break;
                         }
-
+                        //log_Listview.requestLayout();
+                        return;
+                    case "I":
+                        log_listViewAdapter.addItem(getTime, "information Request", color);
+                        //log_Listview.requestLayout();
+                        return;
                 }
-                log_listViewAdapter.notifyDataSetChanged();
+                //log_listViewAdapter.notifyDataSetChanged();
+                //log_Listview.requestLayout();
                 return;
             }
         }
 
         log_listViewAdapter.addItem(getTime, data, color);
-        log_listViewAdapter.notifyDataSetChanged();
-
+        //log_Listview.requestLayout();
+        //log_listViewAdapter.notifyDataSetChanged();
     }
 
     public void log_Refresh() {
@@ -859,8 +901,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     }
 
 
+    // 권한 확인(GPS 확인, 블루투스 확인)
     public static void permission_check() {
         Log.d(TAG, "buile Version : " + Build.VERSION.SDK_INT);
+
+        // 버전 별 권한 확인이 다름.
         if (Build.VERSION.SDK_INT >= 29) {
             int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
                     Manifest.permission.ACCESS_FINE_LOCATION);
@@ -874,7 +919,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             }
         } else {
-
             int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
                     Manifest.permission.ACCESS_COARSE_LOCATION);
 
@@ -954,6 +998,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
+                            // 다시 확인한다 하면.
                             checkBluetoothPermission();
                         }
                     });
@@ -998,8 +1043,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         public void onClick(DialogInterface dialog, int id) {
 
                             if (Build.VERSION.SDK_INT >= 29) {
-                                int permissionCheck = ContextCompat.checkSelfPermission(mBleMain,
-                                        Manifest.permission.ACCESS_FINE_LOCATION);
+                                // 필요없어 보임
+                                /*int permissionCheck = ContextCompat.checkSelfPermission(mBleMain,
+                                        Manifest.permission.ACCESS_FINE_LOCATION);*/
 
                                 ActivityCompat.requestPermissions(mBleMain,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -1035,7 +1081,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 builder.setPositiveButton("Setting", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-
                         Intent appDetail = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
                         appDetail.addCategory(Intent.CATEGORY_DEFAULT);
                         appDetail.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1116,7 +1161,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         // 위치정보 on 확인 끝
     }
 
+    // 블루투스 각종 기능.
     private BluetoothGattCallback gattClientCallback = new BluetoothGattCallback() {
+
+
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
@@ -1125,6 +1173,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 fragmentChange("fragment_ble_beginning");
                 return;
             } else if (status != BluetoothGatt.GATT_SUCCESS) {
+                logData_Ble("Bluetooth Disconnect", "error");
                 disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
                 fragmentChange("fragment_ble_beginning");
                 return;
@@ -1135,6 +1184,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 gatt.discoverServices();
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 disconnectGattServer("BleMainActivity - gattClientCallback - STATE_DISCONNECTED");
+
                 fragmentChange("fragment_ble_beginning");
             }
         }
@@ -1147,6 +1197,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             if (status != BluetoothGatt.GATT_SUCCESS) {
                 logData_Ble("Device service discovery failed", "error");
                 Log.e(TAG, "Device service discovery failed, status: $status");
+
                 return;
             }
             Log.d(TAG, "Services discovery is successful");
@@ -1155,6 +1206,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 Log.d(TAG, "gatt.readPhy()");
                 gatt.readPhy();
             }
+
 
             // uuid, Characteristic 모르면
             BluetoothDevice device = gatt.getDevice();
@@ -1231,7 +1283,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                logData_Ble("Characteristic written successfully");
+                //logData_Ble("Characteristic written successfully");
                 Log.d(TAG, "Characteristic written successfully : " + characteristic.getStringValue(0));
 
             } else {
@@ -1417,7 +1469,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         //시작지점($)가 존재하며
         //끝 지점(*)가 존재하며
         //시작지점은 끝 지점보다 앞쪽에 위치하여야함
-        if (str.indexOf(DATA_SIGN_START) > -1
+        if (str.contains(DATA_SIGN_START)
                 && str.indexOf(DATA_SIGN_CHECKSUM) > -1
                 && str.indexOf(DATA_SIGN_START) < str.indexOf(DATA_SIGN_CHECKSUM)) {
             for (int n = 1; n < str.indexOf(DATA_SIGN_CHECKSUM); n++) {
@@ -1568,19 +1620,13 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
             builder.setTitle("Notice").setMessage("블루투스 연결을 종료하시겠습니까?\nDo you want to disconnect the Bluetooth connection?");
 
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
-                    disconnectGattServer("bleMainActivity - onBackPressed - fragment_Ble_Function");
-                    fragmentChange("fragment_ble_beginning");
-                }
+            builder.setPositiveButton("OK", (dialog, id) -> {
+                disconnectGattServer("bleMainActivity - onBackPressed - fragment_Ble_Function");
+                fragmentChange("fragment_ble_beginning");
             });
 
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
+            builder.setNegativeButton("Cancel", (dialog, id) -> {
 
-                }
             });
             AlertDialog alertDialog = builder.create();
 
@@ -1599,7 +1645,28 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         } else if (currentFragment instanceof fragment_Ble_Scan) {
             fragmentChange("fragment_ble_beginning");
         }
+    }
 
+
+    public abstract static class OnSingleClickListener implements View.OnClickListener {
+
+        //중복 클릭 방지 시간 설정 ( 해당 시간 이후에 다시 클릭 가능 )
+        private static final long MIN_CLICK_INTERVAL = 600;
+        private long mLastClickTime = 0;
+
+        public abstract void onSingleClick(View v);
+
+        @Override
+        public final void onClick(View v) {
+            long currentClickTime = SystemClock.uptimeMillis();
+            long elapsedTime = currentClickTime - mLastClickTime;
+            mLastClickTime = currentClickTime;
+
+            // 중복클릭 아닌 경우
+            if (elapsedTime > MIN_CLICK_INTERVAL) {
+                onSingleClick(v);
+            }
+        }
     }
 
 }

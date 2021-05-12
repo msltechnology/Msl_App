@@ -135,11 +135,85 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="4"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
+                <TextView
+                    style="@style/rtu_tv_status_name"
+                    android:text="@string/TCP" />
+
+                <View style="@style/rtu_view_horizontal_line_5"  />
+
+                <TextView
+                    android:id="@+id/tv_TCP"
+                    style="@style/rtu_tv_status_value"/>
+
+
+                <Button
+                    android:id="@+id/btn_TCP"
+                    style="@style/rtu_btn_status_change"
+                    android:text="@string/call" />
 
             </LinearLayout>
+
+            <View style="@style/rtu_view_vertical_line_5"  />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/rtu_tv_status_name"
+                    android:text="@string/Modem_Num" />
+
+                <View style="@style/rtu_view_horizontal_line_5"  />
+
+                <TextView
+                    android:id="@+id/tv_Modem_Num"
+                    style="@style/rtu_tv_status_value"/>
+
+
+                <Button
+                    android:id="@+id/btn_Modem_Num"
+                    style="@style/rtu_btn_status_change"
+                    android:text="@string/call" />
+
+            </LinearLayout>
+
+            <View style="@style/rtu_view_vertical_line_5"  />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/rtu_tv_status_name"
+                    android:text="@string/Lantern_Info" />
+
+                <View style="@style/rtu_view_horizontal_line_5"  />
+
+                <TextView
+                    android:id="@+id/tv_Lantern_Info"
+                    style="@style/rtu_tv_setting_lantern"/>
+
+
+                <Button
+                    android:id="@+id/btn_Lantern_Info"
+                    style="@style/rtu_btn_status_change"
+                    android:text="@string/call" />
+
+            </LinearLayout>
+
+            <View style="@style/rtu_view_vertical_line_5"  />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
 
 

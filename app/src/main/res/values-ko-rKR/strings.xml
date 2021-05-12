@@ -43,7 +43,7 @@
     <string name="gps_longitude">경도</string>
     <string name="battery_percent">배터리 잔량</string>
     <string name="Number_No">No.</string>
-    <string name="Second_Sec">Sec</string>
+    <string name="Second_Sec">초</string>
     <string name="division">구분</string>
     <string name="remarks">비고</string>
     <string name="Fixed">부동광</string>
@@ -95,4 +95,10 @@
     <string name="information_status">설정정보</string>
     <string name="Lantern">등명기</string>
     <string name="RTU">RTU</string>
+    <string name="log_close">Log Close</string>
+    <string name="TCP">TCP</string>
+    <string name="call">조회</string>
+    <string name="Modem_Num">모뎀 전화번호</string>
+    <string name="Lantern_Info">등명기 정보</string>
+    <string name="Delay_Time_value">+0.00 초</string>
 </resources>

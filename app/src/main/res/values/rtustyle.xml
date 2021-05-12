@@ -1,32 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
 
     <style name="rtu_view_vertical_line_5">
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginHorizontal">5dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
         <item name="android:background">@color/rtu_view_line_color</item>
     </style>
 
     <style name="rtu_view_horizontal_line_5">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">1dp</item>
-        <item name="android:layout_marginVertical">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
         <item name="android:background">@color/rtu_view_line_color</item>
     </style>
 
     <style name="rtu_view_horizontal_line_5_3">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">3dp</item>
-        <item name="android:layout_marginVertical">5dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
         <item name="android:background">@color/rtu_view_line_color</item>
     </style>
 
     <style name="rtu_view_horizontal_line_35">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">1dp</item>
-        <item name="android:layout_marginVertical">35dp</item>
+        <item name="android:layout_marginTop">35dp</item>
+        <item name="android:layout_marginBottom">35dp</item>
         <item name="android:background">@color/rtu_view_line_color</item>
     </style>
 
@@ -42,7 +46,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">4</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/black</item>
     </style>
@@ -60,6 +64,15 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="rtu_tv_setting_lantern">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/black</item>
     </style>

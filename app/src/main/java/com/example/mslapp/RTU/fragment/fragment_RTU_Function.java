@@ -105,6 +105,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     private SerialInputOutputManager serialInputOutputManager;
 
     public fragment_RTU_Function() {
+        // 브로드 캐스트 설정(USB 연결 확인)
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -427,7 +428,6 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
                 } catch (Exception e) {
                     Log.e(TAG, "fragment_RTU_Setting readData Error - Setting : " + e.toString());
                 }
-                ;
                 break;
         }
     }

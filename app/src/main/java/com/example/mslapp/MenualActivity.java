@@ -41,6 +41,7 @@ public class MenualActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // Checking for first time launch - before calling setContentView()
+
         session = new Session(this);
 
         if(!callMenual){

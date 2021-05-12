@@ -3,6 +3,7 @@ package com.example.mslapp.Ble.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_DelayTim
 import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
 import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_ID_Setting;
 import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_Password_Change;
+import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.psEncryptionTable;
@@ -37,12 +39,15 @@ public class fragment_Ble_Setting extends Fragment {
 
     Button btn_status, ban_information, btn_FL_Setting, btn_ID_Setting, btn_Password_Change, btn_GPS_ON, btn_GPS_OFF, btn_delay_time;
 
+    public static String lantern_id = "000", delay_time = "+000";
+
     View view;
 
     private static final int Ble_Setting_dialog_FL = 1;
     private static final int Ble_Setting_dialog_ID = 2;
     private static final int Ble_Setting_dialog_DelayTime = 3;
     private static final String EXTRA_GREETING_MESSAGE = "message";
+
 
     @Nullable
     @Override
@@ -78,6 +83,10 @@ public class fragment_Ble_Setting extends Fragment {
         if (data.contains(passwordchangeCheck))
             Toast.makeText(mBleContext, "Password Change Success", Toast.LENGTH_SHORT).show();
 
+        if (data.contains("*")) {
+            data = data.substring(0, data.indexOf("*"));
+        }
+
         String[] data_arr = data.split(",");
 
 
@@ -85,8 +94,10 @@ public class fragment_Ble_Setting extends Fragment {
             if (data_arr[1].equals("S")) {
 
             } else {
+
                 Log.d(TAG, "readData 데이터 읽기");
 
+                lantern_id = data_arr[1];
                 selected_ID.setText(data_arr[1]);
                 selected_FL.setText(data_arr[6]);
             }
@@ -143,7 +154,9 @@ public class fragment_Ble_Setting extends Fragment {
                 btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off));
             }
 
-            tv_delay_time.setText(data_arr[5]);
+            delay_time = data_arr[5];
+            String[] dataArr5 = data_arr[5].split("");
+            tv_delay_time.setText(dataArr5[1] +dataArr5[2] + "." + dataArr5[3] + dataArr5[4] + " " + getString(R.string.Second_Sec));
         }
     }
 
@@ -169,8 +182,33 @@ public class fragment_Ble_Setting extends Fragment {
 
         btn_status.setOnClickListener(v -> BlewriteData(DATA_REQUEST_STATUS));
         ban_information.setOnClickListener(v -> BlewriteData(DATA_REQUEST_INFORMATION));
-        btn_FL_Setting.setOnClickListener(v -> showDialogFragment_FL());
-        btn_ID_Setting.setOnClickListener(v -> showDialogFragment_ID());
+        btn_FL_Setting.setOnClickListener(
+                new OnSingleClickListener() {
+                    @Override
+                    public void onSingleClick(View v) {
+                        BlewriteData(DATA_REQUEST_STATUS);
+                        showDialogFragment_FL();
+                    }
+        });
+        btn_ID_Setting.setOnClickListener(
+                new OnSingleClickListener() {
+                    @Override
+                    public void onSingleClick(View v) {
+                        BlewriteData(DATA_REQUEST_STATUS);
+
+                        if (lantern_id.equals("000")) {
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showDialogFragment_ID();
+                                }
+                            }, 400);
+                        } else {
+                            showDialogFragment_ID();
+                        }
+                    }
+
+        });
         btn_Password_Change.setOnClickListener(v -> showPasswordChangeDialog());
         btn_GPS_ON.setOnClickListener(v -> {
             BlewriteData(GPS_SET_ON);
@@ -182,7 +220,15 @@ public class fragment_Ble_Setting extends Fragment {
             btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on));
             btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off_clicked));
         });
-        btn_delay_time.setOnClickListener(v -> showDelayTimeChangeDialog());
+        btn_delay_time.setOnClickListener(v -> {
+            BlewriteData(DATA_REQUEST_INFORMATION);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    showDelayTimeChangeDialog();
+                }
+            }, 200);
+        });
     }
 
     public void setSelected_FL(String selected_fl) {
@@ -199,7 +245,12 @@ public class fragment_Ble_Setting extends Fragment {
                 + DATA_ID_255 + DATA_SIGN_CHECKSUM;
 
         selected_FL.setText(selected_fl);
-        BlewriteData(sendData);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BlewriteData(DATA_REQUEST_STATUS);
+            }
+        }, 200);
 
     }
 
@@ -212,7 +263,12 @@ public class fragment_Ble_Setting extends Fragment {
                 + selected_id + DATA_SIGN_CHECKSUM;
 
         selected_ID.setText(selected_id);
-        BlewriteData(sendData);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BlewriteData(DATA_REQUEST_STATUS);
+            }
+        }, 200);
     }
 
     public void setDelayTime(String selected_delaytime) {
@@ -223,8 +279,13 @@ public class fragment_Ble_Setting extends Fragment {
                 + DATA_TYPE_DEL + DATA_SIGN_COMMA
                 + selected_delaytime + DATA_SIGN_CHECKSUM;
 
-        tv_delay_time.setText(selected_delaytime);
         BlewriteData(sendData);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                BlewriteData(DATA_REQUEST_INFORMATION);
+            }
+        }, 200);
     }
 
     private void showDialogFragment_FL() {
@@ -267,6 +328,7 @@ public class fragment_Ble_Setting extends Fragment {
             String greeting = data.getStringExtra(EXTRA_GREETING_MESSAGE);
             setSelected_ID(greeting);
         } else if (requestCode == Ble_Setting_dialog_DelayTime) {
+
             Log.d(TAG, "fragment_Ble_Setting onActivityResult Code : Ble_Setting_dialog_DelayTime ");
             String greeting = data.getStringExtra(EXTRA_GREETING_MESSAGE);
             setDelayTime(greeting);
@@ -285,5 +347,6 @@ public class fragment_Ble_Setting extends Fragment {
         super.onDestroy();
     }
 
+    Handler handler = new Handler();
 
 }

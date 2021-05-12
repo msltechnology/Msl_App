@@ -73,7 +73,6 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
 
         tv_Selected_FL = view.findViewById(R.id.tv_dialog_setting_selectFL);
 
-
         return view;
     }
 

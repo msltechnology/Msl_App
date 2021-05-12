@@ -62,6 +62,7 @@ public class RTUMainActivity extends AppCompatActivity {
     public static String DATA_NUM_11 = "11";
     public static String DATA_NUM_14 = "14";
     public static String DATA_NUM_21 = "21";
+    public static String DATA_NUM_99 = "99";
     public static String DATA_NUM_255 = "255";
 
     public static String STATUS_CALL = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
@@ -250,9 +251,13 @@ public class RTUMainActivity extends AppCompatActivity {
         } else if (color.equals("write")) {
             String[] dataArr = data.split(DATA_SIGN_COMMA);
 
-            // 해당 순서의 값에 * 이 있을 경우
-            if(dataArr[1].contains(DATA_SIGN_CHECKSUM)){
-                dataArr[1] = dataArr[1].substring(0,dataArr[1].indexOf(DATA_SIGN_CHECKSUM));
+            try {
+                // 해당 순서의 값에 * 이 있을 경우
+                if(dataArr[1].contains(DATA_SIGN_CHECKSUM)){
+                    dataArr[1] = dataArr[1].substring(0,dataArr[1].indexOf(DATA_SIGN_CHECKSUM));
+                }
+            }catch (Exception e){
+                Log.d(TAG, "*이 없음");
             }
 
             if (dataArr[0].contains(DATA_TYPE_MUCMD)) {
@@ -329,6 +334,15 @@ public class RTUMainActivity extends AppCompatActivity {
                 }
                 log_listViewAdapter.notifyDataSetChanged();
                 return;
+            }else if(dataArr[0].contains("AT$$TCP_STATE??")){
+                // TCP 통신 상태 확인
+                log_listViewAdapter.addItem(getTime, "TCP State Call", color);
+            }else if(dataArr[0].contains("AT$$MDN")){
+                // 모뎀 전화번호 확인
+                log_listViewAdapter.addItem(getTime, "Modem Phone Num Call", color);
+            }else if(dataArr[0].contains("$LICMD")){
+                // RTU 와 연결된 등명기 상태 확인
+                log_listViewAdapter.addItem(getTime, "Lantern Status Call", color);
             }
         }
 

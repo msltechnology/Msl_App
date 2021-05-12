@@ -133,23 +133,19 @@ public class fragment_Ble_Status extends Fragment {
         dialogFragment_ble_status_solar.show(fm, "fragment_status_dialog_solar");
     }
 
-    int check = 0;
-
     Handler cycleHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case MESSAGE_HANDLER_START:
                     ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS);
-                    check += 1;
-                    Log.d(TAG, "handler check MESSAGE_HANDLER_START : " + check);
+                    Log.d(TAG, "handler check MESSAGE_HANDLER_START");
                     this.removeMessages(MESSAGE_HANDLER_WORK);
                     cycleHandler.sendEmptyMessageDelayed(MESSAGE_HANDLER_WORK, 3000);
                     break;
                 case MESSAGE_HANDLER_WORK:
                     ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS);
-                    check += 1;
-                    Log.d(TAG, "handler check MESSAGE_HANDLER_WORK : " + check);
+                    Log.d(TAG, "handler check MESSAGE_HANDLER_WORK");
                     cycleHandler.sendEmptyMessageDelayed(MESSAGE_HANDLER_WORK, 3000);
                     break;
                 case MESSAGE_HANDLER_STOP:
@@ -255,7 +251,7 @@ public class fragment_Ble_Status extends Fragment {
                                     break;
                             }
 
-                            Double bat_value;
+                            double bat_value;
 
                             if (i != 5) {
                                 bat_value = Double.parseDouble(data_arr[i + 4]);
@@ -325,7 +321,7 @@ public class fragment_Ble_Status extends Fragment {
                                     break;
                             }
 
-                            Double sol_value;
+                            double sol_value;
 
                             if (i != 5) {
                                 sol_value = Double.parseDouble(data_arr[i + 4]);
@@ -389,7 +385,7 @@ public class fragment_Ble_Status extends Fragment {
                     iv_ble_status_battery_percent.setImageResource(R.drawable.red_battery);
                 }
 
-                String receiveTime_hour = "";
+                String receiveTime_hour;
                 String receiveTime_min = data_arr[13].substring(2, 4);
                 String receiveTime_sec = data_arr[13].substring(4);
 
@@ -546,6 +542,7 @@ public class fragment_Ble_Status extends Fragment {
     public void onDetach() {
         super.onDetach();
         Log.d(TAG, "onDetach");
+        cycleHandler.sendEmptyMessage(MESSAGE_HANDLER_STOP);
         ((Ble_Status_Listener) activity).onDetachFragment_Ble_Status();
         //selecetBleListener = null;
     }
