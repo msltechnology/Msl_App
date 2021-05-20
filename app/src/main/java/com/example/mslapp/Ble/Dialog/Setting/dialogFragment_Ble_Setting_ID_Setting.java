@@ -18,10 +18,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.mslapp.Ble.fragment.fragment_Ble_Setting;
+import com.example.mslapp.Ble.fragment.Function.fragment_Ble_Setting;
 import com.example.mslapp.R;
 
-import static com.example.mslapp.Ble.fragment.fragment_Ble_Setting.lantern_id;
+import static com.example.mslapp.Ble.fragment.Function.fragment_Ble_Setting.lantern_id;
 import static com.example.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_Ble_Setting_ID_Setting extends DialogFragment {

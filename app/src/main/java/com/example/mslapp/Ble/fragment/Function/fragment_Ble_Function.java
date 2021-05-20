@@ -1,4 +1,4 @@
-package com.example.mslapp.Ble.fragment;
+package com.example.mslapp.Ble.fragment.Function;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -19,6 +19,10 @@ import com.example.mslapp.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import static com.example.mslapp.BleMainActivity.BlewriteData;
+import static com.example.mslapp.BleMainActivity.DATA_TYPE_PS;
+import static com.example.mslapp.BleMainActivity.readPassword;
+
 public class fragment_Ble_Function extends Fragment {
 
     // 로그 이름 용
@@ -30,7 +34,7 @@ public class fragment_Ble_Function extends Fragment {
     TabLayout tabLayout_ble;
     // Viewpager
     private ViewPager2 viewPager;
-    adapter_Ble_Tab adapter_ble_tab;
+    adapter_Ble_Function_Tab adapter_ble_Function_tab;
 
     // 자식 프래그먼트
     fragment_Ble_Status fragment_ble_status;
@@ -61,17 +65,17 @@ public class fragment_Ble_Function extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        tavTitle = new String[]{"Status", "Setting", "Test"};
+        tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
 
         tabLayout_ble = view.findViewById(R.id.tab_bluetooth);
 
         viewPager = view.findViewById(R.id.bluetoothViewpageSpace);
 
         Log.d(TAG, "Viewpage 작업");
-        adapter_ble_tab = new adapter_Ble_Tab(this,3);
-        viewPager.setAdapter(adapter_ble_tab);
+        adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this,4);
+        viewPager.setAdapter(adapter_ble_Function_tab);
         viewPager.setCurrentItem(0);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
 
         new TabLayoutMediator(tabLayout_ble, viewPager,
@@ -85,8 +89,16 @@ public class fragment_Ble_Function extends Fragment {
 
         Log.d(TAG, "fragment_Ble_Function readData! : " + data);
 
-        String[] data_arr = data.split(",");
+        if (data.contains(DATA_TYPE_PS)) {
 
+            if(data.length() > 4){
+                String PsData = data.substring(0,3);
+                if(PsData.equals("$PS")){
+                    BlewriteData("$PS,A," + readPassword + "*");
+                }
+                return;
+            }
+        }
 
         switch (viewPager.getCurrentItem()){
             case 0:

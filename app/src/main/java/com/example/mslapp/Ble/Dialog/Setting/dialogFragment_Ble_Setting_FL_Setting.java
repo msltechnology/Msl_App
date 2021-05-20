@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.mslapp.Ble.fragment.fragment_Ble_Setting;
+import com.example.mslapp.Ble.fragment.Function.fragment_Ble_Setting;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.BleMainActivity.mBleContext;

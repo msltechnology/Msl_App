@@ -60,13 +60,12 @@ import com.example.mslapp.Ble.Dialog.Beginning.dialogFragment_Ble_Beginning_Lang
 import com.example.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Beginning;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Scan;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Function;
+import com.example.mslapp.Ble.fragment.Function.fragment_Ble_Status;
+import com.example.mslapp.Ble.fragment.Function.fragment_Ble_Function;
 import com.example.mslapp.Ble.fragment.fragment_Ble_Password;
 import com.example.mslapp.Ble.fragment.fragment_CDS_Setting;
 import com.example.mslapp.Ble.fragment.fragment_SN_Setting;
 import com.example.mslapp.Public.Log.log_ListViewAdapter;
-import com.example.mslapp.Public.Log.navigation_Log_ListView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -89,7 +88,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = true;
+    public static final boolean adminApp = false;
 
     public static Context mBleContext = null;
     public static AppCompatActivity mBleMain = null;
@@ -100,6 +99,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static BluetoothGatt bleGatt = null;
     public static BluetoothManager bluetoothManager = null;
     public static String BluetoothStatus = "";
+
+    // password 관련
+    public static String readPassword = "";
+
     // gps 권한
     public static LocationManager locationManager = null;
     // requestCode
@@ -1394,11 +1397,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                         fragment_Ble_Password fragment_ble_password = (fragment_Ble_Password) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
                                         fragment_ble_password.readData(data);
                                     } else if (currentFragment instanceof fragment_CDS_Setting) {
-                                        Log.d(TAG, "fragment_Ble_password OK!");
+                                        Log.d(TAG, "fragment_Ble_CDS_Setting OK!");
                                         fragment_CDS_Setting fragment_cds_setting = (fragment_CDS_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
                                         fragment_cds_setting.readData(data);
                                     } else if (currentFragment instanceof fragment_SN_Setting) {
-                                        Log.d(TAG, "fragment_Ble_password OK!");
+                                        Log.d(TAG, "fragment_Ble_SN_Setting OK!");
                                         fragment_SN_Setting fragment_sn_setting = (fragment_SN_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
                                         fragment_sn_setting.readData(data);
                                     }

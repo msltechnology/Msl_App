@@ -106,15 +106,16 @@ public class ble_scan_ListViewAdapter extends BaseAdapter {
     }
 
     // 아이템을 최신 데이터로 갱신
-    public void updateItem(String userdata, String name, String address, String sign, boolean check) {
+    public void updateItem(int order, String Userdata, String sign) {
+        BleScanListView bleScanListView = blelistViewList.get(order);
         BleScanListView item = new BleScanListView();
 
-        item.setBleUserdata(userdata);
-        item.setBleName(name);
-        item.setBleAddress(address);
+        item.setBleUserdata(Userdata);
+        item.setBleName(bleScanListView.getBleName());
+        item.setBleAddress(bleScanListView.getBleAddress());
         item.setBleSign(sign);
-        item.setBleCheck(check);
+        item.setBleCheck(bleScanListView.getBleCheck());
 
-        blelistViewList.add(item);
+        blelistViewList.set(order, item);
     }
 }

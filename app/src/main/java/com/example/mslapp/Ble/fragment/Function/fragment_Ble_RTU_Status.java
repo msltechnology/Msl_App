@@ -1,6 +1,7 @@
-package com.example.mslapp.RTU.fragment;
+package com.example.mslapp.Ble.fragment.Function;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Lantern_ID_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_RTU_ID_Change;
@@ -21,9 +23,10 @@ import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Send_Cycle_Change
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Server_1_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Server_2_Change;
 
+import static com.example.mslapp.BleMainActivity.DATA_LAMP_FIXED;
+import static com.example.mslapp.BleMainActivity.logData_Ble;
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.example.mslapp.RTUMainActivity.DATA_NUM_1;
-import static com.example.mslapp.RTUMainActivity.DATA_NUM_6;
 import static com.example.mslapp.RTUMainActivity.DATA_NUM_7;
 import static com.example.mslapp.RTUMainActivity.DATA_SIGN_CHECKSUM;
 import static com.example.mslapp.RTUMainActivity.DATA_SIGN_COMMA;
@@ -35,10 +38,10 @@ import static com.example.mslapp.RTUMainActivity.STATUS_CALL;
 import static com.example.mslapp.RTUMainActivity.logData_RTU;
 import static com.example.mslapp.RTUMainActivity.mRTUMain;
 
-public class fragment_RTU_Status extends Fragment {
+public class fragment_Ble_RTU_Status extends Fragment {
 
     // 로그 이름 용
-    public final String TAG = "Msl-RTU-Status";
+    public final String TAG = "Msl-Ble-RTU-Status";
 
     String TotalReadData = "";
 
@@ -46,31 +49,38 @@ public class fragment_RTU_Status extends Fragment {
             tv_readData_reset_Interval_1, tv_readData_reset_Interval_2, tv_readData_reset_Interval_3,
             tv_readData_server1_ip, tv_readData_server1_port, tv_readData_server2_ip, tv_readData_server2_port;
 
-    public static String rtu_id = "1910000";
-    public static String lantern_id = "255";
-    public static String Server_1 = "000.000.000.000";
-    public static String Server_Port_1 = "00000";
-    public static String Server_2 = "000.000.000.000";
-    public static String Server_Port_2 = "00000";
+    public static String BLE_rtu_id = "1910000";
+    public static String BLE_lantern_id = "255";
+    public static String BLE_Server_1 = "000.000.000.000";
+    public static String BLE_Server_Port_1 = "00000";
+    public static String BLE_Server_2 = "000.000.000.000";
+    public static String BLE_Server_Port_2 = "00000";
 
     View view;
+
+    // Dialog 로 보낼 번들
+    Bundle args = new Bundle();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "fragment_RTU_Status onCreateView" + this.getTag());
+        Log.d(TAG, "fragment_BLE_RTU_Status onCreateView" + this.getTag());
         view = inflater.inflate(R.layout.rtu_fragment_status, null);
+
+        // 키값 넣기
+        args.putString("from", "ble");
 
         tv_Setting();
         btn_Setting();
 
-        /*Button open_btn = view.findViewById(R.id.btn_rtu_status);
-        open_btn.setOnClickListener(v -> send("$MUCMD,8,1*11\r\n"));
-        Button send_btn = view.findViewById(R.id.btn_rtu_send);
-        send_btn.setOnClickListener(v -> send("$MUCMD,7,1*11\r\n"));*/
-
         return view;
     }
+
+    void send(String massage){
+        ((BleMainActivity) getActivity()).BlewriteData("<"+massage);
+    }
+
+    Handler handler = new Handler();
 
     void tv_Setting() {
         tv_readData_version = view.findViewById(R.id.tv_version);
@@ -87,6 +97,8 @@ public class fragment_RTU_Status extends Fragment {
     }
 
     void btn_Setting() {
+        FragmentManager fm = this.getChildFragmentManager();
+
         Button btn_rtu_status_call = view.findViewById(R.id.btn_rtu_status);
         Button btn_rtu_status_send = view.findViewById(R.id.btn_rtu_send);
 
@@ -97,6 +109,7 @@ public class fragment_RTU_Status extends Fragment {
         Button btn_rtu_server1_change = view.findViewById(R.id.btn_server_1);
         Button btn_rtu_server2_change = view.findViewById(R.id.btn_server_2);
 
+        // RTU Activity를 호출한적이 없어도 가능한가?
         btn_rtu_status_call.setOnClickListener(v -> send(STATUS_CALL));
         btn_rtu_status_send.setOnClickListener(v -> {
             String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
@@ -109,46 +122,76 @@ public class fragment_RTU_Status extends Fragment {
         btn_rtu_id_change.setOnClickListener(v -> {
             // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
             send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_RTU_ID_Change customDialog_RTU_ID_Change = new dialogFragment_rtu_Status_RTU_ID_Change();
-            customDialog_RTU_ID_Change.show(fm, "dialogFragment_rtu_Status_RTU_ID_Change");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    args.putString("lantern_id", BLE_lantern_id);
+                    dialogFragment_rtu_Status_RTU_ID_Change customDialog_RTU_ID_Change = new dialogFragment_rtu_Status_RTU_ID_Change();
+                    customDialog_RTU_ID_Change.setArguments(args);
+                    customDialog_RTU_ID_Change.show(fm, "dialogFragment_rtu_Status_RTU_ID_Change");
+                }
+            }, 400);
         });
         btn_rtu_lantern_change.setOnClickListener(v -> {
             // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
             send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_Lantern_ID_Change customDialog_Lantern_ID_Change = new dialogFragment_rtu_Status_Lantern_ID_Change();
-            customDialog_Lantern_ID_Change.show(fm, "dialogFragment_rtu_Status_Lantern_ID_Change");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    args.putString("rtu_id", BLE_rtu_id);
+                    dialogFragment_rtu_Status_Lantern_ID_Change customDialog_Lantern_ID_Change = new dialogFragment_rtu_Status_Lantern_ID_Change();
+                    customDialog_Lantern_ID_Change.setArguments(args);
+                    customDialog_Lantern_ID_Change.show(fm, "dialogFragment_rtu_Status_Lantern_ID_Change");
+                }
+            }, 400);
         });
 
         btn_rtu_send_cycle_change.setOnClickListener(v -> {
             send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_Send_Cycle_Change customDialog_Send_Cycle_Change = new dialogFragment_rtu_Status_Send_Cycle_Change();
-            customDialog_Send_Cycle_Change.show(fm, "dialogFragment_rtu_Status_Send_Cycle_Change");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    dialogFragment_rtu_Status_Send_Cycle_Change customDialog_Send_Cycle_Change = new dialogFragment_rtu_Status_Send_Cycle_Change();
+                    customDialog_Send_Cycle_Change.setArguments(args);
+                    customDialog_Send_Cycle_Change.show(fm, "dialogFragment_rtu_Status_Send_Cycle_Change");
+                }
+            }, 400);
         });
         //btn_rtu_reset_change.setOnClickListener(v ->);
         btn_rtu_server1_change.setOnClickListener(v -> {
             send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_Server_1_Change customDialog_Server_1_Change = new dialogFragment_rtu_Status_Server_1_Change();
-            customDialog_Server_1_Change.show(fm, "dialogFragment_rtu_Status_Server_1_Change");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    args.putString("server2", BLE_Server_2);
+                    args.putString("server2port", BLE_Server_Port_2);
+                    dialogFragment_rtu_Status_Server_1_Change customDialog_Server_1_Change = new dialogFragment_rtu_Status_Server_1_Change();
+                    customDialog_Server_1_Change.setArguments(args);
+                    customDialog_Server_1_Change.show(fm, "dialogFragment_rtu_Status_Server_1_Change");
+                }
+            }, 400);
         });
 
         btn_rtu_server2_change.setOnClickListener(v -> {
             send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_Server_2_Change customDialog_Server_2_Change = new dialogFragment_rtu_Status_Server_2_Change();
-            customDialog_Server_2_Change.show(fm, "dialogFragment_rtu_Status_Server_2_Change");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    args.putString("server1", BLE_Server_1);
+                    args.putString("server1port", BLE_Server_Port_1);
+                    dialogFragment_rtu_Status_Server_2_Change customDialog_Server_2_Change = new dialogFragment_rtu_Status_Server_2_Change();
+                    customDialog_Server_2_Change.setArguments(args);
+                    customDialog_Server_2_Change.show(fm, "dialogFragment_rtu_Status_Server_2_Change");
+                }
+            }, 400);
         });
-
     }
 
     public void readData(String data) {
-        Log.d(TAG, "fragment_RTU_Status readData 들어옴 : " + data);
+        Log.d(TAG, "fragment_BLE_RTU_Status readData 들어옴 : " + data);
         TotalReadData += data;
 
-        Log.d(TAG, "fragment_RTU_Status TotalReadData : " + TotalReadData);
+        Log.d(TAG, "fragment_BLE_RTU_Status TotalReadData : " + TotalReadData);
 
         int configIndex = 0;
         int lfIndex = 0;
@@ -165,8 +208,8 @@ public class fragment_RTU_Status extends Fragment {
                     TotalReadData = TotalReadData.substring(lfIndex + 1);
                 } catch (Exception e) {
                     TotalReadData = "";
-                    logData_RTU("readData Error! - TotalReadData", "error");
-                    Log.e(TAG, "fragment_RTU_Status readData Error : " + e.toString());
+                    logData_Ble("readData Error! - TotalReadData", "error");
+                    Log.e(TAG, "fragment_BLE_RTU_Status readData Error : " + e.toString());
                 }
 
                 if (readData.contains("Low Power") || readData.contains("DebugMode") || readData.contains("Phone Number") || readData.contains("Reset Time")) {
@@ -176,11 +219,11 @@ public class fragment_RTU_Status extends Fragment {
                         break;
                     }
                 } else {
-                    logData_RTU(readData, "read");
+                    logData_Ble(readData, "read");
                 }
 
 
-                Log.d(TAG, "fragment_RTU_Status readData : " + readData);
+                Log.d(TAG, "fragment_BLE_RTU_Status readData : " + readData);
 
 
                 readData = readData.replace("[ ConfMsg] ", "");
@@ -193,11 +236,11 @@ public class fragment_RTU_Status extends Fragment {
                     tv_readData_version.setText(readData);
                 } else if (readData.contains("DevID")) { //RTU ID
                     readData = readData.replace("DevID:", "");
-                    rtu_id = readData;
+                    BLE_rtu_id = readData;
                     tv_readData_RTU_ID.setText(readData);
                 } else if (readData.contains("LanternID")) { //등명기 ID
                     readData = readData.replace("LanternID:", "");
-                    lantern_id = readData;
+                    BLE_lantern_id = readData;
                     tv_readData_Lantern_ID.setText(readData);
                 } else if (readData.contains("Status Interval")) { //상태 전송주기
                     readData = readData.replace("Status Interval:", "");
@@ -210,31 +253,31 @@ public class fragment_RTU_Status extends Fragment {
                         tv_readData_reset_Interval_2.setText(resetData[1]);
                         tv_readData_reset_Interval_3.setText(resetData[2]);
                     } catch (Exception e) {
-                        logData_RTU("readData Error! - reset_cycle", "error");
+                        logData_Ble("readData Error! - reset_cycle", "error");
                         Log.d(TAG, "readData reset_Interval Error : " + e.toString());
                     }
                 } else if (readData.contains("Server #01")) {
                     readData = readData.replace("Server #01 ", "");
                     String[] serverData = readData.split(":");
                     for (int i = 0; i < serverData.length; i++) {
-                        Log.d(TAG, "fragment_RTU_Status serverData : " + i + "번째 : " + serverData[i]);
+                        Log.d(TAG, "fragment_BLE_RTU_Status serverData : " + i + "번째 : " + serverData[i]);
                     }
                     String serverDataArr[] = serverData[0].split("\\.");
 
-                    Server_1 = serverDataArr[0] + "," + serverDataArr[1] + "," + serverDataArr[2] + "," + serverDataArr[3];
-                    Server_Port_1 = serverData[1];
+                    BLE_Server_1 = serverDataArr[0] + "," + serverDataArr[1] + "," + serverDataArr[2] + "," + serverDataArr[3];
+                    BLE_Server_Port_1 = serverData[1];
                     tv_readData_server1_ip.setText("IP : " + serverData[0]);
                     tv_readData_server1_port.setText("Port : " + serverData[1]);
                 } else if (readData.contains("Server #02")) {
                     readData = readData.replace("Server #02 ", "");
                     String[] serverData = readData.split(":");
                     for (int i = 0; i < serverData.length; i++) {
-                        Log.d(TAG, "fragment_RTU_Status serverData2 : " + i + "번째 : " + serverData[i]);
+                        Log.d(TAG, "fragment_BLE_RTU_Status serverData2 : " + i + "번째 : " + serverData[i]);
                     }
                     String serverDataArr[] = serverData[0].split("\\.");
 
-                    Server_2 = serverDataArr[0] + "," + serverDataArr[1] + "," + serverDataArr[2] + "," + serverDataArr[3];
-                    Server_Port_2 = serverData[1];
+                    BLE_Server_2 = serverDataArr[0] + "," + serverDataArr[1] + "," + serverDataArr[2] + "," + serverDataArr[3];
+                    BLE_Server_Port_2 = serverData[1];
                     tv_readData_server2_ip.setText("IP : " + serverData[0]);
                     tv_readData_server2_port.setText("Port : " + serverData[1]);
                     Toast.makeText(mRTUMain, "Data Receive Success!", Toast.LENGTH_SHORT).show();

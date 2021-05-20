@@ -20,6 +20,7 @@ import java.util.Objects;
 
 import static com.example.mslapp.Ble.fragment.fragment_Ble_Scan.selectedSerialNum;
 import static com.example.mslapp.BleMainActivity.BlewriteData;
+import static com.example.mslapp.BleMainActivity.readPassword;
 
 public class fragment_Ble_Password extends Fragment {
 
@@ -27,8 +28,6 @@ public class fragment_Ble_Password extends Fragment {
     public static final String TAG = "Msl-Ble-password";
 
     View view;
-
-    public static String readPassword = "";
 
     TextView password1, password2, password3, password4, password5, tv_userdata;
 

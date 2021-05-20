@@ -213,16 +213,6 @@ public class fragment_Ble_Scan extends Fragment {
 
                 int rssi = result.getRssi();
 
-                // 중복 체크
-                for (BluetoothDevice dev : scanResults) {
-                    if (dev.getAddress().equals(deviceAddress)) {
-
-
-
-                        return;
-                    }
-                }
-
                 // userdata 받기(등명기 시리얼)
                 byte[] scanRecord = result.getScanRecord().getBytes();
                 byte[] advertisedData = Arrays.copyOfRange(scanRecord, 0, scanRecord.length);
@@ -293,6 +283,7 @@ public class fragment_Ble_Scan extends Fragment {
                     }
                 }
 
+
                 String userdata = "";
                 char chrInput;
 
@@ -316,12 +307,29 @@ public class fragment_Ble_Scan extends Fragment {
                     }
                 }
 
-                // 중복되지 않은 주소는 list에 추가
-                scanResults.add(result.getDevice());
-
                 if (name == null) {
                     userdata = "";
                 }
+
+                int order = 0;
+
+                // 중복 체크
+                for (BluetoothDevice dev : scanResults) {
+                    if (dev.getAddress().equals(deviceAddress)) {
+
+                        scanResults.set(order, result.getDevice());
+
+                        adapter.updateItem(order, userdata, "신호 세기 : " + rssi);
+
+                        adapter.notifyDataSetChanged();
+                        return;
+                    }
+                    order++;
+                }
+
+                // 중복되지 않은 주소는 list에 추가
+                scanResults.add(result.getDevice());
+
                 try {
                     if (name.contains("MSL TECH")) {
                         adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi, true);

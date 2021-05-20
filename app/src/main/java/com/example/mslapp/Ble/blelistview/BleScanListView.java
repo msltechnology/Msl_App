@@ -2,29 +2,33 @@ package com.example.mslapp.Ble.blelistview;
 
 public class BleScanListView {
     //private Drawable iconDrawable ;
-    private String bleUserdataStr ;
-    private String bleNameStr ;
-    private String bleAddressStr ;
-    private String bleSignStr ;
+    private String bleUserdataStr;
+    private String bleNameStr;
+    private String bleAddressStr;
+    private String bleSignStr;
     private boolean bleCheckMsl = false;
 
     /*public void setIcon(Drawable icon) {
         iconDrawable = icon ;
     }*/
     public void setBleUserdata(String userdata) {
-        bleUserdataStr = userdata ;
+        bleUserdataStr = userdata;
     }
+
     public void setBleName(String name) {
-        bleNameStr = name ;
+        bleNameStr = name;
     }
+
     public void setBleAddress(String address) {
-        bleAddressStr = address ;
+        bleAddressStr = address;
     }
+
     public void setBleSign(String sign) {
-        bleSignStr = sign ;
+        bleSignStr = sign;
     }
+
     public void setBleCheck(boolean check) {
-        bleCheckMsl = check ;
+        bleCheckMsl = check;
     }
 
     /*public Drawable getIcon() {
@@ -33,18 +37,22 @@ public class BleScanListView {
 
     }*/
     public String getBleUserdata() {
-        return this.bleUserdataStr ;
+        return this.bleUserdataStr;
     }
+
     public String getBleName() {
-        return this.bleNameStr ;
+        return this.bleNameStr;
     }
+
     public String getBleAddress() {
-        return this.bleAddressStr ;
+        return this.bleAddressStr;
     }
+
     public String getBleSign() {
-        return this.bleSignStr ;
+        return this.bleSignStr;
     }
+
     public Boolean getBleCheck() {
-        return this.bleCheckMsl ;
+        return this.bleCheckMsl;
     }
 }

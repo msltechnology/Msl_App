@@ -13,15 +13,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.mslapp.Ble.fragment.fragment_Ble_Setting;
+import com.example.mslapp.Ble.fragment.Function.fragment_Ble_Setting;
 import com.example.mslapp.R;
 
-import static com.example.mslapp.Ble.fragment.fragment_Ble_Setting.delay_time;
+import static com.example.mslapp.Ble.fragment.Function.fragment_Ble_Setting.delay_time;
 import static com.example.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment {

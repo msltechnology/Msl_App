@@ -100,4 +100,5 @@
     <string name="Modem_Num">Modem Call Num</string>
     <string name="Lantern_Info">Lantern Info</string>
     <string name="Delay_Time_value">+0.00 Sec</string>
+    <string name="latern_status">lantern status</string>
 </resources>

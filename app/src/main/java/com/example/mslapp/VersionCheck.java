@@ -45,5 +45,6 @@ public class VersionCheck {
     // 2021-04-30 / log 기능 만듬(아직 모든 코드에 적용은 못함), navigation 을 custom 시킴.
     // 2021-05-04 / Log 기능 적용, Ble Setting 에 버전 확인 및 섬광 딜레이 기능 추가(단 최신버전 등명기에만 적용됨)
     // 2021-05-07 / Log 기능 중 간혹 팅기는 현상 발생, 원인에 대한 해결 방안을 실시 하였으나 잘 안된다. list 를 notify 해서 adapter 로 변경하였으나 안됌.
+    // 2021-05-17 / d2xx, pl2303 제거, Ble 스캔 간 신호세기 및 userdata 회신화 하도록함(등명기를 막 키더라도 loading 이후 해당 등명기의 번호가 보임), Bluetooth 위경도 값 변화, Ble Function에 RTU 관련 항목 추가
 
 }

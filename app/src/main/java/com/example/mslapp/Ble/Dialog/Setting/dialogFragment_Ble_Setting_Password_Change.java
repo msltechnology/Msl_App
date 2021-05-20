@@ -19,9 +19,9 @@ import androidx.fragment.app.DialogFragment;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.psEncryptionTable;
-import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.readPassword;
 import static com.example.mslapp.BleMainActivity.BlewriteData;
 import static com.example.mslapp.BleMainActivity.mBleContext;
+import static com.example.mslapp.BleMainActivity.readPassword;
 
 public class dialogFragment_Ble_Setting_Password_Change extends DialogFragment {
 

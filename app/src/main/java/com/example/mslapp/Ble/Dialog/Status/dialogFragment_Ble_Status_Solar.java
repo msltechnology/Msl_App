@@ -18,7 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
+import com.example.mslapp.Ble.fragment.Function.fragment_Ble_Status;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.BleMainActivity.BlewriteData;

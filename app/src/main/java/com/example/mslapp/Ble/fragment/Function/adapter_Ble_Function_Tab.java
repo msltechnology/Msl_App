@@ -1,10 +1,9 @@
-package com.example.mslapp.RTU.fragment;
+package com.example.mslapp.Ble.fragment.Function;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -12,14 +11,14 @@ import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import java.util.List;
 
-public class adapter_RTU_Tab extends FragmentStateAdapter {
+public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
 
     Fragment[] fragments = new Fragment[3];
-    String[] pageTitles = new String[]{"Status", "Setting","Lantern"};
+    String[] pageTitles = new String[]{"Status", "Setting", "Test"};
 
     public int mCount;
 
-    public adapter_RTU_Tab(Fragment fa, int count){
+    public adapter_Ble_Function_Tab(Fragment fa, int count){
         super(fa);
         mCount = count;
     }
@@ -30,14 +29,15 @@ public class adapter_RTU_Tab extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         int index = getRealPosition(position);
 
-        if(index==0) return new fragment_RTU_Status();
-        else if(index==1)return new fragment_RTU_Setting();
-        else return new fragment_RTU_Lantern();
+        if(index==0) return new fragment_Ble_Status();
+        else if(index==1) return new fragment_Ble_Setting();
+        else if(index==2) return new fragment_Ble_Test();
+        else return new fragment_Ble_RTU();
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 4;
     }
 
     public int getRealPosition(int position) { return position % mCount; }
@@ -45,7 +45,6 @@ public class adapter_RTU_Tab extends FragmentStateAdapter {
     @Override
     public void onBindViewHolder(@NonNull FragmentViewHolder holder, int position, @NonNull List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
-
 
         //holder.t
 

@@ -1,4 +1,4 @@
-package com.example.mslapp.Ble.fragment;
+package com.example.mslapp.Ble.fragment.Function;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,7 +26,6 @@ import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.psEncryptionTable;
-import static com.example.mslapp.Ble.fragment.fragment_Ble_Password.readPassword;
 import static com.example.mslapp.BleMainActivity.*;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
 
@@ -39,7 +38,8 @@ public class fragment_Ble_Setting extends Fragment {
 
     Button btn_status, ban_information, btn_FL_Setting, btn_ID_Setting, btn_Password_Change, btn_GPS_ON, btn_GPS_OFF, btn_delay_time;
 
-    public static String lantern_id = "000", delay_time = "+000";
+    public static String lantern_id = "000",
+            delay_time = "+000";
 
     View view;
 
@@ -209,7 +209,12 @@ public class fragment_Ble_Setting extends Fragment {
                     }
 
         });
-        btn_Password_Change.setOnClickListener(v -> showPasswordChangeDialog());
+        btn_Password_Change.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                showPasswordChangeDialog();
+            }
+        });
         btn_GPS_ON.setOnClickListener(v -> {
             BlewriteData(GPS_SET_ON);
             btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on_clicked));
@@ -220,14 +225,12 @@ public class fragment_Ble_Setting extends Fragment {
             btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on));
             btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off_clicked));
         });
-        btn_delay_time.setOnClickListener(v -> {
-            BlewriteData(DATA_REQUEST_INFORMATION);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showDelayTimeChangeDialog();
-                }
-            }, 200);
+        btn_delay_time.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                BlewriteData(DATA_REQUEST_INFORMATION);
+                handler.postDelayed(() -> showDelayTimeChangeDialog(), 200);
+            }
         });
     }
 
@@ -243,6 +246,8 @@ public class fragment_Ble_Setting extends Fragment {
                 + DATA_TYPE_S + DATA_SIGN_COMMA
                 + selected_fl + DATA_SIGN_COMMA
                 + DATA_ID_255 + DATA_SIGN_CHECKSUM;
+
+        BlewriteData(sendData);
 
         selected_FL.setText(selected_fl);
         handler.postDelayed(new Runnable() {
@@ -262,6 +267,8 @@ public class fragment_Ble_Setting extends Fragment {
                 + DATA_TYPE_SID + DATA_SIGN_COMMA
                 + selected_id + DATA_SIGN_CHECKSUM;
 
+        BlewriteData(sendData);
+
         selected_ID.setText(selected_id);
         handler.postDelayed(new Runnable() {
             @Override
@@ -280,6 +287,7 @@ public class fragment_Ble_Setting extends Fragment {
                 + selected_delaytime + DATA_SIGN_CHECKSUM;
 
         BlewriteData(sendData);
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

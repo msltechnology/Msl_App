@@ -1,29 +1,23 @@
 package com.example.mslapp.RTU.fragment;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbDeviceConnection;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
-import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,9 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.mslapp.Ble.fragment.fragment_Ble_Setting;
-import com.example.mslapp.Ble.fragment.fragment_Ble_Status;
-import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.BuildConfig;
 import com.example.mslapp.R;
 import com.example.mslapp.RTUMainActivity;
@@ -46,16 +37,10 @@ import com.hoho.android.usbserial.util.SerialInputOutputManager;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
 
-import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
-import static com.example.mslapp.BleMainActivity.mBleContext;
-import static com.example.mslapp.BleMainActivity.mBleMain;
 import static com.example.mslapp.BleMainActivity.tLanguage;
-import static com.example.mslapp.RTU.fragment.Constants.INTENT_ACTION_GRANT_USB;
 import static com.example.mslapp.RTUMainActivity.logData_RTU;
 import static com.example.mslapp.RTUMainActivity.mRTUContext;
 import static com.example.mslapp.RTUMainActivity.mRTUMain;
@@ -75,6 +60,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     // 자식 프래그먼트
     fragment_RTU_Status fragment_RTU_status;
     fragment_RTU_Setting fragment_RTU_setting;
+    fragment_RTU_Lantern fragment_RTU_lantern;
 
     // 하위 프래그먼트에게 데이터 주는 용도
     FragmentManager fragmentManager;
@@ -141,13 +127,13 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
 
         viewPager_rtu = view.findViewById(R.id.rtu_Viewpage_Space);
 
-        tavTitle = new String[]{"Status", "Setting"};
+        tavTitle = new String[]{"Status", "Setting","Lantern"};
 
         Log.d(TAG, "Viewpage 작업");
-        adapter_RTU_tab = new adapter_RTU_Tab(this, 2);
+        adapter_RTU_tab = new adapter_RTU_Tab(this, 3);
         viewPager_rtu.setAdapter(adapter_RTU_tab);
         viewPager_rtu.setCurrentItem(0);
-        viewPager_rtu.setOffscreenPageLimit(1);
+        viewPager_rtu.setOffscreenPageLimit(2);
         viewPager_rtu.setPageTransformer(new ZoomOutPageTransformer());
 
         new TabLayoutMediator(tabLayout_rtu, viewPager_rtu,
@@ -176,7 +162,6 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
 
     @Override
     public void onStart() {
-
         Log.d(TAG, "fragment_RTU_Function - onStart start");
         Log.d(TAG, "fragment_RTU_Function - onStart leave");
         super.onStart();
@@ -371,6 +356,15 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
                         Log.e(TAG, "fragment_RTU_Setting readData Error - Setting : " + e.toString());
                     }
                     break;
+                case 2:
+                    Log.d(TAG, "currentPage : lantern");
+                    fragment_RTU_lantern = (fragment_RTU_Lantern) fragmentManager.findFragmentByTag("f" + viewPager_rtu.getCurrentItem());
+                    try {
+                        fragment_RTU_lantern.readData(readData);
+                    } catch (Exception e) {
+                        Log.e(TAG, "fragment_RTU_Lantern readData Error - Lantern : " + e.toString());
+                    }
+                    break;
             }
 
 
@@ -427,6 +421,15 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
                     fragment_RTU_setting.readData(receiveData);
                 } catch (Exception e) {
                     Log.e(TAG, "fragment_RTU_Setting readData Error - Setting : " + e.toString());
+                }
+                break;
+            case 2:
+                Log.d(TAG, "currentPage : lantern");
+                fragment_RTU_lantern = (fragment_RTU_Lantern) fragmentManager.findFragmentByTag("f" + viewPager_rtu.getCurrentItem());
+                try {
+                    fragment_RTU_lantern.readData(receiveData);
+                } catch (Exception e) {
+                    Log.e(TAG, "fragment_RTU_Lantern readData Error - Lantern : " + e.toString());
                 }
                 break;
         }

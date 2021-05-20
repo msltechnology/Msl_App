@@ -19,8 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
+import static com.example.mslapp.BleMainActivity.mBleContext;
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Status.lantern_id;
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Status.rtu_id;
@@ -43,7 +45,24 @@ public class dialogFragment_rtu_Status_Lantern_ID_Change extends DialogFragment 
             btn_cancel, btn_clear, btn_confirm;
     TextView tv_1, tv_2, tv_3;
 
+    String from = "rtu";
+
     View view;
+
+    Bundle mArgs;
+
+    Context mContext;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            mArgs = getArguments();
+            from = mArgs.getString("from");
+        }catch (Exception e){
+            Log.d(TAG, "Bundle Error : " + e.toString());
+        }
+    }
 
     @Nullable
     @Override
@@ -51,6 +70,12 @@ public class dialogFragment_rtu_Status_Lantern_ID_Change extends DialogFragment 
         Log.d(TAG, "dialogFragment_rtu_Status_RTU_ID_Change onCreateView");
 
         view = inflater.inflate(R.layout.rtu_fragment_status_dialog_lantern_id_change, null);
+
+        if(from.equals("ble")){
+            mContext = mBleContext;
+        }else{
+            mContext = mRTUContext;
+        }
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -104,17 +129,28 @@ public class dialogFragment_rtu_Status_Lantern_ID_Change extends DialogFragment 
         );
         btn_confirm.setOnClickListener(v -> {
             if (tv_3.getText().toString().equals("")) {
-                Toast.makeText(mRTUContext, "3자리를 채워주세요", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "3자리를 채워주세요", Toast.LENGTH_SHORT).show();
             } else {
                 lantern_id = tv_1.getText().toString() + tv_2.getText().toString() + tv_3.getText().toString();
-                String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
-                        DATA_NUM_1 + DATA_SIGN_COMMA +
-                        rtu_id + DATA_SIGN_COMMA +
-                        lantern_id + DATA_SIGN_CHECKSUM +
-                        DATA_NUM_1 + DATA_NUM_1 +
-                        DATA_SIGN_CR + DATA_SIGN_LF;
-                send(data);
-                Toast.makeText(mRTUContext, "명령어를 보냈습니다.", Toast.LENGTH_SHORT).show();
+
+                if(from.equals("ble")){
+                    String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
+                            DATA_NUM_1 + DATA_SIGN_COMMA +
+                            mArgs.getString("rtu_id") + DATA_SIGN_COMMA +
+                            lantern_id + DATA_SIGN_CHECKSUM +
+                            DATA_NUM_1 + DATA_NUM_1 +
+                            DATA_SIGN_CR + DATA_SIGN_LF;
+                    ((BleMainActivity) getActivity()).BlewriteData("<"+data);
+                }else{
+                    String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
+                            DATA_NUM_1 + DATA_SIGN_COMMA +
+                            rtu_id + DATA_SIGN_COMMA +
+                            lantern_id + DATA_SIGN_CHECKSUM +
+                            DATA_NUM_1 + DATA_NUM_1 +
+                            DATA_SIGN_CR + DATA_SIGN_LF;
+                    send(data);
+                }
+                Toast.makeText(mContext, "명령어를 보냈습니다.", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
@@ -125,24 +161,24 @@ public class dialogFragment_rtu_Status_Lantern_ID_Change extends DialogFragment 
         TextView tv_current;
         TextView[] textViews = {tv_1, tv_2, tv_3};
 
-        Log.d(TAG, "btn_Clickc " + tv_1.getText().toString());
-        Log.d(TAG, "btn_Clickc " + tv_2.getText().toString());
-        Log.d(TAG, "btn_Clickc " + tv_3.getText().toString());
+        Log.d(TAG, "btn_Click " + tv_1.getText().toString());
+        Log.d(TAG, "btn_Click " + tv_2.getText().toString());
+        Log.d(TAG, "btn_Click " + tv_3.getText().toString());
 
         int selected_int = Integer.parseInt(selected);
 
         for (int i = 0; i < textViews.length; i++) {
             if (tv_1.getText().toString().equals("") && i == 0 && selected_int > 2) {
-                Toast.makeText(mRTUContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                 return;
             } else if (tv_2.getText().toString().equals("") && i == 1 && selected_int > 5) {
                 if (Integer.parseInt(tv_1.getText().toString()) == 2){
-                    Toast.makeText(mRTUContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (i == 2 && selected_int > 5) {
                 if(Integer.parseInt(tv_1.getText().toString()) == 2 && Integer.parseInt(tv_2.getText().toString()) == 5){
-                    Toast.makeText(mRTUContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -171,7 +207,8 @@ public class dialogFragment_rtu_Status_Lantern_ID_Change extends DialogFragment 
 
         // 창크기 지정
         WindowManager wm;
-        wm = (WindowManager) mRTUContext.getSystemService(Context.WINDOW_SERVICE);
+        wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+
         Display display = wm.getDefaultDisplay();
 
         Point size = new Point();

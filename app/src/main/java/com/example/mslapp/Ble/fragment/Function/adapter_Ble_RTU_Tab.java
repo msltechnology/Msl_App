@@ -1,4 +1,4 @@
-package com.example.mslapp.Ble.fragment;
+package com.example.mslapp.Ble.fragment.Function;
 
 import android.view.View;
 import android.widget.TextView;
@@ -11,14 +11,14 @@ import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import java.util.List;
 
-public class adapter_Ble_Tab extends FragmentStateAdapter {
+public class adapter_Ble_RTU_Tab extends FragmentStateAdapter {
 
     Fragment[] fragments = new Fragment[3];
-    String[] pageTitles = new String[]{"Status", "Setting", "Test"};
+    String[] pageTitles = new String[]{"Status", "Setting"};
 
     public int mCount;
 
-    public adapter_Ble_Tab(Fragment fa, int count){
+    public adapter_Ble_RTU_Tab(Fragment fa, int count) {
         super(fa);
         mCount = count;
     }
@@ -29,17 +29,18 @@ public class adapter_Ble_Tab extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         int index = getRealPosition(position);
 
-        if(index==0) return new fragment_Ble_Status();
-        else if(index==1) return new fragment_Ble_Setting();
-        else return new fragment_Ble_Test();
+        if (index == 0) return new fragment_Ble_RTU_Status();
+        else return new fragment_Ble_RTU_Setting();
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 
-    public int getRealPosition(int position) { return position % mCount; }
+    public int getRealPosition(int position) {
+        return position % mCount;
+    }
 
     @Override
     public void onBindViewHolder(@NonNull FragmentViewHolder holder, int position, @NonNull List<Object> payloads) {
@@ -49,10 +50,10 @@ public class adapter_Ble_Tab extends FragmentStateAdapter {
 
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvTest;
 
-        public MyViewHolder(@NonNull View itemView){
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             //tvTest = itemView.findViewById(R.id.)
         }

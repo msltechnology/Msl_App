@@ -23,14 +23,6 @@
             android:text="@string/rtu_send" />
 
         <Button
-            android:id="@+id/btn_rtu_reset"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/custom_rtu_status_call_btn"
-            android:text="@string/rtu_reset" />
-
-        <Button
             android:id="@+id/btn_rtu_status"
             android:layout_width="0dp"
             android:layout_height="match_parent"

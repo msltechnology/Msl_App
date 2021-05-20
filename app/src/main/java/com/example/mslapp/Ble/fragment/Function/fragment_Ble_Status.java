@@ -1,4 +1,4 @@
-package com.example.mslapp.Ble.fragment;
+package com.example.mslapp.Ble.fragment.Function;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -52,6 +52,7 @@ import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Sol
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value4;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value5;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6;
+import static com.example.mslapp.BleMainActivity.BlewriteData;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_BTV;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_LISTS;
@@ -163,9 +164,19 @@ public class fragment_Ble_Status extends Fragment {
         btn_cycle_status = view.findViewById(R.id.btn_cycle_status);
         btn_cycle_status.setOnClickListener(v -> cycle_Status_Clicked());
         btn_battery_detail = view.findViewById(R.id.btn_ble_fragment_status_battery_v_detail);
-        btn_battery_detail.setOnClickListener(v -> battery_Detail_Clicked());
+        btn_battery_detail.setOnClickListener(new BleMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                battery_Detail_Clicked();
+            }
+        });
         btn_solar_detatil = view.findViewById(R.id.btn_ble_fragment_status_solar_v_detail);
-        btn_solar_detatil.setOnClickListener(v -> solar_Detail_Clicked());
+        btn_solar_detatil.setOnClickListener(new BleMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                solar_Detail_Clicked();
+            }
+        });
 
 
 
@@ -510,12 +521,65 @@ public class fragment_Ble_Status extends Fragment {
                 tv_ble_status_receive_time.setText(
                         receiveTime_hour + getString(R.string.hour) + " " + receiveTime_min + getString(R.string.min) + " " + receiveTime_sec + getString(R.string.sec));
 
-                tv_ble_status_gps_latitude.setText(data_arr[14]);
+                //GPS 좌표 계산
+                String[] tempLatitude;
+                String lat1, lat2, lat3;
+                String[] tempLongitude;
+                String lon1, lon2, lon3;
+
+                //위도
+                if (Float.valueOf(data_arr[14]) != 0f) {
+                    tempLatitude = data_arr[14].split("\\.");
+                    if (tempLatitude[0].charAt(0) != '-') {
+                        lat1 = tempLatitude[0].substring(0, 2);
+                        lat2 = tempLatitude[0].substring(2, 4);
+                        lat1 = "N " + lat1;
+                    } else {
+                        lat1 = tempLatitude[0].substring(1, 3);
+                        lat2 = tempLatitude[0].substring(3, 5);
+                        lat1 = "S " + lat1;
+                    }
+                    lat3 = String.valueOf(String.format("%.4f", Double.valueOf("0." + tempLatitude[1]) * 60));
+
+                    tv_ble_status_gps_latitude.setText(lat1 + "° " + lat2 + "\' " + lat3 + "\"");
+                } else {
+                    tv_ble_status_gps_latitude.setText(data_arr[14].substring(0, 2) + "° " + data_arr[14].substring(2, 4) + "\' " + data_arr[14].substring(5, 7) + "." + data_arr[14].substring(7) + "\"");
+                }
+
                 String longitude = data_arr[15];
                 if (longitude.contains("*")) {
                     longitude = longitude.substring(0, longitude.indexOf("*"));
                 }
-                tv_ble_status_gps_longitude.setText(longitude);
+
+                //경도
+                if (Float.valueOf(longitude) != 0f) {
+                    tempLongitude = longitude.split("\\.");
+                    if (tempLongitude[0].charAt(0) != '-') {
+                        lon1 = tempLongitude[0].substring(0, 3);
+                        lon2 = tempLongitude[0].substring(3, 5);
+                        lon1 = "E " + lon1;
+                    } else {
+                        lon1 = tempLongitude[0].substring(1, 4);
+                        lon2 = tempLongitude[0].substring(4, 6);
+                        lon1 = "W " + lon1;
+                    }
+                    lon3 = String.valueOf(String.format("%.4f", Double.valueOf("0." + tempLongitude[1]) * 60));
+
+                    tv_ble_status_gps_longitude.setText(lon1 + "° " + lon2 + "\' " + lon3 + "\"");
+                } else {
+                    tv_ble_status_gps_longitude.setText(longitude.substring(0, 3) + "° " + longitude.substring(3, 5) + "\' " + longitude.substring(6, 8) + "." + longitude.substring(8, 10) + "\"");
+                }
+
+
+
+
+
+                /*tv_ble_status_gps_latitude.setText(data_arr[14]);
+                String longitude = data_arr[15];
+                if (longitude.contains("*")) {
+                    longitude = longitude.substring(0, longitude.indexOf("*"));
+                }
+                tv_ble_status_gps_longitude.setText(longitude);*/
             }
 
         }

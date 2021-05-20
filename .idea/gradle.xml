@@ -12,8 +12,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/d2xx" />
-            <option value="$PROJECT_DIR$/pl2303driver" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

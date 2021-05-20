@@ -19,8 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.mslapp.BleMainActivity;
 import com.example.mslapp.R;
 
+import static com.example.mslapp.BleMainActivity.mBleContext;
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Status.Server_1;
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Status.Server_Port_1;
@@ -44,7 +46,24 @@ public class dialogFragment_rtu_Status_Server_2_Change extends DialogFragment {
     TextView tv_server_1, tv_server_2, tv_server_3, tv_server_4, tv_server_5, tv_server_6, tv_server_7, tv_server_8, tv_server_9, tv_server_10, tv_server_11, tv_server_12,
             tv_port_1, tv_port_2, tv_port_3, tv_port_4, tv_port_5;
 
+    String from = "rtu";
+
     View view;
+
+    Bundle mArgs;
+
+    Context mContext;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            mArgs = getArguments();
+            from = mArgs.getString("from");
+        } catch (Exception e) {
+            Log.d(TAG, "Bundle Error : " + e.toString());
+        }
+    }
 
     @Nullable
     @Override
@@ -52,6 +71,12 @@ public class dialogFragment_rtu_Status_Server_2_Change extends DialogFragment {
         Log.d(TAG, "dialogFragment_rtu_Status_Server_2_Change onCreateView");
 
         view = inflater.inflate(R.layout.rtu_fragment_status_dialog_server_change, null);
+
+        if (from.equals("ble")) {
+            mContext = mBleContext;
+        } else {
+            mContext = mRTUContext;
+        }
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -114,28 +139,28 @@ public class dialogFragment_rtu_Status_Server_2_Change extends DialogFragment {
 
         btn_cancel.setOnClickListener(v -> dismiss());
         btn_clear.setOnClickListener(v -> {
-            tv_server_1.setText("");
-            tv_server_2.setText("");
-            tv_server_3.setText("");
-            tv_server_4.setText("");
-            tv_server_5.setText("");
-            tv_server_6.setText("");
-            tv_server_7.setText("");
-            tv_server_8.setText("");
-            tv_server_9.setText("");
-            tv_server_10.setText("");
-            tv_server_11.setText("");
-            tv_server_12.setText("");
-            tv_port_1.setText("");
-            tv_port_2.setText("");
-            tv_port_3.setText("");
-            tv_port_4.setText("");
-            tv_port_5.setText("");
+                    tv_server_1.setText("");
+                    tv_server_2.setText("");
+                    tv_server_3.setText("");
+                    tv_server_4.setText("");
+                    tv_server_5.setText("");
+                    tv_server_6.setText("");
+                    tv_server_7.setText("");
+                    tv_server_8.setText("");
+                    tv_server_9.setText("");
+                    tv_server_10.setText("");
+                    tv_server_11.setText("");
+                    tv_server_12.setText("");
+                    tv_port_1.setText("");
+                    tv_port_2.setText("");
+                    tv_port_3.setText("");
+                    tv_port_4.setText("");
+                    tv_port_5.setText("");
                 }
         );
         btn_confirm.setOnClickListener(v -> {
             if (tv_port_5.getText().toString().equals("")) {
-                Toast.makeText(mRTUContext, "Port 번호까지 다 채워주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Port 번호까지 다 채워주세요.", Toast.LENGTH_SHORT).show();
             } else {
                 String Server_2_data = tv_server_1.getText().toString() + tv_server_2.getText().toString() + tv_server_3.getText().toString() + DATA_SIGN_COMMA +
                         tv_server_4.getText().toString() + tv_server_5.getText().toString() + tv_server_6.getText().toString() + DATA_SIGN_COMMA +
@@ -144,16 +169,28 @@ public class dialogFragment_rtu_Status_Server_2_Change extends DialogFragment {
                 String Server_Port_2_data = tv_port_1.getText().toString() + tv_port_2.getText().toString() + tv_port_3.getText().toString() +
                         tv_port_4.getText().toString() + tv_port_5.getText().toString();
 
-                String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
-                        DATA_NUM_2 + DATA_SIGN_COMMA +
-                        Server_1 + DATA_SIGN_COMMA +
-                        Server_Port_1 + DATA_SIGN_COMMA +
-                        Server_2_data + DATA_SIGN_COMMA +
-                        Server_Port_2_data + DATA_SIGN_CHECKSUM +
-                        DATA_NUM_1 + DATA_NUM_1 +
-                        DATA_SIGN_CR + DATA_SIGN_LF;
-                send(data);
-                Toast.makeText(mRTUContext, "명령어를 보냈습니다.", Toast.LENGTH_SHORT).show();
+                if (from.equals("ble")) {
+                    String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
+                            DATA_NUM_2 + DATA_SIGN_COMMA +
+                            mArgs.getString("server1") + DATA_SIGN_COMMA +
+                            mArgs.getString("server1port") + DATA_SIGN_COMMA +
+                            Server_2_data + DATA_SIGN_COMMA +
+                            Server_Port_2_data + DATA_SIGN_CHECKSUM +
+                            DATA_NUM_1 + DATA_NUM_1 +
+                            DATA_SIGN_CR + DATA_SIGN_LF;
+                    ((BleMainActivity) getActivity()).BlewriteData("<" + data);
+                } else {
+                    String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
+                            DATA_NUM_2 + DATA_SIGN_COMMA +
+                            Server_1 + DATA_SIGN_COMMA +
+                            Server_Port_1 + DATA_SIGN_COMMA +
+                            Server_2_data + DATA_SIGN_COMMA +
+                            Server_Port_2_data + DATA_SIGN_CHECKSUM +
+                            DATA_NUM_1 + DATA_NUM_1 +
+                            DATA_SIGN_CR + DATA_SIGN_LF;
+                    send(data);
+                }
+                Toast.makeText(mContext, "명령어를 보냈습니다.", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
@@ -169,83 +206,82 @@ public class dialogFragment_rtu_Status_Server_2_Change extends DialogFragment {
 
         for (int i = 0; i < textViews.length; i++) {
             if (tv_server_1.getText().toString().equals("") && i == 0 && selected_int > 2) {
-                Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                 return;
             } else if (tv_server_2.getText().toString().equals("") && i == 1 && selected_int > 5) {
-                if (Integer.parseInt(tv_server_1.getText().toString()) == 2){
-                    Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_server_1.getText().toString()) == 2) {
+                    Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (tv_server_3.getText().toString().equals("") && i == 2 && selected_int > 5) {
-                if(Integer.parseInt(tv_server_1.getText().toString()) == 2 && Integer.parseInt(tv_server_2.getText().toString()) == 5){
-                    Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_server_1.getText().toString()) == 2 && Integer.parseInt(tv_server_2.getText().toString()) == 5) {
+                    Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (tv_server_4.getText().toString().equals("") && i == 3 && selected_int > 2) {
-                Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                 return;
             } else if (tv_server_5.getText().toString().equals("") && i == 4 && selected_int > 5) {
-                if (Integer.parseInt(tv_server_4.getText().toString()) == 2){
-                    Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_server_4.getText().toString()) == 2) {
+                    Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (tv_server_6.getText().toString().equals("") && i == 5 && selected_int > 5) {
-                if(Integer.parseInt(tv_server_4.getText().toString()) == 2 && Integer.parseInt(tv_server_5.getText().toString()) == 5){
-                    Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_server_4.getText().toString()) == 2 && Integer.parseInt(tv_server_5.getText().toString()) == 5) {
+                    Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (tv_server_7.getText().toString().equals("") && i == 6 && selected_int > 2) {
-                Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                 return;
             } else if (tv_server_8.getText().toString().equals("") && i == 7 && selected_int > 5) {
-                if (Integer.parseInt(tv_server_7.getText().toString()) == 2){
-                    Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_server_7.getText().toString()) == 2) {
+                    Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (tv_server_9.getText().toString().equals("") && i == 8 && selected_int > 5) {
-                if(Integer.parseInt(tv_server_7.getText().toString()) == 2 && Integer.parseInt(tv_server_8.getText().toString()) == 5){
-                    Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_server_7.getText().toString()) == 2 && Integer.parseInt(tv_server_8.getText().toString()) == 5) {
+                    Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (tv_server_10.getText().toString().equals("") && i == 9 && selected_int > 2) {
-                Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                 return;
             } else if (tv_server_11.getText().toString().equals("") && i == 10 && selected_int > 5) {
-                if (Integer.parseInt(tv_server_10.getText().toString()) == 2){
-                    Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_server_10.getText().toString()) == 2) {
+                    Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (tv_server_12.getText().toString().equals("") && i == 11 && selected_int > 5) {
-                if(Integer.parseInt(tv_server_10.getText().toString()) == 2 && Integer.parseInt(tv_server_11.getText().toString()) == 5){
-                    Toast.makeText(mRTUContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_server_10.getText().toString()) == 2 && Integer.parseInt(tv_server_11.getText().toString()) == 5) {
+                    Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-            }else if (tv_port_1.getText().toString().equals("") && i == 12 && selected_int > 6) {
-                Toast.makeText(mRTUContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
+            } else if (tv_port_1.getText().toString().equals("") && i == 12 && selected_int > 6) {
+                Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
                 return;
             } else if (tv_port_2.getText().toString().equals("") && i == 13 && selected_int > 5) {
-                if (Integer.parseInt(tv_port_1.getText().toString()) == 6){
-                    Toast.makeText(mRTUContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_port_1.getText().toString()) == 6) {
+                    Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else if (tv_port_3.getText().toString().equals("") && i == 14 && selected_int > 5) {
-                if(Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5){
-                    Toast.makeText(mRTUContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
+                if (Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5) {
+                    Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-            }else if (tv_port_4.getText().toString().equals("") && i == 15 && selected_int > 3) {
-                if(Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5 && Integer.parseInt(tv_port_3.getText().toString()) == 5){
-                    Toast.makeText(mRTUContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
+            } else if (tv_port_4.getText().toString().equals("") && i == 15 && selected_int > 3) {
+                if (Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5 && Integer.parseInt(tv_port_3.getText().toString()) == 5) {
+                    Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-            }else if (tv_port_5.getText().toString().equals("") && i == 16 && selected_int > 5) {
-                if(Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5
-                        && Integer.parseInt(tv_port_3.getText().toString()) == 5 && Integer.parseInt(tv_port_4.getText().toString()) == 3){
-                    Toast.makeText(mRTUContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
+            } else if (tv_port_5.getText().toString().equals("") && i == 16 && selected_int > 5) {
+                if (Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5
+                        && Integer.parseInt(tv_port_3.getText().toString()) == 5 && Integer.parseInt(tv_port_4.getText().toString()) == 3) {
+                    Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
-
 
 
             tv_current = textViews[i];
@@ -272,19 +308,22 @@ public class dialogFragment_rtu_Status_Server_2_Change extends DialogFragment {
 
         // 창크기 지정
         WindowManager wm;
-        wm = (WindowManager) mRTUContext.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
+        if (from.equals("ble")) {
+            wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 
-        Point size = new Point();
-        display.getSize(size);
+            Display display = wm.getDefaultDisplay();
 
-        final String x = String.valueOf(Math.round((size.x * 0.9)));
-        final String y = String.valueOf(Math.round((size.y * 0.7)));
-        int dialogWidth = Integer.parseInt(x);
-        int dialogHeight = Integer.parseInt(y);
-        getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
-        // 창크기 지정
+            Point size = new Point();
+            display.getSize(size);
+
+            final String x = String.valueOf(Math.round((size.x * 0.9)));
+            final String y = String.valueOf(Math.round((size.y * 0.7)));
+            int dialogWidth = Integer.parseInt(x);
+            int dialogHeight = Integer.parseInt(y);
+            getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
+            // 창크기 지정
+        }
+
+
     }
-
-
 }
