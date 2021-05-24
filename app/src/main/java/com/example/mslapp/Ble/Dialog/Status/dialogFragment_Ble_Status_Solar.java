@@ -22,6 +22,7 @@ import com.example.mslapp.Ble.fragment.Function.fragment_Ble_Status;
 import com.example.mslapp.R;
 
 import static com.example.mslapp.BleMainActivity.BlewriteData;
+import static com.example.mslapp.BleMainActivity.DATA_REQUEST_SLC;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_SLV;
 import static com.example.mslapp.BleMainActivity.mBleContext;
 
@@ -30,8 +31,9 @@ public class dialogFragment_Ble_Status_Solar extends DialogFragment {
     // 로그 이름 용
     public static final String TAG = "Msl-Ble-Status-Dialog-Solar";
 
-    Button btn_call_status;
-    public static TextView tv_ble_status_sol_value1, tv_ble_status_sol_value2, tv_ble_status_sol_value3, tv_ble_status_sol_value4, tv_ble_status_sol_value5, tv_ble_status_sol_value6;
+    Button btn_call_status_v, btn_call_status_a;
+    public static TextView tv_ble_status_sol_value1, tv_ble_status_sol_value2, tv_ble_status_sol_value3, tv_ble_status_sol_value4, tv_ble_status_sol_value5, tv_ble_status_sol_value6,
+            tv_ble_status_sol_value1_a, tv_ble_status_sol_value2_a, tv_ble_status_sol_value3_a, tv_ble_status_sol_value4_a, tv_ble_status_sol_value5_a, tv_ble_status_sol_value6_a;
     public static ImageView iv_ble_status_sol1, iv_ble_status_sol2, iv_ble_status_sol3, iv_ble_status_sol4, iv_ble_status_sol5, iv_ble_status_sol6;
 
     fragment_Ble_Status fragment_ble_status;
@@ -71,6 +73,12 @@ public class dialogFragment_Ble_Status_Solar extends DialogFragment {
         tv_ble_status_sol_value4 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value4);
         tv_ble_status_sol_value5 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value5);
         tv_ble_status_sol_value6 = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value6);
+        tv_ble_status_sol_value1_a = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value1_a);
+        tv_ble_status_sol_value2_a = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value2_a);
+        tv_ble_status_sol_value3_a = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value3_a);
+        tv_ble_status_sol_value4_a = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value4_a);
+        tv_ble_status_sol_value5_a = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value5_a);
+        tv_ble_status_sol_value6_a = view.findViewById(R.id.tv_ble_fragment_status_dialog_Solar_sol_value6_a);
     }
 
     void imageViewSetting(){
@@ -83,8 +91,10 @@ public class dialogFragment_Ble_Status_Solar extends DialogFragment {
     }
 
     void btnSetting() {
-        btn_call_status = view.findViewById(R.id.btn_dialogFragment_Ble_Status_Solar_callStatus);
-        btn_call_status.setOnClickListener(v -> BlewriteData(DATA_REQUEST_SLV));
+        btn_call_status_v = view.findViewById(R.id.btn_dialogFragment_Ble_Status_Solar_callStatus_v);
+        btn_call_status_v.setOnClickListener(v -> BlewriteData(DATA_REQUEST_SLV));
+        btn_call_status_a = view.findViewById(R.id.btn_dialogFragment_Ble_Status_Solar_callStatus_a);
+        btn_call_status_a.setOnClickListener(v -> BlewriteData(DATA_REQUEST_SLC));
     }
 
     @Override

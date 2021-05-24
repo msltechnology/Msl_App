@@ -40,6 +40,7 @@ public class fragment_Ble_Function extends Fragment {
     fragment_Ble_Status fragment_ble_status;
     fragment_Ble_Setting fragment_ble_setting;
     fragment_Ble_Test fragment_ble_test;
+    fragment_Ble_RTU fragment_ble_RTU;
 
     // 하위 프래그먼트에게 데이터 주는 용도
     FragmentManager fragmentManager;
@@ -126,6 +127,15 @@ public class fragment_Ble_Function extends Fragment {
                     fragment_ble_test.readData(data);
                 }catch (Exception e){
                     Log.e(TAG, "fragment_Ble_Function readData Error - Test: " + e.toString());
+                };
+                break;
+            case 3:
+                Log.d(TAG, "currentPage : RTU");
+                fragment_ble_RTU = (fragment_Ble_RTU) fragmentManager.findFragmentByTag("f" + viewPager.getCurrentItem());
+                try {
+                    fragment_ble_RTU.readData(data);
+                }catch (Exception e){
+                    Log.e(TAG, "fragment_Ble_Function readData Error - RTU: " + e.toString());
                 };
                 break;
         }

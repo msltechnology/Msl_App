@@ -95,10 +95,10 @@ public class BluetoothUtils {
 
     private static Boolean matchCharacteristicUUID(String characteristicUuidString){
         if(matchUUIDs(characteristicUuidString, CHARACTERISTIC_COMMAND_STRING_4, CHARACTERISTIC_RESPONSE_STRING_4)){
-            Log.d("Test3", "matching 4");
+            Log.d("matchCharacteristicUUID", "matching 4");
             return matchUUIDs(characteristicUuidString, CHARACTERISTIC_COMMAND_STRING_4, CHARACTERISTIC_RESPONSE_STRING_4);
         }
-        Log.d("Test3", "matching 5");
+        Log.d("matchCharacteristicUUID", "matching 5");
         return matchUUIDs(characteristicUuidString, CHARACTERISTIC_COMMAND_STRING, CHARACTERISTIC_RESPONSE_STRING);
     }
 

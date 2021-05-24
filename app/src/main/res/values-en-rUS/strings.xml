@@ -101,4 +101,6 @@
     <string name="Lantern_Info">Lantern Info</string>
     <string name="Delay_Time_value">+0.00 Sec</string>
     <string name="latern_status">lantern status</string>
+    <string name="v_status">V Status</string>
+    <string name="a_status">A Status</string>
 </resources>

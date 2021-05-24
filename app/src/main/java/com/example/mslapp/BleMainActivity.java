@@ -88,7 +88,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = false;
+    public static final boolean adminApp = true;
 
     public static Context mBleContext = null;
     public static AppCompatActivity mBleMain = null;
@@ -99,6 +99,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static BluetoothGatt bleGatt = null;
     public static BluetoothManager bluetoothManager = null;
     public static String BluetoothStatus = "";
+
+    boolean pauseResumeCheck =  false;
 
     // password 관련
     public static String readPassword = "";
@@ -193,6 +195,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String DATA_TYPE_RST = "RST"; //공장 초기화
     public static final String DATA_TYPE_BTV = "BTV"; //배터리 데이터 확인
     public static final String DATA_TYPE_SLV = "SLV"; //솔라전압 데이터 확인
+    public static final String DATA_TYPE_SLC = "SLC"; //태양광 전류 테이터 확인
     public static final String DATA_TYPE_SNB = "SNB"; //시리얼넘버 확인
     public static final String DATA_TYPE_GP1 = "GP1"; //낮동안 GPS 할성화
     public static final String DATA_TYPE_GP0 = "GP0"; //저녁동안에만 활성화
@@ -307,6 +310,13 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             + DATA_TYPE_LICMD + DATA_SIGN_COMMA
             + DATA_TYPE_S + DATA_SIGN_COMMA
             + DATA_TYPE_SLV + DATA_SIGN_COMMA
+            + DATA_ID_255 + DATA_SIGN_CHECKSUM;
+
+    // $LICMD,S,SLV,255* : 솔라판 각 전류 확인
+    public final static String DATA_REQUEST_SLC = DATA_SIGN_START
+            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
+            + DATA_TYPE_S + DATA_SIGN_COMMA
+            + DATA_TYPE_SLC + DATA_SIGN_COMMA
             + DATA_ID_255 + DATA_SIGN_CHECKSUM;
 
     // $LICMD,S,GP0,255* : GPS 밤에만 작동
@@ -782,7 +792,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                 log_listViewAdapter.addItem(getTime, "Battery Status Request Confirm", color);
                                 break;
                             case DATA_TYPE_SLV:
-                                log_listViewAdapter.addItem(getTime, "Solar Status Request Confirm", color);
+                                log_listViewAdapter.addItem(getTime, "Solar Status V Request Confirm", color);
+                                break;
+                            case DATA_TYPE_SLC:
+                                log_listViewAdapter.addItem(getTime, "Solar Status A Request Confirm", color);
                                 break;
                         }
                         break;
@@ -862,7 +875,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                 log_listViewAdapter.addItem(getTime, "Battery Status Request", color);
                                 break;
                             case DATA_TYPE_SLV:
-                                log_listViewAdapter.addItem(getTime, "Solar Status Request", color);
+                                log_listViewAdapter.addItem(getTime, "Solar Status V Request", color);
+                                break;
+                            case DATA_TYPE_SLC:
+                                log_listViewAdapter.addItem(getTime, "Solar Status A Request", color);
                                 break;
                             case DATA_TYPE_SID:
                                 log_listViewAdapter.addItem(getTime, "Lantern ID : " + dataArr[3], color);
@@ -1026,6 +1042,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.
@@ -1219,15 +1236,29 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             List<BluetoothGattService> services = gatt.getServices();
 
             if (services != null) {
+                Log.d(TAG, "onServicesDiscovered - services is not null");
                 for (BluetoothGattService service : services) {
                     List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
 
+                    Log.d(TAG, "onServicesDiscovered - services for");
+
                     if (characteristics != null) {
+
+                        Log.d(TAG, "onServicesDiscovered - characteristics is not null");
+
                         for (BluetoothGattCharacteristic characteristic : characteristics) {
+                            Log.d(TAG, "onServicesDiscovered - characteristic for");
                             // bluetooth 5 및 일반적 블루투스
                             if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE ||
                                     characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) {
+                                Log.d(TAG, "onServicesDiscovered - cmdCharacteristic lize");
                                 cmdCharacteristic = characteristic;
+                                if(cmdCharacteristic == null){
+                                    Log.d(TAG, "onServicesDiscovered - cmdCharacteristic : null");
+                                    // 해당 값을 하면 되긴하는데...처음부터 해서 에러 메세지(BleWrite부분에서) 하지않게하기
+                                    cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
+                                }
+
                             } else if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY) {
                                 respCharacteristic = characteristic;
                             }
@@ -1335,6 +1366,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static void disconnectGattServer(String route) {
         //logData_Ble("Bluetooth Disconnect");
         Log.d(TAG, "disconnectGattServer - " + route);
+        cmdCharacteristic = null;
+        respCharacteristic = null;
         if (bleGatt != null) {
             BleConnecting = false;
 
@@ -1353,6 +1386,62 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             } else if (msg.what == 1) {
                 // 데이터가 들어왔을 때
 
+                // RTU 관련 데이터 들어올 경우($ 및 * 이 안들어감)
+                if(readDataTotal.contains("[ ConfMsg]") && readDataTotal.contains("\n")) {
+
+                    int configIndex = 0;
+                    int lfIndex = 0;
+
+                    configIndex = readDataTotal.indexOf("[ ConfMsg]");
+                    lfIndex = readDataTotal.indexOf("\n", configIndex);
+                    while (configIndex < lfIndex) {
+
+                        // \n 까지 포함
+                        String readData = readDataTotal.substring(configIndex, lfIndex+1);
+
+                        // Log 용은 삭제
+                        String readDataLog = readDataTotal.substring(configIndex, lfIndex);
+
+                        try {
+                            readDataTotal = readDataTotal.substring(lfIndex + 1);
+                        } catch (Exception e) {
+                            readDataTotal = "";
+                            logData_Ble("readData Error! - TotalReadData", "error");
+                            Log.e(TAG, "fragment_BLE_RTU_Status readData Error : " + e.toString());
+                        }
+
+                        logData_Ble(readDataLog, "read");
+
+                        // 들어온 데이터값을 해당 프래그먼트로 보내기(그쪽에서 처리)
+                        if (currentFragment instanceof fragment_Ble_Function) {
+                            Log.d(TAG, "fragment_Ble_Function OK!");
+                            fragment_Ble_Function fragment_ble_function = (fragment_Ble_Function) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                            fragment_ble_function.readData(readData);
+                        } else if (currentFragment instanceof fragment_Ble_Password) {
+                            Log.d(TAG, "fragment_Ble_password OK!");
+                            fragment_Ble_Password fragment_ble_password = (fragment_Ble_Password) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                            fragment_ble_password.readData(readData);
+                        } else if (currentFragment instanceof fragment_CDS_Setting) {
+                            Log.d(TAG, "fragment_Ble_CDS_Setting OK!");
+                            fragment_CDS_Setting fragment_cds_setting = (fragment_CDS_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                            fragment_cds_setting.readData(readData);
+                        } else if (currentFragment instanceof fragment_SN_Setting) {
+                            Log.d(TAG, "fragment_Ble_SN_Setting OK!");
+                            fragment_SN_Setting fragment_sn_setting = (fragment_SN_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                            fragment_sn_setting.readData(readData);
+                        }
+
+                        // subString 했는데도 해당 데이터가 있을 경우 while 벗어나지않고 한번더 한다.
+                        configIndex = readDataTotal.indexOf("[ ConfMsg]");
+                        lfIndex = readDataTotal.indexOf("\n", configIndex);
+                        if (configIndex < 0 | lfIndex < 0) {
+                            break;
+                        }
+
+                    }
+                }
+
+                // 그 외 경우
                 if (readDataTotal.contains("\\n") || readDataTotal.contains("\\r")) {
                     Log.d(TAG, "readDataTotal contain n or r " + readDataTotal);
                     readDataTotal = readDataTotal.replaceAll("(\\n|\\r)", "");
@@ -1430,6 +1519,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     Log.d(TAG, "readData Error - no include DATA_SIGN_START");
                     readDataTotal = "";
                 }
+
+
             }
 
         }
@@ -1586,6 +1677,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         super.onResume();
         // bluetooth Low Energy 지원안할 경우
 
+        if(pauseResumeCheck != BleConnecting){
+            if(!BleConnecting){
+                fragmentChange("fragment_ble_beginning");
+            }
+        }
         permission_check();
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -1593,6 +1689,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             //finish();
         }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pauseResumeCheck = BleConnecting;
     }
 
     @Override

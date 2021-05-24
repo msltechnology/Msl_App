@@ -95,11 +95,11 @@ public class fragment_Ble_Scan extends Fragment {
                 stopScan();
 
                 if (CdsFlag) {
-                    ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_cds_setting");
+                    ((BleMainActivity) requireActivity()).fragmentChange("fragment_cds_setting");
                 } else if (SnFlag) {
-                    ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_sn_setting");
+                    ((BleMainActivity) requireActivity()).fragmentChange("fragment_sn_setting");
                 }else {
-                    ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_password");
+                    ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_password");
                 }
 
 
@@ -264,7 +264,6 @@ public class fragment_Ble_Scan extends Fragment {
                 );*/
 
 
-                Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);
 
                 String userdataAll = stringBuffer;
 
@@ -317,15 +316,19 @@ public class fragment_Ble_Scan extends Fragment {
                 for (BluetoothDevice dev : scanResults) {
                     if (dev.getAddress().equals(deviceAddress)) {
 
-                        scanResults.set(order, result.getDevice());
+                        // 중복일 경우 신호 세기 및 Device 이름 값 바꾸게하는데 실행 결과 바뀌는 도중 선택 인식을 못하여서 걍 빼는걸로(21-05-21)
+                        // 리스트 선택이 아닌 따로 버튼으로하면 될꺼 같긴하나 나중에 하고싶다면 하는걸로
+                        /*scanResults.set(order, result.getDevice());
 
                         adapter.updateItem(order, userdata, "신호 세기 : " + rssi);
 
-                        adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();*/
                         return;
                     }
                     order++;
                 }
+
+                Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);
 
                 // 중복되지 않은 주소는 list에 추가
                 scanResults.add(result.getDevice());

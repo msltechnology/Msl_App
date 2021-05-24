@@ -2,10 +2,7 @@ package com.example.mslapp.Ble.fragment.Function;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,16 +45,22 @@ import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Sol
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.iv_ble_status_sol5;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.iv_ble_status_sol6;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value1;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value1_a;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value2;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value2_a;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value3;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value3_a;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value4;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value4_a;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value5;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value5_a;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6;
-import static com.example.mslapp.BleMainActivity.BlewriteData;
+import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6_a;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_BTV;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_LISTS;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_S;
+import static com.example.mslapp.BleMainActivity.adminApp;
 import static com.example.mslapp.BleMainActivity.mBleContext;
 
 public class fragment_Ble_Status extends Fragment {
@@ -67,6 +71,8 @@ public class fragment_Ble_Status extends Fragment {
     private final int MESSAGE_HANDLER_START = 100;
     private final int MESSAGE_HANDLER_WORK = 101;
     private final int MESSAGE_HANDLER_STOP = 102;
+
+    LinearLayout ll_ble_fragment_status_battery_v_detail, ll_ble_fragment_status_solar_v_detail;
 
     TextView tv_ble_status_id, tv_ble_status_input_v, tv_ble_status_output_a, tv_ble_status_cds, tv_ble_status_lantern_status, tv_ble_status_fl,
             tv_ble_status_solar_v, tv_ble_status_battery_v, tv_ble_status_output_v, tv_ble_status_charge_dischar_a, tv_ble_status_battery_percent,
@@ -98,6 +104,9 @@ public class fragment_Ble_Status extends Fragment {
 
 
         ((Ble_Status_Listener) activity).onCreateViewFragment_Ble_Status();
+
+        ll_ble_fragment_status_battery_v_detail = view.findViewById(R.id.ll_ble_fragment_status_battery_v_detail);
+        ll_ble_fragment_status_solar_v_detail = view.findViewById(R.id.ll_ble_fragment_status_solar_v_detail);
 
         buttonSetting();
         textviewSetting();
@@ -178,8 +187,10 @@ public class fragment_Ble_Status extends Fragment {
             }
         });
 
-
-
+        if(!adminApp){
+            ll_ble_fragment_status_battery_v_detail.setVisibility(View.GONE);
+            ll_ble_fragment_status_solar_v_detail.setVisibility(View.GONE);
+        }
 
         /*Button testBtn1 = view.findViewById(R.id.test_bt1);
         testBtn1.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_READY));
@@ -358,6 +369,24 @@ public class fragment_Ble_Status extends Fragment {
                         Log.d(TAG, "iv_ble_status_bat 설정 간 문제 발생 : " + e);
                     }
 
+                } else if (data.substring(9, 12).contains("SLC")) {
+                    Log.d(TAG, "readData SLC 들어옴");
+                    // 다이얼로그한테 데이터를 보내야함.
+                    String[] data_arr = data.split(",");
+                    String tv_sol_value6_value = "";
+                    if (data_arr[9].contains("*")) {
+                        tv_sol_value6_value = data_arr[9].substring(0, data_arr[9].indexOf("*"));
+                    }
+                    try {
+                        tv_ble_status_sol_value1_a.setText(data_arr[4] + "A");
+                        tv_ble_status_sol_value2_a.setText(data_arr[5] + "A");
+                        tv_ble_status_sol_value3_a.setText(data_arr[6] + "A");
+                        tv_ble_status_sol_value4_a.setText(data_arr[7] + "A");
+                        tv_ble_status_sol_value5_a.setText(data_arr[8] + "A");
+                        tv_ble_status_sol_value6_a.setText(tv_sol_value6_value + "A");
+                    } catch (Exception e) {
+                        Log.d(TAG, "tv_ble_status_bat_value 설정 간 문제 발생 : " + e);
+                    }
                 }
 
             } else {

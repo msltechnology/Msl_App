@@ -84,7 +84,7 @@ public class fragment_Ble_RTU extends Fragment {
 
         switch (viewPager.getCurrentItem()){
             case 0:
-                Log.d(TAG, "currentPage : Status");
+                Log.d(TAG, "currentPage : RTU-Status");
                 fragment_ble_rtu_status = (fragment_Ble_RTU_Status) fragmentManager.findFragmentByTag("f" + viewPager.getCurrentItem());
                 try {
                     fragment_ble_rtu_status.readData(data);
@@ -93,7 +93,7 @@ public class fragment_Ble_RTU extends Fragment {
                 };
                 break;
             case 1:
-                Log.d(TAG, "currentPage : Setting");
+                Log.d(TAG, "currentPage : RTU-Setting");
                 fragment_ble_rtu_setting = (fragment_Ble_RTU_Setting) fragmentManager.findFragmentByTag("f" + viewPager.getCurrentItem());
                 try {
                     fragment_ble_rtu_setting.readData(data);

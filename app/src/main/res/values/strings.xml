@@ -162,6 +162,8 @@
     <string name="Lantern_Info">등명기 정보</string>
     <string name="Delay_Time_value">+0.00 초</string>
     <string name="latern_status">등명기 조회</string>
+    <string name="v_status">전압 요청</string>
+    <string name="a_status">전류 요청</string>
 
 
 </resources>
