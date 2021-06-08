@@ -100,7 +100,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static BluetoothManager bluetoothManager = null;
     public static String BluetoothStatus = "";
 
-    boolean pauseResumeCheck =  false;
+    boolean pauseResumeCheck = false;
 
     // password 관련
     public static String readPassword = "";
@@ -178,6 +178,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     //데이터 타입
     public static final String DATA_TYPE_LICMD = "LICMD"; // 명령 커맨드
+    public static final String DATA_TYPE_MUCMD = "MUCMD"; // 명령 커맨드
     public static final String DATA_TYPE_LISTS = "LISTS"; // 상태 정보
     public static final String DATA_TYPE_LISET = "LISET"; // 설정 정보
     public static final String DATA_TYPE_PS = "PS"; //패스워드
@@ -206,6 +207,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String DATA_TYPE_3 = "3"; //강제소등
     public static final String DATA_TYPE_4 = "4"; //리셋
     public static final String DATA_TYPE_5 = "5"; //부동광
+    public static final String DATA_TYPE_14 = "14"; //부동광
 
     //디바이스 ID
     public static final String DATA_ID_255 = "255";
@@ -334,6 +336,14 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             + DATA_TYPE_GP1 + DATA_SIGN_COMMA
             + DATA_ID_255 + DATA_SIGN_CHECKSUM;
     ;
+
+
+    //$MUCMD,14,1*11<CR><LF> : RTU에서 데이터 보내게함
+    public final static String DATA_RTU_BLUETOOTH_SENDING = DATA_SIGN_START
+            + DATA_TYPE_MUCMD + DATA_SIGN_COMMA
+            + DATA_TYPE_14 + DATA_SIGN_COMMA
+            + DATA_TYPE_1 + DATA_SIGN_CHECKSUM
+            + DATA_TYPE_1 + DATA_TYPE_1;
 
     //endregion
 
@@ -675,7 +685,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         dialogFragment_Ble_Beginning_LanguageChange customDialogLanguageChange = new dialogFragment_Ble_Beginning_LanguageChange();
                         customDialogLanguageChange.show(fm, "fragment_beginning_dialog_LanguageChange");
                     }
-        });
+                });
 
         // FL List 창 키기
         navigationView.findViewById(R.id.ll_Navigation_Show_FL_List).setOnClickListener(
@@ -686,7 +696,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         dialogFragment_Ble_Setting_FL_Setting customDialog_FL_Setting = new dialogFragment_Ble_Setting_FL_Setting();
                         customDialog_FL_Setting.show(fm, "dialogFragment_Ble_Setting_FL_Setting");
                     }
-        });
+                });
 
         // Log 보기
         navigationView.findViewById(R.id.ll_Navigation_Show_Log).setOnClickListener(v -> {
@@ -1236,24 +1246,15 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             List<BluetoothGattService> services = gatt.getServices();
 
             if (services != null) {
-                Log.d(TAG, "onServicesDiscovered - services is not null");
                 for (BluetoothGattService service : services) {
                     List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
-
-                    Log.d(TAG, "onServicesDiscovered - services for");
-
                     if (characteristics != null) {
-
-                        Log.d(TAG, "onServicesDiscovered - characteristics is not null");
-
                         for (BluetoothGattCharacteristic characteristic : characteristics) {
-                            Log.d(TAG, "onServicesDiscovered - characteristic for");
                             // bluetooth 5 및 일반적 블루투스
                             if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE ||
                                     characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) {
-                                Log.d(TAG, "onServicesDiscovered - cmdCharacteristic lize");
                                 cmdCharacteristic = characteristic;
-                                if(cmdCharacteristic == null){
+                                if (cmdCharacteristic == null) {
                                     Log.d(TAG, "onServicesDiscovered - cmdCharacteristic : null");
                                     // 해당 값을 하면 되긴하는데...처음부터 해서 에러 메세지(BleWrite부분에서) 하지않게하기
                                     cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
@@ -1351,16 +1352,33 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             // 블루투스가 한번에 2개 이상을 동시에 보내는걸 대비하여 먼저 큐에 넣고 나중에 정리/
             readDataQueue.offer(readCharacter);
 
-            Log.d(TAG, "readDataQueue size : " + readDataQueue.size());
-
             // 들어온 데이터를 토탈에 합침. 이후 확인
             for (int i = 0; i < readDataQueue.size(); i++) {
                 readDataTotal += readDataQueue.poll();
             }
+            Log.d(TAG, "readCharacteristic String : " + new String(characteristic.getValue()));
             Log.d(TAG, "readDataTotal : " + readDataTotal);
             handler.sendEmptyMessage(readDataSuccess);
         }
     };
+
+    public String byteArrayToHexaString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+
+        for (byte b : bytes) {
+            if (b == '\n')
+                Log.d(TAG, "byteArrayToHexaString n 포함 : " + b);
+            if (b == '\r')
+                Log.d(TAG, "byteArrayToHexaString r 포함 : " + b);
+        }
+
+        for (byte b : bytes) {
+            sb.append(String.format("%02X", b & 0xff));
+        }
+
+        return sb.toString();
+    }
+
 
     // 블루투스 연결 끊기
     public static void disconnectGattServer(String route) {
@@ -1387,17 +1405,17 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 // 데이터가 들어왔을 때
 
                 // RTU 관련 데이터 들어올 경우($ 및 * 이 안들어감)
-                if(readDataTotal.contains("[ ConfMsg]") && readDataTotal.contains("\n")) {
+                if (readDataTotal.contains("[ ConfMsg]") && readDataTotal.contains(">")) {
 
                     int configIndex = 0;
                     int lfIndex = 0;
 
                     configIndex = readDataTotal.indexOf("[ ConfMsg]");
-                    lfIndex = readDataTotal.indexOf("\n", configIndex);
+                    lfIndex = readDataTotal.indexOf(">", configIndex);
                     while (configIndex < lfIndex) {
 
                         // \n 까지 포함
-                        String readData = readDataTotal.substring(configIndex, lfIndex+1);
+                        String readData = readDataTotal.substring(configIndex, lfIndex + 1);
 
                         // Log 용은 삭제
                         String readDataLog = readDataTotal.substring(configIndex, lfIndex);
@@ -1547,6 +1565,73 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         sendBlewriteData = sendBlewriteData + DATA_SIGN_CR + DATA_SIGN_LF;
         Log.d(TAG, "BleWriteData data : " + data + ", sendData : " + sendBlewriteData);
 
+        // 데이터가 길면 한번에 보낼 수 있는 양을 초과해서 나눠서 보내야함.(5.0은 상관없지만...)
+        if (sendBlewriteData.length() < 21) {
+            cmdCharacteristic.setValue(sendBlewriteData.getBytes());
+
+            Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
+            if (!success) {
+                logData_Ble("Failed to write command", "error");
+                Log.e(TAG, "Failed to write command");
+            }
+        } else {
+            Log.d(TAG, "BleWriteData data length : " + sendBlewriteData.length());
+
+
+            String finalSendBlewriteData = sendBlewriteData;
+            Handler mSendHandler = new Handler() {
+                public void handleMessage(Message message) {
+
+                    for (int i = 0; i < (finalSendBlewriteData.length() / 20) + 1; i++) {
+                        if (finalSendBlewriteData.length() - (i * 20) < 20) {
+                            cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20).getBytes());
+                        } else {
+                            cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20, (i + 1) * 20).getBytes());
+                        }
+
+                        // 해당 write가 있어야 값을 보냄.
+                        Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
+                        if (!success) {
+                            logData_Ble("Failed to write command", "error");
+                            Log.e(TAG, "Failed to write command");
+                        }
+
+                        // 0.1 초 정도 텀을 둬서 데이터 보내고 이어서 보내기
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            };
+            mSendHandler.sendEmptyMessage(0);
+        }
+    }
+
+
+    public static void BlewriteDataNoChecksum(String data) {
+
+        if (cmdCharacteristic == null) {
+            logData_Ble("cmdCharacteristic : null", "error");
+            Log.d(TAG, "BlewriteData - cmdCharacteristic : null");
+            cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
+        }
+
+        // 연결이 끊겨있다면 종료
+        if (cmdCharacteristic == null) {
+            logData_Ble("Unable to find cmd characteristic", "error");
+            Log.e(TAG, "Unable to find cmd characteristic(writeData)");
+            disconnectGattServer("BleMainActivity - BlewriteData - Unable to find cmd characteristic");
+            return;
+        }
+
+        String sendBlewriteData = data;
+        logData_Ble("Write : " + sendBlewriteData, "write");
+        sendBlewriteData = sendBlewriteData + DATA_SIGN_CR + DATA_SIGN_LF;
+        Log.d(TAG, "BleWriteData data : " + data + ", sendData : " + sendBlewriteData);
+
         cmdCharacteristic.setValue(sendBlewriteData.getBytes());
 
 
@@ -1677,8 +1762,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         super.onResume();
         // bluetooth Low Energy 지원안할 경우
 
-        if(pauseResumeCheck != BleConnecting){
-            if(!BleConnecting){
+        if (pauseResumeCheck != BleConnecting) {
+            if (!BleConnecting) {
                 fragmentChange("fragment_ble_beginning");
             }
         }

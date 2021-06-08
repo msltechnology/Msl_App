@@ -89,10 +89,26 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
         }
 
 
+        if(tv_hundred.getText().toString().equals("0")){
+            btn_hundred_up.setVisibility(View.VISIBLE);
+            btn_hundred_down.setVisibility(View.INVISIBLE);
+        } else if(tv_hundred.getText().toString().equals("9")){
+            btn_hundred_up.setVisibility(View.INVISIBLE);
+            btn_hundred_down.setVisibility(View.VISIBLE);
+        }
+
+        if(tv_ten.getText().toString().equals("0")){
+            btn_ten_up.setVisibility(View.VISIBLE);
+            btn_ten_down.setVisibility(View.INVISIBLE);
+        } else if(tv_ten.getText().toString().equals("9")){
+            btn_ten_up.setVisibility(View.INVISIBLE);
+            btn_ten_down.setVisibility(View.VISIBLE);
+        }
+
         if(tv_one.getText().toString().equals("0")){
             btn_one_up.setVisibility(View.VISIBLE);
             btn_one_down.setVisibility(View.INVISIBLE);
-        } else if(tv_one.getText().toString().equals("5")){
+        } else if(tv_one.getText().toString().equals("9")){
             btn_one_up.setVisibility(View.INVISIBLE);
             btn_one_down.setVisibility(View.VISIBLE);
         }
@@ -112,6 +128,10 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
             if (hundred < 9) {
                 hundred += 1;
                 tv_hundred.setText(Integer.toString(hundred));
+                btn_hundred_down.setVisibility(View.VISIBLE);
+            }
+            if(hundred == 9){
+                btn_hundred_up.setVisibility(View.INVISIBLE);
             }
         });
         btn_hundred_down.setOnClickListener(v -> {
@@ -119,6 +139,10 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
             if (hundred > 0) {
                 hundred -= 1;
                 tv_hundred.setText(Integer.toString(hundred));
+                btn_hundred_up.setVisibility(View.VISIBLE);
+            }
+            if(hundred == 0){
+                btn_hundred_down.setVisibility(View.INVISIBLE);
             }
         });
         btn_ten_up.setOnClickListener(v -> {
@@ -126,6 +150,10 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
             if (ten < 9) {
                 ten += 1;
                 tv_ten.setText(Integer.toString(ten));
+                btn_ten_down.setVisibility(View.VISIBLE);
+            }
+            if(ten == 9){
+                btn_ten_up.setVisibility(View.INVISIBLE);
             }
         });
         btn_ten_down.setOnClickListener(v -> {
@@ -133,17 +161,33 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
             if (ten > 0) {
                 ten -= 1;
                 tv_ten.setText(Integer.toString(ten));
+                btn_ten_up.setVisibility(View.VISIBLE);
+            }
+            if(ten == 0){
+                btn_ten_down.setVisibility(View.INVISIBLE);
             }
         });
         btn_one_up.setOnClickListener(v -> {
-            tv_one.setText("5");
-            btn_one_down.setVisibility(View.VISIBLE);
-            btn_one_up.setVisibility(View.INVISIBLE);
+            int one = Integer.parseInt(tv_one.getText().toString());
+            if (one < 9) {
+                one += 1;
+                tv_one.setText(Integer.toString(one));
+                btn_one_down.setVisibility(View.VISIBLE);
+            }
+            if(one == 9){
+                btn_one_up.setVisibility(View.INVISIBLE);
+            }
         });
         btn_one_down.setOnClickListener(v -> {
-            tv_one.setText("0");
-            btn_one_down.setVisibility(View.INVISIBLE);
-            btn_one_up.setVisibility(View.VISIBLE);
+            int one = Integer.parseInt(tv_one.getText().toString());
+            if (one > 0) {
+                one -= 1;
+                tv_one.setText(Integer.toString(one));
+                btn_one_up.setVisibility(View.VISIBLE);
+            }
+            if(one == 0){
+                btn_one_down.setVisibility(View.INVISIBLE);
+            }
         });
         btn_ce.setOnClickListener(v -> dismiss());
         btn_ok.setOnClickListener(v -> {
@@ -189,8 +233,8 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
         Point size = new Point();
         display.getSize(size);
 
-        final String x = String.valueOf(Math.round((size.x * 0.8)));
-        final String y = String.valueOf(Math.round((size.y * 0.5)));
+        final String x = String.valueOf(Math.round((size.x * 0.9)));
+        final String y = String.valueOf(Math.round((size.y * 0.45)));
         int dialogWidth = Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

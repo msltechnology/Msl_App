@@ -104,4 +104,6 @@
     <string name="latern_status">등명기 조회</string>
     <string name="v_status">전압 요청</string>
     <string name="a_status">전류 요청</string>
+    <string name="Network">Network</string>
+    <string name="Socket">Socket</string>
 </resources>

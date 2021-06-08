@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_RTU_ID_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Send_Cycle_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Server_1_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Server_2_Change;
+import com.example.mslapp.RTUMainActivity;
 
 import static com.example.mslapp.BleMainActivity.DATA_LAMP_FIXED;
 import static com.example.mslapp.BleMainActivity.logData_Ble;
@@ -58,6 +60,9 @@ public class fragment_Ble_RTU_Status extends Fragment {
 
     View view;
 
+    LinearLayout ll_rtu_fragment_status_lantern_ID;
+    View view_rtu_fragment_status_lantern_ID;
+
     // Dialog 로 보낼 번들
     Bundle args = new Bundle();
 
@@ -70,14 +75,20 @@ public class fragment_Ble_RTU_Status extends Fragment {
         // 키값 넣기
         args.putString("from", "ble");
 
+        ll_rtu_fragment_status_lantern_ID = view.findViewById(R.id.ll_rtu_fragment_status_lantern_ID);
+        view_rtu_fragment_status_lantern_ID = view.findViewById(R.id.view_rtu_fragment_status_lantern_ID);
+
+        ll_rtu_fragment_status_lantern_ID.setVisibility(View.GONE);
+        view_rtu_fragment_status_lantern_ID.setVisibility(View.GONE);
+
         tv_Setting();
         btn_Setting();
 
         return view;
     }
 
-    void send(String massage){
-        ((BleMainActivity) getActivity()).BlewriteData("<"+massage);
+    void send(String massage) {
+        ((BleMainActivity) getActivity()).BlewriteData("<" + massage);
     }
 
     Handler handler = new Handler();
@@ -119,71 +130,87 @@ public class fragment_Ble_RTU_Status extends Fragment {
             send(data);
         });
 
-        btn_rtu_id_change.setOnClickListener(v -> {
-            // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
-            send(STATUS_CALL);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    args.putString("lantern_id", BLE_lantern_id);
-                    dialogFragment_rtu_Status_RTU_ID_Change customDialog_RTU_ID_Change = new dialogFragment_rtu_Status_RTU_ID_Change();
-                    customDialog_RTU_ID_Change.setArguments(args);
-                    customDialog_RTU_ID_Change.show(fm, "dialogFragment_rtu_Status_RTU_ID_Change");
-                }
-            }, 400);
+
+        btn_rtu_id_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        args.putString("lantern_id", BLE_lantern_id);
+                        dialogFragment_rtu_Status_RTU_ID_Change customDialog_RTU_ID_Change = new dialogFragment_rtu_Status_RTU_ID_Change();
+                        customDialog_RTU_ID_Change.setArguments(args);
+                        customDialog_RTU_ID_Change.show(fm, "dialogFragment_rtu_Status_RTU_ID_Change");
+                    }
+                }, 400);
+            }
         });
-        btn_rtu_lantern_change.setOnClickListener(v -> {
-            // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
-            send(STATUS_CALL);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    args.putString("rtu_id", BLE_rtu_id);
-                    dialogFragment_rtu_Status_Lantern_ID_Change customDialog_Lantern_ID_Change = new dialogFragment_rtu_Status_Lantern_ID_Change();
-                    customDialog_Lantern_ID_Change.setArguments(args);
-                    customDialog_Lantern_ID_Change.show(fm, "dialogFragment_rtu_Status_Lantern_ID_Change");
-                }
-            }, 400);
+        btn_rtu_lantern_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        args.putString("rtu_id", BLE_rtu_id);
+                        dialogFragment_rtu_Status_Lantern_ID_Change customDialog_Lantern_ID_Change = new dialogFragment_rtu_Status_Lantern_ID_Change();
+                        customDialog_Lantern_ID_Change.setArguments(args);
+                        customDialog_Lantern_ID_Change.show(fm, "dialogFragment_rtu_Status_Lantern_ID_Change");
+                    }
+                }, 400);
+            }
         });
 
-        btn_rtu_send_cycle_change.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    dialogFragment_rtu_Status_Send_Cycle_Change customDialog_Send_Cycle_Change = new dialogFragment_rtu_Status_Send_Cycle_Change();
-                    customDialog_Send_Cycle_Change.setArguments(args);
-                    customDialog_Send_Cycle_Change.show(fm, "dialogFragment_rtu_Status_Send_Cycle_Change");
-                }
-            }, 400);
+        btn_rtu_send_cycle_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                send(STATUS_CALL);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogFragment_rtu_Status_Send_Cycle_Change customDialog_Send_Cycle_Change = new dialogFragment_rtu_Status_Send_Cycle_Change();
+                        customDialog_Send_Cycle_Change.setArguments(args);
+                        customDialog_Send_Cycle_Change.show(fm, "dialogFragment_rtu_Status_Send_Cycle_Change");
+                    }
+                }, 400);
+            }
         });
         //btn_rtu_reset_change.setOnClickListener(v ->);
-        btn_rtu_server1_change.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    args.putString("server2", BLE_Server_2);
-                    args.putString("server2port", BLE_Server_Port_2);
-                    dialogFragment_rtu_Status_Server_1_Change customDialog_Server_1_Change = new dialogFragment_rtu_Status_Server_1_Change();
-                    customDialog_Server_1_Change.setArguments(args);
-                    customDialog_Server_1_Change.show(fm, "dialogFragment_rtu_Status_Server_1_Change");
-                }
-            }, 400);
+        btn_rtu_server1_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                send(STATUS_CALL);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        args.putString("server2", BLE_Server_2);
+                        args.putString("server2port", BLE_Server_Port_2);
+                        dialogFragment_rtu_Status_Server_1_Change customDialog_Server_1_Change = new dialogFragment_rtu_Status_Server_1_Change();
+                        customDialog_Server_1_Change.setArguments(args);
+                        customDialog_Server_1_Change.show(fm, "dialogFragment_rtu_Status_Server_1_Change");
+                    }
+                }, 400);
+            }
         });
 
-        btn_rtu_server2_change.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    args.putString("server1", BLE_Server_1);
-                    args.putString("server1port", BLE_Server_Port_1);
-                    dialogFragment_rtu_Status_Server_2_Change customDialog_Server_2_Change = new dialogFragment_rtu_Status_Server_2_Change();
-                    customDialog_Server_2_Change.setArguments(args);
-                    customDialog_Server_2_Change.show(fm, "dialogFragment_rtu_Status_Server_2_Change");
-                }
-            }, 400);
+        btn_rtu_server2_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                send(STATUS_CALL);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        args.putString("server1", BLE_Server_1);
+                        args.putString("server1port", BLE_Server_Port_1);
+                        dialogFragment_rtu_Status_Server_2_Change customDialog_Server_2_Change = new dialogFragment_rtu_Status_Server_2_Change();
+                        customDialog_Server_2_Change.setArguments(args);
+                        customDialog_Server_2_Change.show(fm, "dialogFragment_rtu_Status_Server_2_Change");
+                    }
+                }, 400);
+            }
         });
     }
 
@@ -196,10 +223,10 @@ public class fragment_Ble_RTU_Status extends Fragment {
         int configIndex = 0;
         int lfIndex = 0;
 
-        if (TotalReadData.contains("[ ConfMsg]") && TotalReadData.contains("\n")) {
+        if (TotalReadData.contains("[ ConfMsg]") && TotalReadData.contains(">")) {
 
             configIndex = TotalReadData.indexOf("[ ConfMsg]");
-            lfIndex = TotalReadData.indexOf("\n", configIndex);
+            lfIndex = TotalReadData.indexOf(">", configIndex);
             while (configIndex < lfIndex) {
 
                 String readData = TotalReadData.substring(configIndex, lfIndex);

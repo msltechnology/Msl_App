@@ -91,6 +91,7 @@
             <View style="@style/rtu_view_vertical_line_5"  />
 
             <LinearLayout
+                android:id="@+id/ll_rtu_fragment_status_lantern_ID"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -114,7 +115,9 @@
 
             </LinearLayout>
 
-            <View style="@style/rtu_view_vertical_line_5"  />
+            <View
+                android:id="@+id/view_rtu_fragment_status_lantern_ID"
+                style="@style/rtu_view_vertical_line_5"  />
 
             <LinearLayout
                 android:layout_width="match_parent"

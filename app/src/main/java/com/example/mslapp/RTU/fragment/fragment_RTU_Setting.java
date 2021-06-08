@@ -20,6 +20,8 @@ import com.example.mslapp.R;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Setting_GMT_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Modem_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Protocol_Change;
+import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Send_Cycle_Change;
+import com.example.mslapp.RTUMainActivity;
 
 import java.util.Date;
 
@@ -47,8 +49,8 @@ public class fragment_RTU_Setting extends Fragment {
 
     String TotalReadData = "";
 
-    TextView tv_modem_power, tv_GMT, tv_protocol, tv_TCP, tv_Modem_Num;
-    Button btn_rtu_setting_send, btn_rtu_setting_reset, btn_rtu_setting_status, btn_modem_power, btn_GMT, btn_protocol, btn_TCP, btn_Modem_Num;
+    TextView tv_modem_power, tv_GMT, tv_protocol, tv_Modem_Num, tv_Network, tv_Socket;
+    Button btn_rtu_setting_send, btn_rtu_setting_reset, btn_rtu_setting_status, btn_modem_power, btn_GMT, btn_protocol, btn_Modem_Num;
 
     String call_TCP = "AT$$TCP_STATE??" +
             DATA_SIGN_CR + DATA_SIGN_LF;
@@ -90,8 +92,9 @@ public class fragment_RTU_Setting extends Fragment {
         tv_modem_power = view.findViewById(R.id.tv_modem_power);
         tv_GMT = view.findViewById(R.id.tv_GMT);
         tv_protocol = view.findViewById(R.id.tv_protocol);
-        tv_TCP = view.findViewById(R.id.tv_TCP);
         tv_Modem_Num = view.findViewById(R.id.tv_Modem_Num);
+        tv_Network = view.findViewById(R.id.tv_Network);
+        tv_Socket = view.findViewById(R.id.tv_Socket);
 
     }
 
@@ -103,7 +106,6 @@ public class fragment_RTU_Setting extends Fragment {
         btn_modem_power = view.findViewById(R.id.btn_modem_power);
         btn_GMT = view.findViewById(R.id.btn_GMT);
         btn_protocol = view.findViewById(R.id.btn_protocol);
-        btn_TCP = view.findViewById(R.id.btn_TCP);
         btn_Modem_Num = view.findViewById(R.id.btn_Modem_Num);
 
         btn_rtu_setting_status.setOnClickListener(v -> {
@@ -124,30 +126,36 @@ public class fragment_RTU_Setting extends Fragment {
             send(data);
         });
 
+        FragmentManager fm = this.getChildFragmentManager();
 
-        btn_modem_power.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Setting_Modem_Change customDialog_Modem_Change = new dialogFragment_rtu_Setting_Modem_Change();
-            customDialog_Modem_Change.show(fm, "dialogFragment_rtu_Setting_Modem_Change");
+        btn_modem_power.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Setting_Modem_Change customDialog_Modem_Change = new dialogFragment_rtu_Setting_Modem_Change();
+                customDialog_Modem_Change.show(fm, "dialogFragment_rtu_Setting_Modem_Change");
+            }
         });
 
-        btn_GMT.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Setting_GMT_Change customDialog_GMT_Change = new dialogFragment_rtu_Setting_GMT_Change();
-            customDialog_GMT_Change.show(fm, "dialogFragment_rtu_Setting_GMT_Change");
+        btn_GMT.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Setting_GMT_Change customDialog_GMT_Change = new dialogFragment_rtu_Setting_GMT_Change();
+                customDialog_GMT_Change.show(fm, "dialogFragment_rtu_Setting_GMT_Change");
+            }
         });
 
-        btn_protocol.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Setting_Protocol_Change customDialog_Protocol_Change = new dialogFragment_rtu_Setting_Protocol_Change();
-            customDialog_Protocol_Change.show(fm, "dialogFragment_rtu_Setting_Protocol_Change");
-        });
-
-        btn_TCP.setOnClickListener(v -> {
-            send(call_TCP);
+        btn_protocol.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Setting_Protocol_Change customDialog_Protocol_Change = new dialogFragment_rtu_Setting_Protocol_Change();
+                customDialog_Protocol_Change.show(fm, "dialogFragment_rtu_Setting_Protocol_Change");
+            }
         });
 
         btn_Modem_Num.setOnClickListener(v -> {
@@ -211,7 +219,7 @@ public class fragment_RTU_Setting extends Fragment {
                     if (readData.equals("0")) {
                         tv_GMT.setText("+9(KOR)");
                     } else if (readData.equals("1")) {
-                        tv_GMT.setText("0(ENG)");
+                        tv_GMT.setText("0(UTC)");
                     }
                 } else if (readData.contains("Modem Power")) { //모뎀 전원 상태
                     readData = readData.replace("Modem Power:", "");
@@ -287,19 +295,94 @@ public class fragment_RTU_Setting extends Fragment {
 
                 readData = readData.replace("[ModemMsg] ", "");
 
-                if (readData.contains("$$TCP_STATE: ")) { // TCP 상태 확인
+                if (readData.contains("$$MODEM_STATE: ")) { // Modem 상태 확인
                     logData_RTU(readData, "read");
-                    readData = readData.replace("$$TCP_STATE: ", "");
+                    readData = readData.replace("$$MODEM_STATE: ", "");
                     readData = readData.trim();
                     String[] readDataArr = readData.split(",");
 
-                    if (readDataArr[0].equals("2")) {
-                        tv_TCP.setText("Opened");
-                    } else if (readDataArr[0].equals("1")) {
-                        tv_TCP.setText("Closed");
-                    } else if (readDataArr[0].equals("0")) {
-                        tv_TCP.setText("NET OFF");
+                    String textNetworkData = "";
+
+                    switch (readDataArr[3]){
+                        case "-1":
+                            textNetworkData = "확인 중";
+                            break;
+                        case "0":
+                            textNetworkData = "홈 사업자에 등록";
+                            break;
+                        case "1":
+                            textNetworkData = "등록되지 않음.(탐색 취소)";
+                            break;
+                        case "2":
+                            textNetworkData = "등록되지 않음.(탐색 중)";
+                            break;
+                        case "3":
+                            textNetworkData = "등록/가입해지";
+                            break;
+                        case "5":
+                            textNetworkData = "서비스 불가능 지역";
+                            break;
+                        case "101":
+                            textNetworkData = "개통 필요함";
+                            break;
+                        case "102":
+                            textNetworkData = "인증 실패";
+                            break;
+                        case "103":
+                            textNetworkData = "기기인증 실패";
+                            break;
+                        case "104":
+                            textNetworkData = "위치 등록 실패";
+                            break;
+                        case "107":
+                            textNetworkData = "네트워크 등록 실패";
+                            break;
                     }
+
+                    tv_Network.setText(textNetworkData);
+                    Log.d(TAG, "tv_Network setText : " + textNetworkData);
+
+                    String textSocketData = "";
+
+                    switch (readDataArr[4]){
+                        case "0":
+                            textSocketData = "Off";
+                            break;
+                        case "1":
+                            textSocketData = "Closed";
+                            break;
+                        case "2":
+                            textSocketData = "Opened";
+                            break;
+                        case "3":
+                            textSocketData = "Opening";
+                            break;
+                        case "10":
+                            textSocketData = "Socket Error";
+                            break;
+                        case "11":
+                            textSocketData = "Socket Off";
+                            break;
+                        case "12":
+                            textSocketData = "Socket UDP Ready";
+                            break;
+                        case "13":
+                            textSocketData = "Socket Tcp Binded";
+                            break;
+                        case "14":
+                            textSocketData = "Socket Tcp Connecting";
+                            break;
+                        case "15":
+                            textSocketData = "Socket Tcp Ready";
+                            break;
+                        case "16":
+                            textSocketData = "Socket Tcp Disconnecting";
+                            break;
+                    }
+
+                    tv_Socket.setText(textSocketData);
+
+
                 } else if (readData.contains("Phone Number")) { //GMT 설정 상태
                     logData_RTU(readData, "read");
                     readData = readData.replace("Phone Number: ", "");

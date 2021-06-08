@@ -20,6 +20,7 @@ import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_RTU_ID_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Send_Cycle_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Server_1_Change;
 import com.example.mslapp.RTU.dialog.dialogFragment_rtu_Status_Server_2_Change;
+import com.example.mslapp.RTUMainActivity;
 
 import static com.example.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.example.mslapp.RTUMainActivity.DATA_NUM_1;
@@ -99,6 +100,7 @@ public class fragment_RTU_Status extends Fragment {
 
         btn_rtu_status_call.setOnClickListener(v -> send(STATUS_CALL));
         btn_rtu_status_send.setOnClickListener(v -> {
+
             String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
                     DATA_NUM_7 + DATA_SIGN_CHECKSUM +
                     DATA_NUM_1 + DATA_NUM_1 +
@@ -106,40 +108,58 @@ public class fragment_RTU_Status extends Fragment {
             send(data);
         });
 
-        btn_rtu_id_change.setOnClickListener(v -> {
-            // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
-            send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_RTU_ID_Change customDialog_RTU_ID_Change = new dialogFragment_rtu_Status_RTU_ID_Change();
-            customDialog_RTU_ID_Change.show(fm, "dialogFragment_rtu_Status_RTU_ID_Change");
-        });
-        btn_rtu_lantern_change.setOnClickListener(v -> {
-            // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
-            send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_Lantern_ID_Change customDialog_Lantern_ID_Change = new dialogFragment_rtu_Status_Lantern_ID_Change();
-            customDialog_Lantern_ID_Change.show(fm, "dialogFragment_rtu_Status_Lantern_ID_Change");
+        FragmentManager fm = this.getChildFragmentManager();
+
+        btn_rtu_id_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Status_RTU_ID_Change customDialog_RTU_ID_Change = new dialogFragment_rtu_Status_RTU_ID_Change();
+                customDialog_RTU_ID_Change.show(fm, "dialogFragment_rtu_Status_RTU_ID_Change");
+            }
         });
 
-        btn_rtu_send_cycle_change.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_Send_Cycle_Change customDialog_Send_Cycle_Change = new dialogFragment_rtu_Status_Send_Cycle_Change();
-            customDialog_Send_Cycle_Change.show(fm, "dialogFragment_rtu_Status_Send_Cycle_Change");
+        btn_rtu_lantern_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Status_Lantern_ID_Change customDialog_Lantern_ID_Change = new dialogFragment_rtu_Status_Lantern_ID_Change();
+                customDialog_Lantern_ID_Change.show(fm, "dialogFragment_rtu_Status_Lantern_ID_Change");
+            }
         });
+
+        btn_rtu_send_cycle_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Status_Send_Cycle_Change customDialog_Send_Cycle_Change = new dialogFragment_rtu_Status_Send_Cycle_Change();
+                customDialog_Send_Cycle_Change.show(fm, "dialogFragment_rtu_Status_Send_Cycle_Change");
+            }
+        });
+
         //btn_rtu_reset_change.setOnClickListener(v ->);
-        btn_rtu_server1_change.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_Server_1_Change customDialog_Server_1_Change = new dialogFragment_rtu_Status_Server_1_Change();
-            customDialog_Server_1_Change.show(fm, "dialogFragment_rtu_Status_Server_1_Change");
+
+        btn_rtu_server1_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Status_Server_1_Change customDialog_Server_1_Change = new dialogFragment_rtu_Status_Server_1_Change();
+                customDialog_Server_1_Change.show(fm, "dialogFragment_rtu_Status_Server_1_Change");
+            }
         });
 
-        btn_rtu_server2_change.setOnClickListener(v -> {
-            send(STATUS_CALL);
-            FragmentManager fm = this.getChildFragmentManager();
-            dialogFragment_rtu_Status_Server_2_Change customDialog_Server_2_Change = new dialogFragment_rtu_Status_Server_2_Change();
-            customDialog_Server_2_Change.show(fm, "dialogFragment_rtu_Status_Server_2_Change");
+        btn_rtu_server2_change.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Status_Server_2_Change customDialog_Server_2_Change = new dialogFragment_rtu_Status_Server_2_Change();
+                customDialog_Server_2_Change.show(fm, "dialogFragment_rtu_Status_Server_2_Change");
+            }
         });
 
     }

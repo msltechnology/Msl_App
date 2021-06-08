@@ -57,6 +57,7 @@ import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Sol
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6;
 import static com.example.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6_a;
 import static com.example.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
+import static com.example.mslapp.BleMainActivity.DATA_RTU_BLUETOOTH_SENDING;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_BTV;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_LISTS;
 import static com.example.mslapp.BleMainActivity.DATA_TYPE_S;
@@ -87,6 +88,8 @@ public class fragment_Ble_Status extends Fragment {
     View view;
 
 
+
+
     // 상위Activity 에게 데이터 주는 용도
     //private Ble_Status_Listener selecetBleListener;
     private Activity activity;
@@ -115,8 +118,13 @@ public class fragment_Ble_Status extends Fragment {
 
         // 최초 1회 정보 요청
         ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS);
+        RTUsend(DATA_RTU_BLUETOOTH_SENDING);
 
         return view;
+    }
+
+    void RTUsend(String massage) {
+        ((BleMainActivity) getActivity()).BlewriteData("<" + massage);
     }
 
     void cycle_Status_Clicked() {

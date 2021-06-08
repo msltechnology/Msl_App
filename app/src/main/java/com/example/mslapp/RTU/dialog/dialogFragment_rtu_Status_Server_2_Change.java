@@ -308,21 +308,19 @@ public class dialogFragment_rtu_Status_Server_2_Change extends DialogFragment {
 
         // 창크기 지정
         WindowManager wm;
-        if (from.equals("ble")) {
-            wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
 
-            Display display = wm.getDefaultDisplay();
+        Display display = wm.getDefaultDisplay();
 
-            Point size = new Point();
-            display.getSize(size);
+        Point size = new Point();
+        display.getSize(size);
 
-            final String x = String.valueOf(Math.round((size.x * 0.9)));
-            final String y = String.valueOf(Math.round((size.y * 0.7)));
-            int dialogWidth = Integer.parseInt(x);
-            int dialogHeight = Integer.parseInt(y);
-            getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
-            // 창크기 지정
-        }
+        final String x = String.valueOf(Math.round((size.x * 0.9)));
+        final String y = String.valueOf(Math.round((size.y * 0.7)));
+        int dialogWidth = Integer.parseInt(x);
+        int dialogHeight = Integer.parseInt(y);
+        getDialog().getWindow().setLayout(dialogWidth, dialogHeight);
+        // 창크기 지정
 
 
     }

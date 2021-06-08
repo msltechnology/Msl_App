@@ -171,7 +171,7 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
 
             btn_FL_Data = new Button(getActivity());
 
-            btn_FL_Data.setTextSize(14);
+            btn_FL_Data.setTextSize(12);
             btn_FL_Data.setTextColor(0xFF000000);
             btn_FL_Data.setText(FL_code);
             btn_FL_Data.setGravity(Gravity.CENTER);
@@ -191,16 +191,26 @@ public class fragment_Ble_Setting_Dialog_Listview extends Fragment {
         }
 
         tv_FL_Data = new TextView(getActivity());
-        tv_FL_Data.setTextSize(14);
+        tv_FL_Data.setTextSize(12);
         tv_FL_Data.setTextColor(0xFF000000);
         tv_FL_Data.setText(FL_list_String[i][j]);
         tv_FL_Data.setGravity(Gravity.CENTER);
-        tv_FL_Data.setLayoutParams(new TableRow.LayoutParams(
-                (int) TypedValue.applyDimension
-                        (TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension
-                        (TypedValue.COMPLEX_UNIT_DIP, 52
-                                , getResources().getDisplayMetrics())));
+        if(j != 23){
+            tv_FL_Data.setLayoutParams(new TableRow.LayoutParams(
+                    (int) TypedValue.applyDimension
+                            (TypedValue.COMPLEX_UNIT_DIP, 56, getResources().getDisplayMetrics()),
+                    (int) TypedValue.applyDimension
+                            (TypedValue.COMPLEX_UNIT_DIP, 52
+                                    , getResources().getDisplayMetrics())));
+        }else{
+            tv_FL_Data.setLayoutParams(new TableRow.LayoutParams(
+                    (int) TypedValue.applyDimension
+                            (TypedValue.COMPLEX_UNIT_DIP, 90, getResources().getDisplayMetrics()),
+                    (int) TypedValue.applyDimension
+                            (TypedValue.COMPLEX_UNIT_DIP, 52
+                                    , getResources().getDisplayMetrics())));
+        }
+
         if (j == 0) {
             tv_FL_Data.setBackgroundColor(ContextCompat.getColor(settingDialogContext, R.color.dialog_Num));
         } else if (j == 1) {

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import java.util.Objects;
 
 import static com.example.mslapp.Ble.fragment.fragment_Ble_Scan.selectedSerialNum;
 import static com.example.mslapp.BleMainActivity.BlewriteData;
+import static com.example.mslapp.BleMainActivity.mBleContext;
 import static com.example.mslapp.BleMainActivity.readPassword;
 
 public class fragment_Ble_Password extends Fragment {
@@ -82,23 +84,24 @@ public class fragment_Ble_Password extends Fragment {
 
 
         if (data.contains("$PS,R")) {
-            dialog.dismiss();
+            if(dialog.isShowing()){
+                dialog.dismiss();
+                Toast.makeText(mBleContext, "Bluetooth Connect!", Toast.LENGTH_SHORT).show();
+            }
             readPassword = data.substring(6, 11);
             Log.d(TAG, "readPassword = " + readPassword);
         }
     }
 
     void passwordCheck(String inputPassword) {
-
-
         if (readPassword.equals(psEncryptionTable(inputPassword))) {
             Log.d(TAG, "passwordCheck : OK");
             BlewriteData("$PS,A," + readPassword + "*");
-            ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_function");
+            ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
         }else if(inputPassword.equals("AHFFK")){
             Log.d(TAG, "passwordCheck : Admin");
             BlewriteData("$PS,A," + readPassword + "*");
-            ((BleMainActivity) Objects.requireNonNull(getActivity())).fragmentChange("fragment_ble_function");
+            ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
         }
     }
 

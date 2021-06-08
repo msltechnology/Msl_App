@@ -103,4 +103,6 @@
     <string name="latern_status">lantern status</string>
     <string name="v_status">V Status</string>
     <string name="a_status">A Status</string>
+    <string name="Network">Network</string>
+    <string name="Socket">Socket</string>
 </resources>

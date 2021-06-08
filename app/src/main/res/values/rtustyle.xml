@@ -51,6 +51,15 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="rtu_tv_setting_network_value">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="rtu_ll_status_value_ip">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
