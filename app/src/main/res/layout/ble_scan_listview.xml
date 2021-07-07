@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="100dp"
+    android:paddingTop="5dp"
+    android:orientation="horizontal">
 
     <!--<ImageView
         android:layout_width="wrap_content"
@@ -10,89 +11,121 @@
         android:id="@+id/imageView1"
         android:layout_weight="1" />-->
 
-    <View
+    <!--<View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_gravity="center"
-        android:background="#000000" />
+        android:background="#000000" />-->
 
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <LinearLayout
-        android:id="@+id/bleListLl"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/ble_scan_shadow_effect_2"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/bleUserdata"
+        <LinearLayout
+            android:id="@+id/bleListLl"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:gravity="center"
-            android:text="Userdata"
-            android:textColor="#000000"
-            android:textSize="30dp" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#000000" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="18"
+        android:background="@drawable/ble_scan_shadow_effect"
+        android:orientation="vertical">
+
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="2"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/bleUserdata"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="top"
+                android:text="Userdata"
+                android:textColor="#000000"
+                android:singleLine="true"
+                android:textSize="30dp"
+                android:paddingLeft="10dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/bleSign"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="Sign"
+                    android:textColor="#727171"
+                    android:textSize="14dp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
 
             <TextView
                 android:id="@+id/bleName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
                 android:text="Name"
-                android:textColor="#000000"
-                android:textSize="15dp" />
+                android:textColor="#727171"
+                android:singleLine="true"
+                android:textSize="14dp"
+                android:paddingLeft="10dp" />
 
-
-            <View
-                android:layout_width="100dp"
-                android:layout_height="0.5dp"
-                android:layout_gravity="center"
-                android:background="#000000" />
 
             <TextView
                 android:id="@+id/bleAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
                 android:text="Address"
-                android:textColor="#000000"
-                android:textSize="15dp" />
+                android:textColor="#727171"
+                android:textSize="14dp" />
 
-            <View
-                android:layout_width="100dp"
-                android:layout_height="0.5dp"
-                android:layout_gravity="center"
-                android:background="#000000" />
-
-            <TextView
-                android:id="@+id/bleSign"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Sign"
-                android:textColor="#000000"
-                android:textSize="12dp" />
         </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_gravity="center"
-        android:background="#000000" />
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
 </LinearLayout>

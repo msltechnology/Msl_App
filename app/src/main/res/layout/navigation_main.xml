@@ -5,7 +5,9 @@
     android:id="@+id/rtu_sidebar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="start">
+    android:layout_gravity="start"
+    android:background="@color/navigation_background"
+    >
 
 
 
@@ -26,20 +28,39 @@
 
             <include layout="@layout/drawer_header"/>
 
-            <View style="@style/view_vertical_line"  />
+            <LinearLayout
+                android:id="@+id/ll_navigation_gps"
+                android:layout_width="match_parent"
+                android:layout_height="50.8dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:paddingStart="15dp"
+                    android:text="GPS Set (GPS 설정)"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="@color/navigation_text"
+                    android:padding="10dp"/>
+
+                <View style="@style/view_vertical_line"  />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_Navigation_Move_Ble"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 >
-
+<!--
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ic_ble" />
+                    android:background="@drawable/ic_ble" />-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -47,6 +68,7 @@
                     android:paddingStart="15dp"
                     android:text="Bluetooth"
                     android:autoSizeTextType="uniform"
+                    android:textColor="@color/navigation_text"
                     android:padding="10dp"/>
             </LinearLayout>
 
@@ -55,23 +77,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 >
-                <ImageView
+                <!--<ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ic_rtu"/>
+                    android:background="@drawable/ic_rtu"/>-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:paddingStart="15dp"
                     android:text="RTU"
+                    android:textColor="@color/navigation_text"
                     android:autoSizeTextType="uniform"
                     android:padding="10dp"/>
             </LinearLayout>
 
-            <View style="@style/view_vertical_line"  />
+            
 
             <LinearLayout
                 android:id="@+id/ll_Navigation_Show_Language"
@@ -79,32 +103,37 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 >
-                <ImageView
+                <!--<ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/language_eng_on"/>
+                    android:background="@drawable/language_eng_on"/>-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:paddingStart="15dp"
-                    android:text="Language"
+                    android:text="Language (언어)"
                     android:autoSizeTextType="uniform"
+                    android:textColor="@color/navigation_text"
                     android:padding="10dp"/>
             </LinearLayout>
 
+            <View style="@style/view_vertical_line"  />
+            
+<!--            필요 없을거 같다하여-->
             <LinearLayout
                 android:id="@+id/ll_Navigation_Show_FL_List"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 >
-                <ImageView
+                <!--<ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ic_fl_list"/>
+                    android:background="@drawable/ic_fl_list"/>-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -112,6 +141,7 @@
                     android:paddingStart="15dp"
                     android:text="FL List"
                     android:autoSizeTextType="uniform"
+                    android:textColor="@color/navigation_text"
                     android:padding="10dp"/>
             </LinearLayout>
 
@@ -121,18 +151,19 @@
                 android:layout_height="50dp"
                 android:orientation="horizontal"
                 >
-                <ImageView
+                <!--<ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/ic_log"/>
+                    android:background="@drawable/ic_log"/>-->
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:paddingStart="15dp"
-                    android:text="Log"
+                    android:text="Log (기록)"
                     android:autoSizeTextType="uniform"
+                    android:textColor="@color/navigation_text"
                     android:padding="10dp"/>
             </LinearLayout>
 
@@ -160,7 +191,7 @@
                 android:id="@+id/btn_Navigation_Log_Close"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_ble_setting_gps_off"
+                android:background="@drawable/custom_navigation_log_btn"
                 android:layout_margin="1dp"
                 android:text="@string/log_close"/>
 

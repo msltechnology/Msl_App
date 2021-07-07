@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="0(ENG)"
-            android:textSize="28sp"
+            android:textSize="28dp"
             android:background="@drawable/custom_rtu_status_change_btn"
             android:layout_margin="5dp"/>
         <Button
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="+9(KOR)"
-            android:textSize="28sp"
+            android:textSize="28dp"
             android:background="@drawable/custom_rtu_status_change_btn"
             android:layout_margin="5dp"/>
     </LinearLayout>

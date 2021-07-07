@@ -18,10 +18,28 @@
 
     <color name="bleFunctionTabBack">#8AD0FF</color>
     <color name="bleSettingGPSBack">#F3FBFF</color>
-    <color name="ble_status_name_black">#EB2E2E2E</color>
+    <color name="ble_status_name_white">#ffffff</color>
 
 
-    <color name="MSL_Blue">#1731B5</color>
+    <color name="MSL_Blue">#495AA7</color>
+
+    <!--bleMain-->
+    <color name="ble_toolbarmain">#051E4B</color>
+    <color name="ble_main_backgroud">#F4F5F9</color>
+    <color name="ble_fragment_backgroud">#FDFEFE</color>
+
+    <!--beginning-->
+
+    <!--navigation-->
+    <color name="navigation_background">#051F4B</color>
+    <color name="navigation_text">#7279A0</color>
+
+    <!--password-->
+    <color name="password_key">#595757</color>
+
+<!--    dialog-->
+    <color name="dialog_fl">#DDBABABA</color>
+
 
     <color name="ble_color1">#12997C</color>
     <color name="ble_color2">#5A3CF0</color>
@@ -35,14 +53,14 @@
 
 
 
-    <color name="ble_scan_list">#C6EBFA</color>
-    <color name="ble_scan_list_MSL">#1C52EF</color>
+    <color name="ble_scan_list">#F4F5F9</color>
+    <color name="ble_scan_list_MSL">#495AA7</color>
 
-    <color name="ble_Password_keyboard_back">#446FED</color>
+    <color name="ble_Password_keyboard_back">#EDEEF4</color>
 
     <color name="ble_view_line_color">#ffb0e0e6</color>
 
-    <color name="custom_ble_status_btn_stroke">#93E1EC</color>
+    <color name="custom_ble_status_btn_stroke">#495AA7</color>
 
 
 

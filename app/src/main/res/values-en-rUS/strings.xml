@@ -15,14 +15,14 @@
     <string name="dialog_setting_search">Search</string>
     <string name="dialog_setting_cancel">Cancel</string>
     <string name="dialog_setting_confirm">OK</string>
-    <string name="ID_setting">ID_Set</string>
-    <string name="FL_setting">FL_Set</string>
+    <string name="ID_setting">ID Set</string>
+    <string name="FL_setting">FL Set</string>
     <string name="once_status">Status request</string>
     <string name="lantern_On">lantern On</string>
     <string name="lantern_Off">lantern Off</string>
     <string name="lantern_Fix">lantern Fix</string>
     <string name="Reset">Reset</string>
-    <string name="ble_main_title">MSL Bluetooth</string>
+    <string name="ble_main_title">MSL Technology</string>
     <string name="toastMsg_bluetooth_Off">Bluetooth OFF! Please Check Bluetooth</string>
     <string name="ble_main_scanItem_refresh">Refresh</string>
     <string name="ble_main_scanItem_Disconnect">Disconnect</string>
@@ -37,7 +37,7 @@
     <string name="receive_date">Date</string>
     <string name="gps_latitude">Latitude</string>
     <string name="battery_v">Battery V</string>
-    <string name="charge_discharge_A">Charge Discharge</string>
+    <string name="charge_discharge_A">Dis•charge</string>
     <string name="receive_time">Receive Time</string>
     <string name="gps_longitude">Longitude</string>
     <string name="battery_percent">Battery\nPercent</string>
@@ -56,7 +56,7 @@
     <string name="notice_change_password_check">Please enter the changed\npassword again.</string>
     <string name="notice_passwordChange_fail">The password you entered is different.</string>
     <string name="change_password">Change Password</string>
-    <string name="cycle_status">Automatic request(3sec)</string>
+    <string name="cycle_status">Automatic request</string>
     <string name="year">Y</string>
     <string name="month">M</string>
     <string name="day">D</string>
@@ -69,8 +69,8 @@
     <string name="ble_status_lantern_status_1">On</string>
     <string name="battery_v_detail">Battery\nDetail</string>
     <string name="solar_v_detail">Solar\nDetail</string>
-    <string name="GPS_Set">GPS\nPower</string>
-    <string name="btn_ble_setting_change_password">Change</string>
+    <string name="GPS_Set">GPS Power</string>
+    <string name="btn_ble_setting_change_password">Password Change</string>
     <string name="change">change</string>
     <string name="lantern_id">lantern ID</string>
     <string name="RTU_ID">RTU ID</string>
@@ -105,4 +105,7 @@
     <string name="a_status">A Status</string>
     <string name="Network">Network</string>
     <string name="Socket">Socket</string>
+    <string name="tv_ble_fragment_password_passwordInsert">Please enter a password</string>
+    <string name="ble_scan_status_scanning">Scanning...</string>
+    <string name="ble_scan_status_pause">Scan complete</string>
 </resources>

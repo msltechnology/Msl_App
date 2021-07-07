@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="ON"
-            android:textSize="48sp"
+            android:textSize="48dp"
             android:background="@drawable/custom_rtu_status_change_btn"
             android:layout_margin="5dp"/>
         <Button
@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Off"
-            android:textSize="48sp"
+            android:textSize="48dp"
             android:background="@drawable/custom_rtu_status_change_btn"
             android:layout_margin="5dp"/>
     </LinearLayout>

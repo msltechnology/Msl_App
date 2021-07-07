@@ -8,6 +8,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="0.6"
+        android:orientation="horizontal"
+        android:background="@color/MSL_Blue">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/ID_setting"
+            android:textColor="@color/white"
+            android:textSize="32dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
@@ -25,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="#ffb0e0e6" />
+                android:background="@color/dialog_fl" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -49,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="#ffb0e0e6" />
+                android:background="@color/dialog_fl" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -73,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="#ffb0e0e6" />
+                android:background="@color/dialog_fl" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -98,17 +116,17 @@
             android:orientation="horizontal"
             tools:ignore="NestedWeights">
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_1"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_1" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_2"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_2" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_3"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_3" />
@@ -122,17 +140,17 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_4"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_4" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_5"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_5" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_6"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_6" />
@@ -145,17 +163,17 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_7"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_7" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_8"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_8" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_9"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_9" />
@@ -168,17 +186,17 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_cancel"
                 style="@style/btn_setting_dialog_id"
-                android:text="ce" />
+                android:text="X" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_0"
                 style="@style/btn_setting_dialog_id"
                 android:text="@string/_0" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_setting_ID_OK"
                 style="@style/btn_setting_dialog_id"
                 android:text="OK" />

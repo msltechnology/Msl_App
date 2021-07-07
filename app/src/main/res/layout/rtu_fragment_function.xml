@@ -4,17 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/rtuFunctionBack">
+    android:background="@color/bleFunctionBack">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_rtu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="@color/rtu_status_tab_selected"
-        app:tabSelectedTextColor="@color/black"
-        app:tabIndicatorColor="@color/rtu_status_tab_selected"
+        app:tabTextColor="#A6A7A7"
+        app:tabSelectedTextColor="#171C61"
+        app:tabIndicatorColor="#171C61"
         app:tabIndicatorHeight="3dp"
-        app:tabBackground="@color/rtu_status_tab_back">
+        app:tabBackground="@color/ble_main_backgroud"
+        app:tabTextAppearance="@style/MineCustomTabText">
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

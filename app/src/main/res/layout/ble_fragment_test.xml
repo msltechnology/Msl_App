@@ -8,18 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-        <Button
-            android:id="@+id/lampOnBtn"
-            style="@style/btn_ble_fragment_test"
-            android:text="@string/lantern_On" />
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_rtu_status_ll"
+            android:elevation="3dp"
+            android:orientation="vertical"
+            android:translationZ="5dp">
+
+            <Button
+                android:id="@+id/lampOnBtn"
+                style="@style/btn_ble_fragment_test"
+                android:text="@string/lantern_On" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -27,54 +34,75 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-        <Button
-            android:id="@+id/lampOffBtn"
-            style="@style/btn_ble_fragment_test"
-            android:text="@string/lantern_Off" />
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_rtu_status_ll"
+            android:elevation="3dp"
+            android:orientation="vertical"
+            android:translationZ="5dp">
+
+            <Button
+                android:id="@+id/lampOffBtn"
+                style="@style/btn_ble_fragment_test"
+                android:text="@string/lantern_Off" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-        <Button
-            android:id="@+id/lampFixedBtn"
-            style="@style/btn_ble_fragment_test"
-            android:text="@string/lantern_Fix" />
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_rtu_status_ll"
+            android:elevation="3dp"
+            android:orientation="vertical"
+            android:translationZ="5dp">
+
+            <Button
+                android:id="@+id/lampFixedBtn"
+                style="@style/btn_ble_fragment_test"
+                android:text="@string/lantern_Fix" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-        <Button
-            android:id="@+id/resetBtn"
-            style="@style/btn_ble_fragment_test"
-            android:text="@string/Reset" />
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_rtu_status_ll"
+            android:elevation="3dp"
+            android:orientation="vertical"
+            android:translationZ="5dp">
+
+            <Button
+                android:id="@+id/resetBtn"
+                style="@style/btn_ble_fragment_test"
+                android:text="@string/Reset" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

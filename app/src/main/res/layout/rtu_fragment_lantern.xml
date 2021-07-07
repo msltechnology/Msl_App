@@ -2,9 +2,533 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/rtuFunctionBack"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/ble_fragment_backgroud"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="5dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <!--        자동요청 필요없을꺼 같다하여 일단 안보이게 함-->
+        <Button
+            android:id="@+id/btn_cycle_status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:layout_weight="3"
+            android:background="@drawable/custom_ble_status_call_btn"
+            android:text="@string/cycle_status"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btn_rtu_lantern_status"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:layout_weight="3"
+            android:textSize="16dp"
+            android:background="@drawable/custom_ble_status_call_btn"
+            android:text="@string/latern_status"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="24"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:clipToPadding="false"
+            android:padding="5dp">
+
+            <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                <TextView
+                    style="@style/tv_ble_fragment_status"
+                    android:text="@string/ID" />
+
+                <TextView
+
+                    android:id="@+id/tv_rtu_fragment_status_id"
+                    style="@style/tv_ble_fragment_status_value"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+
+            <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                <TextView
+                    style="@style/tv_ble_fragment_status"
+                    android:text="@string/FL" />
+
+                <TextView
+                    android:id="@+id/tv_rtu_fragment_status_fl"
+                    style="@style/tv_ble_fragment_status_value" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+
+            <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                <TextView
+                    style="@style/tv_ble_fragment_status"
+                    android:text="@string/CDS" />
+
+
+                <TextView
+                    android:id="@+id/tv_rtu_fragment_status_cds"
+                    style="@style/tv_ble_fragment_status_value" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:clipToPadding="false"
+            android:padding="5dp">
+
+
+            <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                <TextView
+                    style="@style/tv_ble_fragment_status"
+                    android:text="@string/input_V" />
+
+
+                <TextView
+                    android:id="@+id/tv_rtu_fragment_status_input_v"
+                    style="@style/tv_ble_fragment_status_value" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+
+
+            <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                <TextView
+                    style="@style/tv_ble_fragment_status"
+                    android:text="@string/output_V" />
+
+
+                <TextView
+                    android:id="@+id/tv_rtu_fragment_status_output_v"
+                    style="@style/tv_ble_fragment_status_value" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+
+            <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                <TextView
+                    style="@style/tv_ble_fragment_status"
+                    android:text="@string/lantern_status" />
+
+
+                <TextView
+                    android:id="@+id/tv_rtu_fragment_status_lantern_status"
+                    style="@style/tv_ble_fragment_status_value" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="11"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:clipToPadding="false"
+                    android:padding="5dp">
+
+
+                    <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                        <TextView
+                            style="@style/tv_ble_fragment_status"
+                            android:text="@string/battery_v" />
+
+
+                        <TextView
+                            android:id="@+id/tv_rtu_fragment_status_battery_v"
+                            style="@style/tv_ble_fragment_status_value" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3" />
+
+
+                    <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                        <TextView
+                            style="@style/tv_ble_fragment_status"
+                            android:text="@string/output_A" />
+
+                        <TextView
+                            android:id="@+id/tv_rtu_fragment_status_output_a"
+                            style="@style/tv_ble_fragment_status_value" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:clipToPadding="false"
+                    android:padding="5dp">
+
+
+                    <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                        <TextView
+                            style="@style/tv_ble_fragment_status"
+                            android:text="@string/charge_discharge_A" />
+
+
+                        <TextView
+                            android:id="@+id/tv_rtu_fragment_status_charge_dischar_a"
+                            style="@style/tv_ble_fragment_status_value" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3" />
+
+                    <LinearLayout style="@style/ll_ble_fragment_status_value">
+
+                        <TextView
+                            style="@style/tv_ble_fragment_status"
+                            android:text="@string/solar_V" />
+
+
+                        <TextView
+                            android:id="@+id/tv_rtu_fragment_status_solar_v"
+                            style="@style/tv_ble_fragment_status_value" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="@string/battery_percent"
+                    android:textColor="#495AA7"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="5">
+
+                    <TextView
+                        android:id="@+id/tv_rtu_fragment_status_battery_percent"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:gravity="center"
+                        android:textColor="#D92F24"
+                        android:textSize="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/iv_rtu_fragment_lantern_battery_percent"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="4"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="15dp">
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:src="@drawable/ble_fragment_state_gps_icon"/>
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/gps_latitude"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/tv_rtu_fragment_status_gps_longitude"
+                        style="@style/tv_ble_fragment_status_value2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/gps_longitude"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_rtu_fragment_status_gps_latitude"
+                        style="@style/tv_ble_fragment_status_value2" />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"/>
+
+            </LinearLayout>
+
+            <View
+                style="@style/view_vertical_line_15_gray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="15dp">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:src="@drawable/ble_fragment_state_date_icon"/>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/receive_date"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/tv_rtu_fragment_status_receive_date"
+                        style="@style/tv_ble_fragment_status_value2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/receive_time"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_rtu_fragment_status_receive_time"
+                        style="@style/tv_ble_fragment_status_value2" />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+
+
+<!--
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -333,7 +857,7 @@
                             android:gravity="center"
                             android:text="@string/gps_latitude"
                             android:textColor="@color/black"
-                            android:textSize="15sp"
+                            android:textSize="15dp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -353,7 +877,7 @@
                             android:gravity="center"
                             android:text="@string/gps_longitude"
                             android:textColor="@color/black"
-                            android:textSize="15sp"
+                            android:textSize="15dp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -414,7 +938,7 @@
                     android:gravity="center"
                     android:text="@string/battery_percent"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
+                    android:textSize="15dp"
                     android:textStyle="bold" />
 
 
@@ -450,4 +974,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</LinearLayout>-->

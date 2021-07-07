@@ -5,34 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/custom_ble_setting_dialog_ll_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal"
-        android:baselineAligned="false">
+        android:baselineAligned="false"
+        android:clipToPadding="false"
+        android:padding="5dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:layout_margin="10dp"
+            android:elevation="3dp"
+            android:translationZ="3dp"
+            android:background="@color/white">
 
             <Button
                 android:id="@+id/btn_dialog_setting_second"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:autoSizeTextType="uniform"
-                android:text="@string/_0"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHeight_percent="0.8"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.9" />
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="28dp"
+                android:textColor="#495AA7"
+                android:textStyle="bold"
+                android:background="@drawable/custom_ble_setting_value_tv_value_2"
+                android:text="@string/_0" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -42,32 +47,33 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMaxTextSize="20dp"
+                android:textSize="18dp"
                 android:gravity="center"
                 android:text="@string/dialog_setting_second" />
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:layout_margin="10dp"
+            android:elevation="3dp"
+            android:translationZ="3dp"
+            android:background="@color/white">
 
             <Button
                 android:id="@+id/btn_dialog_setting_FL"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:autoSizeTextType="uniform"
-                android:text="@string/_0"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHeight_percent="0.8"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.9" />
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="28dp"
+                android:textColor="#495AA7"
+                android:textStyle="bold"
+                android:background="@drawable/custom_ble_setting_value_tv_value_2"
+                android:text="@string/_0"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -77,8 +83,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMaxTextSize="20dp"
+                android:textSize="20dp"
                 android:gravity="center"
                 android:text="@string/dialog_setting_FL" />
 
@@ -112,15 +117,20 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="5dp"
-            tools:ignore="NestedWeights">
+            android:layout_margin="10dp"
+            android:elevation="3dp"
+            android:translationZ="3dp"
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/tv_dialog_setting_cancel"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:autoSizeTextType="uniform"
+                android:layout_width="match_parent"
                 android:gravity="center"
+                android:textSize="20dp"
+                android:textColor="#495AA7"
+                android:textStyle="bold"
+                android:background="@drawable/custom_ble_setting_value_tv_value_2"
                 android:text="@string/dialog_setting_cancel" />
 
         </LinearLayout>
@@ -133,10 +143,13 @@
 
             <TextView
                 android:id="@+id/tv_dialog_setting_selectFL"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:autoSizeTextType="uniform"
-                android:gravity="center" />
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textSize="28dp"
+                android:textColor="#495AA7"
+                android:textStyle="bold"
+                android:background="@drawable/custom_ble_setting_value_tv_value_2" />
 
         </LinearLayout>
 
@@ -144,14 +157,20 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:padding="5dp">
+            android:layout_margin="10dp"
+            android:elevation="3dp"
+            android:translationZ="3dp"
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/tv_dialog_setting_confirm"
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:autoSizeTextType="uniform"
+                android:layout_width="match_parent"
                 android:gravity="center"
+                android:textSize="20dp"
+                android:textColor="#495AA7"
+                android:textStyle="bold"
+                android:background="@drawable/custom_ble_setting_value_tv_value_2"
                 android:text="@string/dialog_setting_confirm" />
 
         </LinearLayout>

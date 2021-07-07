@@ -4,8 +4,8 @@
     <string name="ble_setting_FLSetting_title">FL Setting</string>
     <string name="ble_main_scanItem_scan">찾기</string>
     <string name="ble_main_scanItem_stopScanning">중지</string>
-    <string name="ble_main_title">MSL Bluetooth</string>
-    <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">위치정보 권한 요청 실패</string>
+    <string name="ble_main_title">MSL Technology</string>
+    <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">위치정보 권한 요청</string>
     <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">위치정보 권한 요청을 거절하셨습니다.\n블루투스 스캔
         이용이 제한됩니다.\n다시 확인하시겠습니까?</string>
     <string name="ble_main_checkPermission_GPS_reFail_alertDialog_title">위치정보 권한 요청 거부</string>
@@ -87,7 +87,7 @@
     <string name="notice_change_password_check">변경한 비밀번호를 다시한번 입력해주세요.</string>
     <string name="notice_passwordChange_fail">입력하신 비밀번호가 다릅니다.</string>
     <string name="change_password">비밀번호 변경</string>
-    <string name="cycle_status">자동요청(3초)</string>
+    <string name="cycle_status">자동요청</string>
     <string name="year">년</string>
     <string name="month">월</string>
     <string name="day">일</string>
@@ -100,8 +100,8 @@
     <string name="ble_status_lantern_status_1">점등</string>
     <string name="battery_v_detail">베터리\n자세히</string>
     <string name="solar_v_detail">솔라\n자세히</string>
-    <string name="GPS_Set">GPS\n전원</string>
-    <string name="btn_ble_setting_change_password">변경</string>
+    <string name="GPS_Set">GPS 전원</string>
+    <string name="btn_ble_setting_change_password">비밀번호 변경</string>
     <string name="tv_ble_fragment_status_dialog_battery_bat1" translatable="false">Bat1</string>
     <string name="tv_ble_fragment_status_dialog_battery_bat2" translatable="false">Bat2</string>
     <string name="tv_ble_fragment_status_dialog_battery_bat3" translatable="false">Bat3</string>
@@ -166,6 +166,9 @@
     <string name="a_status">전류 요청</string>
     <string name="Network">Network</string>
     <string name="Socket">Socket</string>
+    <string name="tv_ble_fragment_password_passwordInsert">비밀번호를 입력해 주세요.</string>
+    <string name="ble_scan_status_scanning">검색중...</string>
+    <string name="ble_scan_status_pause">검색 완료</string>
 
 
 </resources>

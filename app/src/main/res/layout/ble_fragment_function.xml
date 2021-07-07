@@ -10,11 +10,12 @@
         android:id="@+id/tab_bluetooth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="@color/black"
-        app:tabSelectedTextColor="@color/white"
-        app:tabIndicatorColor="@color/white"
+        app:tabTextColor="#A6A7A7"
+        app:tabSelectedTextColor="#171C61"
+        app:tabIndicatorColor="#171C61"
         app:tabIndicatorHeight="3dp"
-        app:tabBackground="@color/bleFunctionTabBack">
+        app:tabBackground="@color/ble_main_backgroud"
+        app:tabTextAppearance="@style/MineCustomTabText">
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

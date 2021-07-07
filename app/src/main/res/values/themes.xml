@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Bluetooth" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="actionMenuTextColor">@color/white</item>
+        <item name="actionMenuTextColor">@color/ble_toolbarmain</item>
 
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
@@ -15,10 +15,13 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="elevation">0dp</item>
+    </style>
 
     <style name="Appbar">
-        <item name="titleTextColor">@color/white</item>
-        <item name="colorControlNormal">@color/white</item>
+        <item name="titleTextColor">@color/ble_main_backgroud</item>
+        <item name="colorControlNormal">#2E2C2B</item>
     </style>
 
 </resources>

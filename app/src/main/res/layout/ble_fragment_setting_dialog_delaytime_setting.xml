@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/ble_main_backgroud">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,35 +19,35 @@
             android:background="@drawable/ic_sign_up"
             android:visibility="invisible"/>
 
-        <View style="@style/view_horizontal_line_5" />
+
 
         <Button
             android:id="@+id/btn_hundred_up"
             style="@style/btn_setting_dialog_id"
             android:background="@drawable/ic_sign_up"/>
 
-        <View style="@style/view_horizontal_line_5" />
+
 
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.2"/>
 
-        <View style="@style/view_horizontal_line_5" />
+
 
         <Button
             android:id="@+id/btn_ten_up"
             style="@style/btn_setting_dialog_id"
             android:background="@drawable/ic_sign_up"/>
 
-        <View style="@style/view_horizontal_line_5" />
+
 
         <Button
             android:id="@+id/btn_one_up"
             style="@style/btn_setting_dialog_id"
             android:background="@drawable/ic_sign_up"/>
 
-        <View style="@style/view_horizontal_line_5" />
+
 
         <Space
             style="@style/btn_setting_dialog_id"/>
@@ -75,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="#ffb0e0e6" />
+                android:background="@color/dialog_fl" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -100,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="#ffb0e0e6" />
+                android:background="@color/dialog_fl" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -148,7 +149,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="#ffb0e0e6" />
+                android:background="@color/dialog_fl" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -173,7 +174,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="#ffb0e0e6" />
+                android:background="@color/dialog_fl"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -192,7 +193,10 @@
             <TextView
                 style="@style/tv_setting_dialog_id"
                 android:text="@string/Second_Sec"
-                android:layout_margin="10dp"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -222,35 +226,35 @@
                 style="@style/btn_setting_dialog_id"
                 android:background="@drawable/ic_sign_down"/>
 
-            <View style="@style/view_horizontal_line_5" />
+
 
             <Button
                 android:id="@+id/btn_hundred_down"
                 style="@style/btn_setting_dialog_id"
                 android:background="@drawable/ic_sign_down"/>
 
-            <View style="@style/view_horizontal_line_5" />
+
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"/>
 
-            <View style="@style/view_horizontal_line_5" />
+
 
             <Button
                 android:id="@+id/btn_ten_down"
                 style="@style/btn_setting_dialog_id"
                 android:background="@drawable/ic_sign_down"/>
 
-            <View style="@style/view_horizontal_line_5" />
+
 
             <Button
                 android:id="@+id/btn_one_down"
                 style="@style/btn_setting_dialog_id"
                 android:background="@drawable/ic_sign_down"/>
 
-            <View style="@style/view_horizontal_line_5" />
+
 
             <Space
                 style="@style/btn_setting_dialog_id"/>
@@ -263,10 +267,17 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Button
+            <TextView
                 android:id="@+id/btn_dialog_delaytime_cancel"
-                style="@style/btn_setting_dialog_id"
-                android:text="ce" />
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="32dp"
+                android:textColor="#495AA7"
+                android:textStyle="bold"
+                android:background="@drawable/custom_ble_setting_value_tv_value_2"
+                android:text="X" />
 
             <TextView
                 android:layout_width="0dp"
@@ -275,7 +286,14 @@
 
             <Button
                 android:id="@+id/btn_dialog_delaytime_OK"
-                style="@style/btn_setting_dialog_id"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="32dp"
+                android:textColor="#495AA7"
+                android:textStyle="bold"
+                android:background="@drawable/custom_ble_setting_value_tv_value_2"
                 android:text="OK" />
 
         </LinearLayout>

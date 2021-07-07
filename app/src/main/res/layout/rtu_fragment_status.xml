@@ -2,37 +2,45 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/rtuFunctionBack"
+    android:background="@color/ble_fragment_backgroud"
     android:orientation="vertical"
     android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_marginBottom="5dp"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
 
         <Button
             android:id="@+id/btn_rtu_send"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:background="@drawable/custom_rtu_status_call_btn"
-            android:text="@string/rtu_send" />
+            android:text="@string/rtu_send"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_rtu_status"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="5"
             android:background="@drawable/custom_rtu_status_call_btn"
-            android:text="@string/rtu_status" />
+            android:textSize="16dp"
+            android:text="@string/rtu_status"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-    <View style="@style/rtu_view_vertical_line_5"  />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,23 +48,6 @@
         android:layout_weight="11"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.7"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_version"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:textSize="20dp" />
-
-        </LinearLayout>
-
-        <View style="@style/rtu_view_vertical_line_5"  />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,122 +55,112 @@
             android:layout_weight="8"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+            <LinearLayout style="@style/rtu_ll_status_parent">
 
-                <TextView
-                    style="@style/rtu_tv_status_name"
-                    android:text="@string/RTU_ID" />
+                <LinearLayout style="@style/rtu_ll_status">
 
-                <View style="@style/rtu_view_horizontal_line_5"  />
+                    <TextView
+                        style="@style/rtu_tv_status_name"
+                        android:text="@string/RTU_ID" />
 
-                <TextView
-                    android:id="@+id/tv_DevId"
-                    style="@style/rtu_tv_status_value"/>
+                    <TextView
+                        android:id="@+id/tv_DevId"
+                        style="@style/rtu_tv_status_value" />
+
+                </LinearLayout>
 
 
-                <Button
-                    android:id="@+id/btn_DevId"
-                    style="@style/rtu_btn_status_change"
-                    android:text="@string/change" />
+                <LinearLayout style="@style/rtu_ll_status_btn">
+
+                    <Button
+                        android:id="@+id/btn_DevId"
+                        style="@style/rtu_btn_status_change"
+                        android:text="@string/change" />
+                </LinearLayout>
 
             </LinearLayout>
-
-            <View style="@style/rtu_view_vertical_line_5"  />
 
             <LinearLayout
                 android:id="@+id/ll_rtu_fragment_status_lantern_ID"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                style="@style/rtu_ll_status_parent">
 
-                <TextView
-                    style="@style/rtu_tv_status_name"
-                    android:text="@string/lantern_id" />
+                <LinearLayout style="@style/rtu_ll_status">
 
-                <View style="@style/rtu_view_horizontal_line_5"  />
-
-                <TextView
-                    android:id="@+id/tv_LanternId"
-                    style="@style/rtu_tv_status_value"/>
+                    <TextView
+                        style="@style/rtu_tv_status_name"
+                        android:text="@string/lantern_id" />
 
 
-                <Button
-                    android:id="@+id/btn_LanternId"
-                    style="@style/rtu_btn_status_change"
-                    android:text="@string/change"/>
+                    <TextView
+                        android:id="@+id/tv_LanternId"
+                        style="@style/rtu_tv_status_value" />
 
-            </LinearLayout>
+                </LinearLayout>
 
-            <View
-                android:id="@+id/view_rtu_fragment_status_lantern_ID"
-                style="@style/rtu_view_vertical_line_5"  />
+                <LinearLayout style="@style/rtu_ll_status_btn">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/rtu_tv_status_name"
-                    android:text="@string/send_cycle" />
-
-                <View style="@style/rtu_view_horizontal_line_5"  />
-
-                <TextView
-                    android:id="@+id/tv_Status_Interval"
-                    style="@style/rtu_tv_status_value"/>
-
-
-                <Button
-                    android:id="@+id/btn_Status_Interval"
-                    style="@style/rtu_btn_status_change"
-                    android:text="@string/change" />
+                    <Button
+                        android:id="@+id/btn_LanternId"
+                        style="@style/rtu_btn_status_change"
+                        android:text="@string/change" />
+                </LinearLayout>
 
             </LinearLayout>
 
-            <View style="@style/rtu_view_vertical_line_5"
-                android:visibility="gone"/>
+            <LinearLayout style="@style/rtu_ll_status_parent">
+
+                <LinearLayout style="@style/rtu_ll_status">
+
+                    <TextView
+                        style="@style/rtu_tv_status_name"
+                        android:text="@string/send_cycle" />
+
+                    <TextView
+                        android:id="@+id/tv_Status_Interval"
+                        style="@style/rtu_tv_status_value" />
+
+                </LinearLayout>
+
+
+                <LinearLayout style="@style/rtu_ll_status_btn">
+
+                    <Button
+                        android:id="@+id/btn_Status_Interval"
+                        style="@style/rtu_btn_status_change"
+                        android:text="@string/change" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
+                style="@style/rtu_ll_status_parent"
                 android:visibility="gone">
 
-                <TextView
-                    style="@style/rtu_tv_status_name"
-                    android:text="@string/reset_cycle" />
-
-                <View style="@style/rtu_view_horizontal_line_5"  />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/rtu_ll_status">
 
                     <TextView
-                        android:id="@+id/tv_reset_Interval_1"
-                        style="@style/rtu_tv_status_value"/>
+                        style="@style/rtu_tv_status_name"
+                        android:text="@string/reset_cycle" />
 
-                    <View style="@style/rtu_view_horizontal_line_35"  />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tv_reset_Interval_2"
-                        style="@style/rtu_tv_status_value"/>
+                        <TextView
+                            android:id="@+id/tv_reset_Interval_1"
+                            style="@style/rtu_tv_status_value" />
 
-                    <View style="@style/rtu_view_horizontal_line_35"  />
+                        <TextView
+                            android:id="@+id/tv_reset_Interval_2"
+                            style="@style/rtu_tv_status_value" />
 
-                    <TextView
-                        android:id="@+id/tv_reset_Interval_3"
-                        style="@style/rtu_tv_status_value"/>
+                        <TextView
+                            android:id="@+id/tv_reset_Interval_3"
+                            style="@style/rtu_tv_status_value" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -190,80 +171,137 @@
 
             </LinearLayout>
 
-            <View style="@style/rtu_view_vertical_line_5"  />
+            <LinearLayout style="@style/rtu_ll_status_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/rtu_tv_status_name"
-                    android:text="@string/server_1"/>
-
-                <View style="@style/rtu_view_horizontal_line_5"  />
-
-                <LinearLayout
-                    style="@style/rtu_ll_status_value_ip"
-                    >
+                <LinearLayout style="@style/rtu_ll_status">
 
                     <TextView
-                        android:id="@+id/tv_server_1_port"
-                        style="@style/rtu_tv_status_value_ip"/>
+                        style="@style/rtu_tv_status_name"
+                        android:text="@string/server_1" />
 
-                    <View style="@style/rtu_view_vertical_line_5"  />
+                    <LinearLayout style="@style/rtu_ll_status_value_ip">
 
-                    <TextView
-                        android:id="@+id/tv_server_1_ip"
-                        style="@style/rtu_tv_status_value_ip"/>
+                        <TextView
+                            android:id="@+id/tv_server_1_port"
+                            style="@style/rtu_tv_status_value_ip" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginRight="10dp"
+                            android:background="#CBCCCC" />
+
+                        <TextView
+                            android:id="@+id/tv_server_1_ip"
+                            style="@style/rtu_tv_status_value_ip" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
 
+                <LinearLayout style="@style/rtu_ll_status_btn">
 
-                <Button
-                    android:id="@+id/btn_server_1"
-                    style="@style/rtu_btn_status_change"
-                    android:text="@string/change" />
+                    <Button
+                        android:id="@+id/btn_server_1"
+                        style="@style/rtu_btn_status_change"
+                        android:text="@string/change" />
+                </LinearLayout>
 
             </LinearLayout>
 
-            <View style="@style/rtu_view_vertical_line_5"  />
+            <LinearLayout style="@style/rtu_ll_status_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/rtu_tv_status_name"
-                    android:text="@string/server_2" />
-
-                <View style="@style/rtu_view_horizontal_line_5"  />
-
-                <LinearLayout
-                    style="@style/rtu_ll_status_value_ip"
-                    >
-                    <TextView
-                        android:id="@+id/tv_server_2_port"
-                        style="@style/rtu_tv_status_value_ip"/>
-
-                    <View style="@style/rtu_view_vertical_line_5"  />
+                <LinearLayout style="@style/rtu_ll_status">
 
                     <TextView
-                        android:id="@+id/tv_server_2_ip"
-                        style="@style/rtu_tv_status_value_ip"/>
+                        style="@style/rtu_tv_status_name"
+                        android:text="@string/server_2" />
+
+                    <LinearLayout style="@style/rtu_ll_status_value_ip">
+
+                        <TextView
+                            android:id="@+id/tv_server_2_port"
+                            style="@style/rtu_tv_status_value_ip" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginRight="10dp"
+                            android:background="#CBCCCC" />
+
+                        <TextView
+                            android:id="@+id/tv_server_2_ip"
+                            style="@style/rtu_tv_status_value_ip" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
-                <Button
-                    android:id="@+id/btn_server_2"
-                    style="@style/rtu_btn_status_change"
-                    android:text="@string/change" />
+
+                <LinearLayout style="@style/rtu_ll_status_btn">
+
+                    <Button
+                        android:id="@+id/btn_server_2"
+                        style="@style/rtu_btn_status_change"
+                        android:text="@string/change" />
+                </LinearLayout>
 
             </LinearLayout>
 
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:textSize="12dp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ble_fragment_beggining_logo" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
