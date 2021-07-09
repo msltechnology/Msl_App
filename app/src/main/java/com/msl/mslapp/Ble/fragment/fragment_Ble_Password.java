@@ -1,5 +1,6 @@
 package com.msl.mslapp.Ble.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,6 +46,7 @@ public class fragment_Ble_Password extends Fragment {
     // 로딩바
     ProgressDialog dialog;
 
+    @SuppressLint("InflateParams")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,6 +109,8 @@ public class fragment_Ble_Password extends Fragment {
             if(dialog.isShowing()){
                 dialog.dismiss();
                 Toast.makeText(mBleContext, "Bluetooth Connect!", Toast.LENGTH_SHORT).show();
+                // 더이상 비밀번호 요청문을 안보냄.
+                BlewriteData("$PS,A,0000H*");
             }
             readPassword = data.substring(6, 11);
             Log.d(TAG, "readPassword = " + readPassword);
@@ -117,10 +121,20 @@ public class fragment_Ble_Password extends Fragment {
         if (readPassword.equals(psEncryptionTable(inputPassword))) {
             Log.d(TAG, "passwordCheck : OK");
             BlewriteData("$PS,A," + readPassword + "*");
+            // 7마일은 암호화한 비밀번호를 번호를 보내야 한번에 인식하고 아니면 다시 비밀번호 요청 메세지를 보낸다.
+            // 근데 3마일은 복호하 비밀번호 보내야해서 걍 일단 2개다 보내고 3마일 펌웨어 다 완료할 경우 암호화(readPassword) 데이터만 보내기로.. - 07-09
+            BlewriteData("$PS,A," + inputPassword + "*");
+            // 원래는 주석문이었는데 알고보니 3마일은 위와같이 보내야하고 7마일은 비번그딴거 상관없이 어차피 답장함...?..?..?(???) - 07-08
+            //BlewriteData("$PS,A," + readPassword + "*");
             ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
+            readPassword = inputPassword;
         }else if(inputPassword.equals("AHFFK")){
             Log.d(TAG, "passwordCheck : Admin");
+            String deCrypPassword = psDecryptionTable(readPassword);
             BlewriteData("$PS,A," + readPassword + "*");
+            // 7마일은 암호화한 비밀번호를 번호를 보내야 한번에 인식하고 아니면 다시 비밀번호 요청 메세지를 보낸다.
+            // 근데 3마일은 복호하 비밀번호 보내야해서 걍 일단 2개다 보내고 3마일 펌웨어 다 완료할 경우 암호화(readPassword) 데이터만 보내기로.. - 07-09
+            BlewriteData("$PS,A," + deCrypPassword + "*");
             ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
         }else{
             Toast.makeText(mBleContext, "잘못된 비밀번호입니다.\nInvalid password.", Toast.LENGTH_SHORT).show();
@@ -385,6 +399,130 @@ public class fragment_Ble_Password extends Fragment {
                     break;
                 case '9':
                     temp.append("8");
+                    break;
+                default:
+                    temp.append('-');
+                    break;
+            }
+        }
+
+        if (ps.length() == temp.length()) {
+            return temp.toString();
+        }
+        return ps;
+    }
+
+    public static String psDecryptionTable(String ps) {
+        StringBuilder temp = new StringBuilder();
+        for (int n = 0; n < ps.length(); n++) {
+            switch (ps.charAt(n)) {
+                case 'Z':
+                    temp.append("A");
+                    break;
+                case 'U':
+                    temp.append("B");
+                    break;
+                case 'O':
+                    temp.append("C");
+                    break;
+                case 'N':
+                    temp.append("D");
+                    break;
+                case 'H':
+                    temp.append("E");
+                    break;
+                case 'V':
+                    temp.append("F");
+                    break;
+                case 'C':
+                    temp.append("G");
+                    break;
+                case 'F':
+                    temp.append("H");
+                    break;
+                case 'Q':
+                    temp.append("I");
+                    break;
+                case 'W':
+                    temp.append("J");
+                    break;
+                case 'S':
+                    temp.append("K");
+                    break;
+                case 'B':
+                    temp.append("L");
+                    break;
+                case 'K':
+                    temp.append("M");
+                    break;
+                case 'R':
+                    temp.append("N");
+                    break;
+                case 'I':
+                    temp.append("O");
+                    break;
+                case 'D':
+                    temp.append("P");
+                    break;
+                case 'G':
+                    temp.append("Q");
+                    break;
+                case 'P':
+                    temp.append("R");
+                    break;
+                case 'J':
+                    temp.append("S");
+                    break;
+                case 'X':
+                    temp.append("T");
+                    break;
+                case 'M':
+                    temp.append("U");
+                    break;
+                case 'T':
+                    temp.append("V");
+                    break;
+                case 'L':
+                    temp.append("W");
+                    break;
+                case 'A':
+                    temp.append("X");
+                    break;
+                case 'E':
+                    temp.append("Y");
+                    break;
+                case 'Y':
+                    temp.append("Z");
+                    break;
+                case '5':
+                    temp.append("0");
+                    break;
+                case '3':
+                    temp.append("1");
+                    break;
+                case '9':
+                    temp.append("2");
+                    break;
+                case '4':
+                    temp.append("3");
+                    break;
+                case '2':
+                    temp.append("4");
+                    break;
+                case '7':
+                    temp.append("5");
+                    break;
+                case '1':
+                    temp.append("6");
+                    break;
+                case '6':
+                    temp.append("7");
+                    break;
+                case '0':
+                    temp.append("8");
+                    break;
+                case '8':
+                    temp.append("9");
                     break;
                 default:
                     temp.append('-');

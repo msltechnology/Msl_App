@@ -91,7 +91,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = true;
+    public static final boolean adminApp = false;
 
     public static Context mBleContext = null;
     public static AppCompatActivity mBleMain = null;
@@ -133,7 +133,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     // 블루투스 들어온 데이터 값
     String readDataTotal = "";
-    ConcurrentLinkedQueue<String> readDataQueue = new ConcurrentLinkedQueue<String>();
+    ConcurrentLinkedQueue<String> readDataQueue = new ConcurrentLinkedQueue<>();
 
     //사용자 BLE UUID Service/Rx/Tx
     public static String SERVICE_STRING = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
@@ -940,6 +940,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         } else if (color.equals("write")) {
             if (dataArr[0].contains(DATA_TYPE_PS)) {
+                // 비밀번호 요청 더이상 보내지 말라는 대답으로 보내는 거(로그에 안보여줄려고 처리)
+                if(dataArr[1].contains(DATA_TYPE_A)){
+                    if(dataArr[2].contains("0000H")){
+                        return;
+                    }
+                }
                 log_listViewAdapter.addItem(getTime, "Enter a Password", color);
                 //log_Listview.requestLayout();
                 //log_listViewAdapter.notifyDataSetChanged();
@@ -1838,6 +1844,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         // 데이터가 길면 한번에 보낼 수 있는 양을 초과해서 나눠서 보내야함.(5.0은 상관없지만...)
         if (sendBlewriteData.length() < 21) {
             cmdCharacteristic.setValue(sendBlewriteData.getBytes());
+            //cmdCharacteristic.setWriteType(1);
 
             Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
             if (!success) {

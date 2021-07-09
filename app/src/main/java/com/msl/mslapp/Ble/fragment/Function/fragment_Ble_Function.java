@@ -102,7 +102,9 @@ public class fragment_Ble_Function extends Fragment {
             if (data.length() > 4) {
                 String PsData = data.substring(0, 3);
                 if (PsData.equals("$PS")) {
-                    BlewriteData("$PS,A," + readPassword + "*");
+                    // 사용도중 연결이 이상한지 몰라도 갑자기 비밀번호 요청할 때가 있는데 그럴경우 대비해서 비밀번호 자동으로 보낼려 했는데
+                    // 3마일 복호화 암호때문에 이상해져서 일단 주석, 3마일 펌웨어 업데이트 완료되면 다시 사용헤도 될듯 - 07-09
+                    //BlewriteData("$PS,A," + readPassword + "*");
                 }
                 return;
             }
