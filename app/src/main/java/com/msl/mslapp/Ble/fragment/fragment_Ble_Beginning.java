@@ -177,7 +177,7 @@ public class fragment_Ble_Beginning extends Fragment {
         Log.d(TAG, "bleScanIb Click");
 
         if(BluetoothStatus.contains("On")){
-            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_scan");
+            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_function");
         }else{
             checkBluetoothPermission();
         }

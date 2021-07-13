@@ -59,9 +59,11 @@ import static com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.t
 import static com.msl.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
 import static com.msl.mslapp.BleMainActivity.DATA_RTU_BLUETOOTH_SENDING;
 import static com.msl.mslapp.BleMainActivity.DATA_TYPE_BTV;
+import static com.msl.mslapp.BleMainActivity.DATA_TYPE_LISET;
 import static com.msl.mslapp.BleMainActivity.DATA_TYPE_LISTS;
 import static com.msl.mslapp.BleMainActivity.DATA_TYPE_S;
 import static com.msl.mslapp.BleMainActivity.adminApp;
+import static com.msl.mslapp.BleMainActivity.bleConnected;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 
 public class fragment_Ble_Status extends Fragment {
@@ -77,7 +79,8 @@ public class fragment_Ble_Status extends Fragment {
 
     TextView tv_ble_status_id, tv_ble_status_input_v, tv_ble_status_output_a, tv_ble_status_cds, tv_ble_status_lantern_status, tv_ble_status_fl,
             tv_ble_status_solar_v, tv_ble_status_battery_v, tv_ble_status_output_v, tv_ble_status_charge_dischar_a, tv_ble_status_battery_percent,
-            tv_ble_status_receive_data, tv_ble_status_receive_time, tv_ble_status_gps_latitude, tv_ble_status_gps_longitude;
+            tv_ble_status_receive_data, tv_ble_status_receive_time, tv_ble_status_gps_latitude, tv_ble_status_gps_longitude, tv_ble_fragment_status_temperature;
+    ;
 
     ImageView iv_ble_status_battery_percent;
 
@@ -86,8 +89,6 @@ public class fragment_Ble_Status extends Fragment {
 
 
     View view;
-
-
 
 
     // 상위Activity 에게 데이터 주는 용도
@@ -106,7 +107,13 @@ public class fragment_Ble_Status extends Fragment {
         view = inflater.inflate(R.layout.ble_fragment_status, null);
 
 
-        ((Ble_Status_Listener) activity).onCreateViewFragment_Ble_Status();
+        if (bleConnected) {
+            ((Ble_Status_Listener) activity).ble_scan_item_invisible();
+            ((Ble_Status_Listener) activity).ble_unconnect_item_visible();
+        } else {
+            ((Ble_Status_Listener) activity).ble_scan_item_visible();
+            ((Ble_Status_Listener) activity).ble_unconnect_item_invisible();
+        }
 
         ll_ble_fragment_status_battery_v_detail = view.findViewById(R.id.ll_ble_fragment_status_battery_v_detail);
         ll_ble_fragment_status_solar_v_detail = view.findViewById(R.id.ll_ble_fragment_status_solar_v_detail);
@@ -198,7 +205,7 @@ public class fragment_Ble_Status extends Fragment {
 
         admin_ble_fragment_status_ll = view.findViewById(R.id.admin_ble_fragment_status_ll);
 
-        if(!adminApp){
+        if (!adminApp) {
             ll_ble_fragment_status_battery_v_detail.setVisibility(View.GONE);
             ll_ble_fragment_status_solar_v_detail.setVisibility(View.GONE);
             admin_ble_fragment_status_ll.setVisibility(View.GONE);
@@ -233,6 +240,7 @@ public class fragment_Ble_Status extends Fragment {
         tv_ble_status_receive_time = view.findViewById(R.id.tv_ble_fragment_status_receive_time);
         tv_ble_status_gps_latitude = view.findViewById(R.id.tv_ble_fragment_status_gps_latitude);
         tv_ble_status_gps_longitude = view.findViewById(R.id.tv_ble_fragment_status_gps_longitude);
+        tv_ble_fragment_status_temperature = view.findViewById(R.id.tv_ble_fragment_status_temperature);
 
     }
 
@@ -623,6 +631,19 @@ public class fragment_Ble_Status extends Fragment {
                 tv_ble_status_gps_longitude.setText(longitude);*/
             }
 
+        } else if (data.substring(1, 6).contains(DATA_TYPE_LISET)) {
+            String[] data_arr = data.split(",");
+            try {
+                String temperature = "";
+                if(data_arr[6].contains("*")){
+                    temperature = data_arr[6].substring(0, data_arr[6].indexOf("*"));
+                }else{
+                    temperature = data_arr[6];
+                }
+                tv_ble_fragment_status_temperature.setText(temperature + "°C");
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -648,14 +669,19 @@ public class fragment_Ble_Status extends Fragment {
         super.onDetach();
         Log.d(TAG, "onDetach");
         cycleHandler.sendEmptyMessage(MESSAGE_HANDLER_STOP);
-        ((Ble_Status_Listener) activity).onDetachFragment_Ble_Status();
+        ((Ble_Status_Listener) activity).ble_unconnect_item_invisible();
+        ((Ble_Status_Listener) activity).ble_scan_item_invisible();
         //selecetBleListener = null;
     }
 
     public interface Ble_Status_Listener {
-        void onCreateViewFragment_Ble_Status();
+        void ble_unconnect_item_visible();
 
-        void onDetachFragment_Ble_Status();
+        void ble_unconnect_item_invisible();
+
+        void ble_scan_item_visible();
+
+        void ble_scan_item_invisible();
     }
 
 

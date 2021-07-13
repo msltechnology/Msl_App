@@ -109,4 +109,5 @@
     <string name="tv_ble_fragment_password_passwordInsert">비밀번호를 입력해 주세요.</string>
     <string name="ble_scan_status_scanning">검색중...</string>
     <string name="ble_scan_status_pause">검색 완료</string>
+    <string name="temperature">온도</string>
 </resources>

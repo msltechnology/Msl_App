@@ -108,4 +108,5 @@
     <string name="tv_ble_fragment_password_passwordInsert">Please enter a password</string>
     <string name="ble_scan_status_scanning">Scanning...</string>
     <string name="ble_scan_status_pause">Scan complete</string>
+    <string name="temperature">temperature</string>
 </resources>

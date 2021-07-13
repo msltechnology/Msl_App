@@ -31,6 +31,17 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
 
         if(index==0) return new fragment_Ble_Status();
         else if(index==1) return new fragment_Ble_Setting();
+        else return new fragment_Ble_Test();
+    }
+
+    // RTU 가 있다면.
+    /*@NonNull
+    @Override
+    public Fragment createFragment(int position) {
+        int index = getRealPosition(position);
+
+        if(index==0) return new fragment_Ble_Status();
+        else if(index==1) return new fragment_Ble_Setting();
         else if(index==2) return new fragment_Ble_Test();
         else return new fragment_Ble_RTU();
     }
@@ -38,6 +49,11 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return 4;
+    }*/
+
+    @Override
+    public int getItemCount() {
+        return 3;
     }
 
     public int getRealPosition(int position) { return position % mCount; }

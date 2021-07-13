@@ -115,7 +115,7 @@ public class RTUMainActivity extends AppCompatActivity {
         toolbarMain.setTitleTextColor(getResources().getColor(R.color.ble_toolbarmain));
         setSupportActionBar(toolbarMain);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.rtu_Fragment_Space, new fragment_RTU_Scan(), "devices").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.rtu_Fragment_Space, new fragment_RTU_Function(), "devices").commit();
 
         // 사이드바 관련
         navigationView = findViewById(R.id.rtu_sidebar);

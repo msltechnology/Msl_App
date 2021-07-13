@@ -13,8 +13,10 @@ import java.util.List;
 
 public class adapter_RTU_Tab extends FragmentStateAdapter {
 
-    Fragment[] fragments = new Fragment[3];
-    String[] pageTitles = new String[]{"Status", "Setting","Lantern"};
+    /*Fragment[] fragments = new Fragment[3];
+    String[] pageTitles = new String[]{"Status", "Setting","Lantern"};*/
+    Fragment[] fragments = new Fragment[2];
+    String[] pageTitles = new String[]{"Status", "Setting"};
 
     public int mCount;
 
@@ -30,13 +32,20 @@ public class adapter_RTU_Tab extends FragmentStateAdapter {
         int index = getRealPosition(position);
 
         if(index==0) return new fragment_RTU_Status();
+        else return new fragment_RTU_Setting();
+        /*
+        if(index==0) return new fragment_RTU_Status();
         else if(index==1)return new fragment_RTU_Setting();
-        else return new fragment_RTU_Lantern();
+        else return new fragment_RTU_Lantern();*/
     }
-
+/*
     @Override
     public int getItemCount() {
         return 3;
+    }*/
+    @Override
+    public int getItemCount() {
+        return 2;
     }
 
     public int getRealPosition(int position) { return position % mCount; }

@@ -102,6 +102,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static BluetoothGatt bleGatt = null;
     public static BluetoothManager bluetoothManager = null;
     public static String BluetoothStatus = "";
+    public static boolean bleConnected = false;
 
     boolean pauseResumeCheck = false;
 
@@ -443,16 +444,31 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     // status화면일 경우 텝 보이게하기
     @Override
-    public void onCreateViewFragment_Ble_Status() {
-        Log.d(TAG, "onCreateViewFragment_Ble_Status");
+    public void ble_unconnect_item_visible() {
+        Log.d(TAG, "ble_unconnect_item_visible");
         bleDisconnectItem.setVisible(true);
         //tabLayout_ble.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onDetachFragment_Ble_Status() {
-        Log.d(TAG, "onDetachFragment_Ble_Status");
+    public void ble_unconnect_item_invisible() {
+        Log.d(TAG, "ble_unconnect_item_invisible");
         bleDisconnectItem.setVisible(false);
+        //tabLayout_ble.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void ble_scan_item_visible() {
+        Log.d(TAG, "ble_scan_item_visible");
+        ScanItem.setTitle(R.string.ble_main_scanItem_scan);
+        ScanItem.setVisible(true);
+        //tabLayout_ble.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void ble_scan_item_invisible() {
+        Log.d(TAG, "ble_scan_item_invisible");
+        ScanItem.setVisible(false);
         //tabLayout_ble.setVisibility(View.GONE);
     }
 
@@ -512,6 +528,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         switch (item.getItemId()) {
             case R.id.action_bar_scanBle:
 
+                fragmentChange("fragment_ble_scan");
+
+                // 이전에 사용하던 기능
+/*
                 if (scanningFlag) {
                     fragment_bleScan.stopScan();
                     ScanItem.setTitle(R.string.ble_main_scanItem_scan);
@@ -519,6 +539,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     fragment_bleScan.Scan();
                     ScanItem.setTitle(R.string.ble_main_scanItem_stopScanning);
                 }
+*/
 
                 return true;
             case R.id.action_bar_scanRefresh:
@@ -941,8 +962,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         } else if (color.equals("write")) {
             if (dataArr[0].contains(DATA_TYPE_PS)) {
                 // 비밀번호 요청 더이상 보내지 말라는 대답으로 보내는 거(로그에 안보여줄려고 처리)
-                if(dataArr[1].contains(DATA_TYPE_A)){
-                    if(dataArr[2].contains("0000H")){
+                if (dataArr[1].contains(DATA_TYPE_A)) {
+                    if (dataArr[2].contains("0000H")) {
                         return;
                     }
                 }
@@ -1453,6 +1474,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 gatt.readPhy();
             }
 
+            bleConnected = true;
 
             // uuid, Characteristic 모르면
             BluetoothDevice device = gatt.getDevice();
@@ -1602,6 +1624,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         Log.d(TAG, "disconnectGattServer - " + route);
         cmdCharacteristic = null;
         respCharacteristic = null;
+        bleConnected = false;
+        selectedSerialNum = "";
         if (bleGatt != null) {
             BleConnecting = false;
 
@@ -1742,68 +1766,92 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         readDataTotal = readDataTotal.replaceAll("(\n|\r)", "");
                     }
 
-                    // $ 및 * 등이 포함됐는지.(처음과 끝)
-                    if (readDataTotal.indexOf(DATA_SIGN_START) > -1
-                            && readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1) {
-                        // $이 *보다 먼저 들어왔는지(데이터 순서 꼬였는지)
-                        if (readDataTotal.indexOf(DATA_SIGN_START) < readDataTotal.indexOf(DATA_SIGN_CHECKSUM)) {
+                    boolean whileExit = true;
 
-                            if (String.valueOf(readDataTotal.charAt(readDataTotal.length() - 3)).equals(DATA_SIGN_CHECKSUM)) {
+                    while(whileExit){
+                        // $ 및 * 등이 포함됐는지.(처음과 끝)
+                        if (readDataTotal.indexOf(DATA_SIGN_START) > -1
+                                && readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1) {
+                            // $이 *보다 먼저 들어왔는지(데이터 순서 꼬였는지)
+                            if (readDataTotal.indexOf(DATA_SIGN_START) < readDataTotal.indexOf(DATA_SIGN_CHECKSUM)) {
 
-                                // * 뒤의 체크섬값이 2자리로 잘 들어왔는지
-                                if (readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 1, readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3).length() == 2) {
-                                    //데이터 처음과 끝 받기 완료
+                                if (String.valueOf(readDataTotal.charAt(readDataTotal.length() - 3)).equals(DATA_SIGN_CHECKSUM)) {
 
-                                    String data = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_START), readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3);
-                                    Log.d(TAG, "정리된 Data : " + data);
-                                    String[] dataArr = data.split(DATA_SIGN_COMMA);
-                                    // 가장 마지막 데이터(~~~~*AH)의 체크섬이후 데이터 받아오기(체크섬 값 부분)
-                                    String csData = dataArr[dataArr.length - 1].substring(dataArr[dataArr.length - 1].indexOf(DATA_SIGN_CHECKSUM) + 1);
+                                    // * 뒤의 체크섬값이 2자리로 잘 들어왔는지
+                                    if (readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 1, readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3).length() == 2) {
+                                        //데이터 처음과 끝 받기 완료
 
-                                    // 체크섬이 맞는지
-                                    if (csData.equals(ToCheckSum(data.substring(data.indexOf(DATA_SIGN_START), data.indexOf(DATA_SIGN_CHECKSUM) + 1)))) {
-                                        Log.d(TAG, "CheckSum OK!");
-                                        currentFragment = getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                                        String data = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_START), readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3);
+                                        Log.d(TAG, "정리된 Data : " + data);
+                                        String[] dataArr = data.split(DATA_SIGN_COMMA);
+                                        // 가장 마지막 데이터(~~~~*AH)의 체크섬이후 데이터 받아오기(체크섬 값 부분)
+                                        String csData = dataArr[dataArr.length - 1].substring(dataArr[dataArr.length - 1].indexOf(DATA_SIGN_CHECKSUM) + 1);
 
-                                        logData_Ble(data, "read");
+                                        // 체크섬이 맞는지
+                                        if (csData.equals(ToCheckSum(data.substring(data.indexOf(DATA_SIGN_START), data.indexOf(DATA_SIGN_CHECKSUM) + 1)))) {
+                                            Log.d(TAG, "CheckSum OK!");
+                                            currentFragment = getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
 
-                                        // 들어온 데이터값을 해당 프래그먼트로 보내기(그쪽에서 처리)
-                                        if (currentFragment instanceof fragment_Ble_Function) {
-                                            Log.d(TAG, "fragment_Ble_Function OK!");
-                                            fragment_Ble_Function fragment_ble_function = (fragment_Ble_Function) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
-                                            fragment_ble_function.readData(data);
-                                        } else if (currentFragment instanceof fragment_Ble_Password) {
-                                            Log.d(TAG, "fragment_Ble_password OK!");
-                                            fragment_Ble_Password fragment_ble_password = (fragment_Ble_Password) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
-                                            fragment_ble_password.readData(data);
-                                        } else if (currentFragment instanceof fragment_CDS_Setting) {
-                                            Log.d(TAG, "fragment_Ble_CDS_Setting OK!");
-                                            fragment_CDS_Setting fragment_cds_setting = (fragment_CDS_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
-                                            fragment_cds_setting.readData(data);
-                                        } else if (currentFragment instanceof fragment_SN_Setting) {
-                                            Log.d(TAG, "fragment_Ble_SN_Setting OK!");
-                                            fragment_SN_Setting fragment_sn_setting = (fragment_SN_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
-                                            fragment_sn_setting.readData(data);
+                                            logData_Ble(data, "read");
+
+                                            // 들어온 데이터값을 해당 프래그먼트로 보내기(그쪽에서 처리)
+                                            if (currentFragment instanceof fragment_Ble_Function) {
+                                                Log.d(TAG, "fragment_Ble_Function OK!");
+                                                fragment_Ble_Function fragment_ble_function = (fragment_Ble_Function) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                                                fragment_ble_function.readData(data);
+                                            } else if (currentFragment instanceof fragment_Ble_Password) {
+                                                Log.d(TAG, "fragment_Ble_password OK!");
+                                                fragment_Ble_Password fragment_ble_password = (fragment_Ble_Password) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                                                fragment_ble_password.readData(data);
+                                            } else if (currentFragment instanceof fragment_CDS_Setting) {
+                                                Log.d(TAG, "fragment_Ble_CDS_Setting OK!");
+                                                fragment_CDS_Setting fragment_cds_setting = (fragment_CDS_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                                                fragment_cds_setting.readData(data);
+                                            } else if (currentFragment instanceof fragment_SN_Setting) {
+                                                Log.d(TAG, "fragment_Ble_SN_Setting OK!");
+                                                fragment_SN_Setting fragment_sn_setting = (fragment_SN_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                                                fragment_sn_setting.readData(data);
+                                            }
+
                                         }
 
-                                    }
+                                        try {
+                                            readDataTotal = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 1);
+                                            if(readDataTotal.indexOf(DATA_SIGN_START) > -1
+                                                    && readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1){
+                                                readDataTotal = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_START));
+                                                Log.d(TAG, "readData Test : " + readDataTotal);
+                                                whileExit = true;
+                                                return;
+                                            }else{
+                                                // 작업 끝.들어온 데이터 초기화
+                                                readDataTotal = "";
+                                                whileExit = false;
+                                            }
+                                        }catch (Exception e){
+                                            readDataTotal = "";
+                                            whileExit = false;
+                                        }
 
-                                    // 작업 끝.들어온 데이터 초기화
+
+                                    }
+                                } else {
+                                    logData_Ble("readData Error - checksum", "error");
+                                    Log.d(TAG, "readData Error - checksum - 3 / " + readDataTotal.length() + " and " + readDataTotal.charAt(readDataTotal.length() - 3));
+
                                     readDataTotal = "";
                                 }
                             } else {
-                                logData_Ble("readData Error - checksum", "error");
-                                Log.d(TAG, "readData Error - checksum - 3 / " + readDataTotal.length() + " and " + readDataTotal.charAt(readDataTotal.length() - 3));
-
+                                // 데이터가 잘못 들어옴. 초기화
+                                logData_Ble("readData Error - order", "error");
+                                Log.d(TAG, "readData Error - order");
                                 readDataTotal = "";
                             }
-                        } else {
-                            // 데이터가 잘못 들어옴. 초기화
-                            logData_Ble("readData Error - order", "error");
-                            Log.d(TAG, "readData Error - order");
-                            readDataTotal = "";
+
                         }
+                        whileExit = false;
                     }
+
                     // 체크섬만 있을 경우(순서 이상함)
                     if (readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1 && !(readDataTotal.indexOf(DATA_SIGN_START) > -1)) {
                         logData_Ble("readData Error - No include DATA_SIGN_START", "error");
@@ -1822,69 +1870,72 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     public static void BlewriteData(String data) {
 
-        if (cmdCharacteristic == null) {
-            logData_Ble("cmdCharacteristic : null", "error");
-            Log.d(TAG, "BlewriteData - cmdCharacteristic : null");
-            cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
-        }
+        if (bleConnected) {
 
-        // 연결이 끊겨있다면 종료
-        if (cmdCharacteristic == null) {
-            logData_Ble("Unable to find cmd characteristic", "error");
-            Log.e(TAG, "Unable to find cmd characteristic(writeData)");
-            disconnectGattServer("BleMainActivity - BlewriteData - Unable to find cmd characteristic");
-            return;
-        }
-
-        String sendBlewriteData = data + ToCheckSum(data);
-        logData_Ble("Write : " + sendBlewriteData, "write");
-        sendBlewriteData = sendBlewriteData + DATA_SIGN_CR + DATA_SIGN_LF;
-        Log.d(TAG, "BleWriteData data : " + data + ", sendData : " + sendBlewriteData);
-
-        // 데이터가 길면 한번에 보낼 수 있는 양을 초과해서 나눠서 보내야함.(5.0은 상관없지만...)
-        if (sendBlewriteData.length() < 21) {
-            cmdCharacteristic.setValue(sendBlewriteData.getBytes());
-            //cmdCharacteristic.setWriteType(1);
-
-            Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
-            if (!success) {
-                logData_Ble("Failed to write command", "error");
-                Log.e(TAG, "Failed to write command");
+            if (cmdCharacteristic == null) {
+                logData_Ble("cmdCharacteristic : null", "error");
+                Log.d(TAG, "BlewriteData - cmdCharacteristic : null");
+                cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
             }
-        } else {
-            Log.d(TAG, "BleWriteData data length : " + sendBlewriteData.length());
 
+            // 연결이 끊겨있다면 종료
+            if (cmdCharacteristic == null) {
+                logData_Ble("Unable to find cmd characteristic", "error");
+                Log.e(TAG, "Unable to find cmd characteristic(writeData)");
+                disconnectGattServer("BleMainActivity - BlewriteData - Unable to find cmd characteristic");
+                return;
+            }
 
-            String finalSendBlewriteData = sendBlewriteData;
+            String sendBlewriteData = data + ToCheckSum(data);
+            logData_Ble("Write : " + sendBlewriteData, "write");
+            sendBlewriteData = sendBlewriteData + DATA_SIGN_CR + DATA_SIGN_LF;
+            Log.d(TAG, "BleWriteData data : " + data + ", sendData : " + sendBlewriteData);
 
-            Log.d(TAG, "Test Data 1 : " + finalSendBlewriteData);
+            // 데이터가 길면 한번에 보낼 수 있는 양을 초과해서 나눠서 보내야함.(5.0은 상관없지만...)
+            if (sendBlewriteData.length() < 21) {
+                cmdCharacteristic.setValue(sendBlewriteData.getBytes());
+                //cmdCharacteristic.setWriteType(1);
 
-            for (int i = 0; i < (finalSendBlewriteData.length() / 20) + 1; i++) {
-                if (finalSendBlewriteData.length() - (i * 20) < 20) {
-                    cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20).getBytes());
-                } else {
-                    if (((i + 1) * 20) < finalSendBlewriteData.length()) {
-                        Log.d(TAG, "Test Data : " + ((i + 1) * 20) + " , length : " + finalSendBlewriteData.length());
-                        cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20, (i + 1) * 20).getBytes());
-                    } else {
-                        cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20).getBytes());
-                    }
-                }
-
-                Log.d(TAG, "Test Data 1-1");
-
-                // 해당 write가 있어야 값을 보냄.
                 Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
                 if (!success) {
                     logData_Ble("Failed to write command", "error");
                     Log.e(TAG, "Failed to write command");
                 }
+            } else {
+                Log.d(TAG, "BleWriteData data length : " + sendBlewriteData.length());
 
-                // 0.1 초 정도 텀을 둬서 데이터 보내고 이어서 보내기
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+                String finalSendBlewriteData = sendBlewriteData;
+
+                Log.d(TAG, "Test Data 1 : " + finalSendBlewriteData);
+
+                for (int i = 0; i < (finalSendBlewriteData.length() / 20) + 1; i++) {
+                    if (finalSendBlewriteData.length() - (i * 20) < 20) {
+                        cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20).getBytes());
+                    } else {
+                        if (((i + 1) * 20) < finalSendBlewriteData.length()) {
+                            Log.d(TAG, "Test Data : " + ((i + 1) * 20) + " , length : " + finalSendBlewriteData.length());
+                            cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20, (i + 1) * 20).getBytes());
+                        } else {
+                            cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20).getBytes());
+                        }
+                    }
+
+                    Log.d(TAG, "Test Data 1-1");
+
+                    // 해당 write가 있어야 값을 보냄.
+                    Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
+                    if (!success) {
+                        logData_Ble("Failed to write command", "error");
+                        Log.e(TAG, "Failed to write command");
+                    }
+
+                    // 0.1 초 정도 텀을 둬서 데이터 보내고 이어서 보내기
+                    try {
+                        Thread.sleep(100);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

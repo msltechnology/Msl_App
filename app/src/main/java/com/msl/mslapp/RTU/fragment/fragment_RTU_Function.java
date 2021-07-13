@@ -81,7 +81,6 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     private final int MESSAGE_HANDLER_STOP = 102;
 
     private int deviceId, portNum, baudRate;
-    private boolean withIoManager;
 
     private final BroadcastReceiver broadcastReceiver;
     private final Handler mainLooper;
@@ -132,10 +131,11 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
         tavTitle = new String[]{"Status", "Setting", "Lantern"};
 
         Log.d(TAG, "Viewpage 작업");
-        adapter_RTU_tab = new adapter_RTU_Tab(this, 3);
+        adapter_RTU_tab = new adapter_RTU_Tab(this, 2);
         viewPager_rtu.setAdapter(adapter_RTU_tab);
         viewPager_rtu.setCurrentItem(0);
-        viewPager_rtu.setOffscreenPageLimit(2);
+        viewPager_rtu.setOffscreenPageLimit(1
+        );
         viewPager_rtu.setPageTransformer(new ZoomOutPageTransformer());
 
         new TabLayoutMediator(tabLayout_rtu, viewPager_rtu,
@@ -149,10 +149,14 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 전 프래그먼트에서 보낸 데이터 처리
-        deviceId = getArguments().getInt("device");
-        portNum = getArguments().getInt("port");
-        baudRate = getArguments().getInt("baud");
-        withIoManager = getArguments().getBoolean("withIoManager");
+
+        try {
+            deviceId = getArguments().getInt("device");
+            portNum = getArguments().getInt("port");
+            baudRate = getArguments().getInt("baud");
+        }catch (Exception e){
+
+        }
     }
 
     @Override
@@ -181,12 +185,40 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     public void onResume() {
         Log.d(TAG, "fragment_RTU_Function - onResume start");
         super.onResume();
-        mRTUMain.registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
 
-        if (usbPermission == UsbPermission.Unknown || usbPermission == UsbPermission.Granted) {
-            mainLooper.post(this::connect);
-            Log.d(TAG, "onResume - usbPermission == UsbPermission.Unknown || usbPermission == UsbPermission.Granted");
+        if(!connected){
+            UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+            UsbSerialProber usbDefaultProber = UsbSerialProber.getDefaultProber();
+            UsbSerialProber usbCustomProber = CustomProber.getCustomProber();
+
+            for (UsbDevice device : usbManager.getDeviceList().values()) {
+                UsbSerialDriver driver = usbDefaultProber.probeDevice(device);
+                if (driver == null) {
+                    driver = usbCustomProber.probeDevice(device);
+                }
+                if (driver != null) {
+                    if (driver.getPorts().size() == 1) {
+                        UsbSerialDriver finalDriver = driver;
+
+                        fragment_RTU_Scan.ListItem item = new fragment_RTU_Scan.ListItem(device, 0, finalDriver);
+
+                        deviceId = item.device.getDeviceId();
+                        portNum = item.port;
+                        baudRate = 115200;
+
+                        mainLooper.post(this::connect);
+                    }
+                }
+            }
+        }else{
+            mRTUMain.registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
+
+            if (usbPermission == UsbPermission.Unknown || usbPermission == UsbPermission.Granted) {
+                mainLooper.post(this::connect);
+                Log.d(TAG, "onResume - usbPermission == UsbPermission.Unknown || usbPermission == UsbPermission.Granted");
+            }
         }
+
         Log.d(TAG, "fragment_RTU_Function - onResume leave");
     }
 
@@ -195,8 +227,8 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
         Log.d(TAG, "fragment_RTU_Function - onPause start");
         if (connected) {
             disconnect();
+            mRTUMain.unregisterReceiver(broadcastReceiver);
         }
-        mRTUMain.unregisterReceiver(broadcastReceiver);
         super.onPause();
         Log.d(TAG, "fragment_RTU_Function - onPause leave");
     }
@@ -251,6 +283,9 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
             return;
         }
         usbSerialPort = driver.getPorts().get(0);
+        PendingIntent permissionIntent = PendingIntent.getBroadcast(mRTUContext, 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
+        usbManager.requestPermission(device, permissionIntent);
+
         UsbDeviceConnection usbConnection = usbManager.openDevice(driver.getDevice());
         if (usbConnection == null && usbPermission == UsbPermission.Unknown && !usbManager.hasPermission(driver.getDevice())) {
             usbPermission = UsbPermission.Requested;
@@ -299,9 +334,6 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
             status("disconnect usbSerialPort close error : " + e.toString());
         }
         usbSerialPort = null;
-
-        Fragment fragment = new fragment_RTU_Scan();
-        getFragmentManager().beginTransaction().replace(R.id.rtu_Fragment_Space, fragment, "terminal").commit();
 
     }
 

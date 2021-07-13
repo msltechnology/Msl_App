@@ -152,7 +152,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">#4C4948</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">15dp</item>
     </style>
 
     <style name="btn_ble_fragment_test">

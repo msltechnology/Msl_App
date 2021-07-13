@@ -81,7 +81,7 @@ public class fragment_Ble_Setting extends Fragment {
         Log.d(TAG, "fragment_Ble_Setting readData!");
 
         // 비밀번호 변경 시 확인
-        String passwordchangeCheck = "$PS,A," + psEncryptionTable(readPassword);
+        String passwordchangeCheck = "$PS,A," + readPassword;
 
         if (data.contains(passwordchangeCheck))
             Toast.makeText(mBleContext, "Password Change Success", Toast.LENGTH_SHORT).show();

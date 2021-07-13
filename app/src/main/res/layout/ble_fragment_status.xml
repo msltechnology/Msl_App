@@ -356,33 +356,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="15dp">
-
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="2"
-                        android:src="@drawable/ble_fragment_state_gps_icon"/>
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8"
+                    android:layout_weight="6"
                     android:orientation="vertical">
 
                     <TextView
@@ -392,7 +374,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/gps_latitude"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
 
@@ -404,7 +386,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="8"
+                    android:layout_weight="6"
                     android:orientation="vertical">
 
                     <TextView
@@ -414,7 +396,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/gps_longitude"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -425,8 +407,7 @@
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"/>
-
+                    android:layout_weight="6"/>
             </LinearLayout>
 
             <View
@@ -436,40 +417,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="15dp">
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"/>
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="2"
-                        android:src="@drawable/ble_fragment_state_date_icon"/>
-
-                    <Space
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"/>
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="8"
+                    android:layout_weight="6"
                     android:orientation="vertical">
 
                     <TextView
@@ -479,7 +434,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/receive_date"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
 
@@ -492,7 +447,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="8"
+                    android:layout_weight="6"
                     android:orientation="vertical">
 
                     <TextView
@@ -502,7 +457,7 @@
                         android:gravity="center_vertical"
                         android:text="@string/receive_time"
                         android:textColor="@color/black"
-                        android:textSize="15dp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -510,10 +465,27 @@
                         style="@style/tv_ble_fragment_status_value2" />
                 </LinearLayout>
 
-                <Space
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"/>
+                    android:layout_weight="6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@string/temperature"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_fragment_status_temperature"
+                        style="@style/tv_ble_fragment_status_value2" />
+                </LinearLayout>
 
             </LinearLayout>
 

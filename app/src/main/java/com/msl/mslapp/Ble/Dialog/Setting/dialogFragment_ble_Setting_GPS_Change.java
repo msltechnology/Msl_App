@@ -60,10 +60,14 @@ public class dialogFragment_ble_Setting_GPS_Change extends DialogFragment {
         btn_Setting();
 
         if(gps_status){
+            btn_On.setTextColor(Color.WHITE);
             btn_On.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on_clicked));
+            btn_Off.setTextColor(Color.BLACK);
             btn_Off.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off));
         }else{
+            btn_On.setTextColor(Color.BLACK);
             btn_On.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on));
+            btn_Off.setTextColor(Color.WHITE);
             btn_Off.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off_clicked));
         }
 
@@ -112,7 +116,7 @@ public class dialogFragment_ble_Setting_GPS_Change extends DialogFragment {
         display.getSize(size);
 
         final String x = String.valueOf(Math.round((size.x * 0.8)));
-        final String y = String.valueOf(Math.round((size.y * 0.3)));
+        final String y = String.valueOf(Math.round((size.y * 0.2)));
         int dialogWidth = Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

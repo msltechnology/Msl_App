@@ -73,18 +73,29 @@ public class fragment_Ble_Function extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
+        // RTU가 있는버젼
+        //tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
+
+        tavTitle = new String[]{"Status", "Setting", "Test"};
 
         tabLayout_ble = view.findViewById(R.id.tab_bluetooth);
 
         viewPager = view.findViewById(R.id.bluetoothViewpageSpace);
 
         Log.d(TAG, "Viewpage 작업");
+        adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this, 3);
+        viewPager.setAdapter(adapter_ble_Function_tab);
+        viewPager.setCurrentItem(0);
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
+
+        // RTU가 있는버젼
+        /*Log.d(TAG, "Viewpage 작업");
         adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this, 4);
         viewPager.setAdapter(adapter_ble_Function_tab);
         viewPager.setCurrentItem(0);
         viewPager.setOffscreenPageLimit(3);
-        viewPager.setPageTransformer(new ZoomOutPageTransformer());
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());*/
 
         new TabLayoutMediator(tabLayout_ble, viewPager,
                 (tab, position) -> tab.setText(tavTitle[position])
@@ -106,7 +117,7 @@ public class fragment_Ble_Function extends Fragment {
                     // 3마일 복호화 암호때문에 이상해져서 일단 주석, 3마일 펌웨어 업데이트 완료되면 다시 사용헤도 될듯 - 07-09
                     //BlewriteData("$PS,A," + readPassword + "*");
                 }
-                return;
+                //return;
             }
         }
 

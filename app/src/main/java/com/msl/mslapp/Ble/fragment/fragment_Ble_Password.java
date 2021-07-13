@@ -127,7 +127,7 @@ public class fragment_Ble_Password extends Fragment {
             // 원래는 주석문이었는데 알고보니 3마일은 위와같이 보내야하고 7마일은 비번그딴거 상관없이 어차피 답장함...?..?..?(???) - 07-08
             //BlewriteData("$PS,A," + readPassword + "*");
             ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
-            readPassword = inputPassword;
+            //readPassword = inputPassword;
         }else if(inputPassword.equals("AHFFK")){
             Log.d(TAG, "passwordCheck : Admin");
             String deCrypPassword = psDecryptionTable(readPassword);
