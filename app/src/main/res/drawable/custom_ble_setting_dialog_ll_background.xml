@@ -5,7 +5,7 @@
         android:width="1dp"
         android:color="#CBCCCC" />
 
-    <solid android:color="@color/ble_main_backgroud"/>
+    <solid android:color="@color/ble_main_background"/>
 
     <corners android:radius="5dp"/>
 

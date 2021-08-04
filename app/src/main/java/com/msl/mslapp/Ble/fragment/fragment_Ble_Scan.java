@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +104,8 @@ public class fragment_Ble_Scan extends Fragment {
 
         bleListview.setOnItemClickListener((parent, v, position, id) -> {
 
+            stopScan();
+
             if (!BleMainActivity.BleConnecting) {
                 BleMainActivity.BleConnecting = true;
 
@@ -116,8 +119,6 @@ public class fragment_Ble_Scan extends Fragment {
                 selectedSerialNum = listView.getBleUserdata();
 
                 Log.d(TAG, "selectedSerialNum : " + selectedSerialNum);
-
-                stopScan();
 
                 if (CdsFlag) {
                     ((BleMainActivity) requireActivity()).fragmentChange("fragment_cds_setting");
@@ -145,7 +146,7 @@ public class fragment_Ble_Scan extends Fragment {
 
     public void Scan() {
         Log.d(TAG, "Scan");
-        stopScan();
+        //stopScan();
         scanningFlag = true;
         // 필터(특정 uuid 등 조건으로 검색), 세팅(저전력, 풀파워 검색할지) 등 설정.
         mBluetoothAdapter.getBluetoothLeScanner().startScan(filters, settings, BLEScanCallback);
@@ -238,6 +239,28 @@ public class fragment_Ble_Scan extends Fragment {
                 String deviceAddress = device.getAddress();
                 String name = device.getName();
 
+                if(TextUtils.isEmpty(name)){
+                    return;
+                }
+
+                if (!(name.contains("MSL TECH") || name.contains("IoT")) ) {
+                    return;
+                }
+
+                // 중복 체크
+                for (BluetoothDevice dev : scanResults) {
+                    if (dev.getAddress().equals(deviceAddress)) {
+
+                        // 중복일 경우 신호 세기 및 Device 이름 값 바꾸게하는데 실행 결과 바뀌는 도중 선택 인식을 못하여서 걍 빼는걸로(21-05-21)
+                        // 리스트 선택이 아닌 따로 버튼으로하면 될꺼 같긴하나 나중에 하고싶다면 하는걸로
+                        /*scanResults.set(order, result.getDevice());
+
+                        adapter.updateItem(order, userdata, "신호 세기 : " + rssi);
+
+                        adapter.notifyDataSetChanged();*/
+                        return;
+                    }
+                }
 
                 int rssi = result.getRssi();
 
@@ -297,8 +320,6 @@ public class fragment_Ble_Scan extends Fragment {
 
                 // MSL 과 관련된 제품일 경우
                 if (stringBuffer.contains("MSL TECH")) {
-                    Log.d(TAG, "MSL TECH contain : " + stringBuffer);
-
                     try {
                         // MSL의 각 제품 코드는 데이터의 19번째 데이터부터 이기에 거기부터 자른다.
                         userdataAll = stringBuffer.substring(18);
@@ -306,7 +327,6 @@ public class fragment_Ble_Scan extends Fragment {
                         // 제품이 켜진지 얼마 안되었거나 문제가 생겼을 시(아직 보드가 블루투스에게 데이터 전달이 안된 상태)
                         userdataAll = "Loading";
                         Log.d(TAG, "getManufacturerSpecificData null");
-
                     }
                 }
 
@@ -336,24 +356,6 @@ public class fragment_Ble_Scan extends Fragment {
 
                 if (name == null) {
                     userdata = "";
-                }
-
-                int order = 0;
-
-                // 중복 체크
-                for (BluetoothDevice dev : scanResults) {
-                    if (dev.getAddress().equals(deviceAddress)) {
-
-                        // 중복일 경우 신호 세기 및 Device 이름 값 바꾸게하는데 실행 결과 바뀌는 도중 선택 인식을 못하여서 걍 빼는걸로(21-05-21)
-                        // 리스트 선택이 아닌 따로 버튼으로하면 될꺼 같긴하나 나중에 하고싶다면 하는걸로
-                        /*scanResults.set(order, result.getDevice());
-
-                        adapter.updateItem(order, userdata, "신호 세기 : " + rssi);
-
-                        adapter.notifyDataSetChanged();*/
-                        return;
-                    }
-                    order++;
                 }
 
                 Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);

@@ -14,7 +14,7 @@
         app:tabSelectedTextColor="#171C61"
         app:tabIndicatorColor="#171C61"
         app:tabIndicatorHeight="3dp"
-        app:tabBackground="@color/ble_main_backgroud"
+        app:tabBackground="@color/ble_main_background"
         app:tabTextAppearance="@style/MineCustomTabText">
     </com.google.android.material.tabs.TabLayout>
 

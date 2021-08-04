@@ -23,7 +23,7 @@
                 android:id="@+id/rtu_toolbar_main"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:background="@color/ble_main_backgroud"
+                android:background="@color/ble_main_background"
                 android:elevation="0dp"
                 android:theme="@style/Appbar">
 

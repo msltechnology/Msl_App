@@ -20,7 +20,7 @@
     </style>
 
     <style name="Appbar">
-        <item name="titleTextColor">@color/ble_main_backgroud</item>
+        <item name="titleTextColor">@color/ble_main_background</item>
         <item name="colorControlNormal">#2E2C2B</item>
     </style>
 
