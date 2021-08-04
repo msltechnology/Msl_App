@@ -11,7 +11,6 @@
         <item name="android:autoSizeTextType" tools:targetApi="o">uniform</item>
         <item name="android:textColor">#595757</item>
         <item name="android:elevation">0dp</item>
-        <item name="android:background">@drawable/custom_password_button</item>
     </style>
 
     <style name="password_numboard_2">
@@ -24,20 +23,18 @@
         <item name="android:autoSizeTextType" tools:targetApi="o">uniform</item>
         <item name="android:textColor">#595757</item>
         <item name="android:elevation">0dp</item>
-        <item name="android:background">@drawable/custom_password_button</item>
     </style>
 
     <style name="password_keyboard">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_margin">0dp</item>
+        <item name="android:layout_margin">2dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">0dp</item>
         <item name="android:autoSizeTextType" tools:targetApi="o">uniform</item>
         <item name="android:textColor">#595757</item>
         <item name="android:elevation">0dp</item>
-        <item name="android:background">@drawable/custom_password_button</item>
     </style>
 
     <style name="btn_setting_dialog_select">
@@ -70,7 +67,7 @@
         <item name="android:elevation">3dp</item>
         <item name="android:translationZ">3dp</item>
         <item name="android:background">@color/white</item>
-        <item name="android:textColor">@color/dialog_fl</item>
+        <item name="android:textColor">@color/blank_value</item>
         <item name="android:textSize">40dp</item>
     </style>
 
@@ -82,7 +79,7 @@
         <item name="android:elevation">3dp</item>
         <item name="android:translationZ">3dp</item>
         <item name="android:background">@color/white</item>
-        <item name="android:textColor">@color/dialog_fl</item>
+        <item name="android:textColor">@color/blank_value</item>
         <item name="android:textSize">25dp</item>
     </style>
 
@@ -91,8 +88,8 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">3</item>
         <item name="android:gravity">center</item>
-        <item name="android:autoSizeTextType">uniform</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:textSize">28dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="btn_setting_dialog_id">
@@ -102,7 +99,6 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">32dp</item>
         <item name="android:textStyle">bold</item>
-
     </style>
 
     <style name="btn_ble_fragment_status_detail">
@@ -130,7 +126,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">16dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/ble_status_name_white</item>
         <item name="android:background">@drawable/custom_ble_status_value_tv</item>
@@ -152,7 +148,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">#4C4948</item>
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">14dp</item>
     </style>
 
     <style name="btn_ble_fragment_test">
@@ -220,6 +216,15 @@
         <item name="android:textSize">16dp</item>
     </style>
 
+
+    <style name="btn_setting_dialog_delay_key">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">32dp</item>
+    </style>
+
     <style name="view_vertical_line_5">
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">match_parent</item>
@@ -252,7 +257,7 @@
     <style name="view_vertical_line">
         <item name="android:layout_height">0.8dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@color/password_key</item>
+        <item name="android:background">@color/navigation_view</item>
     </style>
 
     <style name="tv_ble_fragment_status_dialog_battery_bat_name">

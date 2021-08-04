@@ -2,7 +2,9 @@ package com.msl.mslapp.Ble.Dialog.Setting;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +33,9 @@ public class dialogFragment_Ble_Setting_ID_Setting extends DialogFragment {
 
     private static final int Ble_Setting_dialog_ID = 2;
 
-    TextView btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_0, btn_ce, btn_ok;
+    TextView btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_0, btn_ok;
     TextView tv_Selected_ID1, tv_Selected_ID2, tv_Selected_ID3;
+    LinearLayout  btn_ce;
 
     View view;
 
@@ -47,6 +51,9 @@ public class dialogFragment_Ble_Setting_ID_Setting extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         //getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //배경 투명화
         getDialog().setCanceledOnTouchOutside(true);
+
+        // 배경 모서리 곡선 이용 시 해당 값 넣어야 곡선으로 나옴(배경이 안보임)
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         view = inflater.inflate(R.layout.ble_fragment_setting_dialog_id_setting, null);
 

@@ -198,6 +198,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
                 }
                 if (driver != null) {
                     if (driver.getPorts().size() == 1) {
+
                         UsbSerialDriver finalDriver = driver;
 
                         fragment_RTU_Scan.ListItem item = new fragment_RTU_Scan.ListItem(device, 0, finalDriver);
@@ -225,9 +226,13 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     @Override
     public void onPause() {
         Log.d(TAG, "fragment_RTU_Function - onPause start");
-        if (connected) {
-            disconnect();
-            mRTUMain.unregisterReceiver(broadcastReceiver);
+        try{
+            if (connected) {
+                disconnect();
+                mRTUMain.unregisterReceiver(broadcastReceiver);
+            }
+        }catch (IllegalArgumentException e){
+            logData_RTU(e.toString(), "error");
         }
         super.onPause();
         Log.d(TAG, "fragment_RTU_Function - onPause leave");

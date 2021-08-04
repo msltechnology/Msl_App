@@ -148,7 +148,7 @@ public class dialogFragment_rtu_Setting_Protocol_Change extends DialogFragment {
         display.getSize(size);
 
         final String x = String.valueOf(Math.round((size.x * 0.8)));
-        final String y = String.valueOf(Math.round((size.y * 0.3)));
+        final String y = String.valueOf(Math.round((size.y * 0.25)));
         int dialogWidth = Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

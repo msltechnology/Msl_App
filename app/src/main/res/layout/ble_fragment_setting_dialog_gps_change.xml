@@ -32,7 +32,7 @@
             android:layout_weight="1"
             android:background="@drawable/custom_ble_setting_gps_on"
             android:text="@string/GPS_On"
-            android:textSize="28dp"
+            android:autoSizeTextType="uniform"
             android:translationZ="5dp"
             android:elevation="3dp"/>
 
@@ -44,7 +44,8 @@
             android:layout_weight="1"
             android:background="@drawable/custom_ble_setting_gps_off"
             android:text="@string/GPS_Off"
-            android:textSize="28dp"
+            android:autoSizeTextType="uniform"
+            android:padding="10dp"
             android:translationZ="5dp"
             android:elevation="3dp"/>
     </LinearLayout>

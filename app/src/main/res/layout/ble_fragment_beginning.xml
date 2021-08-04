@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ble_main_backgroud"
+    android:background="@color/ble_main_background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,25 +15,23 @@
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
 
         <ImageButton
             android:id="@+id/ib_ble_Scan"
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_gravity="center"
-            android:text="Scan"
             android:adjustViewBounds="true"
-            android:visibility="visible"
             android:background="@drawable/ble_beginning_bluetoothbtn"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            android:text="Scan"
+            android:visibility="visible" />
 
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
 
         <!--<Button
             android:id="@+id/bleScan"
@@ -54,7 +52,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,22 +63,22 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btn_beginning_cds"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
                 android:layout_weight="2"
                 android:background="@drawable/custom_ble_beginning_btn"
                 android:elevation="50dp"
-                android:layout_marginBottom="15dp"
                 android:text="Scan cds" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
 
         <Space
@@ -97,22 +95,22 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btn_beginning_SN"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
                 android:layout_weight="1"
                 android:background="@drawable/custom_ble_beginning_btn"
                 android:elevation="50dp"
-                android:layout_marginBottom="15dp"
                 android:text="Scan SN" />
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -140,23 +138,64 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/btn_ble_Scan_Move"
+            <LinearLayout
+                android:id="@+id/ll_ble_Scan_Move"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="@drawable/custom_ble_beginning_btn"
-                android:textSize="20dp"
-                android:textStyle="bold"
                 android:layout_marginBottom="15dp"
-                android:visibility="visible"/>
+                android:layout_weight="4"
+                android:background="@drawable/custom_ble_beginning_btn"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tv_ble_Scan_Move"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -175,23 +214,63 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/btn_RTU_Move"
+            <LinearLayout
+                android:id="@+id/ll_RTU_Move"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/custom_ble_beginning_btn"
-                android:textSize="20dp"
-                android:textStyle="bold"
                 android:layout_marginBottom="15dp"
-                android:visibility="visible"/>
+                android:layout_weight="1.5"
+                android:background="@drawable/custom_ble_beginning_btn"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/tv_RTU_Move"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
 
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -209,9 +288,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
+            android:gravity="bottom"
             android:text="Ver "
-            android:textSize="12dp"
-            android:gravity="bottom"/>
+            android:textSize="12dp" />
 
         <Space
             android:layout_width="0dp"
@@ -221,13 +300,12 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/ble_fragment_beggining_logo"
             android:layout_gravity="bottom"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:src="@drawable/ble_fragment_beggining_logo" />
 
     </LinearLayout>
-
 
 
 </LinearLayout>

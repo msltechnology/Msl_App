@@ -59,6 +59,7 @@ import android.widget.Toast;
 import com.msl.mslapp.Ble.BluetoothUtils;
 import com.msl.mslapp.Ble.Dialog.Beginning.dialogFragment_Ble_Beginning_LanguageChange;
 import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
+import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_Password_Change;
 import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_ble_Setting_GPS_Change;
 import com.msl.mslapp.Ble.fragment.fragment_Ble_Beginning;
 import com.msl.mslapp.Ble.fragment.fragment_Ble_Scan;
@@ -91,7 +92,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = false;
+
+    public static final boolean adminApp = true;
 
     public static Context mBleContext = null;
     public static AppCompatActivity mBleMain = null;
@@ -131,6 +133,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     // 읽기 쓰기 케릭터
     public static BluetoothGattCharacteristic respCharacteristic = null;
     public static BluetoothGattCharacteristic cmdCharacteristic = null;
+    public static BluetoothGattCharacteristic nameCharacteristic = null;
 
     // 블루투스 들어온 데이터 값
     String readDataTotal = "";
@@ -144,6 +147,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static String SERVICE_STRING_4 = "0000fff0-0000-1000-8000-00805f9b34fb";
     public static String CHARACTERISTIC_COMMAND_STRING_4 = "0000fff2-0000-1000-8000-00805f9b34fb";
     public static String CHARACTERISTIC_RESPONSE_STRING_4 = "0000fff1-0000-1000-8000-00805f9b34fb";
+
+    // test - device information - serial number string
+    public static String Serial_Number_String = "00002a29-0000-1000-8000-00805f9b34fb";
     //BluetoothGattDescriptor 고정
     public String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
@@ -370,6 +376,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     LinearLayout ll_navigation_move, ll_navigation_log;
 
     public static LinearLayout ll_navigation_GPS;
+    public static LinearLayout ll_navigation_Language;
+    public static LinearLayout ll_navigation_PasswordChange;
 
 
     // drawLayout(bluetoothMainlayout)
@@ -398,10 +406,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                        BluetoothDevice device,
                                        BluetoothGattCallback mGattCallBack) {
         if (device != null) {
+            // 각 os 별 연결 시 세부 조정이 다양함.
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 Log.d(TAG, "connectToDevice - O up");
-                /*bleGatt = device.connectGatt(context, false, mGattCallBack,
-                        BluetoothDevice.DEVICE_TYPE_LE,BluetoothDevice.PHY_LE_2M | BluetoothDevice.PHY_LE_1M);*/
                 bleGatt = device.connectGatt(context, false, mGattCallBack,
                         BluetoothDevice.DEVICE_TYPE_LE, BluetoothDevice.PHY_LE_2M | BluetoothDevice.PHY_LE_1M);
             } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -554,7 +561,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 fragmentChange("fragment_ble_beginning");
 
             case android.R.id.home:
-                Toast.makeText(mBleContext, "Test Success", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mBleContext, "Test Success", Toast.LENGTH_SHORT).show();
                 return true;
 
 
@@ -654,6 +661,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mBroadcastReceiver1, filter1);
 
+        // 굳이 해당 정보를 알 필요가 없어서
         /*IntentFilter filter2 = new IntentFilter();
         filter2.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter2.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
@@ -715,6 +723,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         log_Listview = navigationView.findViewById(R.id.lv_Navigation_Log);
         ll_navigation_move = navigationView.findViewById(R.id.ll_Navigation_Move);
         ll_navigation_log = navigationView.findViewById(R.id.ll_Navigation_Log);
+        ll_navigation_Language = navigationView.findViewById(R.id.ll_Navigation_Show_Language);
+        ll_navigation_PasswordChange = navigationView.findViewById(R.id.ll_Navigation_Password_Change);
         ll_navigation_GPS = navigationView.findViewById(R.id.ll_navigation_gps);
         ll_navigation_GPS.setVisibility(View.GONE);
         log_Refresh();
@@ -805,6 +815,16 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         });
 
+        // 비밀번호 변경
+        navigationView.findViewById(R.id.ll_Navigation_Password_Change).setOnClickListener(v -> {
+            handler.postDelayed(() -> {
+                FragmentManager fm = getSupportFragmentManager();
+                dialogFragment_Ble_Setting_Password_Change setting_PasswordChange_DialogFragment = new dialogFragment_Ble_Setting_Password_Change();
+                setting_PasswordChange_DialogFragment.show(fm, "fragment_setting_dialog_Password");
+            }, 200);
+
+        });
+
 
         bleDrawerLayout = findViewById(R.id.ble_drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, bleDrawerLayout, toolbarMain, R.string.app_name, R.string.app_name);
@@ -855,8 +875,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static void navigation_GPS_Visible(boolean visble) {
         if (visble) {
             ll_navigation_GPS.setVisibility(View.VISIBLE);
+            ll_navigation_PasswordChange.setVisibility(View.VISIBLE);
+            ll_navigation_Language.setVisibility(View.GONE);
         } else {
             ll_navigation_GPS.setVisibility(View.GONE);
+            ll_navigation_PasswordChange.setVisibility(View.GONE);
+            ll_navigation_Language.setVisibility(View.VISIBLE);
         }
     }
 
@@ -1428,6 +1452,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         // 위치정보 on 확인 끝
     }
 
+    // 연결 실패 시 n회 연결 재시도용
+    public static int connectFail = 0;
+
     // 블루투스 각종 기능.
     private BluetoothGattCallback gattClientCallback = new BluetoothGattCallback() {
 
@@ -1441,8 +1468,16 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 return;
             } else if (status != BluetoothGatt.GATT_SUCCESS) {
                 logData_Ble("Bluetooth Disconnect", "error");
-                disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
-                fragmentChange("fragment_ble_beginning");
+                if(connectFail < 5){
+                    connectFail += 1;
+                    connectToDevice(mBleContext, bleConnectDevice, gattClientCallback);
+                    Log.d(TAG, "NO_GATT_SUCCESS " + connectFail + "회 실패 : " + status);
+                }else{
+                    connectFail = 0;
+                    disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
+                    fragmentChange("fragment_ble_beginning");
+                    Log.d(TAG, "NO_GATT_SUCCESS 5회 실패 : " + status);
+                }
                 return;
             }
             if (newState == BluetoothProfile.STATE_CONNECTED) {
@@ -1488,6 +1523,19 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
                     if (characteristics != null) {
                         for (BluetoothGattCharacteristic characteristic : characteristics) {
+
+
+                            /*try {
+                                Log.d(TAG, "BluetoothGattCharacteristic characteristic : " + characteristic.getUuid().toString());
+                                if(characteristic.getUuid().toString().equals(Serial_Number_String)){
+                                    nameCharacteristic = characteristic;
+                                    Log.d(TAG, " 성공!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + nameCharacteristic.getStringValue(0));
+                                    //Log.d(TAG, "nameCharacteristic : " + nameCharacteristic.getValue().toString());
+                                }
+                            }catch (Exception e){
+                                Log.d(TAG, "실패!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                            }*/
+
                             // bluetooth 5 및 일반적 블루투스
                             if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE ||
                                     characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) {
@@ -1596,9 +1644,19 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             }
             Log.d(TAG, "readCharacteristic String : " + new String(characteristic.getValue()));
             Log.d(TAG, "readDataTotal : " + readDataTotal);
-            handler.sendEmptyMessage(readDataSuccess);
+
+            ReadDataThread readDataThread = new ReadDataThread();
+            readDataThread.start();
         }
     };
+
+
+    class ReadDataThread extends Thread{
+        @Override
+        public void run() {
+            handler.sendEmptyMessage(readDataSuccess);
+        }
+    }
 
     public String byteArrayToHexaString(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
@@ -1626,6 +1684,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         respCharacteristic = null;
         bleConnected = false;
         selectedSerialNum = "";
+        connectFail = 0;
         if (bleGatt != null) {
             BleConnecting = false;
 
@@ -1646,6 +1705,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                 try {
 
+                    if(readDataTotal.trim().equals("")){
+                        Log.d(TAG, "readDataTotal is nothing" + readDataTotal);
+                        return;
+                    }
 
                     // RTU 관련 데이터 들어올 경우($ 및 * 이 안들어감)
                     if (readDataTotal.contains("[ ConfMsg]") && readDataTotal.contains(">")) {
@@ -1769,6 +1832,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     boolean whileExit = true;
 
                     while(whileExit){
+
+                        Log.d(TAG, "while in");
+
+                        readDataTotal = readDataTotal.trim();
+                        Log.d(TAG, "readDataTotal trim : " + readDataTotal);
+
                         // $ 및 * 등이 포함됐는지.(처음과 끝)
                         if (readDataTotal.indexOf(DATA_SIGN_START) > -1
                                 && readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1) {
@@ -1813,24 +1882,29 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                                 fragment_sn_setting.readData(data);
                                             }
 
+                                        }else{
+                                            readDataTotal = "";
+                                            whileExit = false;
                                         }
 
                                         try {
                                             readDataTotal = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 1);
+                                            Log.d(TAG, "remain readDataTotal : " + readDataTotal);
                                             if(readDataTotal.indexOf(DATA_SIGN_START) > -1
                                                     && readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1){
                                                 readDataTotal = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_START));
                                                 Log.d(TAG, "readData Test : " + readDataTotal);
-                                                whileExit = true;
-                                                return;
                                             }else{
+                                                Log.d(TAG, "readDataTotal no contain $ or * : " + readDataTotal);
                                                 // 작업 끝.들어온 데이터 초기화
                                                 readDataTotal = "";
                                                 whileExit = false;
+                                                return;
                                             }
                                         }catch (Exception e){
                                             readDataTotal = "";
                                             whileExit = false;
+                                            return;
                                         }
 
 
@@ -1840,16 +1914,21 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                     Log.d(TAG, "readData Error - checksum - 3 / " + readDataTotal.length() + " and " + readDataTotal.charAt(readDataTotal.length() - 3));
 
                                     readDataTotal = "";
+                                    whileExit = false;
+                                    return;
                                 }
                             } else {
                                 // 데이터가 잘못 들어옴. 초기화
                                 logData_Ble("readData Error - order", "error");
                                 Log.d(TAG, "readData Error - order");
                                 readDataTotal = "";
+                                whileExit = false;
+                                return;
                             }
 
+                        }else{
+                            return;
                         }
-                        whileExit = false;
                     }
 
                     // 체크섬만 있을 경우(순서 이상함)
@@ -1907,21 +1986,16 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                 String finalSendBlewriteData = sendBlewriteData;
 
-                Log.d(TAG, "Test Data 1 : " + finalSendBlewriteData);
-
                 for (int i = 0; i < (finalSendBlewriteData.length() / 20) + 1; i++) {
                     if (finalSendBlewriteData.length() - (i * 20) < 20) {
                         cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20).getBytes());
                     } else {
                         if (((i + 1) * 20) < finalSendBlewriteData.length()) {
-                            Log.d(TAG, "Test Data : " + ((i + 1) * 20) + " , length : " + finalSendBlewriteData.length());
                             cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20, (i + 1) * 20).getBytes());
                         } else {
                             cmdCharacteristic.setValue(finalSendBlewriteData.substring(i * 20).getBytes());
                         }
                     }
-
-                    Log.d(TAG, "Test Data 1-1");
 
                     // 해당 write가 있어야 값을 보냄.
                     Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
@@ -2072,7 +2146,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 case BluetoothDevice.ACTION_ACL_CONNECTED:
                     Log.d(TAG, "Bluetooth.ACTION_ACL_CONNECTED");
                     // 연결 시
-
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     Log.d(TAG, "Bluetooth.ACTION_ACL_DISCONNECTED");
@@ -2141,7 +2214,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         if (currentFragment instanceof fragment_Ble_Function) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("Notice").setMessage("블루투스 연결을 종료하시겠습니까?\nDo you want to disconnect the Bluetooth connection?");
+            builder.setTitle("Notice").setMessage("초기화면으로 돌아가시겠습니까?\nDo you want to return to the initial screen?");
 
             builder.setPositiveButton("OK", (dialog, id) -> {
                 disconnectGattServer("bleMainActivity - onBackPressed - fragment_Ble_Function");
@@ -2156,17 +2229,17 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             alertDialog.show();
         } else if (currentFragment instanceof fragment_Ble_Password) {
             disconnectGattServer("bleMainActivity - onBackPressed - fragment_Ble_Password");
-            fragmentChange("fragment_ble_beginning");
+            fragmentChange("fragment_ble_scan");
         } else if (currentFragment instanceof fragment_CDS_Setting) {
             disconnectGattServer("bleMainActivity - onBackPressed - fragment_CDS_Setting");
-            fragmentChange("fragment_ble_beginning");
+            fragmentChange("fragment_ble_function");
         } else if (currentFragment instanceof fragment_SN_Setting) {
             disconnectGattServer("bleMainActivity - onBackPressed - fragment_SN_Setting");
-            fragmentChange("fragment_ble_beginning");
+            fragmentChange("fragment_ble_function");
         } else if (currentFragment instanceof fragment_Ble_Beginning) {
-            finish();
+            super.onBackPressed();
         } else if (currentFragment instanceof fragment_Ble_Scan) {
-            fragmentChange("fragment_ble_beginning");
+            fragmentChange("fragment_ble_function");
         }
     }
 

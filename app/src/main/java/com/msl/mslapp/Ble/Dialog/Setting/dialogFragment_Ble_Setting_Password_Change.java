@@ -1,6 +1,8 @@
 package com.msl.mslapp.Ble.Dialog.Setting;
 
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -35,9 +37,9 @@ public class dialogFragment_Ble_Setting_Password_Change extends DialogFragment {
             btn_Z, btn_X, btn_C, btn_V, btn_B, btn_N, btn_M,
             btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_0;
 
-    TextView btn_delete, btn_OK, btn_OK_num, btn_change_num, btn_change_key;
+    TextView btn_OK, btn_OK_num, btn_change_num, btn_change_key;
 
-    LinearLayout llkeyboard, llnumboard;
+    LinearLayout btn_delete,btn_delete_num, llkeyboard, llnumboard;
 
     String passwordBackup = "";
 
@@ -55,6 +57,9 @@ public class dialogFragment_Ble_Setting_Password_Change extends DialogFragment {
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
+        // 배경 모서리 곡선 이용 시 해당 값 넣어야 곡선으로 나옴(배경이 안보임)
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         view = inflater.inflate(R.layout.ble_fragment_password_change, null);
 
 
@@ -66,6 +71,9 @@ public class dialogFragment_Ble_Setting_Password_Change extends DialogFragment {
 
         btn_delete = view.findViewById(R.id.password_key_delete);
         btn_delete.setOnClickListener(v -> deleteClickEvent());
+
+        btn_delete_num = view.findViewById(R.id.password_num_delete);
+        btn_delete_num.setOnClickListener(v -> deleteClickEvent());
 
         btn_OK = view.findViewById(R.id.btn_connect);
         btn_OK.setOnClickListener(v -> {

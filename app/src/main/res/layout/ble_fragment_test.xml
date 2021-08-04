@@ -24,7 +24,8 @@
             <Button
                 android:id="@+id/lampOnBtn"
                 style="@style/btn_ble_fragment_test"
-                android:text="@string/lantern_On" />
+                android:text="@string/lantern_On"
+                android:textAllCaps="false" />
 
         </LinearLayout>
 
@@ -50,7 +51,8 @@
             <Button
                 android:id="@+id/lampOffBtn"
                 style="@style/btn_ble_fragment_test"
-                android:text="@string/lantern_Off" />
+                android:text="@string/lantern_Off"
+                android:textAllCaps="false" />
 
         </LinearLayout>
     </LinearLayout>
@@ -75,7 +77,8 @@
             <Button
                 android:id="@+id/lampFixedBtn"
                 style="@style/btn_ble_fragment_test"
-                android:text="@string/lantern_Fix" />
+                android:text="@string/lantern_Fix"
+                android:textAllCaps="false" />
 
         </LinearLayout>
     </LinearLayout>
@@ -100,7 +103,8 @@
             <Button
                 android:id="@+id/resetBtn"
                 style="@style/btn_ble_fragment_test"
-                android:text="@string/Reset" />
+                android:text="@string/Reset"
+                android:textAllCaps="false" />
 
         </LinearLayout>
     </LinearLayout>

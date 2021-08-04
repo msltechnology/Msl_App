@@ -1,7 +1,7 @@
 <resources>
     <string name="ble_setting_FLSetting_message">Test</string>
     <string name="ble_setting_FLSetting_title">FL Setting</string>
-    <string name="ble_main_scanItem_scan">Scan</string>
+    <string name="ble_main_scanItem_scan">Lantern Scan</string>
     <string name="ble_main_scanItem_stopScanning">Stop</string>
     <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">Location information permission request failed</string>
     <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">You have declined the request for location information.\nBluetooth scanning usage is restricted.\nDo you want to check again?</string>
@@ -17,10 +17,10 @@
     <string name="dialog_setting_confirm">OK</string>
     <string name="ID_setting">ID Set</string>
     <string name="FL_setting">FL Set</string>
-    <string name="once_status">Status request</string>
-    <string name="lantern_On">lantern On</string>
-    <string name="lantern_Off">lantern Off</string>
-    <string name="lantern_Fix">lantern Fix</string>
+    <string name="once_status">Status Request</string>
+    <string name="lantern_On">Lantern ON</string>
+    <string name="lantern_Off">Lantern OFF</string>
+    <string name="lantern_Fix">Fixed</string>
     <string name="Reset">Reset</string>
     <string name="ble_main_title">MSL Technology</string>
     <string name="toastMsg_bluetooth_Off">Bluetooth OFF! Please Check Bluetooth</string>
@@ -37,7 +37,7 @@
     <string name="receive_date">Date</string>
     <string name="gps_latitude">Latitude</string>
     <string name="battery_v">Battery V</string>
-    <string name="charge_discharge_A">Dis•charge</string>
+    <string name="charge_discharge_A">Dis•Charge</string>
     <string name="receive_time">Receive Time</string>
     <string name="gps_longitude">Longitude</string>
     <string name="battery_percent">Battery\nPercent</string>
@@ -49,7 +49,7 @@
     <string name="select">Select</string>
     <string name="btnSelectID_Error1">The maximum is 256.</string>
     <string name="GPS_On">Always</string>
-    <string name="GPS_Off">Only Night</string>
+    <string name="GPS_Off">Night Only</string>
     <string name="tv_ble_fragment_beginning_manual">Manual</string>
     <string name="notice_current_password">Please enter\nyour current password</string>
     <string name="notice_change_password">Please enter\nthe password to be changed.</string>
@@ -69,10 +69,9 @@
     <string name="ble_status_lantern_status_1">On</string>
     <string name="battery_v_detail">Battery\nDetail</string>
     <string name="solar_v_detail">Solar\nDetail</string>
-    <string name="GPS_Set">GPS Power</string>
     <string name="btn_ble_setting_change_password">Password Change</string>
-    <string name="change">change</string>
-    <string name="lantern_id">lantern ID</string>
+    <string name="change">Change</string>
+    <string name="lantern_id">Lantern ID</string>
     <string name="RTU_ID">RTU ID</string>
     <string name="send_cycle" >Send cycle</string>
     <string name="reset_cycle">reset cycle</string>
@@ -96,7 +95,7 @@
     <string name="RTU">RTU</string>
     <string name="log_close">Log Close</string>
     <string name="TCP">TCP</string>
-    <string name="call">call</string>
+    <string name="call">Call</string>
     <string name="Modem_Num">Modem Call Num</string>
     <string name="Lantern_Info">Lantern Info</string>
     <string name="Delay_Time_value">+0.00 Sec</string>
@@ -108,5 +107,6 @@
     <string name="tv_ble_fragment_password_passwordInsert">Please enter a password</string>
     <string name="ble_scan_status_scanning">Scanning...</string>
     <string name="ble_scan_status_pause">Scan complete</string>
-    <string name="temperature">temperature</string>
+    <string name="temperature">TEMP</string>
+    <string name="Delay_Time_change">Time Set</string>
 </resources>

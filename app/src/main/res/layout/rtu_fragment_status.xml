@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ble_fragment_backgroud"
+    android:background="@color/rtu_fragment_backgroud"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -75,6 +75,7 @@
                     <Button
                         android:id="@+id/btn_DevId"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/change" />
                 </LinearLayout>
 
@@ -102,6 +103,7 @@
                     <Button
                         android:id="@+id/btn_LanternId"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/change" />
                 </LinearLayout>
 
@@ -127,6 +129,7 @@
                     <Button
                         android:id="@+id/btn_Status_Interval"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/change" />
                 </LinearLayout>
 
@@ -205,6 +208,7 @@
                     <Button
                         android:id="@+id/btn_server_1"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/change" />
                 </LinearLayout>
 
@@ -243,6 +247,7 @@
                     <Button
                         android:id="@+id/btn_server_2"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/change" />
                 </LinearLayout>
 

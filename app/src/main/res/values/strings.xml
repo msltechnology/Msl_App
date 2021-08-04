@@ -2,7 +2,7 @@
     <string name="app_name" translatable="false">MSL</string>
     <string name="ble_setting_FLSetting_message">테스트 중</string>
     <string name="ble_setting_FLSetting_title">FL Setting</string>
-    <string name="ble_main_scanItem_scan">찾기</string>
+    <string name="ble_main_scanItem_scan">등명기 검색</string>
     <string name="ble_main_scanItem_stopScanning">중지</string>
     <string name="ble_main_title">MSL Technology</string>
     <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">위치정보 권한 요청</string>
@@ -79,8 +79,8 @@
     <string name="Fixed">부동광</string>
     <string name="select">select</string>
     <string name="btnSelectID_Error1">값의 범위는 001 ~ 256 입니다.</string>
-    <string name="GPS_On">항상 키기</string>
-    <string name="GPS_Off">밤에만 키기</string>
+    <string name="GPS_On">항상 켜기</string>
+    <string name="GPS_Off">밤에만 켜기</string>
     <string name="tv_ble_fragment_beginning_manual">Manual</string>
     <string name="notice_current_password">현재 비밀번호를 입력해주세요</string>
     <string name="notice_change_password">변경할 비밀번호를 입력해주세요.</string>
@@ -100,7 +100,7 @@
     <string name="ble_status_lantern_status_1">점등</string>
     <string name="battery_v_detail">베터리\n자세히</string>
     <string name="solar_v_detail">솔라\n자세히</string>
-    <string name="GPS_Set">GPS 전원</string>
+    <string name="GPS_Set" translatable="false">GPS</string>
     <string name="btn_ble_setting_change_password">비밀번호 변경</string>
     <string name="tv_ble_fragment_status_dialog_battery_bat1" translatable="false">Bat1</string>
     <string name="tv_ble_fragment_status_dialog_battery_bat2" translatable="false">Bat2</string>
@@ -170,6 +170,8 @@
     <string name="ble_scan_status_scanning">검색중...</string>
     <string name="ble_scan_status_pause">검색 완료</string>
     <string name="temperature">온도</string>
+    <string name="Language" translatable="false">Language(언어)</string>
+    <string name="Delay_Time_change">시간 변경</string>
 
 
 </resources>

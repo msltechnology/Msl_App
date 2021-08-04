@@ -2,32 +2,125 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:background="@drawable/custom_ble_status_dialog_background">
 
-    <ImageView
-        android:id="@+id/language_kor"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:src="@drawable/language_kor_off"
-        android:layout_margin="20dp"
-        />
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:text="@string/Language"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@color/MSL_Blue"/>
 
-    <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:background="#000000"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:clipToPadding="false"
+        android:padding="5dp"
+        >
+        <LinearLayout
+            android:id="@+id/language_kor"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/custom_language_chage_ll"
+            android:layout_margin="15dp"
+            android:translationZ="5dp"
+            android:elevation="3dp"
+            >
 
-    <ImageView
-        android:id="@+id/language_eng"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@drawable/language_eng_off"
-        android:layout_margin="20dp"
-        ></ImageView>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Korean"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:autoSizeTextType="uniform"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="한국어"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:autoSizeTextType="uniform"
+                />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="#000000"/>
+
+        <LinearLayout
+            android:id="@+id/language_eng"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@drawable/custom_language_chage_ll"
+            android:layout_margin="15dp"
+            android:translationZ="5dp"
+            android:elevation="3dp"
+            >
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="English"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:autoSizeTextType="uniform"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="영어"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:autoSizeTextType="uniform"
+                />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

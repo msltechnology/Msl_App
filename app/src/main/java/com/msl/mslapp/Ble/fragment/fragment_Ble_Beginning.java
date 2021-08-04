@@ -1,16 +1,12 @@
 package com.msl.mslapp.Ble.fragment;
 
-import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -23,9 +19,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -40,11 +33,8 @@ import com.msl.mslapp.RTUMainActivity;
 import java.util.Locale;
 
 import static com.msl.mslapp.BleMainActivity.BluetoothStatus;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_DIP;
-import static com.msl.mslapp.BleMainActivity.MY_PERMISSIONS_REQUEST_READ_CONTACTS;
 import static com.msl.mslapp.BleMainActivity.adminApp;
 import static com.msl.mslapp.BleMainActivity.bluetooth_permission_check;
-import static com.msl.mslapp.BleMainActivity.locationManager;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 import static com.msl.mslapp.BleMainActivity.SnFlag;
 import static com.msl.mslapp.BleMainActivity.CdsFlag;
@@ -85,8 +75,10 @@ public class fragment_Ble_Beginning extends Fragment {
         ImageButton bleScanIb = view.findViewById(R.id.ib_ble_Scan);
         Button bleScanCDSBtn = view.findViewById(R.id.btn_beginning_cds);
         Button bleScanSNBtn = view.findViewById(R.id.btn_beginning_SN);
-        Button btnScan = view.findViewById(R.id.btn_ble_Scan_Move);
-        Button btnRTU = view.findViewById(R.id.btn_RTU_Move);
+        LinearLayout llScan = view.findViewById(R.id.ll_ble_Scan_Move);
+        TextView tvScan = view.findViewById(R.id.tv_ble_Scan_Move);
+        LinearLayout llRTU = view.findViewById(R.id.ll_RTU_Move);
+        TextView tvRTU = view.findViewById(R.id.tv_RTU_Move);
         LinearLayout llAdmin = view.findViewById(R.id.ll_beginning_Admin);
         LinearLayout llNoAdmin = view.findViewById(R.id.ll_beginning_noAdmin);
         TextView version = view.findViewById(R.id.app_versionName);
@@ -103,33 +95,31 @@ public class fragment_Ble_Beginning extends Fragment {
         }
 
         if(tLanguage.equals("ko")){
-            btnScan.setText("등명기 모니터링");
+            tvScan.setText("등명기 모니터링");
         }else if(tLanguage.equals("en")){
-            btnScan.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-            btnScan.setText("Lantern\nMonitoring");
+            tvScan.setText("Lantern Monitoring");
         }
 
         if(tLanguage.equals("ko")){
-            btnRTU.setText("RTU 설정");
+            tvRTU.setText("RTU 설정");
         }else if(tLanguage.equals("en")){
-            btnRTU.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
-            btnRTU.setText("RTU Setup");
+            tvRTU.setText("RTU Setup");
         }
 
         if (adminApp) {
             bleScanCDSBtn.setVisibility(View.VISIBLE);
             bleScanSNBtn.setVisibility(View.VISIBLE);
             llAdmin.setVisibility(View.VISIBLE);
-            btnScan.setVisibility(View.VISIBLE);
-            btnRTU.setVisibility(View.VISIBLE);
+            llScan.setVisibility(View.VISIBLE);
+            llRTU.setVisibility(View.VISIBLE);
             llNoAdmin.setVisibility(View.VISIBLE);
 
         } else {
             bleScanCDSBtn.setVisibility(View.GONE);
             bleScanSNBtn.setVisibility(View.GONE);
             llAdmin.setVisibility(View.GONE);
-            btnScan.setVisibility(View.VISIBLE);
-            btnRTU.setVisibility(View.VISIBLE);
+            llScan.setVisibility(View.VISIBLE);
+            llRTU.setVisibility(View.VISIBLE);
             llNoAdmin.setVisibility(View.VISIBLE);
         }
 
@@ -137,8 +127,10 @@ public class fragment_Ble_Beginning extends Fragment {
         //bleScanIb.setOnClickListener(v -> fragmentScanChange());
         bleScanCDSBtn.setOnClickListener(v -> bleScanCDSBtnOnClick());
         bleScanSNBtn.setOnClickListener(v -> bleScanSNBtnOnClick());
-        btnScan.setOnClickListener(v -> fragmentScanChange());
-        btnRTU.setOnClickListener(v -> {
+        llScan.setOnClickListener(v -> fragmentScanChange());
+        bleScanIb.setOnClickListener(v -> fragmentScanChange());
+
+        llRTU.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                 return;
             }

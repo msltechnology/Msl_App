@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ble_fragment_backgroud"
+    android:background="@color/rtu_fragment_backgroud"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -74,6 +74,7 @@
                     <Button
                         android:id="@+id/btn_modem_power"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/change" />
                 </LinearLayout>
 
@@ -100,6 +101,7 @@
                     <Button
                         android:id="@+id/btn_GMT"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/change" />
 
                 </LinearLayout>
@@ -129,6 +131,7 @@
                     <Button
                         android:id="@+id/btn_protocol"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/change" />
 
                 </LinearLayout>
@@ -157,6 +160,7 @@
                     <Button
                         android:id="@+id/btn_Modem_Num"
                         style="@style/rtu_btn_status_change"
+                        android:textAllCaps="false"
                         android:text="@string/call" />
 
                 </LinearLayout>

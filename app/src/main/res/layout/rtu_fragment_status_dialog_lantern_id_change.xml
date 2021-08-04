@@ -11,9 +11,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:autoSizeTextType="uniform"/>
-
-    <View style="@style/rtu_view_vertical_line_5"  />
+        android:autoSizeTextType="uniform"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@color/MSL_Blue"/>
 
     <LinearLayout
         android:layout_width="match_parent"

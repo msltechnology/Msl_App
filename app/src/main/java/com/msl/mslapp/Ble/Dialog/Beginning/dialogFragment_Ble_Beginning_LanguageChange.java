@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,8 +38,8 @@ public class dialogFragment_Ble_Beginning_LanguageChange extends DialogFragment 
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ImageView im_kor = view.findViewById(R.id.language_kor);
-        ImageView im_eng = view.findViewById(R.id.language_eng);
+        LinearLayout im_kor = view.findViewById(R.id.language_kor);
+        LinearLayout im_eng = view.findViewById(R.id.language_eng);
 
         im_kor.setOnClickListener(v -> languageChange("ko"));
         im_eng.setOnClickListener(v -> languageChange("en"));
@@ -71,7 +72,7 @@ public class dialogFragment_Ble_Beginning_LanguageChange extends DialogFragment 
         display.getSize(size);
 
         final String x = String.valueOf(Math.round((size.x * 0.85)));
-        final String y = String.valueOf(Math.round((size.y * 0.3)));
+        final String y = String.valueOf(Math.round((size.y * 0.2)));
         int dialogWidth = Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

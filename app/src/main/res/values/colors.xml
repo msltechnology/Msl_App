@@ -25,21 +25,16 @@
 
     <!--bleMain-->
     <color name="ble_toolbarmain">#051E4B</color>
-    <color name="ble_main_backgroud">#F4F5F9</color>
-    <color name="ble_fragment_backgroud">#FDFEFE</color>
-
-    <!--beginning-->
+    <color name="ble_main_background">#F4F5F9</color>
 
     <!--navigation-->
-    <color name="navigation_background">#051F4B</color>
     <color name="navigation_text">#7279A0</color>
+    <color name="navigation_view">#595757</color>
 
-    <!--password-->
-    <color name="password_key">#595757</color>
+    <color name="blank_value">#9EE4E4E4</color>
 
-<!--    dialog-->
-    <color name="dialog_fl">#DDBABABA</color>
-
+    <!--RTU-->
+    <color name="rtu_fragment_backgroud">#FDFEFE</color>
 
     <color name="ble_color1">#12997C</color>
     <color name="ble_color2">#5A3CF0</color>

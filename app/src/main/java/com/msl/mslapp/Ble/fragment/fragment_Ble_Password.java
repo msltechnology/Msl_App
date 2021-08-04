@@ -37,9 +37,9 @@ public class fragment_Ble_Password extends Fragment {
             btn_Z, btn_X, btn_C, btn_V, btn_B, btn_N, btn_M,
             btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_0;
 
-    TextView btn_delete, btn_delete_num, btn_connect, btn_change_num, btn_change_key;
+    TextView btn_connect, btn_change_num, btn_change_key;
 
-    LinearLayout llkeyboard, llnumboard;
+    LinearLayout btn_delete, btn_delete_num, llkeyboard, llnumboard;
 
     int passwordOrder = 0;
 

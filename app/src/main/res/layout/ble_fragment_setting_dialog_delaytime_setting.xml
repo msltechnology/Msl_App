@@ -3,184 +3,120 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/ble_main_backgroud">
+    android:background="@drawable/custom_ble_status_dialog_background"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:autoSizeTextType="uniform"
+        android:background="@color/MSL_Blue"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/Delay_Time_change"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        tools:ignore="NestedWeights">
-
-        <Button
-            android:id="@+id/btn_plus_change"
-            style="@style/btn_setting_dialog_id"
-            android:background="@drawable/ic_sign_up"
-            android:visibility="invisible"/>
-
-
-
-        <Button
-            android:id="@+id/btn_hundred_up"
-            style="@style/btn_setting_dialog_id"
-            android:background="@drawable/ic_sign_up"/>
-
-
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"/>
-
-
-
-        <Button
-            android:id="@+id/btn_ten_up"
-            style="@style/btn_setting_dialog_id"
-            android:background="@drawable/ic_sign_up"/>
-
-
-
-        <Button
-            android:id="@+id/btn_one_up"
-            style="@style/btn_setting_dialog_id"
-            android:background="@drawable/ic_sign_up"/>
-
-
-
-        <Space
-            style="@style/btn_setting_dialog_id"/>
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.4"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="0.3"
+            />
 
-            <TextView
-                android:id="@+id/tv_dialog_delaytime_sign"
-                style="@style/tv_setting_dialog_id"
-                android:text="+"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="10dp"
-                android:background="@color/dialog_fl" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/ll_dialog_delaytime_sigh"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="2">
 
-            <TextView
-                android:id="@+id/tv_dialog_delaytime_hundred"
-                style="@style/tv_setting_dialog_id"
-                android:text="0"/>
+        </ImageView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="10dp"
-                android:background="@color/dialog_fl" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3"
-                android:gravity="bottom"
-                android:text="."
-                android:autoSizeTextType="uniform"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-
+            android:layout_weight="0.4"/>
 
         <LinearLayout
+            android:id="@+id/ll_delaytime_tiem"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_weight="2"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_dialog_delaytime_ten"
-                style="@style/tv_setting_dialog_id"
-                android:text="0"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="10dp"
-                android:background="@color/dialog_fl" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+            <LinearLayout
+                android:id="@+id/ll_dialog_delaytime_hundred"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                />
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_dialog_delaytime_hundred"
+                    style="@style/tv_setting_dialog_id"
+                    android:text="0" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_dialog_delaytime_one"
-                style="@style/tv_setting_dialog_id"
-                android:text="0"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="10dp"
-                android:background="@color/dialog_fl"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="bottom"
+                    android:text="." />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_dialog_delaytime_ten"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_dialog_delaytime_ten"
+                    style="@style/tv_setting_dialog_id"
+                    android:text="0" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_dialog_delaytime_one"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_dialog_delaytime_one"
+                    style="@style/tv_setting_dialog_id"
+                    android:text="0" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -192,113 +128,183 @@
 
             <TextView
                 style="@style/tv_setting_dialog_id"
-                android:text="@string/Second_Sec"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
+                android:textSize="24dp"
+                android:text="@string/Second_Sec" />
 
         </LinearLayout>
-
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="vertical">
+        android:layout_weight="3"
+        android:orientation="horizontal">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_minus_change"
-                style="@style/btn_setting_dialog_id"
-                android:background="@drawable/ic_sign_down"/>
-
-
-
-            <Button
-                android:id="@+id/btn_hundred_down"
-                style="@style/btn_setting_dialog_id"
-                android:background="@drawable/ic_sign_down"/>
-
-
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"/>
-
-
-
-            <Button
-                android:id="@+id/btn_ten_down"
-                style="@style/btn_setting_dialog_id"
-                android:background="@drawable/ic_sign_down"/>
-
-
-
-            <Button
-                android:id="@+id/btn_one_down"
-                style="@style/btn_setting_dialog_id"
-                android:background="@drawable/ic_sign_down"/>
-
-
-
-            <Space
-                style="@style/btn_setting_dialog_id"/>
-
-        </LinearLayout>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/btn_dialog_delaytime_cancel"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="32dp"
-                android:textColor="#495AA7"
-                android:textStyle="bold"
-                android:background="@drawable/custom_ble_setting_value_tv_value_2"
-                android:text="X" />
+                android:orientation="horizontal"
+                tools:ignore="NestedWeights">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_1"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_1" />
 
-            <Button
-                android:id="@+id/btn_dialog_delaytime_OK"
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_2"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_2" />
+
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_3"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_3" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="32dp"
-                android:textColor="#495AA7"
-                android:textStyle="bold"
-                android:background="@drawable/custom_ble_setting_value_tv_value_2"
-                android:text="OK" />
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_4"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_4" />
+
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_5"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_5" />
+
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_6"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_6" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_7"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_7" />
+
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_8"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_8" />
+
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_9"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_9" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/btn_dialog_setting_ID_cancel"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:src="@drawable/icon_backpress"
+                            />
+
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            />
+
+
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_0"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="@string/_0" />
+
+                <TextView
+                    android:id="@+id/btn_dialog_setting_ID_OK"
+                    style="@style/btn_setting_dialog_delay_key"
+                    android:text="OK" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.3"/>
         </LinearLayout>
 
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"/>
     </LinearLayout>
-
 
 </LinearLayout>

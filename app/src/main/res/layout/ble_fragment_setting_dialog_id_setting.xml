@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/custom_ble_status_dialog_background"
     android:orientation="vertical">
 
     <LinearLayout
@@ -43,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@color/dialog_fl" />
+                android:background="@color/blank_value" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -67,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@color/dialog_fl" />
+                android:background="@color/blank_value" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -91,7 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@color/dialog_fl" />
+                android:background="@color/blank_value" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -186,10 +187,56 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/btn_dialog_setting_ID_cancel"
-                style="@style/btn_setting_dialog_id"
-                android:text="X" />
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:src="@drawable/icon_backpress"
+                        />
+
+                    <Space
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        />
+
+
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/btn_dialog_setting_ID_0"

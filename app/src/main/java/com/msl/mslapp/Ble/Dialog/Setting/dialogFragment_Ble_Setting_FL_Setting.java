@@ -3,7 +3,9 @@ package com.msl.mslapp.Ble.Dialog.Setting;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -61,6 +63,10 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
         Log.d(TAG, "dialogFragment_Ble_Setting_FL_Setting 0");
         //getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT)); //배경 투명화
         getDialog().setCanceledOnTouchOutside(true);
+
+        // 배경 모서리 곡선 이용 시 해당 값 넣어야 곡선으로 나옴(배경이 안보임)
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 
         Log.d(TAG, "dialogFragment_Ble_Setting_FL_Setting 0_1");
         view = inflater.inflate(R.layout.ble_fragment_setting_dialog_fl_setting, null);

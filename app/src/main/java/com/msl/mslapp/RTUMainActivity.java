@@ -36,6 +36,9 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.Date;
 
+import static com.msl.mslapp.BleMainActivity.mBleContext;
+import static com.msl.mslapp.BleMainActivity.mBleMain;
+
 public class RTUMainActivity extends AppCompatActivity {
 
 
@@ -348,6 +351,8 @@ public class RTUMainActivity extends AppCompatActivity {
                 // RTU 와 연결된 등명기 상태 확인
                 log_listViewAdapter.addItem(getTime, "Lantern Status Call", color);
             }
+            log_listViewAdapter.notifyDataSetChanged();
+            return;
         }
 
         log_listViewAdapter.addItem(getTime, data, color);
@@ -403,10 +408,13 @@ public class RTUMainActivity extends AppCompatActivity {
         if (rtu_currentFragment instanceof fragment_RTU_Function) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("Notice").setMessage("RTU 앱을 종료합니까?");
+            builder.setTitle("Notice").setMessage("초기화면으로 돌아가시겠습니까?\nDo you want to return to the initial screen?");
 
             builder.setPositiveButton("OK", (dialog, id) -> {
-                finish();
+                Intent intent = new Intent(mRTUContext, BleMainActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                this.finish();
             });
 
             builder.setNegativeButton("Cancel", (dialog, id) -> {

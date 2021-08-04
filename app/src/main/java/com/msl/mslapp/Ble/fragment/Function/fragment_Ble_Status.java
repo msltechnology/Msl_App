@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -122,6 +123,7 @@ public class fragment_Ble_Status extends Fragment {
         textviewSetting();
 
         iv_ble_status_battery_percent = view.findViewById(R.id.iv_ble_fragment_status_battery_percent);
+        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_25);
 
         // 최초 1회 정보 요청
         ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS);

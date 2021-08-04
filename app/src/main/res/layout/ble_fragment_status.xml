@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ble_fragment_backgroud"
+    android:background="@color/ble_main_background"
     android:orientation="vertical"
     android:padding="5dp">
 
@@ -42,6 +42,7 @@
             android:layout_weight="3"
             android:background="@drawable/custom_ble_status_call_btn"
             android:text="@string/once_status"
+            android:textAllCaps="false"
             android:textSize="16dp"
             android:textStyle="bold" />
 
@@ -81,7 +82,8 @@
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_id"
                     style="@style/tv_ble_fragment_status_value"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:text="000"/>
 
             </LinearLayout>
 
@@ -98,7 +100,8 @@
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_fl"
-                    style="@style/tv_ble_fragment_status_value" />
+                    style="@style/tv_ble_fragment_status_value"
+                    android:text="000"/>
 
             </LinearLayout>
 
@@ -116,7 +119,8 @@
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_cds"
-                    style="@style/tv_ble_fragment_status_value" />
+                    style="@style/tv_ble_fragment_status_value"
+                    android:text="0"/>
 
             </LinearLayout>
 
@@ -140,7 +144,8 @@
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_input_v"
-                    style="@style/tv_ble_fragment_status_value" />
+                    style="@style/tv_ble_fragment_status_value"
+                    android:text="00.0"/>
 
             </LinearLayout>
 
@@ -159,7 +164,8 @@
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_output_v"
-                    style="@style/tv_ble_fragment_status_value" />
+                    style="@style/tv_ble_fragment_status_value"
+                    android:text="00.0"/>
 
             </LinearLayout>
 
@@ -177,7 +183,8 @@
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_lantern_status"
-                    style="@style/tv_ble_fragment_status_value" />
+                    style="@style/tv_ble_fragment_status_value"
+                    android:text="0"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -213,7 +220,8 @@
 
                         <TextView
                             android:id="@+id/tv_ble_fragment_status_battery_v"
-                            style="@style/tv_ble_fragment_status_value" />
+                            style="@style/tv_ble_fragment_status_value"
+                            android:text="00.0"/>
 
                     </LinearLayout>
 
@@ -231,7 +239,8 @@
 
                         <TextView
                             android:id="@+id/tv_ble_fragment_status_output_a"
-                            style="@style/tv_ble_fragment_status_value" />
+                            style="@style/tv_ble_fragment_status_value"
+                            android:text="00.0"/>
 
                     </LinearLayout>
 
@@ -255,7 +264,8 @@
 
                         <TextView
                             android:id="@+id/tv_ble_fragment_status_charge_dischar_a"
-                            style="@style/tv_ble_fragment_status_value" />
+                            style="@style/tv_ble_fragment_status_value"
+                            android:text="00.0"/>
 
                     </LinearLayout>
 
@@ -273,7 +283,8 @@
 
                         <TextView
                             android:id="@+id/tv_ble_fragment_status_solar_v"
-                            style="@style/tv_ble_fragment_status_value" />
+                            style="@style/tv_ble_fragment_status_value"
+                            android:text="00.0"/>
 
                     </LinearLayout>
 
@@ -283,17 +294,14 @@
             </LinearLayout>
 
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3" />
 
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="5"
-                android:orientation="vertical">
+                android:layout_weight="5.3"
+                android:orientation="vertical"
+                android:paddingRight="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -317,6 +325,7 @@
                         android:gravity="center"
                         android:textColor="#D92F24"
                         android:textSize="20dp"
+                        android:text="000"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -357,8 +366,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
 
                 <LinearLayout
@@ -374,13 +383,14 @@
                         android:gravity="center_vertical"
                         android:text="@string/gps_latitude"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
 
                     <TextView
                         android:id="@+id/tv_ble_fragment_status_gps_longitude"
-                        style="@style/tv_ble_fragment_status_value2" />
+                        style="@style/tv_ble_fragment_status_value2"
+                        android:text="E 000º00'00.0000&quot;"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -396,18 +406,20 @@
                         android:gravity="center_vertical"
                         android:text="@string/gps_longitude"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_ble_fragment_status_gps_latitude"
-                        style="@style/tv_ble_fragment_status_value2" />
-                </LinearLayout>
+                        style="@style/tv_ble_fragment_status_value2"
+                        android:text="N 00º00'00.0000&quot;" />
+                </LinearLayout>3.
+
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="6"/>
+                    android:layout_weight="2"/>
             </LinearLayout>
 
             <View
@@ -418,8 +430,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -434,20 +446,21 @@
                         android:gravity="center_vertical"
                         android:text="@string/receive_date"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
 
                     <TextView
                         android:id="@+id/tv_ble_fragment_status_receive_date"
-                        style="@style/tv_ble_fragment_status_value2" />
+                        style="@style/tv_ble_fragment_status_value2"
+                        android:text="0000Y 00M 00D" />
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="6"
+                    android:layout_weight="5"
                     android:orientation="vertical">
 
                     <TextView
@@ -457,34 +470,40 @@
                         android:gravity="center_vertical"
                         android:text="@string/receive_time"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_ble_fragment_status_receive_time"
-                        style="@style/tv_ble_fragment_status_value2" />
+                        style="@style/tv_ble_fragment_status_value2"
+                        android:text="00H 00M 00S"/>
                 </LinearLayout>
 
 
                 <LinearLayout
                     android:layout_width="0dp"
+
                     android:layout_height="match_parent"
-                    android:layout_weight="6"
+                    android:layout_weight="3"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:gravity="center_vertical"
                         android:text="@string/temperature"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="5dp"
                         android:textColor="@color/black"
-                        android:textSize="14dp"
+                        android:textSize="16dp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_ble_fragment_status_temperature"
-                        style="@style/tv_ble_fragment_status_value2" />
+                        style="@style/tv_ble_fragment_status_value2"
+                        android:gravity="center_vertical|right"
+                        android:paddingRight="5dp"
+                        android:text="+000"/>
                 </LinearLayout>
 
             </LinearLayout>
