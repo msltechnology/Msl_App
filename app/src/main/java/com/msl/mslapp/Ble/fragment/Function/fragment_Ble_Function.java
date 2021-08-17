@@ -22,6 +22,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import static com.msl.mslapp.BleMainActivity.BlewriteData;
 import static com.msl.mslapp.BleMainActivity.DATA_TYPE_LISET;
 import static com.msl.mslapp.BleMainActivity.DATA_TYPE_PS;
+import static com.msl.mslapp.BleMainActivity.adminApp;
 import static com.msl.mslapp.BleMainActivity.navigation_GPS_Visible;
 import static com.msl.mslapp.BleMainActivity.navigation_icon_Change;
 import static com.msl.mslapp.BleMainActivity.readPassword;
@@ -75,18 +76,28 @@ public class fragment_Ble_Function extends Fragment {
 
         // RTU가 있는버젼
         //tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
-
-        tavTitle = new String[]{"Status", "Setting", "Test"};
+        if (adminApp) {
+            tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
+        } else {
+            tavTitle = new String[]{"Status", "Setting", "Test"};
+        }
 
         tabLayout_ble = view.findViewById(R.id.tab_bluetooth);
 
         viewPager = view.findViewById(R.id.bluetoothViewpageSpace);
 
         Log.d(TAG, "Viewpage 작업");
-        adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this, 3);
-        viewPager.setAdapter(adapter_ble_Function_tab);
-        viewPager.setCurrentItem(0);
-        viewPager.setOffscreenPageLimit(2);
+        if (adminApp) {
+            adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this, 4);
+            viewPager.setAdapter(adapter_ble_Function_tab);
+            viewPager.setCurrentItem(0);
+            viewPager.setOffscreenPageLimit(3);
+        } else {
+            adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this, 3);
+            viewPager.setAdapter(adapter_ble_Function_tab);
+            viewPager.setCurrentItem(0);
+            viewPager.setOffscreenPageLimit(2);
+        }
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
 
         // RTU가 있는버젼

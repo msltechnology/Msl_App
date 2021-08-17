@@ -11,6 +11,8 @@ import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import java.util.List;
 
+import static com.msl.mslapp.BleMainActivity.adminApp;
+
 public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
 
     Fragment[] fragments = new Fragment[3];
@@ -29,9 +31,18 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         int index = getRealPosition(position);
 
-        if(index==0) return new fragment_Ble_Status();
-        else if(index==1) return new fragment_Ble_Setting();
-        else return new fragment_Ble_Test();
+        if(adminApp){
+            if(index==0) return new fragment_Ble_Status();
+            else if(index==1) return new fragment_Ble_Setting();
+            else if(index==2) return new fragment_Ble_Test();
+            else return new fragment_Ble_RTU();
+
+        }else{
+            if(index==0) return new fragment_Ble_Status();
+            else if(index==1) return new fragment_Ble_Setting();
+            else return new fragment_Ble_Test();
+        }
+
     }
 
     // RTU 가 있다면.
@@ -53,6 +64,10 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
+        if(adminApp){
+            return 4;
+        }
+
         return 3;
     }
 

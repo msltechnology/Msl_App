@@ -35,6 +35,7 @@ import java.util.List;
 import static com.msl.mslapp.BleMainActivity.CdsFlag;
 import static com.msl.mslapp.BleMainActivity.SnFlag;
 import static com.msl.mslapp.BleMainActivity.filters;
+import static com.msl.mslapp.BleMainActivity.mBleContext;
 import static com.msl.mslapp.BleMainActivity.mBluetoothAdapter;
 import static com.msl.mslapp.BleMainActivity.navigation_icon_Change;
 import static com.msl.mslapp.BleMainActivity.scanningFlag;
@@ -124,7 +125,7 @@ public class fragment_Ble_Scan extends Fragment {
                     ((BleMainActivity) requireActivity()).fragmentChange("fragment_cds_setting");
                 } else if (SnFlag) {
                     ((BleMainActivity) requireActivity()).fragmentChange("fragment_sn_setting");
-                }else {
+                } else {
                     ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_password");
                 }
 
@@ -239,11 +240,13 @@ public class fragment_Ble_Scan extends Fragment {
                 String deviceAddress = device.getAddress();
                 String name = device.getName();
 
-                if(TextUtils.isEmpty(name)){
+                // 이름 없으면 제외
+                if (TextUtils.isEmpty(name)) {
                     return;
                 }
 
-                if (!(name.contains("MSL TECH") || name.contains("IoT")) ) {
+                // 이름이 MSL 관련이 아니면 제외(IOT는 블루투스가 초기화 됐을 경우 초기값으로 나오므로 설정)
+                if (!(name.contains("MSL TECH") || name.contains("IoT"))) {
                     return;
                 }
 
@@ -281,14 +284,6 @@ public class fragment_Ble_Scan extends Fragment {
                 Log.d(TAG, "testString : " + testString);*/
 
                 String stringBuffer = new String(advertisedData); //모든 데이터를 문자열로 받아온다
-/*
-
-                if (stringBuffer.contains("\n") || stringBuffer.contains("\r")) {
-                    Log.d(TAG, "stringBuffer contain n or r");
-                    stringBuffer = stringBuffer.replaceAll("(\n|\r)", "");
-                }
-*/
-
 
                 // 블루투스 result 의 각 자료
                 /*Log.d(TAG, "\nresult.describeContents() : " + result.describeContents() +
@@ -314,14 +309,16 @@ public class fragment_Ble_Scan extends Fragment {
                         "\nresult.getScanRecord().toString() : " + result.getScanRecord().getManufacturerSpecificData()
                 );*/
 
-
-
                 String userdataAll = stringBuffer;
 
                 // MSL 과 관련된 제품일 경우
-                if (stringBuffer.contains("MSL TECH")) {
+                if (stringBuffer.contains("MSL TECH5")) {
+                    userdataAll = name.substring(9).trim();
+                    Log.d(TAG, "userdataAll : " + stringBuffer + " 이며, MSL TECH5 이므로 보여주는 값으로 : " + userdataAll);
+                } else if (stringBuffer.contains("MSL TECH")) {
                     try {
                         // MSL의 각 제품 코드는 데이터의 19번째 데이터부터 이기에 거기부터 자른다.
+                        // raw 데이터 상 19번째부터 이름 구역으로 사용하여 이리 설정 함.
                         userdataAll = stringBuffer.substring(18);
                     } catch (Exception e) {
                         // 제품이 켜진지 얼마 안되었거나 문제가 생겼을 시(아직 보드가 블루투스에게 데이터 전달이 안된 상태)
@@ -329,7 +326,6 @@ public class fragment_Ble_Scan extends Fragment {
                         Log.d(TAG, "getManufacturerSpecificData null");
                     }
                 }
-
 
                 String userdata = "";
                 char chrInput;
@@ -356,6 +352,11 @@ public class fragment_Ble_Scan extends Fragment {
 
                 if (name == null) {
                     userdata = "";
+                }
+
+                if (name.contains("MSL TECH5")) {
+                    Log.d(TAG, "scan name msl tech 5 들어옴");
+                    name = "MSL TECH 5";
                 }
 
                 Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);
@@ -410,7 +411,6 @@ public class fragment_Ble_Scan extends Fragment {
         ((Ble_Scan_Listener) activity).onDetachFragment_Ble_Scan();
         selecetBleListener = null;
     }
-
 
 
     public interface Ble_Scan_Listener {

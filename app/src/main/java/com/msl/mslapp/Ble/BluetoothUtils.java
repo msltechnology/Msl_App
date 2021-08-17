@@ -41,6 +41,7 @@ public class BluetoothUtils {
 
     public static BluetoothGattCharacteristic findResponseCharacteristic(BluetoothGatt gatt){
         return findCharacteristic(gatt, CHARACTERISTIC_RESPONSE_STRING);
+
     }
 
     private static BluetoothGattCharacteristic findCharacteristic(BluetoothGatt gatt, String uuidString){

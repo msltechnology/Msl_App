@@ -96,6 +96,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final boolean adminApp = true;
 
     public static Context mBleContext = null;
+
     public static AppCompatActivity mBleMain = null;
     public static String tLanguage;
     // bluetooth 관련
@@ -149,7 +150,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static String CHARACTERISTIC_RESPONSE_STRING_4 = "0000fff1-0000-1000-8000-00805f9b34fb";
 
     // test - device information - serial number string
-    public static String Serial_Number_String = "00002a29-0000-1000-8000-00805f9b34fb";
+    public static String Serial_Number_String = "00002a25-0000-1000-8000-00805f9b34fb";
     //BluetoothGattDescriptor 고정
     public String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
@@ -217,7 +218,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String DATA_TYPE_3 = "3"; //강제소등
     public static final String DATA_TYPE_4 = "4"; //리셋
     public static final String DATA_TYPE_5 = "5"; //부동광
-    public static final String DATA_TYPE_14 = "14"; //부동광
+    public static final String DATA_TYPE_14 = "14"; // RTU 통신 시작
 
     //디바이스 ID
     public static final String DATA_ID_255 = "255";
@@ -1458,7 +1459,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     // 블루투스 각종 기능.
     private BluetoothGattCallback gattClientCallback = new BluetoothGattCallback() {
 
-
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
@@ -1467,6 +1467,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 fragmentChange("fragment_ble_beginning");
                 return;
             } else if (status != BluetoothGatt.GATT_SUCCESS) {
+                // 성공하지 않았을 경우 다시 연결 시도. 5회 이후에도 실패 시 실패로 간주(연결 시 1 회 정도 실패가 뜰때가 많아서 다시 시도 기능 추가)
                 logData_Ble("Bluetooth Disconnect", "error");
                 if(connectFail < 5){
                     connectFail += 1;
@@ -1525,16 +1526,16 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         for (BluetoothGattCharacteristic characteristic : characteristics) {
 
 
-                            /*try {
-                                Log.d(TAG, "BluetoothGattCharacteristic characteristic : " + characteristic.getUuid().toString());
+                            try {
+                                Log.d(TAG, "BluetoothGattCharacteristic characteristic : " + characteristic.getUuid().toString() + " property : " + characteristic.getProperties());
                                 if(characteristic.getUuid().toString().equals(Serial_Number_String)){
                                     nameCharacteristic = characteristic;
                                     Log.d(TAG, " 성공!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + nameCharacteristic.getStringValue(0));
-                                    //Log.d(TAG, "nameCharacteristic : " + nameCharacteristic.getValue().toString());
+
                                 }
                             }catch (Exception e){
-                                Log.d(TAG, "실패!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                            }*/
+                                Log.d(TAG, "실패!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + e.toString());
+                            }
 
                             // bluetooth 5 및 일반적 블루투스
                             if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE ||
@@ -1547,6 +1548,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                 }
 
                             } else if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY) {
+                                Log.d(TAG, "onServicesDiscovered - PROPERTY_NOTIFY");
                                 respCharacteristic = characteristic;
                             }
 
@@ -1596,6 +1598,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
+            Log.d(TAG, "onCharacteristicChanged written successfully");
             readCharacteristic(characteristic);
         }
 
@@ -1606,6 +1609,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 //logData_Ble("Characteristic written successfully");
                 Log.d(TAG, "Characteristic written successfully : " + characteristic.getStringValue(0));
+
 
             } else {
                 logData_Ble("Characteristic write unsuccessful", "error");
@@ -1633,7 +1637,19 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         // 블루투스 데이터 읽기 시 처리
         private void readCharacteristic(BluetoothGattCharacteristic characteristic) {
+
             String readCharacter = characteristic.getStringValue(0);
+
+            /*
+            // 설명용으로 만든 곳. readCharacteristic 를 여기서 사용하면 안됨....
+            // 해당 명령어 시 properties 가  read 케릭터일 경우 리드 실행 이후 onCharacteristicRead 로 데이터가 들어옴.
+            bleGatt.readCharacteristic(nameCharacteristic);
+
+            //해당하는 케릭터일 경우 해당 데이터 따로 사용가능.
+            if(characteristic.equals(nameCharacteristic)){
+
+                Log.d(TAG, "readCharacteristic - nameCharacteristic  : " + readCharacter);
+            }*/
 
             // 블루투스가 한번에 2개 이상을 동시에 보내는걸 대비하여 먼저 큐에 넣고 나중에 정리/
             readDataQueue.offer(readCharacter);
