@@ -98,12 +98,14 @@
             android:layout_weight="0.1" />
 
         <LinearLayout
+            android:id="@+id/ll_ble_fragment_setting_delay"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
             android:clipToPadding="false"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:visibility="invisible">
 
             <LinearLayout
                 style="@style/ll_ble_fragment_setting_value">
@@ -177,54 +179,23 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_weight="2"
         android:orientation="horizontal">
 
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:visibility="gone">
-
-        <TextView
-            style="@style/tv_ble_fragment_setting"
-            android:text="@string/Hardware_Version" />
-
-        <View style="@style/view_horizontal_line_5" />
-
-        <TextView
-            android:id="@+id/tv_ble_fragment_setting_version_num"
-            style="@style/tv_ble_fragment_setting" />
-
-        <View style="@style/view_horizontal_line_5" />
-
-        <TextView
-            android:id="@+id/tv_ble_fragment_setting_version_rtu"
-            style="@style/tv_ble_fragment_setting" />
-
-        <View style="@style/view_horizontal_line_5" />
-
-        <TextView
-            android:id="@+id/tv_ble_fragment_setting_version_gps_speed"
-            style="@style/tv_ble_fragment_setting" />
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:layout_weight="0.5"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <Space
             android:layout_width="0dp"
@@ -241,9 +212,44 @@
             android:text="@string/btn_ble_setting_change_password"
             android:textColor="@color/red"
             android:textSize="14dp"
-            android:textStyle="bold"
-            android:visibility="gone"/>
-
+            android:textStyle="bold"/>
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_ble_fragment_setting_version"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:visibility="invisible">
+
+        <TextView
+            style="@style/tv_ble_fragment_setting_3"
+            android:text="@string/Hardware_Version" />
+
+        <View style="@style/view_horizontal_line_5" />
+
+        <TextView
+            android:id="@+id/tv_ble_fragment_setting_version_num"
+            style="@style/tv_ble_fragment_setting_3" />
+
+        <View style="@style/view_horizontal_line_5" />
+
+
+        <TextView
+            android:id="@+id/tv_ble_fragment_setting_version_rtu"
+            style="@style/tv_ble_fragment_setting_3" />
+
+        <View style="@style/view_horizontal_line_5" />
+
+        <TextView
+            android:id="@+id/tv_ble_fragment_setting_version_gps_speed"
+            style="@style/tv_ble_fragment_setting_3" />
+
+    </LinearLayout>
+
+
 </LinearLayout>

@@ -216,7 +216,6 @@ public class fragment_Ble_RTU_Setting extends Fragment {
                     } else if (readData.equals("1")) {
                         tv_modem_power.setText("ON");
                     }
-                    Toast.makeText(mBleContext, "Data Receive Success!", Toast.LENGTH_SHORT).show();
                 } else if (readData.contains("Reset Time")) { //리셋 주기
                     readData = readData.replace("Reset Time:", "");
                 } else if (readData.contains("Low Power Mode")) { //Low Power 상태
@@ -279,7 +278,6 @@ public class fragment_Ble_RTU_Setting extends Fragment {
                 }
 
                 readData = readData.replace("[ModemMsg] ", "");
-                Log.d(TAG, "fragment_Ble_RTU_Setting readData 2 : " + readData);
 
                 if (readData.contains("$$MODEM_STATE: ")) { // Modem 상태 확인
                     Log.d(TAG, "fragment_Ble_RTU_Setting readData MODEM_STATE In");
@@ -288,8 +286,6 @@ public class fragment_Ble_RTU_Setting extends Fragment {
                     readData = readData.trim();
                     Log.d(TAG, "fragment_Ble_RTU_Setting readData $$MODEM_STATE: 4 : " + readData);*/
                     String[] readDataArr = readData.split(",");
-
-                    Log.d(TAG, "fragment_Ble_RTU_Setting readData 3 : " + readDataArr[0]);
                     String textNetworkData = "";
 
 

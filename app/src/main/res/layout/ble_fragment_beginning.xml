@@ -146,6 +146,7 @@
                 android:layout_marginBottom="15dp"
                 android:layout_weight="4"
                 android:background="@drawable/custom_ble_beginning_btn"
+                android:elevation="5dp"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -173,7 +174,8 @@
                         android:autoSizeTextType="uniform"
                         android:gravity="center"
                         android:textColor="@color/black"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:text="@string/ble_Beginning_tvScan"/>
 
 
                     <Space
@@ -220,8 +222,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="15dp"
-                android:layout_weight="1.5"
+                android:layout_weight="4"
                 android:background="@drawable/custom_ble_beginning_btn"
+                android:elevation="5dp"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -249,7 +252,8 @@
                         android:autoSizeTextType="uniform"
                         android:gravity="center"
                         android:textColor="@color/black"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:text="@string/ble_Beginning_tvRTU"/>
 
 
                     <Space

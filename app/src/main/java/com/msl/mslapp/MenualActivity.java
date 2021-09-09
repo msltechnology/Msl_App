@@ -34,6 +34,7 @@ public class MenualActivity extends AppCompatActivity {
     private Button btnSkip, btnNext;
     private Session session;
 
+    // 해당 값을 바꾸면 최초 실행 시 메뉴얼 창 뜸(현재는 테스트하므로 해당 기능 끔)
     public static Boolean callMenual = false;
 
     @Override
@@ -45,6 +46,7 @@ public class MenualActivity extends AppCompatActivity {
         session = new Session(this);
 
         if(!callMenual){
+            // 최초 실행인지 확인.
             if (!session.isFirstTimeLaunch()) {
                 launchHomeScreen();
                 finish();

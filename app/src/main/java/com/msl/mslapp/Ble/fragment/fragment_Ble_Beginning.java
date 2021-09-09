@@ -94,17 +94,22 @@ public class fragment_Ble_Beginning extends Fragment {
             e.printStackTrace();
         }
 
-        if(tLanguage.equals("ko")){
-            tvScan.setText("등명기 모니터링");
+        //tvScan.setText(getString(R.string.ble_Beginning_tvScan));
+        //tvRTU.setText(getString(R.string.ble_Beginning_tvRTU));
+
+       /*
+
+       if(tLanguage.equals("ko")){
+            tvScan.setText(getString(R.string.ble_Beginning_tvScan));
         }else if(tLanguage.equals("en")){
-            tvScan.setText("Lantern Monitoring");
+            tvScan.setText(getString(R.string.ble_Beginning_tvScan));
         }
 
-        if(tLanguage.equals("ko")){
-            tvRTU.setText("RTU 설정");
+       if(tLanguage.equals("ko")){
+            tvRTU.setText(getString(R.string.ble_Beginning_tvRTU));
         }else if(tLanguage.equals("en")){
-            tvRTU.setText("RTU Setup");
-        }
+            tvRTU.setText("RTU Setup(Wired)");
+        }*/
 
         if (adminApp) {
             bleScanCDSBtn.setVisibility(View.VISIBLE);
@@ -207,12 +212,20 @@ public class fragment_Ble_Beginning extends Fragment {
     private void bleScanCDSBtnOnClick() {
         //showEditDialog();
         CdsFlag = true;
-        fragmentScanChange();
+        if(BluetoothStatus.contains("On")){
+            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_scan");
+        }else{
+            checkBluetoothPermission();
+        }
     }
     private void bleScanSNBtnOnClick() {
         //showEditDialog();
         SnFlag = true;
-        fragmentScanChange();
+        if(BluetoothStatus.contains("On")){
+            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_scan");
+        }else{
+            checkBluetoothPermission();
+        }
     }
 
     private void bleLanguageBtnOnClick() {

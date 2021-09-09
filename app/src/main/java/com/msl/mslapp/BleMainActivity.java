@@ -137,7 +137,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static BluetoothGattCharacteristic nameCharacteristic = null;
 
     // 블루투스 들어온 데이터 값
-    String readDataTotal = "";
+    public static String readDataTotal = "";
     ConcurrentLinkedQueue<String> readDataQueue = new ConcurrentLinkedQueue<>();
 
     //사용자 BLE UUID Service/Rx/Tx
@@ -192,6 +192,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String DATA_TYPE_MUCMD = "MUCMD"; // 명령 커맨드
     public static final String DATA_TYPE_LISTS = "LISTS"; // 상태 정보
     public static final String DATA_TYPE_LISET = "LISET"; // 설정 정보
+    public static final String DATA_TYPE_RTU_READ = "[ ConfMsg]"; // RTU 데이터
+    public static final String DATA_TYPE_RTU_MODEM_READ = "[ModemMsg]"; // RTU 모뎀 데이터
     public static final String DATA_TYPE_PS = "PS"; //패스워드
     public static final String DATA_TYPE_S = "S"; //설정
     public static final String DATA_TYPE_I = "I"; //설정
@@ -399,6 +401,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         Log.d(TAG, "선택한 디바이스 이름 : " + device.getName());
 
         bleConnectDevice = device;
+        // 블루투스 데이터 활성화
         connectToDevice(mBleContext, bleConnectDevice, gattClientCallback);
         //bleGatt = bleConnectDevice.connectGatt(mBleContext, false, gattClientCallback);
     }
@@ -407,7 +410,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                        BluetoothDevice device,
                                        BluetoothGattCallback mGattCallBack) {
         if (device != null) {
-            // 각 os 별 연결 시 세부 조정이 다양함.
+            // 각 os 별 연결 시 세부 조정이 다양함. 블루투스 연결 방식을 정함.
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 Log.d(TAG, "connectToDevice - O up");
                 bleGatt = device.connectGatt(context, false, mGattCallBack,
@@ -805,25 +808,31 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         // GPS 설정
         navigationView.findViewById(R.id.ll_navigation_gps).setOnClickListener(v -> {
-            BlewriteData(DATA_REQUEST_INFORMATION);
+            if (BleConnecting) {
+                BlewriteData(DATA_REQUEST_INFORMATION);
 
-            handler.postDelayed(() -> {
-                FragmentManager fm = getSupportFragmentManager();
-                dialogFragment_ble_Setting_GPS_Change customDialog_GPS_Change = new dialogFragment_ble_Setting_GPS_Change();
-                customDialog_GPS_Change.show(fm, "dialogFragment_ble_Setting_GPS_Change");
-            }, 200);
-
-
+                handler.postDelayed(() -> {
+                    FragmentManager fm = getSupportFragmentManager();
+                    dialogFragment_ble_Setting_GPS_Change customDialog_GPS_Change = new dialogFragment_ble_Setting_GPS_Change();
+                    customDialog_GPS_Change.show(fm, "dialogFragment_ble_Setting_GPS_Change");
+                }, 200);
+            } else {
+                Toast.makeText(mBleContext, "bluetooth not connecting", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // 비밀번호 변경
         navigationView.findViewById(R.id.ll_Navigation_Password_Change).setOnClickListener(v -> {
-            handler.postDelayed(() -> {
-                FragmentManager fm = getSupportFragmentManager();
-                dialogFragment_Ble_Setting_Password_Change setting_PasswordChange_DialogFragment = new dialogFragment_Ble_Setting_Password_Change();
-                setting_PasswordChange_DialogFragment.show(fm, "fragment_setting_dialog_Password");
-            }, 200);
 
+            if (BleConnecting) {
+                handler.postDelayed(() -> {
+                    FragmentManager fm = getSupportFragmentManager();
+                    dialogFragment_Ble_Setting_Password_Change setting_PasswordChange_DialogFragment = new dialogFragment_Ble_Setting_Password_Change();
+                    setting_PasswordChange_DialogFragment.show(fm, "fragment_setting_dialog_Password");
+                }, 200);
+            } else {
+                Toast.makeText(mBleContext, "bluetooth not connecting", Toast.LENGTH_SHORT).show();
+            }
         });
 
 
@@ -892,12 +901,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         SimpleDateFormat simpleDate = new SimpleDateFormat("hh:mm:ss");
         String getTime = simpleDate.format(mDate);
 
-        Log.d(TAG, "log_data : " + getTime);
         log_listViewAdapter.addItem(getTime, data);
         //log_listViewAdapter.refreshAdapter(log_Listview);
         //log_listViewAdapter.notifyDataSetChanged();
 
     }
+
 
     // 특정 데이터 경우(read, write, error)
     public static void logData_Ble(String data, String color) {
@@ -910,7 +919,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         if (data.contains("*")) {
             data = data.substring(0, data.indexOf("*"));
-            Log.d(TAG, "data *  : " + data);
         }
 
         String[] dataArr = data.split(DATA_SIGN_COMMA);
@@ -919,8 +927,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         if (color.equals("read")) {
             if (dataArr[0].contains(DATA_TYPE_PS)) {
                 log_listViewAdapter.addItem(getTime, "Request a Password", color);
-                //log_Listview.requestLayout();
-                //log_listViewAdapter.notifyDataSetChanged();
                 return;
             } else if (dataArr[0].contains(DATA_TYPE_LISTS)) {
                 switch (dataArr[1]) {
@@ -941,8 +947,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         log_listViewAdapter.addItem(getTime, "Status Request Confirm : \n" + data, color);
                         break;
                 }
-                //log_listViewAdapter.notifyDataSetChanged();
-                //log_Listview.requestLayout();
                 return;
             } else if (dataArr[0].contains(DATA_TYPE_LICMD)) {
                 switch (dataArr[1]) {
@@ -974,13 +978,21 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         }
                         break;
                 }
-                //log_listViewAdapter.notifyDataSetChanged();
-                //log_Listview.requestLayout();
                 return;
             } else if (dataArr[0].contains(DATA_TYPE_LISET)) {
                 log_listViewAdapter.addItem(getTime, "Information Data Confirm\n" + data, color);
                 //log_Listview.requestLayout();
                 //log_listViewAdapter.notifyDataSetChanged();
+                return;
+            } else if (dataArr[0].contains(DATA_TYPE_RTU_READ)) {
+                data = data.replace(DATA_TYPE_RTU_READ + " ", "");
+                log_listViewAdapter.addItem(getTime, "RTU Data Confirm\n" + data, color);
+                return;
+            } else if (dataArr[0].contains(DATA_TYPE_RTU_MODEM_READ)) {
+                Log.d(TAG, "DATA_TYPE_RTU_MODEM_READ *  : " + data);
+                data = data.replace(DATA_TYPE_RTU_MODEM_READ, ""); //  + " $$MODEM_STATE: "
+                Log.d(TAG, "DATA_TYPE_RTU_MODEM_READ Revise  *  : " + data);
+                log_listViewAdapter.addItem(getTime, "RTU Modem Data Confirm\n" + data, color);
                 return;
             }
 
@@ -1049,6 +1061,16 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 }
                 //log_listViewAdapter.notifyDataSetChanged();
                 //log_Listview.requestLayout();
+                return;
+            } else if (dataArr[0].contains(DATA_TYPE_MUCMD)) {
+                switch (dataArr[1]) {
+                    case "8":
+                        log_listViewAdapter.addItem(getTime, "RTU Data Request", color);
+                        break;
+                    case "14":
+                        log_listViewAdapter.addItem(getTime, "RTU Data Set", color);
+                        break;
+                }
                 return;
             }
         }
@@ -1462,22 +1484,55 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             super.onConnectionStateChange(gatt, status, newState);
+            Log.d(TAG, "onConnectionStateChange status : " + status);
             if (status == BluetoothGatt.GATT_FAILURE) {
                 disconnectGattServer("BleMainActivity - gattClientCallback - GATT_FAILURE");
                 fragmentChange("fragment_ble_beginning");
                 return;
             } else if (status != BluetoothGatt.GATT_SUCCESS) {
                 // 성공하지 않았을 경우 다시 연결 시도. 5회 이후에도 실패 시 실패로 간주(연결 시 1 회 정도 실패가 뜰때가 많아서 다시 시도 기능 추가)
-                logData_Ble("Bluetooth Disconnect", "error");
-                if(connectFail < 5){
-                    connectFail += 1;
-                    connectToDevice(mBleContext, bleConnectDevice, gattClientCallback);
-                    Log.d(TAG, "NO_GATT_SUCCESS " + connectFail + "회 실패 : " + status);
-                }else{
+                // 8 : 최초 등명기가 꺼져서 연결의 이상이 생긴경우유선 무선
+                // 133 : 8 상태로 계속해서 이상이 있는 경우
+                if (status == 8) {
+                    logData_Ble("Bluetooth Disconnect - \nproblem between Bluetooth communication(distance or shutdown) - " +
+                            "back to the initial screen", "error");
                     connectFail = 0;
                     disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
                     fragmentChange("fragment_ble_beginning");
-                    Log.d(TAG, "NO_GATT_SUCCESS 5회 실패 : " + status);
+                    Log.d(TAG, "onConnectionStateChange state 8 : 블루투스 연결 불안정(거리 혹은 장치종료)");
+                    Toast.makeText(mBleContext, getString(R.string.bleDisconnect_problem), Toast.LENGTH_LONG).show();
+                    /*if (connectFail < 5) {
+                        logData_Ble("Bluetooth Disconnect - \n연결 불안정 - 재접속 시도", "error");
+                        connectFail += 1;
+                        connectToDevice(mBleContext, bleConnectDevice, gattClientCallback);
+                        Log.d(TAG, "NO_GATT_SUCCESS " + connectFail + "회 실패 : " + status);
+                    } else {
+                        logData_Ble("Bluetooth Disconnect - \n연결 불안정 - 초기화면으로", "error");
+                        connectFail = 0;
+                        disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
+                        fragmentChange("fragment_ble_beginning");
+                        Log.d(TAG, "NO_GATT_SUCCESS 5회 실패 : " + status);
+                    }*/
+                } else if (status == 133) {
+                    if (connectFail < 5) {
+                        logData_Ble("Bluetooth Disconnect - \nConnection Failed - Attempt to reconnect", "error");
+                        connectFail += 1;
+                        connectToDevice(mBleContext, bleConnectDevice, gattClientCallback);
+                        Log.d(TAG, "NO_GATT_SUCCESS " + connectFail + "회 실패 : " + status);
+                    } else {
+                        logData_Ble("Bluetooth Disconnect - \n" +
+                                "Connection failed 5 times - back to the initial screen", "error");
+                        connectFail = 0;
+                        disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
+                        fragmentChange("fragment_ble_beginning");
+                        Log.d(TAG, "NO_GATT_SUCCESS 5회 실패 : " + status);
+                        Toast.makeText(mBleContext, getString(R.string.bleDisconnect_Connection_Failed), Toast.LENGTH_LONG).show();
+                    }
+                } else if (status == 22) {
+                    logData_Ble("Bluetooth Disconnect - \n" +
+                            "Terminate the connection", "error");
+                } else {
+                    logData_Ble("Bluetooth Disconnect - " + status, "error");
                 }
                 return;
             }
@@ -1528,12 +1583,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                             try {
                                 Log.d(TAG, "BluetoothGattCharacteristic characteristic : " + characteristic.getUuid().toString() + " property : " + characteristic.getProperties());
-                                if(characteristic.getUuid().toString().equals(Serial_Number_String)){
+                                if (characteristic.getUuid().toString().equals(Serial_Number_String)) {
                                     nameCharacteristic = characteristic;
                                     Log.d(TAG, " 성공!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + nameCharacteristic.getStringValue(0));
 
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 Log.d(TAG, "실패!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + e.toString());
                             }
 
@@ -1598,7 +1653,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             super.onCharacteristicChanged(gatt, characteristic);
-            Log.d(TAG, "onCharacteristicChanged written successfully");
+            //Log.d(TAG, "onCharacteristicChanged written successfully : " + new String(characteristic.getValue()));
             readCharacteristic(characteristic);
         }
 
@@ -1607,10 +1662,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                //logData_Ble("Characteristic written successfully");
-                Log.d(TAG, "Characteristic written successfully : " + characteristic.getStringValue(0));
-
-
+                //Log.d(TAG, "Characteristic written successfully : " + characteristic.getStringValue(0));
             } else {
                 logData_Ble("Characteristic write unsuccessful", "error");
                 Log.e(TAG, "Characteristic write unsuccessful, status: $status");
@@ -1629,16 +1681,33 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             } else {
                 logData_Ble("Characteristic read unsuccessful", "error");
                 Log.e(TAG, "Characteristic read unsuccessful, status: $status");
-                // Trying to read from the Time Characteristic? It doesnt have the property or permissions
-                // set to allow this. Normally this would be an error and you would want to:
-                // disconnectGattServer();
             }
         }
+
+        String dataCheck = "";
+        int requestPasswordCount = 0;
 
         // 블루투스 데이터 읽기 시 처리
         private void readCharacteristic(BluetoothGattCharacteristic characteristic) {
 
             String readCharacter = characteristic.getStringValue(0);
+
+            if (!dataCheck.equals(readCharacter)) {
+                dataCheck = readCharacter;
+            } else {
+                if (readCharacter.contains(DATA_TYPE_PS)) {
+                    requestPasswordCount += 1;
+                    Log.d(TAG, "Request a Password Count : " + requestPasswordCount);
+                    // 데이터 통신 간 오류로 인해 비밀번호가 입력이 안되거나, 연결이 끊겼다 연결되는경우 비밀번호 요청을 예속 보냄. 그에 대비하여 보냄.
+                    if (requestPasswordCount >= 5) {
+                        // 해당 값을 등명기가 수신 시 더이상 데이터 요청 안함.
+                        BlewriteData("$PS,A,0000H*");
+                        requestPasswordCount = 0;
+                    }
+                }
+
+                return;
+            }
 
             /*
             // 설명용으로 만든 곳. readCharacteristic 를 여기서 사용하면 안됨....
@@ -1658,16 +1727,14 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             for (int i = 0; i < readDataQueue.size(); i++) {
                 readDataTotal += readDataQueue.poll();
             }
-            Log.d(TAG, "readCharacteristic String : " + new String(characteristic.getValue()));
-            Log.d(TAG, "readDataTotal : " + readDataTotal);
-
+            Log.d(TAG, "readCharacteristic String : " + new String(characteristic.getValue()) + " , readDataTotal : " + readDataTotal);
             ReadDataThread readDataThread = new ReadDataThread();
             readDataThread.start();
         }
     };
 
 
-    class ReadDataThread extends Thread{
+    class ReadDataThread extends Thread {
         @Override
         public void run() {
             handler.sendEmptyMessage(readDataSuccess);
@@ -1720,12 +1787,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 // 데이터가 들어왔을 때
 
                 try {
-
-                    if(readDataTotal.trim().equals("")){
+                    if (readDataTotal.trim().equals("")) {
                         Log.d(TAG, "readDataTotal is nothing" + readDataTotal);
                         return;
                     }
-
                     // RTU 관련 데이터 들어올 경우($ 및 * 이 안들어감)
                     if (readDataTotal.contains("[ ConfMsg]") && readDataTotal.contains(">")) {
 
@@ -1745,8 +1810,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                             try {
                                 readDataTotal = readDataTotal.substring(lfIndex + 1);
                             } catch (Exception e) {
+                                logData_Ble("readData Error! - TotalReadData : " + readDataTotal, "error");
                                 readDataTotal = "";
-                                logData_Ble("readData Error! - TotalReadData", "error");
                                 Log.e(TAG, "fragment_BLE_RTU_Status readData Error : " + e.toString());
                             }
 
@@ -1782,6 +1847,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     }
 
                     if (readDataTotal.contains("[ModemMsg]") && readDataTotal.contains(">")) {
+                        Log.d(TAG, "[ModemMsg] data Come : " + readDataTotal);
 
                         int ModemMsgIndex = 0;
                         int lfIndex = 0;
@@ -1799,8 +1865,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                             try {
                                 readDataTotal = readDataTotal.substring(lfIndex + 1);
                             } catch (Exception e) {
+                                logData_Ble("readData Error! - TotalReadData : " + readDataTotal, "error");
                                 readDataTotal = "";
-                                logData_Ble("readData Error! - TotalReadData", "error");
                                 Log.e(TAG, "fragment_BLE_RTU_Status readData Error : " + e.toString());
                             }
 
@@ -1834,7 +1900,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                         }
                     }
-
                     // 그 외 경우
                     if (readDataTotal.contains("\\n") || readDataTotal.contains("\\r")) {
                         Log.d(TAG, "readDataTotal contain n or r " + readDataTotal);
@@ -1847,22 +1912,49 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                     boolean whileExit = true;
 
-                    while(whileExit){
-
-                        Log.d(TAG, "while in");
+                    while (whileExit) {
 
                         readDataTotal = readDataTotal.trim();
-                        Log.d(TAG, "readDataTotal trim : " + readDataTotal);
 
                         // $ 및 * 등이 포함됐는지.(처음과 끝)
                         if (readDataTotal.indexOf(DATA_SIGN_START) > -1
                                 && readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1) {
+
+                            int count = 0;
+                            for (int i = 0; i < readDataTotal.length(); i++) {
+                                if (readDataTotal.charAt(i) == '$')
+                                    count++;
+                            }
+
+                            // 만약 $ 들어간게 2개이상이면
+                            if (count > 1) {
+                                // 2번쨰 $ 전까지 데이터 나누고
+                                String organizeData = readDataTotal.substring(0, readDataTotal.indexOf("$", readDataTotal.indexOf("$") + 1));
+
+                                // * 있는지확인
+                                if (organizeData.contains("*")) {
+                                    try {
+                                        // * 이 있으면서 체크섬 값도 가지고 있다면
+                                        if (readDataTotal.indexOf("*") + 3 == readDataTotal.indexOf("$", readDataTotal.indexOf("$") + 1)) {
+
+                                        } else {
+                                            readDataTotal = readDataTotal.substring(readDataTotal.indexOf("$", readDataTotal.indexOf("$") + 1));
+                                        }
+                                    } catch (Exception e) {
+                                        // * 뒤에 체크섬 값올 자리에 $ 및 비어있어서 인덱스 값을 오버한거라면 해당 데이터를 잘라라
+                                        Log.d(TAG, "organizeData * check error : " + e.toString());
+                                        readDataTotal = readDataTotal.substring(readDataTotal.indexOf("$", readDataTotal.indexOf("$") + 1));
+                                    }
+                                } else {
+                                    // * 이 없다면 잘못 들어온 데이터이므로 해당 데이터 자르기
+                                    readDataTotal = readDataTotal.substring(readDataTotal.indexOf("$", readDataTotal.indexOf("$") + 1));
+                                }
+                            }
+
+
                             // $이 *보다 먼저 들어왔는지(데이터 순서 꼬였는지)
                             if (readDataTotal.indexOf(DATA_SIGN_START) < readDataTotal.indexOf(DATA_SIGN_CHECKSUM)) {
-
-                                if (String.valueOf(readDataTotal.charAt(readDataTotal.length() - 3)).equals(DATA_SIGN_CHECKSUM)) {
-
-                                    // * 뒤의 체크섬값이 2자리로 잘 들어왔는지
+                                try {
                                     if (readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 1, readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3).length() == 2) {
                                         //데이터 처음과 끝 받기 완료
 
@@ -1898,64 +1990,68 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                                 fragment_sn_setting.readData(data);
                                             }
 
-                                        }else{
-                                            readDataTotal = "";
-                                            whileExit = false;
-                                        }
 
-                                        try {
-                                            readDataTotal = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 1);
-                                            Log.d(TAG, "remain readDataTotal : " + readDataTotal);
-                                            if(readDataTotal.indexOf(DATA_SIGN_START) > -1
-                                                    && readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1){
-                                                readDataTotal = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_START));
-                                                Log.d(TAG, "readData Test : " + readDataTotal);
-                                            }else{
-                                                Log.d(TAG, "readDataTotal no contain $ or * : " + readDataTotal);
-                                                // 작업 끝.들어온 데이터 초기화
+                                            // 데이터 다 나눠준 후 재정리
+                                            try {
+                                                readDataTotal = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3);
+                                                // 그 이후 데이터가 들어온게 있다면 다시 실행할 수 있도록 함.
+                                                if (readDataTotal.indexOf(DATA_SIGN_START) > -1) {
+                                                    Log.d(TAG, "readDataTotal remain : " + readDataTotal);
+                                                } else {
+                                                    Log.d(TAG, "readDataTotal no contain $ : " + readDataTotal);
+                                                    // 작업 끝.들어온 데이터 초기화
+                                                    readDataTotal = "";
+                                                    return;
+                                                }
+                                            } catch (Exception e) {
+                                                Log.e(TAG, "readDataTotal remain error : " + readDataTotal);
                                                 readDataTotal = "";
-                                                whileExit = false;
                                                 return;
                                             }
-                                        }catch (Exception e){
-                                            readDataTotal = "";
-                                            whileExit = false;
-                                            return;
+
+                                        } else {
+                                            // 체크섬 값이 틀릴경우
+                                            // 만약 $ 들어간게 2개이상이면
+                                            if (count > 1) {
+                                                // 다음 데이터 정리
+                                                readDataTotal = readDataTotal.substring(readDataTotal.indexOf("$", readDataTotal.indexOf("$") + 1));
+                                            } else {
+                                                // 아닐 경우(해당 데이터만 있을 경우) 다 삭제
+                                                readDataTotal = "";
+                                                whileExit = false;
+                                            }
                                         }
-
-
                                     }
-                                } else {
-                                    logData_Ble("readData Error - checksum", "error");
-                                    Log.d(TAG, "readData Error - checksum - 3 / " + readDataTotal.length() + " and " + readDataTotal.charAt(readDataTotal.length() - 3));
-
-                                    readDataTotal = "";
-                                    whileExit = false;
+                                } catch (Exception e) {
+                                    Log.d(TAG, "checksum 검사 간 에러 : " + e.toString());
                                     return;
                                 }
+
+
                             } else {
-                                // 데이터가 잘못 들어옴. 초기화
-                                logData_Ble("readData Error - order", "error");
-                                Log.d(TAG, "readData Error - order");
-                                readDataTotal = "";
-                                whileExit = false;
-                                return;
+                                // 데이터가 잘못 들어옴.
+                                logData_Ble("readData Error - order : " + readDataTotal, "error");
+
+                                Log.d(TAG, "readData Error - order" + readDataTotal);
+                                readDataTotal = readDataTotal.substring(readDataTotal.indexOf("$"));
+                                Log.d(TAG, "readData Error - order - change" + readDataTotal);
                             }
 
-                        }else{
+                        } else {
                             return;
                         }
                     }
 
                     // 체크섬만 있을 경우(순서 이상함)
                     if (readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1 && !(readDataTotal.indexOf(DATA_SIGN_START) > -1)) {
-                        logData_Ble("readData Error - No include DATA_SIGN_START", "error");
+                        logData_Ble("readData Error - No include DATA_SIGN_START : " + readDataTotal, "error");
                         Log.d(TAG, "readData Error - no include DATA_SIGN_START");
                         readDataTotal = "";
                     }
 
                 } catch (Exception e) {
                     logData_Ble("readData Error! - " + e.toString(), "error");
+                    Log.e(TAG, "try Check error : " + e.toString());
                 }
 
             }
@@ -1963,7 +2059,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         }
     };
 
+
     public static void BlewriteData(String data) {
+
+        if (data.equals(DATA_REQUEST_STATUS)) {
+            readDataTotal = "";
+        }
 
         if (bleConnected) {
 
@@ -2076,13 +2177,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 csInt ^= str.charAt(n);
             }
 
-            Log.d(TAG, "toCheckSum csInt : " + csInt);
-
-            csStr = String.valueOf(Integer.toString(csInt, 16)).toUpperCase();
+            csStr = Integer.toString(csInt, 16).toUpperCase();
             if (csStr.length() == 1) {
                 //한자리 수 인경우, 앞에 0을 추가
                 csStr = "0" + csStr;
             }
+            Log.d(TAG, "toCheckSum csInt : " + csStr);
             return csStr;
         } else {
             //체크섬을 하지 않음
@@ -2184,6 +2284,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         super.onResume();
         // bluetooth Low Energy 지원안할 경우
 
+        // 멈출때와 블루투스 연결 상태값이 달라진 경우 초기화면으로
         if (pauseResumeCheck != BleConnecting) {
             if (!BleConnecting) {
                 fragmentChange("fragment_ble_beginning");

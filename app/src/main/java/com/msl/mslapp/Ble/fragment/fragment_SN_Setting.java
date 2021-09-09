@@ -136,7 +136,7 @@ public class fragment_SN_Setting extends Fragment {
                 BlewriteData(DATA_DEVICE_RESET);
                 Thread.sleep(100);
                 disconnectGattServer("fragment_SN_Setting - handleMessage - DATA_DEVICE_RESET");
-                ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_scan");
+                ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_beginning");
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,8 @@ public class fragment_Ble_Setting extends Fragment {
 
     Button btn_status, ban_information, btn_FL_Setting, btn_ID_Setting, btn_Password_Change, btn_GPS_ON, btn_GPS_OFF, btn_delay_time;
 
+    LinearLayout ll_ble_fragment_setting_delay, ll_ble_fragment_setting_version;
+
     public static String lantern_id = "000",
             delay_time = "+000";
 
@@ -67,6 +70,14 @@ public class fragment_Ble_Setting extends Fragment {
         tv_version_gps_speed = view.findViewById(R.id.tv_ble_fragment_setting_version_gps_speed);
 
         btnSetting();
+
+        ll_ble_fragment_setting_delay = view.findViewById(R.id.ll_ble_fragment_setting_delay);
+        ll_ble_fragment_setting_version = view.findViewById(R.id.ll_ble_fragment_setting_version);
+
+        if(adminApp){
+            ll_ble_fragment_setting_delay.setVisibility(View.VISIBLE);
+            ll_ble_fragment_setting_version.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }

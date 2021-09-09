@@ -47,7 +47,7 @@
     <string name="remarks">Remarks</string>
     <string name="Fixed">Fixed</string>
     <string name="select">Select</string>
-    <string name="btnSelectID_Error1">The maximum is 256.</string>
+    <string name="btnSelectID_Error1">Values range from 000 to 255.</string>
     <string name="GPS_On">Always</string>
     <string name="GPS_Off">Night Only</string>
     <string name="tv_ble_fragment_beginning_manual">Manual</string>
@@ -105,8 +105,12 @@
     <string name="Network">Network</string>
     <string name="Socket">Socket</string>
     <string name="tv_ble_fragment_password_passwordInsert">Please enter a password</string>
-    <string name="ble_scan_status_scanning">Scanning...</string>
+    <string name="ble_scan_status_scanning">Scanning…</string>
     <string name="ble_scan_status_pause">Scan complete</string>
     <string name="temperature">TEMP</string>
     <string name="Delay_Time_change">Time Set</string>
+    <string name="bleDisconnect_problem">Connection terminated due to a problem between Bluetooth communication</string>
+    <string name="bleDisconnect_Connection_Failed">Connection failed</string>
+    <string name="ble_Beginning_tvScan">Lantern Monitoring</string>
+    <string name="ble_Beginning_tvRTU">RTU Setup(Wired)</string>
 </resources>

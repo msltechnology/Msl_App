@@ -104,8 +104,15 @@ public class dialogFragment_Ble_Setting_ID_Setting extends DialogFragment {
         btn_ce.setOnClickListener(v -> btnDeleteID());
         btn_ok.setOnClickListener(v -> {
             if(tv_Selected_ID3.getText().toString().equals("")){
-                Toast.makeText(mBleContext, getString(R.string.btnSelectID_Error1), Toast.LENGTH_SHORT).show();
-                return;
+                tv_Selected_ID3.setText("0");
+            }
+
+            if(tv_Selected_ID2.getText().toString().equals("")){
+                tv_Selected_ID2.setText("0");
+            }
+
+            if(tv_Selected_ID1.getText().toString().equals("")){
+                tv_Selected_ID1.setText("0");
             }
 
             if (getParentFragment() == null) {
@@ -142,12 +149,7 @@ public class dialogFragment_Ble_Setting_ID_Setting extends DialogFragment {
             tv_Selected_ID2.setText(num);
         } else if (tv_Selected_ID3.getText().equals("")) {
             if (tv_Selected_ID1.getText().toString().equals("2") && tv_Selected_ID2.getText().toString().equals("5")) {
-                if (intNum > 6) {
-                    Toast.makeText(mBleContext, getString(R.string.btnSelectID_Error1), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            } else if (tv_Selected_ID1.getText().toString().equals("0") && tv_Selected_ID2.getText().toString().equals("0")) {
-                if (intNum == 0) {
+                if (intNum > 5) {
                     Toast.makeText(mBleContext, getString(R.string.btnSelectID_Error1), Toast.LENGTH_SHORT).show();
                     return;
                 }

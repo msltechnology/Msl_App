@@ -48,7 +48,7 @@
     <string name="remarks">비고</string>
     <string name="Fixed">부동광</string>
     <string name="select">select</string>
-    <string name="btnSelectID_Error1">값의 범위는 001 ~ 256 입니다.</string>
+    <string name="btnSelectID_Error1">값의 범위는 000 ~ 255 입니다.</string>
     <string name="GPS_On">항상 켜기</string>
     <string name="GPS_Off">밤에만 켜기</string>
     <string name="tv_ble_fragment_beginning_manual">사용방법</string>
@@ -110,4 +110,8 @@
     <string name="ble_scan_status_pause">검색 완료</string>
     <string name="temperature">온도</string>
     <string name="Delay_Time_change">시간 변경</string>
+    <string name="bleDisconnect_problem">Connection terminated due to a problem between Bluetooth communication</string>
+    <string name="bleDisconnect_Connection_Failed">Connection failed</string>
+    <string name="ble_Beginning_tvScan">등명기 모니터링</string>
+    <string name="ble_Beginning_tvRTU">RTU 설정(유선)</string>
 </resources>

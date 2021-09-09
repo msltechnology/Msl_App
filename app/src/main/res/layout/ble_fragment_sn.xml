@@ -8,15 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:orientation="horizontal"
         >
 
         <TextView
-            android:id="@+id/tv_SN_Setting_SerialNum"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="기존 이름 : "
+            android:textSize="20dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_SN_Setting_SerialNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
             android:text="Serial Num"
-            android:gravity="center"
-            android:autoSizeTextType="uniform"/>
+            android:textSize="50dp"
+            android:gravity="center"/>
 
     </LinearLayout>
 
@@ -24,16 +34,24 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:orientation="horizontal"
         >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="변경할 이름 : "
+            android:textSize="20dp"
+            android:gravity="center"/>
 
         <EditText
             android:id="@+id/et_SN_Setting_input"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="3"
             android:maxLength="8"
-            android:autoSizeTextType="uniform"
             android:gravity="center"
-            android:textSize="70dp"
+            android:textSize="50dp"
             />
 
     </LinearLayout>
@@ -48,6 +66,7 @@
             android:id="@+id/btn_SN_Setting_change"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="35dp"
             android:text="변경"
             android:autoSizeTextType="uniform"/>
 

@@ -175,8 +175,8 @@ public class dialogFragment_Ble_Setting_Password_Change extends DialogFragment {
         Point size = new Point();
         display.getSize(size);
 
-        final String x = String.valueOf(Math.round((size.x * 0.95)));
-        final String y = String.valueOf(Math.round((size.y * 0.95)));
+        final String x = String.valueOf(Math.round((size.x * 0.85)));
+        final String y = String.valueOf(Math.round((size.y * 0.85)));
         int dialogWidth = Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

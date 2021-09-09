@@ -30,11 +30,12 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_ble_setting_gps_on"
-            android:text="@string/GPS_On"
             android:autoSizeTextType="uniform"
-            android:translationZ="5dp"
-            android:elevation="3dp"/>
+            android:background="@drawable/custom_ble_setting_gps_on"
+            android:elevation="3dp"
+            android:text="@string/GPS_On"
+            android:padding="10dp"
+            android:translationZ="5dp" />
 
         <Button
             android:id="@+id/btn_GPS_Off"
