@@ -191,7 +191,7 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <TextView
+        <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -206,15 +206,10 @@
             android:text="@string/once_status"
             android:textSize="16sp" />
 
-        <LinearLayout
+        <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-
-        </LinearLayout>
-
+            android:layout_weight="1" />
 
     </LinearLayout>
 

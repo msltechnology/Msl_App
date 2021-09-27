@@ -96,11 +96,7 @@ public class dialogFragment_rtu_Setting_GMT_Change extends DialogFragment {
         btn_Off = view.findViewById(R.id.btn_rtu_setting_dialog_gmt_Off);
         btn_On.setOnClickListener(v -> {
 
-            if(tLanguage.equals("ko")){
-                Toast.makeText(mContext, "0으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
-            }else if(tLanguage.equals("en")){
-                Toast.makeText(mContext, "changed to 0", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(mBleContext, getString(R.string.toastMsg_changedToZero), Toast.LENGTH_LONG).show();
 
             String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
                     DATA_NUM_10 + DATA_SIGN_COMMA +
@@ -116,11 +112,8 @@ public class dialogFragment_rtu_Setting_GMT_Change extends DialogFragment {
         });
 
         btn_Off.setOnClickListener(v -> {
-            if(tLanguage.equals("ko")){
-                Toast.makeText(mContext, "+9(한국 시간)으로 변경되었습니다.", Toast.LENGTH_SHORT).show();
-            }else if(tLanguage.equals("en")){
-                Toast.makeText(mContext, "changed to 9", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(mBleContext, getString(R.string.toastMsg_changedToNine), Toast.LENGTH_LONG).show();
+
             String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
                     DATA_NUM_10 + DATA_SIGN_COMMA +
                     DATA_NUM_0 +  DATA_SIGN_CHECKSUM +

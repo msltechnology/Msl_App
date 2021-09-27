@@ -129,8 +129,6 @@ public class fragment_SN_Setting extends Fragment {
         public void handleMessage(Message message) {
 
             try {
-
-
                 BlewriteData(sendData);
                 Thread.sleep(100);
                 BlewriteData(DATA_DEVICE_RESET);

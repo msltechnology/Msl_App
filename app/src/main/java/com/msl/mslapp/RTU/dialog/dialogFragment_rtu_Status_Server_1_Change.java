@@ -23,7 +23,6 @@ import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
 
 import static com.msl.mslapp.BleMainActivity.mBleContext;
-import static com.msl.mslapp.BleMainActivity.tLanguage;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Status.Server_2;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Status.Server_Port_2;
@@ -161,11 +160,7 @@ public class dialogFragment_rtu_Status_Server_1_Change extends DialogFragment {
         );
         btn_confirm.setOnClickListener(v -> {
             if (tv_port_5.getText().toString().equals("")) {
-                if(tLanguage.equals("ko")){
-                    Toast.makeText(mContext, "Port 번호까지 다 채워주세요.", Toast.LENGTH_SHORT).show();
-                }else if(tLanguage.equals("en")){
-                    Toast.makeText(mContext, "Please fill in all the port numbers.", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(mBleContext, getString(R.string.toastMsg_dialog_serverChange_confirm), Toast.LENGTH_LONG).show();
             } else {
                 String Server_1_data = tv_server_1.getText().toString() + tv_server_2.getText().toString() + tv_server_3.getText().toString() + DATA_SIGN_COMMA +
                         tv_server_4.getText().toString() + tv_server_5.getText().toString() + tv_server_6.getText().toString() + DATA_SIGN_COMMA +
@@ -199,22 +194,14 @@ public class dialogFragment_rtu_Status_Server_1_Change extends DialogFragment {
 
                     send(data);
                 }
-                if(tLanguage.equals("ko")){
-                    Toast.makeText(mContext, "명령어를 보냈습니다.", Toast.LENGTH_SHORT).show();
-                }else if(tLanguage.equals("en")){
-                    Toast.makeText(mContext, "command sent.", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(mBleContext, getString(R.string.toastMsg_commandSend), Toast.LENGTH_LONG).show();
                 dismiss();
             }
         });
     }
 
     void toastMessage(){
-        if(tLanguage.equals("ko")){
-            Toast.makeText(mContext, "각 IP 최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
-        }else if(tLanguage.equals("en")){
-            Toast.makeText(mContext, "Each IP has a maximum of 255.", Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(mBleContext, getString(R.string.toastMsg_max255_IP), Toast.LENGTH_LONG).show();
     }
 
     void btn_Click(String selected) {
@@ -279,47 +266,27 @@ public class dialogFragment_rtu_Status_Server_1_Change extends DialogFragment {
                     return;
                 }
             }else if (tv_port_1.getText().toString().equals("") && i == 12 && selected_int > 6) {
-                if(tLanguage.equals("ko")){
-                    Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
-                }else if(tLanguage.equals("en")){
-                    Toast.makeText(mContext, "The maximum port value is 65535.", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(mBleContext, getString(R.string.toastMsg_max65535_port), Toast.LENGTH_LONG).show();
                 return;
             } else if (tv_port_2.getText().toString().equals("") && i == 13 && selected_int > 5) {
                 if (Integer.parseInt(tv_port_1.getText().toString()) == 6){
-                    if(tLanguage.equals("ko")){
-                        Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
-                    }else if(tLanguage.equals("en")){
-                        Toast.makeText(mContext, "The maximum port value is 65535.", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(mBleContext, getString(R.string.toastMsg_max65535_port), Toast.LENGTH_LONG).show();
                     return;
                 }
             } else if (tv_port_3.getText().toString().equals("") && i == 14 && selected_int > 5) {
                 if(Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5){
-                    if(tLanguage.equals("ko")){
-                        Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
-                    }else if(tLanguage.equals("en")){
-                        Toast.makeText(mContext, "The maximum port value is 65535.", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(mBleContext, getString(R.string.toastMsg_max65535_port), Toast.LENGTH_LONG).show();
                     return;
                 }
             }else if (tv_port_4.getText().toString().equals("") && i == 15 && selected_int > 3) {
                 if(Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5 && Integer.parseInt(tv_port_3.getText().toString()) == 5){
-                    if(tLanguage.equals("ko")){
-                        Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
-                    }else if(tLanguage.equals("en")){
-                        Toast.makeText(mContext, "The maximum port value is 65535.", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(mBleContext, getString(R.string.toastMsg_max65535_port), Toast.LENGTH_LONG).show();
                     return;
                 }
             }else if (tv_port_5.getText().toString().equals("") && i == 16 && selected_int > 5) {
                 if(Integer.parseInt(tv_port_1.getText().toString()) == 6 && Integer.parseInt(tv_port_2.getText().toString()) == 5
                         && Integer.parseInt(tv_port_3.getText().toString()) == 5 && Integer.parseInt(tv_port_4.getText().toString()) == 3){
-                    if(tLanguage.equals("ko")){
-                        Toast.makeText(mContext, "Port 최댓값은 65535입니다.", Toast.LENGTH_SHORT).show();
-                    }else if(tLanguage.equals("en")){
-                        Toast.makeText(mContext, "The maximum port value is 65535.", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(mBleContext, getString(R.string.toastMsg_max65535_port), Toast.LENGTH_LONG).show();
                     return;
                 }
             }

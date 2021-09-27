@@ -212,17 +212,6 @@ public class fragment_Ble_Status extends Fragment {
             ll_ble_fragment_status_solar_v_detail.setVisibility(View.GONE);
             admin_ble_fragment_status_ll.setVisibility(View.GONE);
         }
-
-        /*Button testBtn1 = view.findViewById(R.id.test_bt1);
-        testBtn1.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_READY));
-        Button testBtn2 = view.findViewById(R.id.test_bt2);
-        testBtn2.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_ON_SETTING));
-        Button testBtn3 = view.findViewById(R.id.test_bt3);
-        testBtn3.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_OFF_READY));
-        Button testBtn4 = view.findViewById(R.id.test_bt4);
-        testBtn4.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(CDS_LAMP_OFF_SETTING));
-        Button testBtn5 = view.findViewById(R.id.test_bt5);
-        testBtn5.setOnClickListener(v -> ((BleMainActivity) getActivity()).BlewriteData(DATA_DEVICE_RESET));*/
     }
 
     void textviewSetting() {
@@ -579,7 +568,7 @@ public class fragment_Ble_Status extends Fragment {
                 String lon1, lon2, lon3;
 
                 //위도
-                if (Float.valueOf(data_arr[14]) != 0f) {
+                if (Float.parseFloat(data_arr[14]) != 0f) {
                     tempLatitude = data_arr[14].split("\\.");
                     if (tempLatitude[0].charAt(0) != '-') {
                         lat1 = tempLatitude[0].substring(0, 2);
@@ -590,7 +579,7 @@ public class fragment_Ble_Status extends Fragment {
                         lat2 = tempLatitude[0].substring(3, 5);
                         lat1 = "S " + lat1;
                     }
-                    lat3 = String.valueOf(String.format("%.4f", Double.valueOf("0." + tempLatitude[1]) * 60));
+                    lat3 = String.format("%.4f", Double.parseDouble("0." + tempLatitude[1]) * 60);
 
                     tv_ble_status_gps_latitude.setText(lat1 + "° " + lat2 + "\' " + lat3 + "\"");
                 } else {
@@ -603,7 +592,7 @@ public class fragment_Ble_Status extends Fragment {
                 }
 
                 //경도
-                if (Float.valueOf(longitude) != 0f) {
+                if (Float.parseFloat(longitude) != 0f) {
                     tempLongitude = longitude.split("\\.");
                     if (tempLongitude[0].charAt(0) != '-') {
                         lon1 = tempLongitude[0].substring(0, 3);

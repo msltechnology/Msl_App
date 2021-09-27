@@ -23,7 +23,6 @@ import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
 
 import static com.msl.mslapp.BleMainActivity.mBleContext;
-import static com.msl.mslapp.BleMainActivity.tLanguage;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Status.lantern_id;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Status.rtu_id;
@@ -129,11 +128,9 @@ public class dialogFragment_rtu_Status_Lantern_ID_Change extends DialogFragment 
         );
         btn_confirm.setOnClickListener(v -> {
             if (tv_3.getText().toString().equals("")) {
-                if(tLanguage.equals("ko")){
-                    Toast.makeText(mContext, "3자리를 채워주세요", Toast.LENGTH_SHORT).show();
-                }else if(tLanguage.equals("en")){
-                    Toast.makeText(mContext, "Please fill in 3 places", Toast.LENGTH_SHORT).show();
-                }
+
+                Toast.makeText(mBleContext, getString(R.string.toastMsg_fill3Places), Toast.LENGTH_LONG).show();
+
             } else {
                 lantern_id = tv_1.getText().toString() + tv_2.getText().toString() + tv_3.getText().toString();
 
@@ -154,11 +151,9 @@ public class dialogFragment_rtu_Status_Lantern_ID_Change extends DialogFragment 
                             DATA_SIGN_CR + DATA_SIGN_LF;
                     send(data);
                 }
-                if(tLanguage.equals("ko")){
-                    Toast.makeText(mContext, "명령어를 보냈습니다.", Toast.LENGTH_SHORT).show();
-                }else if(tLanguage.equals("en")){
-                    Toast.makeText(mContext, "command sent.", Toast.LENGTH_SHORT).show();
-                }
+
+                Toast.makeText(mBleContext, getString(R.string.toastMsg_commandSend), Toast.LENGTH_LONG).show();
+
                 dismiss();
             }
         });
@@ -177,28 +172,18 @@ public class dialogFragment_rtu_Status_Lantern_ID_Change extends DialogFragment 
 
         for (int i = 0; i < textViews.length; i++) {
             if (tv_1.getText().toString().equals("") && i == 0 && selected_int > 2) {
-                if(tLanguage.equals("ko")){
-                    Toast.makeText(mContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
-                }else if(tLanguage.equals("en")){
-                    Toast.makeText(mContext, "The maximum is 255.", Toast.LENGTH_SHORT).show();
-                }
+
+                Toast.makeText(mBleContext, getString(R.string.toastMsg_max255), Toast.LENGTH_LONG).show();
+
                 return;
             } else if (tv_2.getText().toString().equals("") && i == 1 && selected_int > 5) {
                 if (Integer.parseInt(tv_1.getText().toString()) == 2){
-                    if(tLanguage.equals("ko")){
-                        Toast.makeText(mContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
-                    }else if(tLanguage.equals("en")){
-                        Toast.makeText(mContext, "The maximum is 255.", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(mBleContext, getString(R.string.toastMsg_max255), Toast.LENGTH_LONG).show();
                     return;
                 }
             } else if (i == 2 && selected_int > 5) {
                 if(Integer.parseInt(tv_1.getText().toString()) == 2 && Integer.parseInt(tv_2.getText().toString()) == 5){
-                    if(tLanguage.equals("ko")){
-                        Toast.makeText(mContext, "최댓값은 255입니다.", Toast.LENGTH_SHORT).show();
-                    }else if(tLanguage.equals("en")){
-                        Toast.makeText(mContext, "The maximum is 255.", Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(mBleContext, getString(R.string.toastMsg_max255), Toast.LENGTH_LONG).show();
                     return;
                 }
             }

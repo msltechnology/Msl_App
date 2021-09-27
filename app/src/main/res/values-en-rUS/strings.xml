@@ -113,4 +113,14 @@
     <string name="bleDisconnect_Connection_Failed">Connection failed</string>
     <string name="ble_Beginning_tvScan">Lantern Monitoring</string>
     <string name="ble_Beginning_tvRTU">RTU Setup(Wired)</string>
+    <string name="toastMsg_changedToZero">changed to 0</string>
+    <string name="toastMsg_changedToNine">changed to 9</string>
+    <string name="toastMsg_fill3Places">Please fill in 3 places</string>
+    <string name="toastMsg_commandSend">Command has been sent</string>
+    <string name="toastMsg_max255">The maximum is 255</string>
+    <string name="toastMsg_fill7Places">Please fill in 7 places</string>
+    <string name="toastMsg_max720">The maximum is 720</string>
+    <string name="toastMsg_dialog_serverChange_confirm">Please fill in all the port numbers</string>
+    <string name="toastMsg_max255_IP">Each IP has a maximum of 255</string>
+    <string name="toastMsg_max65535_port">The maximum port value is 65535</string>
 </resources>

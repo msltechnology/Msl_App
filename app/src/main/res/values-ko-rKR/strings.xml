@@ -114,4 +114,14 @@
     <string name="bleDisconnect_Connection_Failed">Connection failed</string>
     <string name="ble_Beginning_tvScan">등명기 모니터링</string>
     <string name="ble_Beginning_tvRTU">RTU 설정(유선)</string>
+    <string name="toastMsg_changedToZero">0으로 변경되었습니다.</string>
+    <string name="toastMsg_changedToNine">+9(한국 시간)으로 변경되었습니다.</string>
+    <string name="toastMsg_fill3Places">3자리를 채워주세요</string>
+    <string name="toastMsg_commandSend">명령을 보냈습니다</string>
+    <string name="toastMsg_max255">최댓값은 255입니다</string>
+    <string name="toastMsg_fill7Places">7자리를 채워주세요</string>
+    <string name="toastMsg_max720">최댓값은 720입니다</string>
+    <string name="toastMsg_dialog_serverChange_confirm">Port 번호까지 다 채워주세요</string>
+    <string name="toastMsg_max255_IP">각 IP 최댓값은 255입니다</string>
+    <string name="toastMsg_max65535_port">Port 최댓값은 65535입니다</string>
 </resources>

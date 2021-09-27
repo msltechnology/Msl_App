@@ -23,7 +23,6 @@ import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
 
 import static com.msl.mslapp.BleMainActivity.mBleContext;
-import static com.msl.mslapp.BleMainActivity.tLanguage;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Status.lantern_id;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Status.rtu_id;
@@ -137,11 +136,7 @@ public class dialogFragment_rtu_Status_RTU_ID_Change extends DialogFragment {
         );
         btn_confirm.setOnClickListener(v -> {
             if (tv_7.getText().toString().equals("")) {
-                if(tLanguage.equals("ko")){
-                    Toast.makeText(mContext, "7자리를 채워주세요", Toast.LENGTH_SHORT).show();
-                }else if(tLanguage.equals("en")){
-                    Toast.makeText(mContext, "Please fill in 7 places", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(mBleContext, getString(R.string.toastMsg_fill7Places), Toast.LENGTH_LONG).show();
             } else {
                 rtu_id = tv_1.getText().toString() + tv_2.getText().toString() + tv_3.getText().toString() + tv_4.getText().toString()
                         + tv_5.getText().toString() + tv_6.getText().toString() + tv_7.getText().toString();
@@ -164,11 +159,7 @@ public class dialogFragment_rtu_Status_RTU_ID_Change extends DialogFragment {
                     Log.d(TAG, "RTU From");
                     send(data);
                 }
-                if(tLanguage.equals("ko")){
-                    Toast.makeText(mContext, "명령어를 보냈습니다.", Toast.LENGTH_SHORT).show();
-                }else if(tLanguage.equals("en")){
-                    Toast.makeText(mContext, "command sent.", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(mBleContext, getString(R.string.toastMsg_commandSend), Toast.LENGTH_LONG).show();
                 dismiss();
             }
         });

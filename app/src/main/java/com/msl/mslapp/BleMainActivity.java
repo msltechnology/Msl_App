@@ -92,8 +92,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-
-    public static final boolean adminApp = true;
+    public static final boolean adminApp = false;
+    // delaytime 이용고객용
+    public static final boolean delaytimeApp = false;
 
     public static Context mBleContext = null;
 
@@ -130,6 +131,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static boolean CdsFlag = false;
     // SN 설정 전용
     public static boolean SnFlag = false;
+
+    // 중복데이터 읽는거 방지 체크용
+    public static String readDataOverlapCheck = "";
 
     // 읽기 쓰기 케릭터
     public static BluetoothGattCharacteristic respCharacteristic = null;
@@ -1684,7 +1688,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             }
         }
 
-        String dataCheck = "";
         int requestPasswordCount = 0;
 
         // 블루투스 데이터 읽기 시 처리
@@ -1692,8 +1695,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
             String readCharacter = characteristic.getStringValue(0);
 
-            if (!dataCheck.equals(readCharacter)) {
-                dataCheck = readCharacter;
+            if (!readDataOverlapCheck.equals(readCharacter)) {
+                readDataOverlapCheck = readCharacter;
             } else {
                 if (readCharacter.contains(DATA_TYPE_PS)) {
                     requestPasswordCount += 1;
@@ -1703,6 +1706,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         // 해당 값을 등명기가 수신 시 더이상 데이터 요청 안함.
                         BlewriteData("$PS,A,0000H*");
                         requestPasswordCount = 0;
+                        readDataOverlapCheck = "";
                     }
                 }
 
@@ -1768,6 +1772,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         bleConnected = false;
         selectedSerialNum = "";
         connectFail = 0;
+        readDataOverlapCheck = "";
         if (bleGatt != null) {
             BleConnecting = false;
 
@@ -2081,6 +2086,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 disconnectGattServer("BleMainActivity - BlewriteData - Unable to find cmd characteristic");
                 return;
             }
+
+            // 데이터를 보낼 경우 새로들어오는 데이터 중복 체크 값 초기화.
+            readDataOverlapCheck = "";
 
             String sendBlewriteData = data + ToCheckSum(data);
             logData_Ble("Write : " + sendBlewriteData, "write");
