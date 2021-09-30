@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.msl.mslapp.R;
 
-import static com.msl.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
+import static com.msl.mslapp.Public.StringList.DATA_REQUEST_STATUS;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_1;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_2;

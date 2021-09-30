@@ -245,8 +245,10 @@ public class fragment_Ble_Scan extends Fragment {
                     return;
                 }
 
+
+
                 // 이름이 MSL 관련이 아니면 제외(IOT는 블루투스가 초기화 됐을 경우 초기값으로 나오므로 설정)
-                if (!(name.contains("MSL TECH") || name.contains("IoT"))) {
+                if (!(name.contains("MSL TECH") || name.contains("MSLTECH") || name.contains("IoT"))) {
                     return;
                 }
 

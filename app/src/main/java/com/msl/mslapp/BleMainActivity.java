@@ -70,6 +70,7 @@ import com.msl.mslapp.Ble.fragment.fragment_CDS_Setting;
 import com.msl.mslapp.Ble.fragment.fragment_SN_Setting;
 import com.msl.mslapp.Public.Log.log_ListViewAdapter;
 import com.google.android.material.navigation.NavigationView;
+import com.msl.mslapp.Public.StringList;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,7 +93,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = false;
+    public static final boolean adminApp = true;
     // delaytime 이용고객용
     public static final boolean delaytimeApp = false;
 
@@ -145,6 +146,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     ConcurrentLinkedQueue<String> readDataQueue = new ConcurrentLinkedQueue<>();
 
     //사용자 BLE UUID Service/Rx/Tx
+    //public static String SERVICE_STRING = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
+
     public static String SERVICE_STRING = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E";
     public static String CHARACTERISTIC_COMMAND_STRING = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E";
     public static String CHARACTERISTIC_RESPONSE_STRING = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E";
@@ -183,182 +186,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             .build();
     //public static ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).setReportDelay(0).setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES).build();
 
-    //region 블루투스 데이터 용
-    //데이터 기호
-    public static final String DATA_SIGN_START = "$";
-    public static final String DATA_SIGN_CHECKSUM = "*";
-    public static final String DATA_SIGN_COMMA = ",";
-    public static final String DATA_SIGN_CR = "\r"; //<CR>
-    public static final String DATA_SIGN_LF = "\n"; //<LF>
-
-    //데이터 타입
-    public static final String DATA_TYPE_LICMD = "LICMD"; // 명령 커맨드
-    public static final String DATA_TYPE_MUCMD = "MUCMD"; // 명령 커맨드
-    public static final String DATA_TYPE_LISTS = "LISTS"; // 상태 정보
-    public static final String DATA_TYPE_LISET = "LISET"; // 설정 정보
-    public static final String DATA_TYPE_RTU_READ = "[ ConfMsg]"; // RTU 데이터
-    public static final String DATA_TYPE_RTU_MODEM_READ = "[ModemMsg]"; // RTU 모뎀 데이터
-    public static final String DATA_TYPE_PS = "PS"; //패스워드
-    public static final String DATA_TYPE_S = "S"; //설정
-    public static final String DATA_TYPE_I = "I"; //설정
-    public static final String DATA_TYPE_R = "R"; //Request
-    public static final String DATA_TYPE_A = "A"; //
-    public static final String DATA_TYPE_W = "W"; //
-    public static final String DATA_TYPE_Y = "Y"; //
-    public static final String DATA_TYPE_X = "X"; //
-    public static final String DATA_TYPE_Z = "Z"; //
-    public static final String DATA_TYPE_SID = "SID"; //ID 설정
-    public static final String DATA_TYPE_RMC = "RMC"; //리모컨 모드
-    public static final String DATA_TYPE_DIP = "DIP"; //DIP SW 모드
-    public static final String DATA_TYPE_RST = "RST"; //공장 초기화
-    public static final String DATA_TYPE_BTV = "BTV"; //배터리 데이터 확인
-    public static final String DATA_TYPE_SLV = "SLV"; //솔라전압 데이터 확인
-    public static final String DATA_TYPE_SLC = "SLC"; //태양광 전류 테이터 확인
-    public static final String DATA_TYPE_SNB = "SNB"; //시리얼넘버 확인
-    public static final String DATA_TYPE_GP1 = "GP1"; //낮동안 GPS 할성화
-    public static final String DATA_TYPE_GP0 = "GP0"; //저녁동안에만 활성화
-    public static final String DATA_TYPE_DEL = "DEL"; //저녁동안에만 활성화
-    public static final String DATA_TYPE_ADMIN = "ZFVVS"; //저녁동안에만 활성화
-    public static final String DATA_TYPE_1 = "1"; //상태요청
-    public static final String DATA_TYPE_2 = "2"; //강제점등
-    public static final String DATA_TYPE_3 = "3"; //강제소등
-    public static final String DATA_TYPE_4 = "4"; //리셋
-    public static final String DATA_TYPE_5 = "5"; //부동광
-    public static final String DATA_TYPE_14 = "14"; // RTU 통신 시작
-
-    //디바이스 ID
-    public static final String DATA_ID_255 = "255";
-
-    //$LICMD,1,255* : 상태요청
-    public final static String DATA_REQUEST_STATUS = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_1 + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,I* : 정보요청(펌웨어 버전 및 GPS 상태, delay time 값 등)
-    public final static String DATA_REQUEST_INFORMATION = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_I
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,2,255* : 강제점등
-    public final static String DATA_LAMP_ON = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_2 + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,3,255* : 강제소등
-    public final static String DATA_LAMP_OFF = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_3 + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,4,255* : 리셋
-    public final static String DATA_DEVICE_RESET = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_4 + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,5,255* : 부동광
-    public final static String DATA_LAMP_FIXED = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_5 + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,S,RMC,255* : 리모컨 모드
-    public final static String DATA_SET_RMC = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_S + DATA_SIGN_COMMA
-            + DATA_TYPE_RMC + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,S,DIP,255* : DIP SW 모드
-    public final static String DATA_SET_DIP = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_S + DATA_SIGN_COMMA
-            + DATA_TYPE_DIP + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,S,RST,255* : 공장 초기화
-    public final static String DATA_SET_RST = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_S + DATA_SIGN_COMMA
-            + DATA_TYPE_RST + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,W,255* : 점등 준비
-    public final static String CDS_LAMP_ON_READY = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_W + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,Y,255* : 점등 설정
-    public final static String CDS_LAMP_ON_SETTING = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_Y + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,X,255* : 소등 준비
-    public final static String CDS_LAMP_OFF_READY = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_X + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-    //$LICMD,Z,255* : 소등 설정
-    public final static String CDS_LAMP_OFF_SETTING = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_Z + DATA_SIGN_COMMA
-            + DATA_ID_255
-            + DATA_SIGN_CHECKSUM;
-
-    //$PS,A,ZFVVS* : 관리자 패스워드
-    public final static String ADMIN_PASSWORD = DATA_SIGN_START
-            + DATA_TYPE_PS + DATA_SIGN_COMMA
-            + DATA_TYPE_A + DATA_SIGN_COMMA
-            + DATA_TYPE_ADMIN
-            + DATA_SIGN_CHECKSUM;
-
-    // $LICMD,S,BTV,255* : 배터리 각 전압 확인
-    public final static String DATA_REQUEST_BTV = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_S + DATA_SIGN_COMMA
-            + DATA_TYPE_BTV + DATA_SIGN_COMMA
-            + DATA_ID_255 + DATA_SIGN_CHECKSUM;
-
-    // $LICMD,S,SLV,255* : 솔라판 각 전압 확인
-    public final static String DATA_REQUEST_SLV = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_S + DATA_SIGN_COMMA
-            + DATA_TYPE_SLV + DATA_SIGN_COMMA
-            + DATA_ID_255 + DATA_SIGN_CHECKSUM;
-
-    // $LICMD,S,SLV,255* : 솔라판 각 전류 확인
-    public final static String DATA_REQUEST_SLC = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_S + DATA_SIGN_COMMA
-            + DATA_TYPE_SLC + DATA_SIGN_COMMA
-            + DATA_ID_255 + DATA_SIGN_CHECKSUM;
-
-    // $LICMD,S,GP0,255* : GPS 밤에만 작동
-    public final static String GPS_SET_OFF = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_S + DATA_SIGN_COMMA
-            + DATA_TYPE_GP0 + DATA_SIGN_COMMA
-            + DATA_ID_255 + DATA_SIGN_CHECKSUM;
-
-
-    // $LICMD,S,GP1,255* : GPS 낮에도 작동
-    public final static String GPS_SET_ON = DATA_SIGN_START
-            + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-            + DATA_TYPE_S + DATA_SIGN_COMMA
-            + DATA_TYPE_GP1 + DATA_SIGN_COMMA
-            + DATA_ID_255 + DATA_SIGN_CHECKSUM;
-
-    //$MUCMD,14,1*11<CR><LF> : RTU에서 데이터 보내게함
-    public final static String DATA_RTU_BLUETOOTH_SENDING = DATA_SIGN_START
-            + DATA_TYPE_MUCMD + DATA_SIGN_COMMA
-            + DATA_TYPE_14 + DATA_SIGN_COMMA
-            + DATA_TYPE_1 + DATA_SIGN_CHECKSUM
-            + DATA_TYPE_1 + DATA_TYPE_1;
 
     //endregion
 
@@ -566,7 +393,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
             case R.id.action_bar_bleDisconnect:
                 disconnectGattServer("bleMainActivity - onOptionsItemSelected - action_bar_bleDisconnect");
-                fragmentChange("fragment_ble_beginning");
+
+                bleDisconnectItem.setVisible(false);
+                ScanItem.setVisible(true);
+                ScanItem.setTitle(R.string.ble_main_scanItem_scan);
+                toolbar_title.setText("");
+                //fragmentChange("fragment_ble_beginning");
 
             case android.R.id.home:
                 //Toast.makeText(mBleContext, "Test Success", Toast.LENGTH_SHORT).show();
@@ -645,7 +477,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         navigation_Setting();
 
-
         /*toolbarMain.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -682,14 +513,24 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         registerReceiver(mBroadcastReceiver3, filter3);
 
         permission_check();
+        Log.d(TAG, "bluetooth 5 모드 준비 : " + Build.VERSION.SDK_INT + " 이고 O 의 값은 : " + Build.VERSION_CODES.O);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             // setLegacy 값 안 바꾸면 장거리 블루투스 못찾음(광고형 블루투스를 못봄)
-            settings = new ScanSettings.Builder()
+            /*settings = new ScanSettings.Builder()
                     .setLegacy(false)
                     .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                    .build();
+                    .build();*/
+
+            // 장거리용 셋팅
+            settings = new ScanSettings.Builder().
+                    setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).
+                    setReportDelay(0).
+                    setLegacy(false).build();
+
+            Log.d(TAG, "bluetooth 5 모드 온");
 
             Log.d(TAG, "BluetoothAdapter isLe2MPhySupported() : " + mBluetoothAdapter.isLe2MPhySupported());
             Log.d(TAG, "BluetoothAdapter isLeCodedPhySupported() : " + mBluetoothAdapter.isLeCodedPhySupported());
@@ -813,7 +654,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         // GPS 설정
         navigationView.findViewById(R.id.ll_navigation_gps).setOnClickListener(v -> {
             if (BleConnecting) {
-                BlewriteData(DATA_REQUEST_INFORMATION);
+                BlewriteData(StringList.DATA_REQUEST_INFORMATION);
 
                 handler.postDelayed(() -> {
                     FragmentManager fm = getSupportFragmentManager();
@@ -925,24 +766,24 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             data = data.substring(0, data.indexOf("*"));
         }
 
-        String[] dataArr = data.split(DATA_SIGN_COMMA);
+        String[] dataArr = data.split(StringList.DATA_SIGN_COMMA);
 
         // 각 특정 별 데이터 별 확인해서 로그 값을 다르게 나타냄(해당 데이터 값은 안보여줌)
         if (color.equals("read")) {
-            if (dataArr[0].contains(DATA_TYPE_PS)) {
+            if (dataArr[0].contains(StringList.DATA_TYPE_PS)) {
                 log_listViewAdapter.addItem(getTime, "Request a Password", color);
                 return;
-            } else if (dataArr[0].contains(DATA_TYPE_LISTS)) {
+            } else if (dataArr[0].contains(StringList.DATA_TYPE_LISTS)) {
                 switch (dataArr[1]) {
                     case "S":
                         switch (dataArr[2]) {
-                            case DATA_TYPE_BTV:
+                            case StringList.DATA_TYPE_BTV:
                                 log_listViewAdapter.addItem(getTime, "Battery Status Request Confirm\n" + data, color);
                                 break;
-                            case DATA_TYPE_SLV:
+                            case StringList.DATA_TYPE_SLV:
                                 log_listViewAdapter.addItem(getTime, "Solar Status V Request Confirm\n" + data, color);
                                 break;
-                            case DATA_TYPE_SLC:
+                            case StringList.DATA_TYPE_SLC:
                                 log_listViewAdapter.addItem(getTime, "Solar Status A Request Confirm\n" + data, color);
                                 break;
                         }
@@ -952,7 +793,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         break;
                 }
                 return;
-            } else if (dataArr[0].contains(DATA_TYPE_LICMD)) {
+            } else if (dataArr[0].contains(StringList.DATA_TYPE_LICMD)) {
                 switch (dataArr[1]) {
                     case "2":
                         log_listViewAdapter.addItem(getTime, "Test - Lamp ON Confirm", color);
@@ -968,13 +809,13 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         break;
                     case "S":
                         switch (dataArr[2]) {
-                            case DATA_TYPE_SID:
+                            case StringList.DATA_TYPE_SID:
                                 log_listViewAdapter.addItem(getTime, "Lantern ID : " + dataArr[3] + " Confirm", color);
                                 break;
-                            case DATA_TYPE_GP0:
+                            case StringList.DATA_TYPE_GP0:
                                 log_listViewAdapter.addItem(getTime, "GPS Only Night Confirm", color);
                                 break;
-                            case DATA_TYPE_GP1:
+                            case StringList.DATA_TYPE_GP1:
                                 log_listViewAdapter.addItem(getTime, "GPS Always Confirm", color);
                                 break;
                             default:
@@ -983,27 +824,27 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         break;
                 }
                 return;
-            } else if (dataArr[0].contains(DATA_TYPE_LISET)) {
+            } else if (dataArr[0].contains(StringList.DATA_TYPE_LISET)) {
                 log_listViewAdapter.addItem(getTime, "Information Data Confirm\n" + data, color);
                 //log_Listview.requestLayout();
                 //log_listViewAdapter.notifyDataSetChanged();
                 return;
-            } else if (dataArr[0].contains(DATA_TYPE_RTU_READ)) {
-                data = data.replace(DATA_TYPE_RTU_READ + " ", "");
+            } else if (dataArr[0].contains(StringList.DATA_TYPE_RTU_READ)) {
+                data = data.replace(StringList.DATA_TYPE_RTU_READ + " ", "");
                 log_listViewAdapter.addItem(getTime, "RTU Data Confirm\n" + data, color);
                 return;
-            } else if (dataArr[0].contains(DATA_TYPE_RTU_MODEM_READ)) {
+            } else if (dataArr[0].contains(StringList.DATA_TYPE_RTU_MODEM_READ)) {
                 Log.d(TAG, "DATA_TYPE_RTU_MODEM_READ *  : " + data);
-                data = data.replace(DATA_TYPE_RTU_MODEM_READ, ""); //  + " $$MODEM_STATE: "
+                data = data.replace(StringList.DATA_TYPE_RTU_MODEM_READ, ""); //  + " $$MODEM_STATE: "
                 Log.d(TAG, "DATA_TYPE_RTU_MODEM_READ Revise  *  : " + data);
                 log_listViewAdapter.addItem(getTime, "RTU Modem Data Confirm\n" + data, color);
                 return;
             }
 
         } else if (color.equals("write")) {
-            if (dataArr[0].contains(DATA_TYPE_PS)) {
+            if (dataArr[0].contains(StringList.DATA_TYPE_PS)) {
                 // 비밀번호 요청 더이상 보내지 말라는 대답으로 보내는 거(로그에 안보여줄려고 처리)
-                if (dataArr[1].contains(DATA_TYPE_A)) {
+                if (dataArr[1].contains(StringList.DATA_TYPE_A)) {
                     if (dataArr[2].contains("0000H")) {
                         return;
                     }
@@ -1012,7 +853,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 //log_Listview.requestLayout();
                 //log_listViewAdapter.notifyDataSetChanged();
                 return;
-            } else if (dataArr[0].contains(DATA_TYPE_LICMD)) {
+            } else if (dataArr[0].contains(StringList.DATA_TYPE_LICMD)) {
                 switch (dataArr[1]) {
                     case "1":
                         log_listViewAdapter.addItem(getTime, "Status Request", color);
@@ -1031,25 +872,25 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         break;
                     case "S":
                         switch (dataArr[2]) {
-                            case DATA_TYPE_BTV:
+                            case StringList.DATA_TYPE_BTV:
                                 log_listViewAdapter.addItem(getTime, "Battery Status Request", color);
                                 break;
-                            case DATA_TYPE_SLV:
+                            case StringList.DATA_TYPE_SLV:
                                 log_listViewAdapter.addItem(getTime, "Solar Status V Request", color);
                                 break;
-                            case DATA_TYPE_SLC:
+                            case StringList.DATA_TYPE_SLC:
                                 log_listViewAdapter.addItem(getTime, "Solar Status A Request", color);
                                 break;
-                            case DATA_TYPE_SID:
+                            case StringList.DATA_TYPE_SID:
                                 log_listViewAdapter.addItem(getTime, "Lantern ID : " + dataArr[3], color);
                                 break;
-                            case DATA_TYPE_GP0:
+                            case StringList.DATA_TYPE_GP0:
                                 log_listViewAdapter.addItem(getTime, "GPS Only Night", color);
                                 break;
-                            case DATA_TYPE_GP1:
+                            case StringList.DATA_TYPE_GP1:
                                 log_listViewAdapter.addItem(getTime, "GPS Always", color);
                                 break;
-                            case DATA_TYPE_DEL:
+                            case StringList.DATA_TYPE_DEL:
                                 log_listViewAdapter.addItem(getTime, "Delay Time : " + dataArr[3], color);
                                 break;
                             default:
@@ -1066,7 +907,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 //log_listViewAdapter.notifyDataSetChanged();
                 //log_Listview.requestLayout();
                 return;
-            } else if (dataArr[0].contains(DATA_TYPE_MUCMD)) {
+            } else if (dataArr[0].contains(StringList.DATA_TYPE_MUCMD)) {
                 switch (dataArr[1]) {
                     case "8":
                         log_listViewAdapter.addItem(getTime, "RTU Data Request", color);
@@ -1504,7 +1345,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
                     fragmentChange("fragment_ble_beginning");
                     Log.d(TAG, "onConnectionStateChange state 8 : 블루투스 연결 불안정(거리 혹은 장치종료)");
-                    Toast.makeText(mBleContext, getString(R.string.bleDisconnect_problem), Toast.LENGTH_LONG).show();
                     /*if (connectFail < 5) {
                         logData_Ble("Bluetooth Disconnect - \n연결 불안정 - 재접속 시도", "error");
                         connectFail += 1;
@@ -1698,7 +1538,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             if (!readDataOverlapCheck.equals(readCharacter)) {
                 readDataOverlapCheck = readCharacter;
             } else {
-                if (readCharacter.contains(DATA_TYPE_PS)) {
+                if (readCharacter.contains(StringList.DATA_TYPE_PS)) {
                     requestPasswordCount += 1;
                     Log.d(TAG, "Request a Password Count : " + requestPasswordCount);
                     // 데이터 통신 간 오류로 인해 비밀번호가 입력이 안되거나, 연결이 끊겼다 연결되는경우 비밀번호 요청을 예속 보냄. 그에 대비하여 보냄.
@@ -1809,8 +1649,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                             // \n 까지 포함
                             String readData = readDataTotal.substring(configIndex, lfIndex + 1);
 
+                            Log.d(TAG, "RTU 다음줄 내용 포함해서 : " + readData);
+
                             // Log 용은 삭제
                             String readDataLog = readDataTotal.substring(configIndex, lfIndex);
+
+                            Log.d(TAG, "RTU 로그용 : " + readDataLog);
 
                             try {
                                 readDataTotal = readDataTotal.substring(lfIndex + 1);
@@ -1843,8 +1687,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                             // subString 했는데도 해당 데이터가 있을 경우 while 벗어나지않고 한번더 한다.
                             configIndex = readDataTotal.indexOf("[ ConfMsg]");
-                            lfIndex = readDataTotal.indexOf("\n", configIndex);
+                            lfIndex = readDataTotal.indexOf(">", configIndex);
                             if (configIndex < 0 | lfIndex < 0) {
+                                Log.d(TAG, "[ModemMsg] break! : " + readDataTotal);
                                 break;
                             }
 
@@ -1864,8 +1709,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                             // \n 까지 포함
                             String readData = readDataTotal.substring(ModemMsgIndex, lfIndex + 1);
 
+                            Log.d(TAG, "다음줄 내용 포함해서 : " + readData);
+
                             // Log 용은 삭제
                             String readDataLog = readDataTotal.substring(ModemMsgIndex, lfIndex);
+
+                            Log.d(TAG, "로그용 : " + readDataLog);
 
                             try {
                                 readDataTotal = readDataTotal.substring(lfIndex + 1);
@@ -1898,13 +1747,14 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                             // subString 했는데도 해당 데이터가 있을 경우 while 벗어나지않고 한번더 한다.
                             ModemMsgIndex = readDataTotal.indexOf("[ModemMsg]");
-                            lfIndex = readDataTotal.indexOf("\n", ModemMsgIndex);
+                            lfIndex = readDataTotal.indexOf(">", ModemMsgIndex);
                             if (ModemMsgIndex < 0 | lfIndex < 0) {
                                 break;
                             }
 
                         }
                     }
+
                     // 그 외 경우
                     if (readDataTotal.contains("\\n") || readDataTotal.contains("\\r")) {
                         Log.d(TAG, "readDataTotal contain n or r " + readDataTotal);
@@ -1922,8 +1772,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         readDataTotal = readDataTotal.trim();
 
                         // $ 및 * 등이 포함됐는지.(처음과 끝)
-                        if (readDataTotal.indexOf(DATA_SIGN_START) > -1
-                                && readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1) {
+                        if (readDataTotal.indexOf(StringList.DATA_SIGN_START) > -1
+                                && readDataTotal.indexOf(StringList.DATA_SIGN_CHECKSUM) > -1) {
 
                             int count = 0;
                             for (int i = 0; i < readDataTotal.length(); i++) {
@@ -1958,19 +1808,19 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
 
                             // $이 *보다 먼저 들어왔는지(데이터 순서 꼬였는지)
-                            if (readDataTotal.indexOf(DATA_SIGN_START) < readDataTotal.indexOf(DATA_SIGN_CHECKSUM)) {
+                            if (readDataTotal.indexOf(StringList.DATA_SIGN_START) < readDataTotal.indexOf(StringList.DATA_SIGN_CHECKSUM)) {
                                 try {
-                                    if (readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 1, readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3).length() == 2) {
+                                    if (readDataTotal.substring(readDataTotal.indexOf(StringList.DATA_SIGN_CHECKSUM) + 1, readDataTotal.indexOf(StringList.DATA_SIGN_CHECKSUM) + 3).length() == 2) {
                                         //데이터 처음과 끝 받기 완료
 
-                                        String data = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_START), readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3);
+                                        String data = readDataTotal.substring(readDataTotal.indexOf(StringList.DATA_SIGN_START), readDataTotal.indexOf(StringList.DATA_SIGN_CHECKSUM) + 3);
                                         Log.d(TAG, "정리된 Data : " + data);
-                                        String[] dataArr = data.split(DATA_SIGN_COMMA);
+                                        String[] dataArr = data.split(StringList.DATA_SIGN_COMMA);
                                         // 가장 마지막 데이터(~~~~*AH)의 체크섬이후 데이터 받아오기(체크섬 값 부분)
-                                        String csData = dataArr[dataArr.length - 1].substring(dataArr[dataArr.length - 1].indexOf(DATA_SIGN_CHECKSUM) + 1);
+                                        String csData = dataArr[dataArr.length - 1].substring(dataArr[dataArr.length - 1].indexOf(StringList.DATA_SIGN_CHECKSUM) + 1);
 
                                         // 체크섬이 맞는지
-                                        if (csData.equals(ToCheckSum(data.substring(data.indexOf(DATA_SIGN_START), data.indexOf(DATA_SIGN_CHECKSUM) + 1)))) {
+                                        if (csData.equals(ToCheckSum(data.substring(data.indexOf(StringList.DATA_SIGN_START), data.indexOf(StringList.DATA_SIGN_CHECKSUM) + 1)))) {
                                             Log.d(TAG, "CheckSum OK!");
                                             currentFragment = getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
 
@@ -1998,9 +1848,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                                             // 데이터 다 나눠준 후 재정리
                                             try {
-                                                readDataTotal = readDataTotal.substring(readDataTotal.indexOf(DATA_SIGN_CHECKSUM) + 3);
+                                                readDataTotal = readDataTotal.substring(readDataTotal.indexOf(StringList.DATA_SIGN_CHECKSUM) + 3);
                                                 // 그 이후 데이터가 들어온게 있다면 다시 실행할 수 있도록 함.
-                                                if (readDataTotal.indexOf(DATA_SIGN_START) > -1) {
+                                                if (readDataTotal.indexOf(StringList.DATA_SIGN_START) > -1) {
                                                     Log.d(TAG, "readDataTotal remain : " + readDataTotal);
                                                 } else {
                                                     Log.d(TAG, "readDataTotal no contain $ : " + readDataTotal);
@@ -2048,7 +1898,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     }
 
                     // 체크섬만 있을 경우(순서 이상함)
-                    if (readDataTotal.indexOf(DATA_SIGN_CHECKSUM) > -1 && !(readDataTotal.indexOf(DATA_SIGN_START) > -1)) {
+                    if (readDataTotal.indexOf(StringList.DATA_SIGN_CHECKSUM) > -1 && !(readDataTotal.indexOf(StringList.DATA_SIGN_START) > -1)) {
                         logData_Ble("readData Error - No include DATA_SIGN_START : " + readDataTotal, "error");
                         Log.d(TAG, "readData Error - no include DATA_SIGN_START");
                         readDataTotal = "";
@@ -2067,7 +1917,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     public static void BlewriteData(String data) {
 
-        if (data.equals(DATA_REQUEST_STATUS)) {
+        if (data.equals(StringList.DATA_REQUEST_STATUS)) {
             readDataTotal = "";
         }
 
@@ -2092,7 +1942,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
             String sendBlewriteData = data + ToCheckSum(data);
             logData_Ble("Write : " + sendBlewriteData, "write");
-            sendBlewriteData = sendBlewriteData + DATA_SIGN_CR + DATA_SIGN_LF;
+            sendBlewriteData = sendBlewriteData + StringList.DATA_SIGN_CR + StringList.DATA_SIGN_LF;
             Log.d(TAG, "BleWriteData data : " + data + ", sendData : " + sendBlewriteData);
 
             // 데이터가 길면 한번에 보낼 수 있는 양을 초과해서 나눠서 보내야함.(5.0은 상관없지만...)
@@ -2159,7 +2009,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         String sendBlewriteData = data;
         logData_Ble("Write : " + sendBlewriteData, "write");
-        sendBlewriteData = sendBlewriteData + DATA_SIGN_CR + DATA_SIGN_LF;
+        sendBlewriteData = sendBlewriteData + StringList.DATA_SIGN_CR + StringList.DATA_SIGN_LF;
         Log.d(TAG, "BleWriteData data : " + data + ", sendData : " + sendBlewriteData);
 
         cmdCharacteristic.setValue(sendBlewriteData.getBytes());
@@ -2178,10 +2028,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         //시작지점($)가 존재하며
         //끝 지점(*)가 존재하며
         //시작지점은 끝 지점보다 앞쪽에 위치하여야함
-        if (str.contains(DATA_SIGN_START)
-                && str.indexOf(DATA_SIGN_CHECKSUM) > -1
-                && str.indexOf(DATA_SIGN_START) < str.indexOf(DATA_SIGN_CHECKSUM)) {
-            for (int n = 1; n < str.indexOf(DATA_SIGN_CHECKSUM); n++) {
+        if (str.contains(StringList.DATA_SIGN_START)
+                && str.indexOf(StringList.DATA_SIGN_CHECKSUM) > -1
+                && str.indexOf(StringList.DATA_SIGN_START) < str.indexOf(StringList.DATA_SIGN_CHECKSUM)) {
+            for (int n = 1; n < str.indexOf(StringList.DATA_SIGN_CHECKSUM); n++) {
                 csInt ^= str.charAt(n);
             }
 

@@ -19,13 +19,11 @@ import com.msl.mslapp.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import static com.msl.mslapp.BleMainActivity.BlewriteData;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_LISET;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_PS;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_LISET;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_PS;
 import static com.msl.mslapp.BleMainActivity.adminApp;
 import static com.msl.mslapp.BleMainActivity.navigation_GPS_Visible;
 import static com.msl.mslapp.BleMainActivity.navigation_icon_Change;
-import static com.msl.mslapp.BleMainActivity.readPassword;
 
 public class fragment_Ble_Function extends Fragment {
 

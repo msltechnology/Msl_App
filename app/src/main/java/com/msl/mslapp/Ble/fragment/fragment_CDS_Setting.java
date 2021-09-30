@@ -18,11 +18,11 @@ import androidx.fragment.app.Fragment;
 import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
 
-import static com.msl.mslapp.BleMainActivity.ADMIN_PASSWORD;
-import static com.msl.mslapp.BleMainActivity.CDS_LAMP_OFF_READY;
-import static com.msl.mslapp.BleMainActivity.CDS_LAMP_OFF_SETTING;
-import static com.msl.mslapp.BleMainActivity.CDS_LAMP_ON_READY;
-import static com.msl.mslapp.BleMainActivity.CDS_LAMP_ON_SETTING;
+import static com.msl.mslapp.Public.StringList.ADMIN_PASSWORD;
+import static com.msl.mslapp.Public.StringList.CDS_LAMP_OFF_READY;
+import static com.msl.mslapp.Public.StringList.CDS_LAMP_OFF_SETTING;
+import static com.msl.mslapp.Public.StringList.CDS_LAMP_ON_READY;
+import static com.msl.mslapp.Public.StringList.CDS_LAMP_ON_SETTING;
 
 public class fragment_CDS_Setting extends Fragment {
 

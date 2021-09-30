@@ -18,10 +18,10 @@ import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
 
 import static com.msl.mslapp.BleMainActivity.BlewriteData;
-import static com.msl.mslapp.BleMainActivity.DATA_DEVICE_RESET;
-import static com.msl.mslapp.BleMainActivity.DATA_LAMP_FIXED;
-import static com.msl.mslapp.BleMainActivity.DATA_LAMP_OFF;
-import static com.msl.mslapp.BleMainActivity.DATA_LAMP_ON;
+import static com.msl.mslapp.Public.StringList.DATA_DEVICE_RESET;
+import static com.msl.mslapp.Public.StringList.DATA_LAMP_FIXED;
+import static com.msl.mslapp.Public.StringList.DATA_LAMP_OFF;
+import static com.msl.mslapp.Public.StringList.DATA_LAMP_ON;
 import static com.msl.mslapp.BleMainActivity.disconnectGattServer;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 

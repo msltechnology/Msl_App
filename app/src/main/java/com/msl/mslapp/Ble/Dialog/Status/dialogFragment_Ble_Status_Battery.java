@@ -16,13 +16,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.msl.mslapp.Ble.fragment.Function.fragment_Ble_Status;
 import com.msl.mslapp.R;
+import com.msl.mslapp.databinding.BleFragmentStatusDialogBatteryBinding;
+import com.msl.mslapp.TestViewModel;
 
 import static com.msl.mslapp.BleMainActivity.BlewriteData;
-import static com.msl.mslapp.BleMainActivity.DATA_REQUEST_BTV;
+import static com.msl.mslapp.Public.StringList.DATA_REQUEST_BTV;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_Ble_Status_Battery extends DialogFragment {
@@ -37,8 +41,6 @@ public class dialogFragment_Ble_Status_Battery extends DialogFragment {
     fragment_Ble_Status fragment_ble_status;
 
     View view;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

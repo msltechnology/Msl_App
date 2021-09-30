@@ -24,14 +24,14 @@ import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_DelayTime_Se
 import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
 import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_ID_Setting;
 import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_Password_Change;
+import com.msl.mslapp.Public.StringList;
 import com.msl.mslapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.msl.mslapp.Ble.fragment.fragment_Ble_Password.psEncryptionTable;
 import static com.msl.mslapp.BleMainActivity.*;
-import static com.msl.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
+import static com.msl.mslapp.Public.StringList.DATA_REQUEST_STATUS;
 
 public class fragment_Ble_Setting extends Fragment {
 
@@ -108,7 +108,7 @@ public class fragment_Ble_Setting extends Fragment {
         String[] data_arr = data.split(",");
 
 
-        if (data_arr[0].contains(DATA_TYPE_LISTS)) {
+        if (data_arr[0].contains(StringList.DATA_TYPE_LISTS)) {
             if (data_arr[1].equals("S")) {
 
             } else {
@@ -123,17 +123,17 @@ public class fragment_Ble_Setting extends Fragment {
             }
         }
 
-        if (data_arr[0].contains(DATA_TYPE_LICMD)) {
-            if (data_arr[1].equals(DATA_TYPE_S)) {
+        if (data_arr[0].contains(StringList.DATA_TYPE_LICMD)) {
+            if (data_arr[1].equals(StringList.DATA_TYPE_S)) {
 
                 switch (data_arr[2]) {
-                    case DATA_TYPE_SID:
+                    case StringList.DATA_TYPE_SID:
                         Toast.makeText(mBleContext, "Set ID : " + data_arr[3].substring(0, 3), Toast.LENGTH_SHORT).show();
                         break;
-                    case DATA_TYPE_GP1:
+                    case StringList.DATA_TYPE_GP1:
                         Toast.makeText(mBleContext, "GPS Set : Always", Toast.LENGTH_SHORT).show();
                         break;
-                    case DATA_TYPE_GP0:
+                    case StringList.DATA_TYPE_GP0:
                         Toast.makeText(mBleContext, "GPS Set : Only Night", Toast.LENGTH_SHORT).show();
                         break;
                     default:
@@ -146,7 +146,7 @@ public class fragment_Ble_Setting extends Fragment {
             }
         }
 
-        if (data_arr[0].contains(DATA_TYPE_LISET)) {
+        if (data_arr[0].contains(StringList.DATA_TYPE_LISET)) {
 
             // 펌웨어 버전 값
             tv_version_num.setText(data_arr[1]);
@@ -212,7 +212,7 @@ public class fragment_Ble_Setting extends Fragment {
 
 
         btn_status.setOnClickListener(v -> BlewriteData(DATA_REQUEST_STATUS));
-        ban_information.setOnClickListener(v -> BlewriteData(DATA_REQUEST_INFORMATION));
+        ban_information.setOnClickListener(v -> BlewriteData(StringList.DATA_REQUEST_INFORMATION));
         btn_FL_Setting.setOnClickListener(
                 new OnSingleClickListener() {
                     @Override
@@ -247,19 +247,19 @@ public class fragment_Ble_Setting extends Fragment {
             }
         });
         btn_GPS_ON.setOnClickListener(v -> {
-            BlewriteData(GPS_SET_ON);
+            BlewriteData(StringList.GPS_SET_ON);
             btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on_clicked));
             btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off));
         });
         btn_GPS_OFF.setOnClickListener(v -> {
-            BlewriteData(GPS_SET_OFF);
+            BlewriteData(StringList.GPS_SET_OFF);
             btn_GPS_ON.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on));
             btn_GPS_OFF.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off_clicked));
         });
         btn_delay_time.setOnClickListener(new OnSingleClickListener() {
             @Override
             public void onSingleClick(View v) {
-                BlewriteData(DATA_REQUEST_INFORMATION);
+                BlewriteData(StringList.DATA_REQUEST_INFORMATION);
                 handler.postDelayed(() -> showDelayTimeChangeDialog(), 200);
             }
         });
@@ -273,10 +273,10 @@ public class fragment_Ble_Setting extends Fragment {
             return;
         }
 
-        String sendData = DATA_SIGN_START + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-                + DATA_TYPE_S + DATA_SIGN_COMMA
-                + selected_fl + DATA_SIGN_COMMA
-                + DATA_ID_255 + DATA_SIGN_CHECKSUM;
+        String sendData = StringList.DATA_SIGN_START + StringList.DATA_TYPE_LICMD + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_S + StringList.DATA_SIGN_COMMA
+                + selected_fl + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_ID_255 + StringList.DATA_SIGN_CHECKSUM;
 
         BlewriteData(sendData);
 
@@ -294,10 +294,10 @@ public class fragment_Ble_Setting extends Fragment {
     public void setSelected_ID(String selected_id) {
         Log.d(TAG, "fragment_Ble_Setting setSelected_ID : " + selected_id);
 
-        String sendData = DATA_SIGN_START + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-                + DATA_TYPE_S + DATA_SIGN_COMMA
-                + DATA_TYPE_SID + DATA_SIGN_COMMA
-                + selected_id + DATA_SIGN_CHECKSUM;
+        String sendData = StringList.DATA_SIGN_START + StringList.DATA_TYPE_LICMD + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_S + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_SID + StringList.DATA_SIGN_COMMA
+                + selected_id + StringList.DATA_SIGN_CHECKSUM;
 
         BlewriteData(sendData);
 
@@ -314,17 +314,17 @@ public class fragment_Ble_Setting extends Fragment {
     public void setDelayTime(String selected_delaytime) {
         Log.d(TAG, "fragment_Ble_Setting setSelected_DelayTime : " + selected_delaytime);
 
-        String sendData = DATA_SIGN_START + DATA_TYPE_LICMD + DATA_SIGN_COMMA
-                + DATA_TYPE_S + DATA_SIGN_COMMA
-                + DATA_TYPE_DEL + DATA_SIGN_COMMA
-                + selected_delaytime + DATA_SIGN_CHECKSUM;
+        String sendData = StringList.DATA_SIGN_START + StringList.DATA_TYPE_LICMD + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_S + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_DEL + StringList.DATA_SIGN_COMMA
+                + selected_delaytime + StringList.DATA_SIGN_CHECKSUM;
 
         BlewriteData(sendData);
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                BlewriteData(DATA_REQUEST_INFORMATION);
+                BlewriteData(StringList.DATA_REQUEST_INFORMATION);
             }
         }, 200);
     }

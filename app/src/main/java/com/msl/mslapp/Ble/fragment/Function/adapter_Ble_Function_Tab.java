@@ -15,9 +15,6 @@ import static com.msl.mslapp.BleMainActivity.adminApp;
 
 public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
 
-    Fragment[] fragments = new Fragment[3];
-    String[] pageTitles = new String[]{"Status", "Setting", "Test"};
-
     public int mCount;
 
     public adapter_Ble_Function_Tab(Fragment fa, int count){
@@ -31,6 +28,7 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         int index = getRealPosition(position);
 
+        // 관리자용 앱이면 RTU 도 보이게
         if(adminApp){
             if(index==0) return new fragment_Ble_Status();
             else if(index==1) return new fragment_Ble_Setting();
@@ -44,30 +42,11 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
         }
 
     }
-
-    // RTU 가 있다면.
-    /*@NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        int index = getRealPosition(position);
-
-        if(index==0) return new fragment_Ble_Status();
-        else if(index==1) return new fragment_Ble_Setting();
-        else if(index==2) return new fragment_Ble_Test();
-        else return new fragment_Ble_RTU();
-    }
-
-    @Override
-    public int getItemCount() {
-        return 4;
-    }*/
-
     @Override
     public int getItemCount() {
         if(adminApp){
             return 4;
         }
-
         return 3;
     }
 
@@ -79,14 +58,5 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
 
         //holder.t
 
-    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView tvTest;
-
-        public MyViewHolder(@NonNull View itemView){
-            super(itemView);
-            //tvTest = itemView.findViewById(R.id.)
-        }
     }
 }

@@ -21,18 +21,16 @@ import androidx.fragment.app.Fragment;
 import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
 
-import java.util.Objects;
-
 import static com.msl.mslapp.Ble.fragment.fragment_Ble_Scan.selectedSerialNum;
-import static com.msl.mslapp.BleMainActivity.ADMIN_PASSWORD;
+import static com.msl.mslapp.Public.StringList.ADMIN_PASSWORD;
 import static com.msl.mslapp.BleMainActivity.BlewriteData;
-import static com.msl.mslapp.BleMainActivity.DATA_DEVICE_RESET;
-import static com.msl.mslapp.BleMainActivity.DATA_SIGN_CHECKSUM;
-import static com.msl.mslapp.BleMainActivity.DATA_SIGN_COMMA;
-import static com.msl.mslapp.BleMainActivity.DATA_SIGN_START;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_LICMD;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_S;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_SNB;
+import static com.msl.mslapp.Public.StringList.DATA_DEVICE_RESET;
+import static com.msl.mslapp.Public.StringList.DATA_SIGN_CHECKSUM;
+import static com.msl.mslapp.Public.StringList.DATA_SIGN_COMMA;
+import static com.msl.mslapp.Public.StringList.DATA_SIGN_START;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_LICMD;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_S;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_SNB;
 import static com.msl.mslapp.BleMainActivity.disconnectGattServer;
 import static com.msl.mslapp.BleMainActivity.navigation_icon_Change;
 

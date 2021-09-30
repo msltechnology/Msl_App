@@ -21,7 +21,7 @@ import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Modem_Change;
 import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Protocol_Change;
 import com.msl.mslapp.RTUMainActivity;
 
-import static com.msl.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
+import static com.msl.mslapp.Public.StringList.DATA_REQUEST_STATUS;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_1;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_2;

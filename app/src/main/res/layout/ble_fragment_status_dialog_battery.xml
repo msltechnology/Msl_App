@@ -1,42 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/custom_ble_status_dialog_background"
-    android:orientation="vertical"
-    android:paddingTop="10dp">
+<layout>
 
-
-    <View style="@style/view_vertical_line_5" />
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="5"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_ble_status_dialog_background"
+        android:orientation="vertical"
+        android:paddingTop="10dp">
+
+
+        <View style="@style/view_vertical_line_5" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_marginBottom="5dp"
+            android:layout_weight="5"
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
-                android:text="@string/tv_ble_fragment_status_dialog_battery_bat1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-            <View style="@style/view_horizontal_line_5" />
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_battery_bat1" />
 
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
-                android:text="@string/tv_ble_fragment_status_dialog_battery_bat2" />
+                <View style="@style/view_horizontal_line_5" />
 
-            <View style="@style/view_horizontal_line_5" />
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_battery_bat2" />
 
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
-                android:text="@string/tv_ble_fragment_status_dialog_battery_bat3" />
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_battery_bat3" />
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_battery_bat1"
+                    style="@style/iv_ble_fragment_status_dialog_battery"/>
+
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_battery_bat2"
+                    style="@style/iv_ble_fragment_status_dialog_battery" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_battery_bat3"
+                    style="@style/iv_ble_fragment_status_dialog_battery" />
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value1"
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value2"
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value3"
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -45,173 +102,120 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="horizontal">
+            android:layout_marginTop="5dp"
+            android:layout_weight="5"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_battery_bat1"
-                style="@style/iv_ble_fragment_status_dialog_battery" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-            <View style="@style/view_horizontal_line_5" />
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_battery_bat4" />
 
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_battery_bat2"
-                style="@style/iv_ble_fragment_status_dialog_battery" />
+                <View style="@style/view_horizontal_line_5" />
 
-            <View style="@style/view_horizontal_line_5" />
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_battery_bat5" />
 
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_battery_bat3"
-                style="@style/iv_ble_fragment_status_dialog_battery" />
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_battery_bat6" />
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_battery_bat4"
+                    style="@style/iv_ble_fragment_status_dialog_battery" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_battery_bat5"
+                    style="@style/iv_ble_fragment_status_dialog_battery" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_battery_bat6"
+                    style="@style/iv_ble_fragment_status_dialog_battery" />
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value4"
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value5"
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value6"
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
 
         </LinearLayout>
-
-        <View style="@style/view_vertical_line_5" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value1"
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
-            <View style="@style/view_horizontal_line_5" />
+            <Button
+                android:id="@+id/btn_dialogFragment_Ble_Status_Battery_callStatus"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="3"
+                android:background="@drawable/custom_ble_status_call_btn"
+                android:text="@string/once_status"
+                android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value2"
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
-
-            <View style="@style/view_horizontal_line_5" />
-
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value3"
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
         </LinearLayout>
+
 
     </LinearLayout>
-
-    <View style="@style/view_vertical_line_5" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="5"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
-                android:text="@string/tv_ble_fragment_status_dialog_battery_bat4" />
-
-            <View style="@style/view_horizontal_line_5" />
-
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
-                android:text="@string/tv_ble_fragment_status_dialog_battery_bat5" />
-
-            <View style="@style/view_horizontal_line_5" />
-
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
-                android:text="@string/tv_ble_fragment_status_dialog_battery_bat6" />
-
-        </LinearLayout>
-
-        <View style="@style/view_vertical_line_5" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_battery_bat4"
-                style="@style/iv_ble_fragment_status_dialog_battery" />
-
-            <View style="@style/view_horizontal_line_5" />
-
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_battery_bat5"
-                style="@style/iv_ble_fragment_status_dialog_battery" />
-
-            <View style="@style/view_horizontal_line_5" />
-
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_battery_bat6"
-                style="@style/iv_ble_fragment_status_dialog_battery" />
-
-        </LinearLayout>
-
-        <View style="@style/view_vertical_line_5" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value4"
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
-
-            <View style="@style/view_horizontal_line_5" />
-
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value5"
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
-
-            <View style="@style/view_horizontal_line_5" />
-
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value6"
-                style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
-
-        </LinearLayout>
-
-        <View style="@style/view_vertical_line_5" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/btn_dialogFragment_Ble_Status_Battery_callStatus"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="3"
-            android:background="@drawable/custom_ble_status_call_btn"
-            android:text="@string/once_status"
-            android:textSize="16sp" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</layout>

@@ -22,8 +22,8 @@ import com.msl.mslapp.Ble.fragment.Function.fragment_Ble_Status;
 import com.msl.mslapp.R;
 
 import static com.msl.mslapp.BleMainActivity.BlewriteData;
-import static com.msl.mslapp.BleMainActivity.DATA_REQUEST_SLC;
-import static com.msl.mslapp.BleMainActivity.DATA_REQUEST_SLV;
+import static com.msl.mslapp.Public.StringList.DATA_REQUEST_SLC;
+import static com.msl.mslapp.Public.StringList.DATA_REQUEST_SLV;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_Ble_Status_Solar extends DialogFragment {

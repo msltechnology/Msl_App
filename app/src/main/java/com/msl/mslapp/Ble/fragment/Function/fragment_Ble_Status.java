@@ -18,14 +18,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery;
 import com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar;
 import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
+import com.msl.mslapp.TestViewModel;
 
 import static com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat1;
 import static com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat2;
@@ -57,12 +59,12 @@ import static com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.t
 import static com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value5_a;
 import static com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6;
 import static com.msl.mslapp.Ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6_a;
-import static com.msl.mslapp.BleMainActivity.DATA_REQUEST_STATUS;
-import static com.msl.mslapp.BleMainActivity.DATA_RTU_BLUETOOTH_SENDING;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_BTV;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_LISET;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_LISTS;
-import static com.msl.mslapp.BleMainActivity.DATA_TYPE_S;
+import static com.msl.mslapp.Public.StringList.DATA_REQUEST_STATUS;
+import static com.msl.mslapp.Public.StringList.DATA_RTU_BLUETOOTH_SENDING;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_BTV;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_LISET;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_LISTS;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_S;
 import static com.msl.mslapp.BleMainActivity.adminApp;
 import static com.msl.mslapp.BleMainActivity.bleConnected;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
@@ -101,12 +103,31 @@ public class fragment_Ble_Status extends Fragment {
 
     }
 
+    // viewmodel 사용 시( 혹은 databinding 사용시)
+    // (해당 클래스 이름 + Binding) 으로 나오며 dialogFragment_Ble_Status_Battery에서 사용했던걸 여기에 기록함
+    //BleFragmentStatusDialogBatteryBinding mBinding;
+
+    TestViewModel viewModel;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "fragment_Ble_Status onCreateView" + this.getTag());
         view = inflater.inflate(R.layout.ble_fragment_status, null);
 
+        // viewmodel 사용 시( 혹은 databinding 사용시)
+        // fragment 일 경우 inflate 사용함. 이후 view 에 데이터 입력.
+        /*mBinding = DataBindingUtil.inflate(inflater,R.layout.ble_fragment_status_dialog_battery,container, false);
+        view = mBinding.getRoot();
+        mBinding.tvBleFragmentStatusDialogBatteryBatValue1.setText("Test");*/
+
+        viewModel = new ViewModelProvider(this).get(TestViewModel.class);
+
+        //옵저버 정의 - 데이터가 변하는 이벤트 발생시 처리할 핸들러(람다)
+        Observer<String> nameObserver = newName -> tv_ble_fragment_status_temperature.setText(newName);
+
+        //뷰모델에 옵저버 등록
+        viewModel.getDataString().observe(getViewLifecycleOwner(), nameObserver);
 
         if (bleConnected) {
             ((Ble_Status_Listener) activity).ble_scan_item_invisible();
@@ -293,6 +314,7 @@ public class fragment_Ble_Status extends Fragment {
                             }
 
                             if (bat_value >= 4) {
+                                //viewModel.setImageViewMutableLiveData(R.drawable.green_battery);
                                 imageView.setBackgroundResource(R.drawable.green_battery);
                             } else if (bat_value >= 3.8) {
                                 imageView.setBackgroundResource(R.drawable.yellow_battery);
@@ -631,7 +653,8 @@ public class fragment_Ble_Status extends Fragment {
                 }else{
                     temperature = data_arr[6];
                 }
-                tv_ble_fragment_status_temperature.setText(temperature + "°C");
+                //tv_ble_fragment_status_temperature.setText(temperature + "°C");
+                viewModel.setDataString(temperature + "°C");
             } catch (Exception e) {
 
             }

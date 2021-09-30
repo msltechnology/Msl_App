@@ -23,8 +23,8 @@ import com.msl.mslapp.R;
 
 import static com.msl.mslapp.Ble.fragment.Function.fragment_Ble_Function.gps_status;
 import static com.msl.mslapp.BleMainActivity.BlewriteData;
-import static com.msl.mslapp.BleMainActivity.GPS_SET_OFF;
-import static com.msl.mslapp.BleMainActivity.GPS_SET_ON;
+import static com.msl.mslapp.Public.StringList.GPS_SET_OFF;
+import static com.msl.mslapp.Public.StringList.GPS_SET_ON;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_ble_Setting_GPS_Change extends DialogFragment {
