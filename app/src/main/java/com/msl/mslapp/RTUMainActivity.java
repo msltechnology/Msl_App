@@ -22,12 +22,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.msl.mslapp.Ble.fragment.Function.fragment_Ble_Function;
-import com.msl.mslapp.Ble.fragment.fragment_Ble_Beginning;
-import com.msl.mslapp.Ble.fragment.fragment_Ble_Password;
-import com.msl.mslapp.Ble.fragment.fragment_Ble_Scan;
-import com.msl.mslapp.Ble.fragment.fragment_CDS_Setting;
-import com.msl.mslapp.Ble.fragment.fragment_SN_Setting;
 import com.msl.mslapp.Public.Log.log_ListViewAdapter;
 import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_function_LanguageChange;
 import com.msl.mslapp.RTU.fragment.fragment_RTU_Function;
@@ -35,9 +29,6 @@ import com.msl.mslapp.RTU.fragment.fragment_RTU_Scan;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Date;
-
-import static com.msl.mslapp.BleMainActivity.mBleContext;
-import static com.msl.mslapp.BleMainActivity.mBleMain;
 
 public class RTUMainActivity extends AppCompatActivity {
 

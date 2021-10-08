@@ -12,10 +12,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -43,6 +45,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -56,21 +59,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.msl.mslapp.Ble.BluetoothUtils;
-import com.msl.mslapp.Ble.Dialog.Beginning.dialogFragment_Ble_Beginning_LanguageChange;
-import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_FL_Setting;
-import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_Ble_Setting_Password_Change;
-import com.msl.mslapp.Ble.Dialog.Setting.dialogFragment_ble_Setting_GPS_Change;
-import com.msl.mslapp.Ble.fragment.fragment_Ble_Beginning;
-import com.msl.mslapp.Ble.fragment.fragment_Ble_Scan;
-import com.msl.mslapp.Ble.fragment.Function.fragment_Ble_Status;
-import com.msl.mslapp.Ble.fragment.Function.fragment_Ble_Function;
-import com.msl.mslapp.Ble.fragment.fragment_Ble_Password;
-import com.msl.mslapp.Ble.fragment.fragment_CDS_Setting;
-import com.msl.mslapp.Ble.fragment.fragment_SN_Setting;
+import com.msl.mslapp.ble.BluetoothUtils;
+import com.msl.mslapp.ble.Dialog.Beginning.dialogFragment_Ble_Beginning_LanguageChange;
+import com.msl.mslapp.ble.Dialog.setting.dialogFragment_Ble_Setting_FL_Setting;
+import com.msl.mslapp.ble.Dialog.setting.dialogFragment_Ble_Setting_Password_Change;
+import com.msl.mslapp.ble.Dialog.setting.dialogFragment_ble_Setting_GPS_Change;
+import com.msl.mslapp.ble.BleViewModel;
+import com.msl.mslapp.ble.fragment.fragment_Ble_Beginning;
+import com.msl.mslapp.ble.fragment.fragment_Ble_Scan;
+import com.msl.mslapp.ble.fragment.Function.fragment_Ble_Status;
+import com.msl.mslapp.ble.fragment.Function.fragment_Ble_Function;
+import com.msl.mslapp.ble.fragment.fragment_Ble_Password;
+import com.msl.mslapp.ble.fragment.fragment_CDS_Setting;
+import com.msl.mslapp.ble.fragment.fragment_SN_Setting;
 import com.msl.mslapp.Public.Log.log_ListViewAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.msl.mslapp.Public.StringList;
+import com.msl.mslapp.databinding.BleActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,9 +84,19 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import static com.msl.mslapp.Ble.BluetoothUtils.findBLECharacteristics;
-import static com.msl.mslapp.Ble.fragment.fragment_Ble_Beginning.setLocale;
-import static com.msl.mslapp.Ble.fragment.fragment_Ble_Scan.selectedSerialNum;
+import static com.msl.mslapp.ble.BluetoothUtils.findBLECharacteristics;
+import static com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value1;
+import static com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value2;
+import static com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value3;
+import static com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value4;
+import static com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value5;
+import static com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Solar.tv_ble_status_sol_value6;
+import static com.msl.mslapp.ble.fragment.fragment_Ble_Beginning.setLocale;
+import static com.msl.mslapp.ble.fragment.fragment_Ble_Scan.selectedSerialNum;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_BTV;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_LISET;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_LISTS;
+import static com.msl.mslapp.Public.StringList.DATA_TYPE_S;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class BleMainActivity extends AppCompatActivity implements fragment_Ble_Scan.Ble_Scan_Listener, fragment_Ble_Status.Ble_Status_Listener,
@@ -101,6 +116,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     public static AppCompatActivity mBleMain = null;
     public static String tLanguage;
+    public BleActivityMainBinding mBleBinding;
+    BleViewModel bleViewModel;
+
     // bluetooth 관련
     public static BluetoothAdapter mBluetoothAdapter = null;
     public BluetoothDevice bleConnectDevice = null;
@@ -449,18 +467,32 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
-        setContentView(R.layout.ble_activity_main);
+        mBleBinding = DataBindingUtil.setContentView(this, R.layout.ble_activity_main);
+        bleViewModel = new ViewModelProvider(this).get(BleViewModel.class);
+
+        mBleBinding.setLifecycleOwner(this);
+
+        mBleBinding.setBleViewModel(bleViewModel);
 
         mBleContext = this;
         mBleMain = this;
 
-        //언어설정
-        SharedPreferences sfSideBar = getSharedPreferences("option_data", MODE_PRIVATE);
-        Locale systemLocale = mBleContext.getResources().getConfiguration().locale; //시스템 설정 상태를 가져옴
-        String languageState = sfSideBar.getString("language_mode", systemLocale.getLanguage()); //시스템 언어를 가져옴
-        Log.d(TAG, "System Language : " + languageState);
-        tLanguage = languageState; //처음에는 시스템에 설정된 언어로, 이후에는 저장된 언어
-        if (tLanguage != null) setLocale(tLanguage); //언어 설정
+        class MainLanguageRunnable implements Runnable {
+            public void run() {
+                //언어설정
+                SharedPreferences sfSideBar = getSharedPreferences("option_data", MODE_PRIVATE);
+                Locale systemLocale = mBleContext.getResources().getConfiguration().locale; //시스템 설정 상태를 가져옴
+                String languageState = sfSideBar.getString("language_mode", systemLocale.getLanguage()); //시스템 언어를 가져옴
+                Log.d(TAG, "System Language : " + languageState);
+                tLanguage = languageState; //처음에는 시스템에 설정된 언어로, 이후에는 저장된 언어
+                if (tLanguage != null) setLocale(tLanguage); //언어 설정
+            }
+        }
+
+        MainLanguageRunnable nr = new MainLanguageRunnable();
+        Thread t = new Thread(nr);
+        t.start();
+
 
         toolbarMain = (Toolbar) findViewById(R.id.ble_toolbar_main);
         toolbarMain.setTitle("");
@@ -472,79 +504,72 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         // toolbar 왼쪽 버튼 추가
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_reorder_24px);
-
 
         navigation_Setting();
 
-        /*toolbarMain.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (testBool) {
-                    navigation_Setting();
-                    bleDrawerLayout.removeDrawerListener(drawerToggle);
-                    *//*setSupportActionBar(toolbarMain);
-                    Drawable drawable = ContextCompat.getDrawable(mBleContext,R.drawable.toolbar_icon);
-                    toolbarMain.setOverflowIcon(drawable);*//*
-                    testBool = false;
+        // 블루투스 관련 권한 확인 및 필터 정리
+        class MainBleFilterPermissionRunnable implements Runnable {
+            MainBleFilterPermissionRunnable() {
 
-                } else {
-                    Toast.makeText(mBleContext, "Test Success", Toast.LENGTH_SHORT).show();
-                    testBool = true;
-                }
-                Toast.makeText(mBleContext, "Touch", Toast.LENGTH_SHORT).show();
             }
-        });*/
 
+            public void run() {
+                IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+                registerReceiver(mBroadcastReceiver1, filter1);
 
-        IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(mBroadcastReceiver1, filter1);
-
-        // 굳이 해당 정보를 알 필요가 없어서
+                // 굳이 해당 정보를 알 필요가 없어서
         /*IntentFilter filter2 = new IntentFilter();
         filter2.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter2.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filter2.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
         registerReceiver(mBroadcastReceiver2, filter2);*/
 
-        IntentFilter filter3 = new IntentFilter();
-        filter3.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        filter3.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        registerReceiver(mBroadcastReceiver3, filter3);
 
-        permission_check();
-        Log.d(TAG, "bluetooth 5 모드 준비 : " + Build.VERSION.SDK_INT + " 이고 O 의 값은 : " + Build.VERSION_CODES.O);
+                IntentFilter filter3 = new IntentFilter();
+                filter3.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+                filter3.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+                registerReceiver(mBroadcastReceiver3, filter3);
+
+                permission_check();
+                Log.d(TAG, "bluetooth 5 모드 준비 : " + Build.VERSION.SDK_INT + " 이고 O 의 값은 : " + Build.VERSION_CODES.O);
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            // setLegacy 값 안 바꾸면 장거리 블루투스 못찾음(광고형 블루투스를 못봄)
+                    // setLegacy 값 안 바꾸면 장거리 블루투스 못찾음(광고형 블루투스를 못봄)
             /*settings = new ScanSettings.Builder()
                     .setLegacy(false)
                     .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
                     .build();*/
 
-            // 장거리용 셋팅
-            settings = new ScanSettings.Builder().
-                    setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).
-                    setReportDelay(0).
-                    setLegacy(false).build();
+                    // 장거리용 셋팅
+                    settings = new ScanSettings.Builder().
+                            setScanMode(ScanSettings.SCAN_MODE_LOW_POWER).
+                            setReportDelay(0).
+                            setLegacy(false).build();
 
-            Log.d(TAG, "bluetooth 5 모드 온");
+                    Log.d(TAG, "bluetooth 5 모드 온");
 
-            Log.d(TAG, "BluetoothAdapter isLe2MPhySupported() : " + mBluetoothAdapter.isLe2MPhySupported());
-            Log.d(TAG, "BluetoothAdapter isLeCodedPhySupported() : " + mBluetoothAdapter.isLeCodedPhySupported());
-            Log.d(TAG, "BluetoothAdapter isLeExtendedAdvertisingSupported() : " + mBluetoothAdapter.isLeExtendedAdvertisingSupported());
-            Log.d(TAG, "BluetoothAdapter isLePeriodicAdvertisingSupported() : " + mBluetoothAdapter.isLePeriodicAdvertisingSupported());
-            Log.d(TAG, "BluetoothSetting getLegacy() : " + settings.getLegacy());
-            Log.d(TAG, "BluetoothSetting getPhy() : " + settings.getPhy());
-            Log.d(TAG, "BluetoothSetting getScanMode() : " + settings.getScanMode());
-            Log.d(TAG, "BluetoothSetting getScanResultType() : " + settings.getScanResultType());
-            Log.d(TAG, "BluetoothSetting getCallbackType() : " + settings.getCallbackType());
+                    Log.d(TAG, "BluetoothAdapter isLe2MPhySupported() : " + mBluetoothAdapter.isLe2MPhySupported());
+                    Log.d(TAG, "BluetoothAdapter isLeCodedPhySupported() : " + mBluetoothAdapter.isLeCodedPhySupported());
+                    Log.d(TAG, "BluetoothAdapter isLeExtendedAdvertisingSupported() : " + mBluetoothAdapter.isLeExtendedAdvertisingSupported());
+                    Log.d(TAG, "BluetoothAdapter isLePeriodicAdvertisingSupported() : " + mBluetoothAdapter.isLePeriodicAdvertisingSupported());
+                    Log.d(TAG, "BluetoothSetting getLegacy() : " + settings.getLegacy());
+                    Log.d(TAG, "BluetoothSetting getPhy() : " + settings.getPhy());
+                    Log.d(TAG, "BluetoothSetting getScanMode() : " + settings.getScanMode());
+                    Log.d(TAG, "BluetoothSetting getScanResultType() : " + settings.getScanResultType());
+                    Log.d(TAG, "BluetoothSetting getCallbackType() : " + settings.getCallbackType());
+                }
+
+                // 특정 장치만 스캔하도록 할 수 있다. => scanFilter 부분 - .setServiceUuid()대신 .setDeviceAddress(MAC_ADDR)를 사용해 Uuid 말고 특정 mac address만 스캔
+                filters.add(scanFilter);
+            }
         }
 
-        // 특정 장치만 스캔하도록 할 수 있다. => scanFilter 부분 - .setServiceUuid()대신 .setDeviceAddress(MAC_ADDR)를 사용해 Uuid 말고 특정 mac address만 스캔
-        filters.add(scanFilter);
+        MainBleFilterPermissionRunnable fpR = new MainBleFilterPermissionRunnable();
+        Thread fpT = new Thread(fpR);
+        fpT.start();
+
 
         //region  layout 정의
 
@@ -559,11 +584,15 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Log.d(TAG, "지원 안함.....");
         }
+
+
+
         //region layout 기능
 
         //endregion
     }
 
+    Handler NO_GATT_SUCCESS_Fail_handler = new Handler(Looper.getMainLooper()){};
 
     void navigation_Setting() {
         // 사이드바 관련
@@ -578,8 +607,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         ll_navigation_GPS.setVisibility(View.GONE);
         log_Refresh();
 
-        /*Menu menu = navigationView.getMenu();
-        menu.findItem(R.id.menu_bluetooth).setVisible(false);*/
+        Handler postHandler = new Handler(Looper.getMainLooper());
 
         Display display = mBleContext.getDisplay();
         Point size = new Point();
@@ -655,8 +683,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         navigationView.findViewById(R.id.ll_navigation_gps).setOnClickListener(v -> {
             if (BleConnecting) {
                 BlewriteData(StringList.DATA_REQUEST_INFORMATION);
-
-                handler.postDelayed(() -> {
+                postHandler.postDelayed(() -> {
                     FragmentManager fm = getSupportFragmentManager();
                     dialogFragment_ble_Setting_GPS_Change customDialog_GPS_Change = new dialogFragment_ble_Setting_GPS_Change();
                     customDialog_GPS_Change.show(fm, "dialogFragment_ble_Setting_GPS_Change");
@@ -670,7 +697,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         navigationView.findViewById(R.id.ll_Navigation_Password_Change).setOnClickListener(v -> {
 
             if (BleConnecting) {
-                handler.postDelayed(() -> {
+                postHandler.postDelayed(() -> {
                     FragmentManager fm = getSupportFragmentManager();
                     dialogFragment_Ble_Setting_Password_Change setting_PasswordChange_DialogFragment = new dialogFragment_Ble_Setting_Password_Change();
                     setting_PasswordChange_DialogFragment.show(fm, "fragment_setting_dialog_Password");
@@ -685,45 +712,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         drawerToggle = new ActionBarDrawerToggle(this, bleDrawerLayout, toolbarMain, R.string.app_name, R.string.app_name);
         drawerToggle.syncState(); // 메뉴 버튼 추가
         bleDrawerLayout.addDrawerListener(drawerToggle); // 삼선 메뉴 사용 시 뱅그르르 돈다.
-
-        // custom 사이드바 사용 전
-       /* // 사이드바(네비게이션) 아이템 선택 시
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Intent intent;
-                Log.d(TAG, "onNavigationItemSelected : " + item.getItemId());
-                switch (item.getItemId()) {
-                    case R.id.menu_bluetooth:
-                        intent = new Intent(mBleContext, BleMainActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-                    case R.id.menu_rtu:
-                        intent = new Intent(mBleContext, RTUMainActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
-                    case R.id.menu_language:
-                        FragmentManager fm = getSupportFragmentManager();
-                        dialogFragment_Ble_Beginning_LanguageChange customDialogLanguageChange = new dialogFragment_Ble_Beginning_LanguageChange();
-                        customDialogLanguageChange.show(fm, "fragment_beginning_dialog_LanguageChange");
-                        break;
-                    default:
-                        View itemView = item.getActionView();
-                        itemView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(mBleContext, "Test Success", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                }
-                // 사이드바 닫기
-                bleMainLayout.closeDrawer(navigationView);
-
-                return false;
-            }
-        });*/
     }
 
 
@@ -1323,6 +1311,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     // 연결 실패 시 n회 연결 재시도용
     public static int connectFail = 0;
 
+
     // 블루투스 각종 기능.
     private BluetoothGattCallback gattClientCallback = new BluetoothGattCallback() {
 
@@ -1345,6 +1334,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
                     fragmentChange("fragment_ble_beginning");
                     Log.d(TAG, "onConnectionStateChange state 8 : 블루투스 연결 불안정(거리 혹은 장치종료)");
+                    NO_GATT_SUCCESS_Fail_handler.postDelayed(() -> {
+                        Toast.makeText(mBleContext, getString(R.string.bleDisconnect_Connection_Failed), Toast.LENGTH_LONG).show();
+                    }, 100);
                     /*if (connectFail < 5) {
                         logData_Ble("Bluetooth Disconnect - \n연결 불안정 - 재접속 시도", "error");
                         connectFail += 1;
@@ -1370,7 +1362,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         disconnectGattServer("BleMainActivity - gattClientCallback - NO_GATT_SUCCESS");
                         fragmentChange("fragment_ble_beginning");
                         Log.d(TAG, "NO_GATT_SUCCESS 5회 실패 : " + status);
-                        Toast.makeText(mBleContext, getString(R.string.bleDisconnect_Connection_Failed), Toast.LENGTH_LONG).show();
+
+                        NO_GATT_SUCCESS_Fail_handler.postDelayed(() -> {
+                            Toast.makeText(mBleContext, getString(R.string.bleDisconnect_Connection_Failed), Toast.LENGTH_LONG).show();
+                        }, 100);
+
                     }
                 } else if (status == 22) {
                     logData_Ble("Bluetooth Disconnect - \n" +
@@ -1622,7 +1618,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     }
 
     // 연결 및 데이터 들어온거에 따른 결과
-    Handler handler = new Handler() {
+    Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
@@ -1826,11 +1822,577 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                                             logData_Ble(data, "read");
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            if (data.substring(1, 6).contains(DATA_TYPE_LISTS)) {
+                                                if (data.startsWith(DATA_TYPE_S, 7)) {
+                                                    if (data.substring(9, 12).contains(DATA_TYPE_BTV)) {
+                                                        Log.d(TAG, "readData BTV 들어옴");
+                                                        // 다이얼로그한테 데이터를 보내야함.
+                                                        String[] data_arr = data.split(",");
+                                                        String tv_bat_value6_value = "";
+                                                        if (data_arr[9].contains("*")) {
+                                                            tv_bat_value6_value = data_arr[9].substring(0, data_arr[9].indexOf("*"));
+                                                        }
+                                                        try {
+
+                                                            bleViewModel.setBleBattery_1(data_arr[4] + "V");
+                                                            bleViewModel.setBleBattery_2(data_arr[5] + "V");
+                                                            bleViewModel.setBleBattery_3(data_arr[6] + "V");
+                                                            bleViewModel.setBleBattery_4(data_arr[7] + "V");
+                                                            bleViewModel.setBleBattery_5(data_arr[8] + "V");
+                                                            bleViewModel.setBleBattery_6(tv_bat_value6_value + "V");
+
+                                                            /*tv_ble_status_bat_value1.setText(data_arr[4] + "V");
+                                                            tv_ble_status_bat_value2.setText(data_arr[5] + "V");
+                                                            tv_ble_status_bat_value3.setText(data_arr[6] + "V");
+                                                            tv_ble_status_bat_value4.setText(data_arr[7] + "V");
+                                                            tv_ble_status_bat_value5.setText(data_arr[8] + "V");
+                                                            tv_ble_status_bat_value6.setText(tv_bat_value6_value + "V");*/
+                                                        } catch (Exception e) {
+                                                            Log.d(TAG, "tv_ble_status_bat_value 설정 간 문제 발생 : " + e);
+                                                        }
+
+                                                        try {
+
+                                                            bleViewModel.setBleBattery_iv_1(data_arr[4]);
+                                                            bleViewModel.setBleBattery_iv_2(data_arr[5]);
+                                                            bleViewModel.setBleBattery_iv_3(data_arr[6]);
+                                                            bleViewModel.setBleBattery_iv_4(data_arr[7]);
+                                                            bleViewModel.setBleBattery_iv_5(data_arr[8]);
+                                                            bleViewModel.setBleBattery_iv_6(tv_bat_value6_value);
+
+                                                            /*// 배터리 값에 따른 이미지 변경
+                                                            for (int i = 0; i <= 5; i++) {
+                                                                ImageView imageView;
+                                                                switch (i) {
+                                                                    case 0:
+                                                                        imageView = iv_ble_status_bat1;
+                                                                        break;
+                                                                    case 1:
+                                                                        imageView = iv_ble_status_bat2;
+                                                                        break;
+                                                                    case 2:
+                                                                        imageView = iv_ble_status_bat3;
+                                                                        break;
+                                                                    case 3:
+                                                                        imageView = iv_ble_status_bat4;
+                                                                        break;
+                                                                    case 4:
+                                                                        imageView = iv_ble_status_bat5;
+                                                                        break;
+                                                                    default:
+                                                                        imageView = iv_ble_status_bat6;
+                                                                        break;
+                                                                }
+
+                                                                double bat_value;
+
+                                                                if (i != 5) {
+                                                                    bat_value = Double.parseDouble(data_arr[i + 4]);
+                                                                } else {
+                                                                    bat_value = Double.parseDouble(tv_bat_value6_value);
+                                                                }
+
+                                                                if (bat_value >= 4) {
+                                                                    //viewModel.setImageViewMutableLiveData(R.drawable.green_battery);
+                                                                    imageView.setBackgroundResource(R.drawable.green_battery);
+                                                                } else if (bat_value >= 3.8) {
+                                                                    imageView.setBackgroundResource(R.drawable.yellow_battery);
+                                                                } else if (bat_value >= 3.6) {
+                                                                    imageView.setBackgroundResource(R.drawable.brown_battery);
+                                                                } else {
+                                                                    imageView.setBackgroundResource(R.drawable.red_battery);
+                                                                }
+
+
+                                                            }
+*/
+
+                                                        } catch (Exception e) {
+                                                            Log.d(TAG, "iv_ble_status_bat 설정 간 문제 발생 : " + e);
+                                                        }
+
+                                                    } else if (data.substring(9, 12).contains("SLV")) {
+                                                        Log.d(TAG, "readData SLV 들어옴");
+                                                        // 다이얼로그한테 데이터를 보내야함.
+                                                        String[] data_arr = data.split(",");
+                                                        String tv_sol_value6_value = "";
+                                                        if (data_arr[9].contains("*")) {
+                                                            tv_sol_value6_value = data_arr[9].substring(0, data_arr[9].indexOf("*"));
+                                                        }
+                                                        try {
+                                                            tv_ble_status_sol_value1.setText(data_arr[4] + "V");
+                                                            tv_ble_status_sol_value2.setText(data_arr[5] + "V");
+                                                            tv_ble_status_sol_value3.setText(data_arr[6] + "V");
+                                                            tv_ble_status_sol_value4.setText(data_arr[7] + "V");
+                                                            tv_ble_status_sol_value5.setText(data_arr[8] + "V");
+                                                            tv_ble_status_sol_value6.setText(tv_sol_value6_value + "V");
+                                                        } catch (Exception e) {
+                                                            Log.d(TAG, "tv_ble_status_bat_value 설정 간 문제 발생 : " + e);
+                                                        }
+
+                                                        try {
+
+
+                                                            bleViewModel.setBleSolarV_iv_1(data_arr[4]);
+                                                            bleViewModel.setBleSolarV_iv_2(data_arr[5]);
+                                                            bleViewModel.setBleSolarV_iv_3(data_arr[6]);
+                                                            bleViewModel.setBleSolarV_iv_4(data_arr[7]);
+                                                            bleViewModel.setBleSolarV_iv_5(data_arr[8]);
+                                                            bleViewModel.setBleSolarV_iv_6(tv_sol_value6_value);
+
+                                                            /*// 배터리 값에 따른 이미지 변경
+                                                            for (int i = 0; i <= 5; i++) {
+                                                                ImageView imageView;
+                                                                switch (i) {
+                                                                    case 0:
+                                                                        imageView = iv_ble_status_sol1;
+                                                                        break;
+                                                                    case 1:
+                                                                        imageView = iv_ble_status_sol2;
+                                                                        break;
+                                                                    case 2:
+                                                                        imageView = iv_ble_status_sol3;
+                                                                        break;
+                                                                    case 3:
+                                                                        imageView = iv_ble_status_sol4;
+                                                                        break;
+                                                                    case 4:
+                                                                        imageView = iv_ble_status_sol5;
+                                                                        break;
+                                                                    default:
+                                                                        imageView = iv_ble_status_sol6;
+                                                                        break;
+                                                                }
+
+                                                                double sol_value;
+
+                                                                if (i != 5) {
+                                                                    sol_value = Double.parseDouble(data_arr[i + 4]);
+                                                                } else {
+                                                                    sol_value = Double.parseDouble(tv_sol_value6_value);
+                                                                }
+
+                                                                if (sol_value >= 5) {
+                                                                    imageView.setBackgroundResource(R.drawable.green_battery);
+                                                                } else if (sol_value >= 4) {
+                                                                    imageView.setBackgroundResource(R.drawable.yellow_battery);
+                                                                } else if (sol_value >= 3) {
+                                                                    imageView.setBackgroundResource(R.drawable.brown_battery);
+                                                                } else {
+                                                                    imageView.setBackgroundResource(R.drawable.red_battery);
+                                                                }
+
+
+                                                            }*/
+
+                                                        } catch (Exception e) {
+                                                            Log.d(TAG, "iv_ble_status_bat 설정 간 문제 발생 : " + e);
+                                                        }
+
+                                                    } else if (data.substring(9, 12).contains("SLC")) {
+                                                        Log.d(TAG, "readData SLC 들어옴");
+                                                        // 다이얼로그한테 데이터를 보내야함.
+                                                        String[] data_arr = data.split(",");
+                                                        String tv_sol_value6_value = "";
+                                                        if (data_arr[9].contains("*")) {
+                                                            tv_sol_value6_value = data_arr[9].substring(0, data_arr[9].indexOf("*"));
+                                                        }
+                                                        try {
+                                                            bleViewModel.setBleSolarA_1(data_arr[4] + "A");
+                                                            bleViewModel.setBleSolarA_2(data_arr[5] + "A");
+                                                            bleViewModel.setBleSolarA_3(data_arr[6] + "A");
+                                                            bleViewModel.setBleSolarA_4(data_arr[7] + "A");
+                                                            bleViewModel.setBleSolarA_5(data_arr[8] + "A");
+                                                            bleViewModel.setBleSolarA_6(tv_sol_value6_value + "A");
+
+                                                            /*tv_ble_status_sol_value1_a.setText(data_arr[4] + "A");
+                                                            tv_ble_status_sol_value2_a.setText(data_arr[5] + "A");
+                                                            tv_ble_status_sol_value3_a.setText(data_arr[6] + "A");
+                                                            tv_ble_status_sol_value4_a.setText(data_arr[7] + "A");
+                                                            tv_ble_status_sol_value5_a.setText(data_arr[8] + "A");
+                                                            tv_ble_status_sol_value6_a.setText(tv_sol_value6_value + "A");*/
+                                                        } catch (Exception e) {
+                                                            Log.d(TAG, "tv_ble_status_bat_value 설정 간 문제 발생 : " + e);
+                                                        }
+                                                    }
+
+                                                } else {
+                                                    Log.d(TAG, "readData 데이터 읽기");
+                                                    String[] data_arr = data.split(",");
+                                                    Log.d(TAG, "data_arr length" + data_arr.length);
+
+
+                                                    bleViewModel.setBleID(data_arr[1]);
+                                                    bleViewModel.setBleInputV(data_arr[1]);
+                                                    bleViewModel.setBleOutputA(data_arr[1]);
+                                                    if (data_arr[4].equals("0")) {
+                                                        bleViewModel.setBleCDS(getString(R.string.ble_status_cds_0));
+                                                    } else {
+                                                        bleViewModel.setBleCDS(getString(R.string.ble_status_cds_1));
+                                                    }
+                                                    if (data_arr[5].equals("0")) {
+                                                        bleViewModel.setBleLanternStatus(getString(R.string.ble_status_lantern_status_0));
+                                                    } else {
+                                                        bleViewModel.setBleLanternStatus(getString(R.string.ble_status_lantern_status_1));
+                                                    }
+                                                    bleViewModel.setBleFL(data_arr[6]);
+                                                    bleViewModel.setBleSolarV(data_arr[7] + "V");
+                                                    bleViewModel.setBleBatteryV(data_arr[8] + "V");
+                                                    bleViewModel.setBleBatteryV_iv(data_arr[11]);
+                                                    bleViewModel.setBleOutputV(data_arr[9] + "V");
+                                                    bleViewModel.setBleChargingA(data_arr[10] + "V");
+                                                    bleViewModel.setBleBatteryPer(data_arr[11] + "%");
+                                                    int battery_percent = Integer.parseInt(data_arr[11]);
+                                                    /*if (battery_percent >= 75) {
+                                                        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_100);
+                                                    } else if (battery_percent >= 50) {
+                                                        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_75);
+                                                    } else if (battery_percent >= 25) {
+                                                        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_50);
+                                                    } else {
+                                                        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_25);
+                                                    }*/
+
+
+                                                    /*tv_ble_status_id.setText(data_arr[1]);
+                                                    tv_ble_status_input_v.setText(data_arr[2] + "V");
+                                                    tv_ble_status_output_a.setText(data_arr[3] + "A");
+                                                    if (data_arr[4].equals("0")) {
+                                                        tv_ble_status_cds.setText(getString(R.string.ble_status_cds_0));
+                                                    } else {
+                                                        tv_ble_status_cds.setText(getString(R.string.ble_status_cds_1));
+                                                    }
+                                                    if (data_arr[5].equals("0")) {
+                                                        tv_ble_status_lantern_status.setText(getString(R.string.ble_status_lantern_status_0));
+                                                    } else {
+                                                        tv_ble_status_lantern_status.setText(getString(R.string.ble_status_lantern_status_1));
+                                                    }
+                                                    tv_ble_status_fl.setText(data_arr[6]);
+                                                    tv_ble_status_solar_v.setText(data_arr[7] + "V");
+                                                    tv_ble_status_battery_v.setText(data_arr[8] + "V");
+                                                    tv_ble_status_output_v.setText(data_arr[9] + "V");
+                                                    tv_ble_status_charge_dischar_a.setText(data_arr[10] + "A");
+                                                    tv_ble_status_battery_percent.setText(data_arr[11] + "%");
+                                                    int battery_percent = Integer.parseInt(data_arr[11]);
+                                                    if (battery_percent >= 75) {
+                                                        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_100);
+                                                    } else if (battery_percent >= 50) {
+                                                        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_75);
+                                                    } else if (battery_percent >= 25) {
+                                                        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_50);
+                                                    } else {
+                                                        iv_ble_status_battery_percent.setImageResource(R.drawable.battery_25);
+                                                    }*/
+
+                                                    String receiveTime_hour;
+                                                    String receiveTime_min = data_arr[13].substring(2, 4);
+                                                    String receiveTime_sec = data_arr[13].substring(4);
+
+                                                    String[] receiveData = data_arr[12].split("\\.");
+                                                    String receiveData_year = receiveData[0];
+                                                    String receiveData_mon = receiveData[1].substring(0, 2);
+                                                    String receiveData_day = receiveData[1].substring(2);
+
+                                                    // gmt 으로 인한 9시간 추가해야함. 15시 이후면 다음날로 측정하여 계산
+                                                    if (Integer.parseInt(data_arr[13].substring(0, 2)) >= 15) {
+                                                        // 15시간을 뺀 시간
+                                                        receiveTime_hour = (Integer.parseInt(data_arr[13].substring(0, 2)) - 15) + "";
+                                                        // 1일을 더 넣어서 계산
+                                                        int day = Integer.parseInt(receiveData[1].substring(2));
+                                                        switch (receiveData[1].substring(0, 2)) {
+                                                            case "01":
+                                                                if (day != 31) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "02";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "02":
+                                                                if (day != 28) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "03";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "03":
+                                                                if (day != 31) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "04";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "04":
+                                                                if (day != 30) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "05";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "05":
+                                                                if (day != 31) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "06";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "06":
+                                                                if (day != 30) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "07";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "07":
+                                                                if (day != 31) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "08";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "08":
+                                                                if (day != 31) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "09";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "09":
+                                                                if (day != 30) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "10";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "10":
+                                                                if (day != 31) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "11";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "11":
+                                                                if (day != 30) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_mon = "12";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                            case "12":
+                                                                if (day != 31) {
+                                                                    receiveData_day = (day + 1) + "";
+                                                                } else {
+                                                                    receiveData_year = (Integer.parseInt(receiveData_year) + 1) + "";
+                                                                    receiveData_mon = "01";
+                                                                    receiveData_day = "01";
+                                                                }
+                                                                break;
+                                                        }
+
+                                                    } else {
+                                                        receiveTime_hour = (Integer.parseInt(data_arr[13].substring(0, 2)) + 9) + "";
+                                                    }
+
+                                                    bleViewModel.setBleDate(receiveData_year + getString(R.string.year) + " " + receiveData_mon + getString(R.string.month) + " " + receiveData_day + getString(R.string.day));
+                                                    bleViewModel.setBleTime(receiveTime_hour + getString(R.string.hour) + " " + receiveTime_min + getString(R.string.min) + " " + receiveTime_sec + getString(R.string.sec));
+
+                                                    //GPS 좌표 계산
+                                                    String[] tempLatitude;
+                                                    String lat1, lat2, lat3;
+                                                    String[] tempLongitude;
+                                                    String lon1, lon2, lon3;
+
+                                                    //위도
+                                                    if (Float.parseFloat(data_arr[14]) != 0f) {
+                                                        tempLatitude = data_arr[14].split("\\.");
+                                                        if (tempLatitude[0].charAt(0) != '-') {
+                                                            lat1 = tempLatitude[0].substring(0, 2);
+                                                            lat2 = tempLatitude[0].substring(2, 4);
+                                                            lat1 = "N " + lat1;
+                                                        } else {
+                                                            lat1 = tempLatitude[0].substring(1, 3);
+                                                            lat2 = tempLatitude[0].substring(3, 5);
+                                                            lat1 = "S " + lat1;
+                                                        }
+                                                        lat3 = String.format("%.4f", Double.parseDouble("0." + tempLatitude[1]) * 60);
+
+                                                        bleViewModel.setBleGPSLatitude(lat1 + "° " + lat2 + "\' " + lat3 + "\"");
+                                                    } else {
+                                                        bleViewModel.setBleGPSLatitude(data_arr[14].substring(0, 2) + "° " + data_arr[14].substring(2, 4) + "\' " + data_arr[14].substring(5, 7) + "." + data_arr[14].substring(7) + "\"");
+                                                    }
+
+                                                    String longitude = data_arr[15];
+                                                    if (longitude.contains("*")) {
+                                                        longitude = longitude.substring(0, longitude.indexOf("*"));
+                                                    }
+
+                                                    //경도
+                                                    if (Float.parseFloat(longitude) != 0f) {
+                                                        tempLongitude = longitude.split("\\.");
+                                                        if (tempLongitude[0].charAt(0) != '-') {
+                                                            lon1 = tempLongitude[0].substring(0, 3);
+                                                            lon2 = tempLongitude[0].substring(3, 5);
+                                                            lon1 = "E " + lon1;
+                                                        } else {
+                                                            lon1 = tempLongitude[0].substring(1, 4);
+                                                            lon2 = tempLongitude[0].substring(4, 6);
+                                                            lon1 = "W " + lon1;
+                                                        }
+                                                        lon3 = String.valueOf(String.format("%.4f", Double.valueOf("0." + tempLongitude[1]) * 60));
+
+                                                        bleViewModel.setBleGPSLongitude(lon1 + "° " + lon2 + "\' " + lon3 + "\"");
+                                                    } else {
+                                                        bleViewModel.setBleGPSLongitude(longitude.substring(0, 3) + "° " + longitude.substring(3, 5) + "\' " + longitude.substring(6, 8) + "." + longitude.substring(8, 10) + "\"");
+                                                    }
+
+
+
+
+
+            /*tv_ble_status_gps_latitude.setText(data_arr[14]);
+            String longitude = data_arr[15];
+            if (longitude.contains("*")) {
+                longitude = longitude.substring(0, longitude.indexOf("*"));
+            }
+            tv_ble_status_gps_longitude.setText(longitude);*/
+                                                }
+
+                                            } else if (data.substring(1, 6).contains(DATA_TYPE_LISET)) {
+
+                                                String[] data_arr = data.split(",");
+                                                try {
+
+                                                    // 펌웨어 버전 값
+                                                    bleViewModel.setBleFirmVer(data_arr[1]);
+
+                                                    // RTU 용인지 확인
+                                                    if (Integer.parseInt(data_arr[2]) == 0) {
+                                                        bleViewModel.setBleRTUVer(getString(R.string.Lantern));
+                                                    } else if (Integer.parseInt(data_arr[2]) == 1) {
+                                                        bleViewModel.setBleRTUVer(getString(R.string.RTU));
+                                                    }
+
+                                                    // GPS 속도
+                                                    if (Integer.parseInt(data_arr[3]) == 0) {
+                                                        bleViewModel.setBleGPSSpeed("9600");
+                                                    } else if (Integer.parseInt(data_arr[3]) == 1) {
+                                                        bleViewModel.setBleGPSSpeed("4800");
+                                                    }
+
+                                                    // GPS Setting
+                                                    if (Integer.parseInt(data_arr[4]) == 0) {
+                                                        bleViewModel.setBleGPSAlways_Iv_On(0);
+                                                        bleViewModel.setBleGPSAlways_Iv_Off(0);
+                                                        bleViewModel.setBleGPSAlways("0");
+                                                    } else if (Integer.parseInt(data_arr[4]) == 1) {
+                                                        bleViewModel.setBleGPSAlways_Iv_On(1);
+                                                        bleViewModel.setBleGPSAlways_Iv_Off(1);
+                                                        bleViewModel.setBleGPSAlways("1");
+                                                    }
+
+                                                    String[] dataArr5 = data_arr[5].split("");
+
+                                                    List<String> list = new ArrayList<String>();
+
+                                                    for(String s : dataArr5) {
+                                                        if(s != null && s.length() > 0) {
+                                                            list.add(s);
+                                                        }
+                                                    }
+                                                    String result = list.get(0) +list.get(1) + "." + list.get(2) + list.get(3) + " " + getString(R.string.Second_Sec);
+
+                                                    bleViewModel.setBleDelayTime(result);
+
+
+                                                    String temperature = "";
+                                                    if(data_arr[6].contains("*")){
+                                                        temperature = data_arr[6].substring(0, data_arr[6].indexOf("*"));
+                                                    }else{
+                                                        temperature = data_arr[6];
+                                                    }
+                                                    //viewModel.setDataString(temperature + "°C");
+                                                    bleViewModel.setBleTemperature(temperature + "°C");
+
+                                                } catch (Exception e) {
+
+                                                }
+
+
+                                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                             // 들어온 데이터값을 해당 프래그먼트로 보내기(그쪽에서 처리)
                                             if (currentFragment instanceof fragment_Ble_Function) {
                                                 Log.d(TAG, "fragment_Ble_Function OK!");
-                                                fragment_Ble_Function fragment_ble_function = (fragment_Ble_Function) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
-                                                fragment_ble_function.readData(data);
+                                                /*fragment_Ble_Function fragment_ble_function = (fragment_Ble_Function) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
+                                                fragment_ble_function.readData(data);*/
                                             } else if (currentFragment instanceof fragment_Ble_Password) {
                                                 Log.d(TAG, "fragment_Ble_password OK!");
                                                 fragment_Ble_Password fragment_ble_password = (fragment_Ble_Password) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
@@ -1844,6 +2406,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                                 fragment_SN_Setting fragment_sn_setting = (fragment_SN_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
                                                 fragment_sn_setting.readData(data);
                                             }
+
+
+
+
+
 
 
                                             // 데이터 다 나눠준 후 재정리

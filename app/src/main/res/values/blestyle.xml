@@ -198,7 +198,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#BDBDBD</item>
+        <item name="android:textColor">#ff0000</item>
         <item name="android:textSize">16dp</item>
         <item name="android:background">@drawable/custom_ble_setting_value_tv_value_2</item>
     </style>

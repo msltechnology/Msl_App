@@ -1,55 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/custom_ble_status_dialog_background"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_rtu_setting_dialog_gmt_name"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="@string/GPS_Set"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:background="@color/MSL_Blue"/>
+    <data>
+
+        <variable
+            name="bleViewModel"
+            type="com.msl.mslapp.ble.BleViewModel" />
+
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="3dp"
-        android:layout_weight="4"
-        android:padding="5dp">
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_ble_status_dialog_background"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_GPS_On"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
+        <TextView
+            android:id="@+id/tv_rtu_setting_dialog_gmt_name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:autoSizeTextType="uniform"
-            android:background="@drawable/custom_ble_setting_gps_on"
-            android:elevation="3dp"
-            android:text="@string/GPS_On"
-            android:padding="10dp"
-            android:translationZ="5dp" />
+            android:gravity="center"
+            android:text="@string/GPS_Set"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@color/MSL_Blue" />
 
-        <Button
-            android:id="@+id/btn_GPS_Off"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_ble_setting_gps_off"
-            android:text="@string/GPS_Off"
-            android:autoSizeTextType="uniform"
-            android:padding="10dp"
-            android:translationZ="5dp"
-            android:elevation="3dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="3dp"
+            android:layout_weight="4"
+            android:padding="5dp">
+
+            <Button
+                android:id="@+id/btn_GPS_On"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:autoSizeTextType="uniform"
+                app:btnRes="@{bleViewModel.bleGPSAlways_Iv_On}"
+                android:textColor="@{bleViewModel.bleGPSAlways_Iv_On_Text}"
+                android:elevation="3dp"
+                android:text="@string/GPS_On"
+                android:padding="10dp"
+                android:translationZ="5dp" />
+
+            <Button
+                android:id="@+id/btn_GPS_Off"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                app:btnRes="@{bleViewModel.bleGPSAlways_Iv_Off}"
+                android:textColor="@{bleViewModel.bleGPSAlways_Iv_Off_Text}"
+                android:text="@string/GPS_Off"
+                android:autoSizeTextType="uniform"
+                android:padding="10dp"
+                android:translationZ="5dp"
+                android:elevation="3dp" />
+        </LinearLayout>
+
+
     </LinearLayout>
-
-
-</LinearLayout>
+</layout>

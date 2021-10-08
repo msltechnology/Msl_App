@@ -1,38 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/custom_ble_status_dialog_background"
-    android:paddingTop="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <View style="@style/view_vertical_line_5" />
+        <variable
+            name="bleViewModel"
+            type="com.msl.mslapp.ble.BleViewModel" />
+
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
-        android:layout_marginBottom="5dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        >
+        android:background="@drawable/custom_ble_status_dialog_background"
+        android:paddingTop="10dp">
+
+
+        <View style="@style/view_vertical_line_5" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_weight="5"
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical">
 
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
-                android:text="@string/tv_ble_fragment_status_dialog_solar_sol1"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
-                android:text="@string/tv_ble_fragment_status_dialog_solar_sol2"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
-                android:text="@string/tv_ble_fragment_status_dialog_solar_sol3"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_solar_sol1" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_solar_sol2" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_solar_sol3" />
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol1"
+                    style="@style/iv_ble_fragment_status_dialog_Solar"
+                    app:imgRes="@{bleViewModel.bleSolarV_iv_1}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol2"
+                    style="@style/iv_ble_fragment_status_dialog_Solar"
+                    app:imgRes="@{bleViewModel.bleSolarV_iv_2}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol3"
+                    style="@style/iv_ble_fragment_status_dialog_Solar"
+                    app:imgRes="@{bleViewModel.bleSolarV_iv_3}"/>
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value1"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarV_1}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value2"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarV_2}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value3"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarV_3}"/>
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value1_a"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarA_1}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value2_a"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarA_2}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value3_a"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarA_3}"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -41,198 +145,156 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="horizontal">
+            android:layout_weight="5"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol1"
-                style="@style/iv_ble_fragment_status_dialog_Solar"
-                />
-            <View style="@style/view_horizontal_line_5" />
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol2"
-                style="@style/iv_ble_fragment_status_dialog_Solar"
-                />
-            <View style="@style/view_horizontal_line_5" />
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol3"
-                style="@style/iv_ble_fragment_status_dialog_Solar"
-                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_solar_sol4" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_solar_sol5" />
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@string/tv_ble_fragment_status_dialog_solar_sol6" />
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol4"
+                    style="@style/iv_ble_fragment_status_dialog_Solar"
+                    app:imgRes="@{bleViewModel.bleSolarV_iv_4}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol5"
+                    style="@style/iv_ble_fragment_status_dialog_Solar"
+                    app:imgRes="@{bleViewModel.bleSolarV_iv_5}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <ImageView
+                    android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol6"
+                    style="@style/iv_ble_fragment_status_dialog_Solar"
+                    app:imgRes="@{bleViewModel.bleSolarV_iv_6}"/>
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value4"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarV_4}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value5"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarV_5}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value6"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarV_6}"/>
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value4_a"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarA_4}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value5_a"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarA_5}"/>
+
+                <View style="@style/view_horizontal_line_5" />
+
+                <TextView
+                    android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value6_a"
+                    style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
+                    android:text="@{bleViewModel.bleSolarA_6}"/>
+
+            </LinearLayout>
+
+            <View style="@style/view_vertical_line_5" />
 
         </LinearLayout>
-        <View style="@style/view_vertical_line_5" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
 
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value1"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value2"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value3"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
+            <Button
+                android:id="@+id/btn_dialogFragment_Ble_Status_Solar_callStatus_v"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:layout_margin="5dp"
+                android:background="@drawable/custom_ble_status_call_btn"
+                android:text="@string/v_status"
+                android:textSize="16sp" />
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/btn_dialogFragment_Ble_Status_Solar_callStatus_a"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:layout_margin="5dp"
+                android:background="@drawable/custom_ble_status_call_btn"
+                android:text="@string/a_status"
+                android:textSize="16sp" />
 
-        <View style="@style/view_vertical_line_5" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value1_a"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value2_a"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value3_a"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
 
         </LinearLayout>
+
 
     </LinearLayout>
-    <View style="@style/view_vertical_line_5" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
-                android:text="@string/tv_ble_fragment_status_dialog_solar_sol4"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
-                android:text="@string/tv_ble_fragment_status_dialog_solar_sol5"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"
-                android:text="@string/tv_ble_fragment_status_dialog_solar_sol6"/>
-
-        </LinearLayout>
-
-        <View style="@style/view_vertical_line_5" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol4"
-                style="@style/iv_ble_fragment_status_dialog_Solar"
-                />
-            <View style="@style/view_horizontal_line_5" />
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol5"
-                style="@style/iv_ble_fragment_status_dialog_Solar"
-                />
-            <View style="@style/view_horizontal_line_5" />
-            <ImageView
-                android:id="@+id/iv_ble_fragment_status_dialog_Solar_sol6"
-                style="@style/iv_ble_fragment_status_dialog_Solar"
-                />
-
-        </LinearLayout>
-        <View style="@style/view_vertical_line_5" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value4"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value5"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value6"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-
-        </LinearLayout>
-
-        <View style="@style/view_vertical_line_5" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value4_a"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value5_a"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-            <View style="@style/view_horizontal_line_5" />
-            <TextView
-                android:id="@+id/tv_ble_fragment_status_dialog_Solar_sol_value6_a"
-                style="@style/tv_ble_fragment_status_dialog_Solar_sol_name"/>
-
-        </LinearLayout>
-
-        <View style="@style/view_vertical_line_5" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        >
-        <Button
-            android:id="@+id/btn_dialogFragment_Ble_Status_Solar_callStatus_v"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:layout_margin="5dp"
-            android:background="@drawable/custom_ble_status_call_btn"
-            android:text="@string/v_status"
-            android:textSize="16sp"/>
-
-        <Button
-            android:id="@+id/btn_dialogFragment_Ble_Status_Solar_callStatus_a"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:layout_margin="5dp"
-            android:background="@drawable/custom_ble_status_call_btn"
-            android:text="@string/a_status"
-            android:textSize="16sp"/>
-
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</layout>

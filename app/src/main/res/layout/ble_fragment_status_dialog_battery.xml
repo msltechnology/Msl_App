@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="bleViewModel"
+            type="com.msl.mslapp.ble.BleViewModel" />
+
+    </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -52,20 +61,23 @@
 
                 <ImageView
                     android:id="@+id/iv_ble_fragment_status_dialog_battery_bat1"
-                    style="@style/iv_ble_fragment_status_dialog_battery"/>
+                    style="@style/iv_ble_fragment_status_dialog_battery"
+                    app:imgRes="@{bleViewModel.bleBattery_iv_1}"/>
 
 
                 <View style="@style/view_horizontal_line_5" />
 
                 <ImageView
                     android:id="@+id/iv_ble_fragment_status_dialog_battery_bat2"
-                    style="@style/iv_ble_fragment_status_dialog_battery" />
+                    style="@style/iv_ble_fragment_status_dialog_battery"
+                    app:imgRes="@{bleViewModel.bleBattery_iv_2}" />
 
                 <View style="@style/view_horizontal_line_5" />
 
                 <ImageView
                     android:id="@+id/iv_ble_fragment_status_dialog_battery_bat3"
-                    style="@style/iv_ble_fragment_status_dialog_battery" />
+                    style="@style/iv_ble_fragment_status_dialog_battery"
+                    app:imgRes="@{bleViewModel.bleBattery_iv_3}" />
 
             </LinearLayout>
 
@@ -79,19 +91,23 @@
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value1"
-                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"/>
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@{bleViewModel.bleBattery_1}"
+                    />
 
                 <View style="@style/view_horizontal_line_5" />
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value2"
-                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@{bleViewModel.bleBattery_2}"/>
 
                 <View style="@style/view_horizontal_line_5" />
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value3"
-                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@{bleViewModel.bleBattery_3}"/>
 
             </LinearLayout>
 
@@ -140,19 +156,22 @@
 
                 <ImageView
                     android:id="@+id/iv_ble_fragment_status_dialog_battery_bat4"
-                    style="@style/iv_ble_fragment_status_dialog_battery" />
+                    style="@style/iv_ble_fragment_status_dialog_battery"
+                    app:imgRes="@{bleViewModel.bleBattery_iv_4}" />
 
                 <View style="@style/view_horizontal_line_5" />
 
                 <ImageView
                     android:id="@+id/iv_ble_fragment_status_dialog_battery_bat5"
-                    style="@style/iv_ble_fragment_status_dialog_battery" />
+                    style="@style/iv_ble_fragment_status_dialog_battery"
+                    app:imgRes="@{bleViewModel.bleBattery_iv_5}" />
 
                 <View style="@style/view_horizontal_line_5" />
 
                 <ImageView
                     android:id="@+id/iv_ble_fragment_status_dialog_battery_bat6"
-                    style="@style/iv_ble_fragment_status_dialog_battery" />
+                    style="@style/iv_ble_fragment_status_dialog_battery"
+                    app:imgRes="@{bleViewModel.bleBattery_iv_6}" />
 
             </LinearLayout>
 
@@ -166,19 +185,22 @@
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value4"
-                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@{bleViewModel.bleBattery_4}"/>
 
                 <View style="@style/view_horizontal_line_5" />
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value5"
-                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@{bleViewModel.bleBattery_5}"/>
 
                 <View style="@style/view_horizontal_line_5" />
 
                 <TextView
                     android:id="@+id/tv_ble_fragment_status_dialog_battery_bat_value6"
-                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name" />
+                    style="@style/tv_ble_fragment_status_dialog_battery_bat_name"
+                    android:text="@{bleViewModel.bleBattery_6}"/>
 
             </LinearLayout>
 
