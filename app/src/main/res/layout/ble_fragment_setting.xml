@@ -24,8 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
                 android:clipToPadding="false"
+                android:orientation="horizontal"
                 android:padding="5dp">
 
 
@@ -54,8 +54,8 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/custom_ble_status_call_btn"
-                    android:textAllCaps="false"
                     android:text="@string/once_status"
+                    android:textAllCaps="false"
                     android:textSize="14dp"
                     android:textStyle="bold" />
 
@@ -70,8 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
                 android:clipToPadding="false"
+                android:orientation="horizontal"
                 android:padding="5dp">
 
 
@@ -110,8 +110,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
                 android:clipToPadding="false"
+                android:orientation="horizontal"
                 android:padding="5dp"
                 android:visibility="invisible">
 
@@ -130,8 +130,8 @@
                     <Button
                         android:id="@+id/btn_Delay_Time"
                         style="@style/btn_ble_fragment_setting_setting"
-                        android:textAllCaps="false"
-                        android:text="@string/change" />
+                        android:text="@string/change"
+                        android:textAllCaps="false" />
                 </LinearLayout>
 
                 <Button
@@ -141,8 +141,8 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:background="@drawable/custom_ble_status_call_btn"
-                    android:textAllCaps="false"
                     android:text="@string/information_status"
+                    android:textAllCaps="false"
                     android:textSize="14dp"
                     android:textStyle="bold" />
 
@@ -187,13 +187,47 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_mode"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:visibility="invisible">
+
+            <Button
+                android:id="@+id/btn_mode_remote"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_ble_setting_gps_on"
+                android:gravity="center"
+                android:text="@string/mode_remoteControl"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/tv_ble_fragment_setting"
+                android:text="@string/controlMode" />
+
+
+            <Button
+                android:id="@+id/btn_mode_switch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/custom_ble_setting_gps_off"
+                android:gravity="center"
+                android:text="@string/mode_switch"
+                android:textStyle="bold" />
 
 
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        </Space>
 
 
         <LinearLayout
@@ -218,7 +252,7 @@
                 android:background="@drawable/custom_ble_status_call_btn"
                 android:text="@string/btn_ble_setting_change_password"
                 android:textColor="@color/red"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -242,7 +276,7 @@
             <TextView
                 android:id="@+id/tv_ble_fragment_setting_version_num"
                 style="@style/tv_ble_fragment_setting_3"
-                android:text="@{bleViewModel.bleFirmVer}"/>
+                android:text="@{bleViewModel.bleFirmVer}" />
 
             <View style="@style/view_horizontal_line_5" />
 
@@ -250,14 +284,14 @@
             <TextView
                 android:id="@+id/tv_ble_fragment_setting_version_rtu"
                 style="@style/tv_ble_fragment_setting_3"
-                android:text="@{bleViewModel.bleRTUVer}"/>
+                android:text="@{bleViewModel.bleRTUVer}" />
 
             <View style="@style/view_horizontal_line_5" />
 
             <TextView
                 android:id="@+id/tv_ble_fragment_setting_version_gps_speed"
                 style="@style/tv_ble_fragment_setting_3"
-                android:text="@{bleViewModel.bleGPSSpeed}"/>
+                android:text="@{bleViewModel.bleGPSSpeed}" />
 
         </LinearLayout>
 

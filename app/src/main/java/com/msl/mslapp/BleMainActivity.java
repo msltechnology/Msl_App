@@ -2,6 +2,8 @@
 
 package com.msl.mslapp;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -108,9 +110,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = true;
+    public static final boolean adminApp = true; //true;
     // delaytime 이용고객용
-    public static final boolean delaytimeApp = false;
+    public static final boolean delaytimeApp = false; //false;
 
     public static Context mBleContext = null;
 
@@ -290,7 +292,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public void onCreateViewFragment_Ble_Scan() {
         Log.d(TAG, "onCreateViewFragment_Ble_Scan");
         ScanItem.setVisible(true);
-        reFreshItem.setVisible(true);
     }
 
     // toolbar 스캔 기능 가리기
@@ -299,7 +300,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         Log.d(TAG, "onDetachFragment_Ble_Scan");
         ScanItem.setTitle(R.string.ble_main_scanItem_stopScanning);
         ScanItem.setVisible(false);
-        reFreshItem.setVisible(false);
     }
 
     // status화면일 경우 텝 보이게하기

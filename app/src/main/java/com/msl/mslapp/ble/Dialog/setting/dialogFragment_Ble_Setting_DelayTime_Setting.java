@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -166,6 +168,7 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
             try {
                 Intent intent = fragment_Ble_Setting.newIntent(delayTimeData);
                 getParentFragment().onActivityResult(Ble_Setting_dialog_DelayTime, Activity.RESULT_OK, intent);
+
 
                 dismiss();
                 Log.d(TAG, "btn_ok Click");

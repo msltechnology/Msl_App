@@ -603,7 +603,7 @@ public class BleViewModel extends ViewModel {
     MutableLiveData<String> BleInputV = new MutableLiveData<>("000");
     MutableLiveData<String> BleOutputV = new MutableLiveData<>("000");
     MutableLiveData<String> BleLanternStatus = new MutableLiveData<>("000");
-    MutableLiveData<String> BleBatteryV = new MutableLiveData<>("00");
+    MutableLiveData<String> BleBatteryV = new MutableLiveData<>("000");
     MutableLiveData<Integer> BleBatteryV_iv = new MutableLiveData<>(R.drawable.battery_25);
     MutableLiveData<String> BleOutputA = new MutableLiveData<>("000");
     MutableLiveData<String> BleChargingA = new MutableLiveData<>("000");

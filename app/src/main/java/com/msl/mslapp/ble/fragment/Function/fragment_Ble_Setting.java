@@ -44,9 +44,9 @@ public class fragment_Ble_Setting extends Fragment {
 
     TextView selected_FL, selected_ID, tv_delay_time, tv_version_num, tv_version_rtu, tv_version_gps_speed;
 
-    Button btn_status, ban_information, btn_FL_Setting, btn_ID_Setting, btn_Password_Change, btn_GPS_ON, btn_GPS_OFF, btn_delay_time;
+    Button btn_status, ban_information, btn_FL_Setting, btn_ID_Setting, btn_Password_Change, btn_GPS_ON, btn_GPS_OFF, btn_delay_time, btn_mode_remote, btn_mode_switch;
 
-    LinearLayout ll_ble_fragment_setting_delay, ll_ble_fragment_setting_version;
+    LinearLayout ll_ble_fragment_setting_delay, ll_ble_fragment_setting_version, ll_mode;
 
     public static String lantern_id = "000",
             delay_time = "+000";
@@ -81,10 +81,13 @@ public class fragment_Ble_Setting extends Fragment {
 
         ll_ble_fragment_setting_delay = view.findViewById(R.id.ll_ble_fragment_setting_delay);
         ll_ble_fragment_setting_version = view.findViewById(R.id.ll_ble_fragment_setting_version);
+        ll_mode = view.findViewById(R.id.ll_mode);
+
 
         if(adminApp){
             ll_ble_fragment_setting_delay.setVisibility(View.VISIBLE);
             ll_ble_fragment_setting_version.setVisibility(View.VISIBLE);
+            ll_mode.setVisibility(View.VISIBLE);
         }
         
         if(delaytimeApp){
@@ -197,7 +200,7 @@ public class fragment_Ble_Setting extends Fragment {
 
             String[] dataArr5 = delay_time.split("");
 
-            List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<>();
 
             for(String s : dataArr5) {
                 if(s != null && s.length() > 0) {
@@ -227,6 +230,8 @@ public class fragment_Ble_Setting extends Fragment {
         btn_GPS_ON = view.findViewById(R.id.btn_GPS_On);
         btn_GPS_OFF = view.findViewById(R.id.btn_GPS_Off);
         btn_delay_time = view.findViewById(R.id.btn_Delay_Time);
+        btn_mode_remote = view.findViewById(R.id.btn_mode_remote);
+        btn_mode_switch = view.findViewById(R.id.btn_mode_switch);
 
 
         btn_status.setOnClickListener(v -> BlewriteData(DATA_REQUEST_STATUS));
@@ -246,12 +251,7 @@ public class fragment_Ble_Setting extends Fragment {
                         BlewriteData(DATA_REQUEST_STATUS);
 
                         if (lantern_id.equals("000")) {
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showDialogFragment_ID();
-                                }
-                            }, 400);
+                            handler.postDelayed(() -> showDialogFragment_ID(), 400);
                         } else {
                             showDialogFragment_ID();
                         }
@@ -279,6 +279,23 @@ public class fragment_Ble_Setting extends Fragment {
             public void onSingleClick(View v) {
                 BlewriteData(StringList.DATA_REQUEST_INFORMATION);
                 handler.postDelayed(() -> showDelayTimeChangeDialog(), 200);
+            }
+        });
+        btn_mode_remote.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                BlewriteData(StringList.DATA_SET_RMC);
+
+                btn_mode_remote.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on_clicked));
+                btn_mode_switch.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off));
+            }
+        });
+        btn_mode_switch.setOnClickListener(new OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                BlewriteData(StringList.DATA_SET_DIP);
+                btn_mode_remote.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_on));
+                btn_mode_switch.setBackground(ContextCompat.getDrawable(mBleContext, R.drawable.custom_ble_setting_gps_off_clicked));
             }
         });
     }
@@ -321,12 +338,7 @@ public class fragment_Ble_Setting extends Fragment {
 
         selected_ID.setTextColor(Color.parseColor("#ff0000"));
         selected_ID.setText(selected_id);
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                BlewriteData(DATA_REQUEST_STATUS);
-            }
-        }, 200);
+        handler.postDelayed(() -> BlewriteData(DATA_REQUEST_STATUS), 200);
     }
 
     public void setDelayTime(String selected_delaytime) {
@@ -339,12 +351,7 @@ public class fragment_Ble_Setting extends Fragment {
 
         BlewriteData(sendData);
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                BlewriteData(StringList.DATA_REQUEST_INFORMATION);
-            }
-        }, 200);
+        handler.postDelayed(() -> BlewriteData(StringList.DATA_REQUEST_INFORMATION), 200);
     }
 
     private void showDialogFragment_FL() {

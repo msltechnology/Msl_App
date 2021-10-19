@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -34,6 +37,7 @@ import java.util.Locale;
 import static com.msl.mslapp.BleMainActivity.BluetoothStatus;
 import static com.msl.mslapp.BleMainActivity.adminApp;
 import static com.msl.mslapp.BleMainActivity.bluetooth_permission_check;
+import static com.msl.mslapp.BleMainActivity.locationManager;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 import static com.msl.mslapp.BleMainActivity.SnFlag;
 import static com.msl.mslapp.BleMainActivity.CdsFlag;
@@ -167,16 +171,38 @@ public class fragment_Ble_Beginning extends Fragment {
     }
 
 
+    void permissionCheck(){
+        if(BluetoothStatus.contains("On")){
+            if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                //GPS 설정화면으로 이동
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mBleContext);
+
+                builder.setTitle(R.string.ble_main_checkPermission_GPS_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_alertDialog_message);
+
+                builder.setPositiveButton("OK", (dialog, id) -> startActivity(intent));
+
+                builder.setNegativeButton("Cancel", (dialog, id) -> {
+
+                });
+                AlertDialog alertDialog = builder.create();
+
+                alertDialog.show();
+
+            }else{
+                ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_function");
+            }
+        }else{
+            checkBluetoothPermission();
+        }
+    }
 
     void fragmentScanChange() {
 
         Log.d(TAG, "bleScanIb Click");
+        permissionCheck();
 
-        if(BluetoothStatus.contains("On")){
-            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_function");
-        }else{
-            checkBluetoothPermission();
-        }
     }
 
     public void checkBluetoothPermission() {
@@ -211,20 +237,13 @@ public class fragment_Ble_Beginning extends Fragment {
     private void bleScanCDSBtnOnClick() {
         //showEditDialog();
         CdsFlag = true;
-        if(BluetoothStatus.contains("On")){
-            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_scan");
-        }else{
-            checkBluetoothPermission();
-        }
+        permissionCheck();
     }
     private void bleScanSNBtnOnClick() {
         //showEditDialog();
         SnFlag = true;
-        if(BluetoothStatus.contains("On")){
-            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_scan");
-        }else{
-            checkBluetoothPermission();
-        }
+
+        permissionCheck();
     }
 
     private void bleLanguageBtnOnClick() {
@@ -260,7 +279,8 @@ public class fragment_Ble_Beginning extends Fragment {
         Locale locale = new Locale(char_select);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
-        config.locale = locale;
+        //config.locale = locale; // deprecated
+        config.setLocale(locale);
         mBleContext.getResources().updateConfiguration(config, mBleContext.getResources().getDisplayMetrics());
         tLanguage = char_select; //설정된 언어 저장 변수에 저장
     }
