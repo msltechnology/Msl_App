@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.msl.mslapp.ble.fragment.Function.fragment_Ble_Setting;
 import com.msl.mslapp.R;
 
+import static com.msl.mslapp.BleMainActivity.bleViewModel;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
@@ -106,8 +107,9 @@ public class dialogFragment_Ble_Setting_FL_Setting extends DialogFragment {
                 return;
             }
 
-            Intent intent = fragment_Ble_Setting.newIntent(tv_Selected_FL.getText().toString());
-            getParentFragment().onActivityResult(Ble_Setting_dialog_FL, Activity.RESULT_OK, intent);
+            //Intent intent = fragment_Ble_Setting.newIntent(tv_Selected_FL.getText().toString());
+            //getParentFragment().onActivityResult(Ble_Setting_dialog_FL, Activity.RESULT_OK, intent);
+            bleViewModel.settingFL(tv_Selected_FL.getText().toString());
 
             dismiss();
             Log.d(TAG, "tv_Confirm Click");

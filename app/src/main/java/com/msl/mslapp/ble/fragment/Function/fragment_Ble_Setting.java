@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -300,6 +301,7 @@ public class fragment_Ble_Setting extends Fragment {
         });
     }
 
+/*
     public void setSelected_FL(String selected_fl) {
         Log.d(TAG, "fragment_Ble_Setting setSelected_FL : " + selected_fl);
 
@@ -352,7 +354,7 @@ public class fragment_Ble_Setting extends Fragment {
         BlewriteData(sendData);
 
         handler.postDelayed(() -> BlewriteData(StringList.DATA_REQUEST_INFORMATION), 200);
-    }
+    }*/
 
     private void showDialogFragment_FL() {
         FragmentManager fm = this.getChildFragmentManager();
@@ -378,7 +380,7 @@ public class fragment_Ble_Setting extends Fragment {
         setting_delayTime_DialogFragment.show(fm, "dialogFragment_Ble_Setting_DelayTime_Setting");
     }
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
             Log.d(TAG, "fragment_Ble_Setting onActivityResult RESULT_OK : Fail ");
@@ -406,13 +408,13 @@ public class fragment_Ble_Setting extends Fragment {
         intent.putExtra(EXTRA_GREETING_MESSAGE, message);
         return intent;
     }
-
+*/
 
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
-    Handler handler = new Handler();
+    Handler handler = new Handler(Looper.getMainLooper());
 
 }

@@ -27,6 +27,7 @@ import androidx.fragment.app.DialogFragment;
 import com.msl.mslapp.ble.fragment.Function.fragment_Ble_Setting;
 import com.msl.mslapp.R;
 
+import static com.msl.mslapp.BleMainActivity.bleViewModel;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment {
@@ -166,9 +167,9 @@ public class dialogFragment_Ble_Setting_DelayTime_Setting extends DialogFragment
             }
 
             try {
-                Intent intent = fragment_Ble_Setting.newIntent(delayTimeData);
-                getParentFragment().onActivityResult(Ble_Setting_dialog_DelayTime, Activity.RESULT_OK, intent);
-
+                //Intent intent = fragment_Ble_Setting.newIntent(delayTimeData);
+                //getParentFragment().onActivityResult(Ble_Setting_dialog_DelayTime, Activity.RESULT_OK, intent);
+                bleViewModel.settingDelay(delayTimeData);
 
                 dismiss();
                 Log.d(TAG, "btn_ok Click");

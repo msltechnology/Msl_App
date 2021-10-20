@@ -23,6 +23,7 @@ import androidx.fragment.app.DialogFragment;
 import com.msl.mslapp.ble.fragment.Function.fragment_Ble_Setting;
 import com.msl.mslapp.R;
 
+import static com.msl.mslapp.BleMainActivity.bleViewModel;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
 
 public class dialogFragment_Ble_Setting_ID_Setting extends DialogFragment {
@@ -121,8 +122,9 @@ public class dialogFragment_Ble_Setting_ID_Setting extends DialogFragment {
             }
             String sendData = tv_Selected_ID1.getText().toString() + tv_Selected_ID2.getText().toString() + tv_Selected_ID3.getText().toString();
 
-            Intent intent = fragment_Ble_Setting.newIntent(sendData);
-            getParentFragment().onActivityResult(Ble_Setting_dialog_ID, Activity.RESULT_OK, intent);
+            //Intent intent = fragment_Ble_Setting.newIntent(sendData);
+            //getParentFragment().onActivityResult(Ble_Setting_dialog_ID, Activity.RESULT_OK, intent);
+            bleViewModel.settingID(sendData);
 
             dismiss();
             Log.d(TAG, "btn_ok Click");

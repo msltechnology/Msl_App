@@ -10,8 +10,8 @@ android {
         applicationId "com.msl.mslapp"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 18
-        versionName "1.0.36"
+        versionCode 19
+        versionName "1.0.361"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

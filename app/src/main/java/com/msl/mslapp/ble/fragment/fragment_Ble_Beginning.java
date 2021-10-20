@@ -43,6 +43,7 @@ import static com.msl.mslapp.BleMainActivity.SnFlag;
 import static com.msl.mslapp.BleMainActivity.CdsFlag;
 import static com.msl.mslapp.BleMainActivity.mBleMain;
 import static com.msl.mslapp.BleMainActivity.navigation_icon_Change;
+import static com.msl.mslapp.BleMainActivity.requestPermissionBle;
 import static com.msl.mslapp.BleMainActivity.tLanguage;
 import static com.msl.mslapp.MenualActivity.callMenual;
 
@@ -214,7 +215,8 @@ public class fragment_Ble_Beginning extends Fragment {
 
         // 블루투스 활성화 하도록
         intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(intent, bluetooth_permission_check);
+        requestPermissionBle.launch(intent);
+        //startActivityForResult(intent, bluetooth_permission_check);
     }
 
     // 위치정보(GPS) On

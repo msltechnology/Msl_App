@@ -2,18 +2,86 @@ package com.msl.mslapp.ble;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.msl.mslapp.Public.StringList;
 import com.msl.mslapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.msl.mslapp.BleMainActivity.BlewriteData;
+import static com.msl.mslapp.BleMainActivity.mBleContext;
+import static com.msl.mslapp.Public.StringList.DATA_REQUEST_STATUS;
+
 public class BleViewModel extends ViewModel {
+
+    String TAG = "BleViewModel";
+
+    Handler handler = new Handler(Looper.getMainLooper());
+
+    /////////////////////////////////////////////////////////////
+    // 명령용
+    public void settingFL(String FL){
+        setBleFL(FL);
+        String sendData = StringList.DATA_SIGN_START + StringList.DATA_TYPE_LICMD + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_S + StringList.DATA_SIGN_COMMA
+                + FL + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_ID_255 + StringList.DATA_SIGN_CHECKSUM;
+        BlewriteData(sendData);
+
+        handler.postDelayed(() -> BlewriteData(DATA_REQUEST_STATUS), 200);
+        Log.d(TAG,"settingFL : " + FL);
+    }
+
+
+    public void settingID(String ID){
+        setBleID(ID);
+        String sendData = StringList.DATA_SIGN_START + StringList.DATA_TYPE_LICMD + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_S + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_SID + StringList.DATA_SIGN_COMMA
+                + ID + StringList.DATA_SIGN_CHECKSUM;
+        BlewriteData(sendData);
+
+        handler.postDelayed(() -> BlewriteData(DATA_REQUEST_STATUS), 200);
+        Log.d(TAG,"settingID : " + ID);
+    }
+
+
+
+    public void settingDelay(String Delay){
+
+        String[] dataArr5 = Delay.split("");
+
+        List<String> list = new ArrayList<String>();
+
+        for(String s : dataArr5) {
+            if(s != null && s.length() > 0) {
+                list.add(s);
+            }
+        }
+        String result = list.get(0) +list.get(1) + "." + list.get(2) + list.get(3) + " " + mBleContext.getString(R.string.Second_Sec);
+
+
+        setBleDelayTime(result);
+        String sendData = StringList.DATA_SIGN_START + StringList.DATA_TYPE_LICMD + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_S + StringList.DATA_SIGN_COMMA
+                + StringList.DATA_TYPE_DEL + StringList.DATA_SIGN_COMMA
+                + Delay + StringList.DATA_SIGN_CHECKSUM;
+        BlewriteData(sendData);
+
+
+        handler.postDelayed(() -> BlewriteData(DATA_REQUEST_STATUS), 200);
+        Log.d(TAG,"settingDelay : " + result);
+    }
+
+
 
     public MutableLiveData<String> getBleCDS() {
         return BleCDS;

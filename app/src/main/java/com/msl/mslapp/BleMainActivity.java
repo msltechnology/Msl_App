@@ -2,6 +2,8 @@
 
 package com.msl.mslapp;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -22,6 +24,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -119,7 +122,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static AppCompatActivity mBleMain = null;
     public static String tLanguage;
     public BleActivityMainBinding mBleBinding;
-    BleViewModel bleViewModel;
+    public static BleViewModel bleViewModel;
 
     // bluetooth 관련
     public static BluetoothAdapter mBluetoothAdapter = null;
@@ -138,8 +141,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static LocationManager locationManager = null;
     // requestCode
     public static final int bluetooth_permission_check = 50;
-    public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 51;
-    public static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE = 52;
+    public static ActivityResultLauncher<Intent> requestPermissionBle;
+
+
+    private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 51;
+    private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE = 52;
     // handler msg코드
     public static final int ConnectSuccess = 0;
     public static final int readDataSuccess = 1;
@@ -477,6 +483,15 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         mBleContext = this;
         mBleMain = this;
 
+        // 블루투스 권한 체크용
+        requestPermissionBle = mBleMain.registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                // result.data => intent
+                Log.d(TAG, "MainActivity로 돌아왔다. ");
+            }
+        });
+
+        // 언어 설정
         class MainLanguageRunnable implements Runnable {
             public void run() {
                 //언어설정
@@ -494,6 +509,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         t.start();
 
 
+        // 툴바 설정
         toolbarMain = (Toolbar) findViewById(R.id.ble_toolbar_main);
         toolbarMain.setTitle("");
         toolbarMain.setTitleTextColor(getResources().getColor(R.color.ble_toolbarmain));
@@ -506,6 +522,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         navigation_Setting();
+
+
 
         // 블루투스 관련 권한 확인 및 필터 정리
         class MainBleFilterPermissionRunnable implements Runnable {
@@ -586,13 +604,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         }
 
 
-
         //region layout 기능
 
         //endregion
     }
 
-    Handler NO_GATT_SUCCESS_Fail_handler = new Handler(Looper.getMainLooper()){};
+    Handler NO_GATT_SUCCESS_Fail_handler = new Handler(Looper.getMainLooper()) {};
 
     void navigation_Setting() {
         // 사이드바 관련
@@ -977,7 +994,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         mBluetoothAdapter = bluetoothManager.getAdapter();
     }*/
 
-    public static void permission_check() {
+    private void permission_check() {
         Log.d(TAG, "buile Version : " + Build.VERSION.SDK_INT);
 
         // 버전 별 권한 확인이 다름.
@@ -1055,7 +1072,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         }
     }
 
-
+    // onActivityResult 가 deprecated 가 되어 변경 함 (21-10-20)
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1092,7 +1110,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 break;
 
         }
-    }
+    }*/
 
     /*// 권한 요청 시
     @Override
@@ -1275,7 +1293,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         } else {
             // 블루투스 활성화 하도록
             intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            mBleMain.startActivityForResult(intent, bluetooth_permission_check);
+            requestPermissionBle.launch(intent);
+            //mBleMain.startActivityForResult(intent, bluetooth_permission_check);
         }
         // 블루투스 권한 확인 끝
     }
@@ -1823,20 +1842,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                             logData_Ble(data, "read");
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                             if (data.substring(1, 6).contains(DATA_TYPE_LISTS)) {
                                                 if (data.startsWith(DATA_TYPE_S, 7)) {
                                                     if (data.substring(9, 12).contains(DATA_TYPE_BTV)) {
@@ -2319,20 +2324,20 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                                                     List<String> list = new ArrayList<String>();
 
-                                                    for(String s : dataArr5) {
-                                                        if(s != null && s.length() > 0) {
+                                                    for (String s : dataArr5) {
+                                                        if (s != null && s.length() > 0) {
                                                             list.add(s);
                                                         }
                                                     }
-                                                    String result = list.get(0) +list.get(1) + "." + list.get(2) + list.get(3) + " " + getString(R.string.Second_Sec);
+                                                    String result = list.get(0) + list.get(1) + "." + list.get(2) + list.get(3) + " " + getString(R.string.Second_Sec);
 
                                                     bleViewModel.setBleDelayTime(result);
 
 
                                                     String temperature = "";
-                                                    if(data_arr[6].contains("*")){
+                                                    if (data_arr[6].contains("*")) {
                                                         temperature = data_arr[6].substring(0, data_arr[6].indexOf("*"));
-                                                    }else{
+                                                    } else {
                                                         temperature = data_arr[6];
                                                     }
                                                     //viewModel.setDataString(temperature + "°C");
@@ -2344,48 +2349,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
 
                                             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                                             // 들어온 데이터값을 해당 프래그먼트로 보내기(그쪽에서 처리)
@@ -2406,11 +2369,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                                 fragment_SN_Setting fragment_sn_setting = (fragment_SN_Setting) getSupportFragmentManager().findFragmentById(R.id.bluetoothFragmentSpace);
                                                 fragment_sn_setting.readData(data);
                                             }
-
-
-
-
-
 
 
                                             // 데이터 다 나눠준 후 재정리
