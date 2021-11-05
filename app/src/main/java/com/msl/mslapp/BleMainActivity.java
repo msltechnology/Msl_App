@@ -59,6 +59,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -113,9 +114,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = true; //true;
+    public static final boolean adminApp = false;
     // delaytime 이용고객용
-    public static final boolean delaytimeApp = false; //false;
+    public static final boolean delaytimeApp = true;
 
     public static Context mBleContext = null;
 
@@ -238,6 +239,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static LinearLayout ll_navigation_GPS;
     public static LinearLayout ll_navigation_Language;
     public static LinearLayout ll_navigation_PasswordChange;
+    public static LinearLayout ll_navigation_ModeSelect;
 
 
     // drawLayout(bluetoothMainlayout)
@@ -483,6 +485,16 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         mBleContext = this;
         mBleMain = this;
 
+        // gps on 시키는데 사용
+        locationManager = (LocationManager) mBleContext.getSystemService(LOCATION_SERVICE);
+
+        // 블루투스 권한 및 사용
+        bluetoothManager = (BluetoothManager) mBleContext.getSystemService(Context.BLUETOOTH_SERVICE);
+
+        //region Bluetooth 연결 시 필요한 사항
+        //mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+
         // 블루투스 권한 체크용
         requestPermissionBle = mBleMain.registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
@@ -620,13 +632,19 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         ll_navigation_log = navigationView.findViewById(R.id.ll_Navigation_Log);
         ll_navigation_Language = navigationView.findViewById(R.id.ll_Navigation_Show_Language);
         ll_navigation_PasswordChange = navigationView.findViewById(R.id.ll_Navigation_Password_Change);
+        ll_navigation_ModeSelect = navigationView.findViewById(R.id.ll_Navigation_ModeSelect);
         ll_navigation_GPS = navigationView.findViewById(R.id.ll_navigation_gps);
         ll_navigation_GPS.setVisibility(View.GONE);
         log_Refresh();
 
         Handler postHandler = new Handler(Looper.getMainLooper());
 
-        Display display = mBleContext.getDisplay();
+        Display display = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            display = mBleContext.getDisplay();
+        }else{
+            display = ((WindowManager) mBleContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        }
         Point size = new Point();
         display.getSize(size);
 
@@ -724,6 +742,20 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             }
         });
 
+        // 비밀번호 변경
+        navigationView.findViewById(R.id.ll_Navigation_ModeSelect).setOnClickListener(v -> {
+
+            if (BleConnecting) {
+                postHandler.postDelayed(() -> {
+                    FragmentManager fm = getSupportFragmentManager();
+                    dialogFragment_Ble_Setting_Password_Change setting_PasswordChange_DialogFragment = new dialogFragment_Ble_Setting_Password_Change();
+                    setting_PasswordChange_DialogFragment.show(fm, "fragment_setting_dialog_Password");
+                }, 200);
+            } else {
+                Toast.makeText(mBleContext, "bluetooth not connecting", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         bleDrawerLayout = findViewById(R.id.ble_drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, bleDrawerLayout, toolbarMain, R.string.app_name, R.string.app_name);
@@ -736,10 +768,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         if (visble) {
             ll_navigation_GPS.setVisibility(View.VISIBLE);
             ll_navigation_PasswordChange.setVisibility(View.VISIBLE);
+            //ll_navigation_ModeSelect.setVisibility(View.VISIBLE);
             ll_navigation_Language.setVisibility(View.GONE);
         } else {
             ll_navigation_GPS.setVisibility(View.GONE);
             ll_navigation_PasswordChange.setVisibility(View.GONE);
+            //ll_navigation_ModeSelect.setVisibility(View.GONE);
             ll_navigation_Language.setVisibility(View.VISIBLE);
         }
     }
@@ -1022,15 +1056,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
             }
         }
-
-        // gps on 시키는데 사용
-        locationManager = (LocationManager) mBleContext.getSystemService(LOCATION_SERVICE);
-
-        bluetoothManager = (BluetoothManager) mBleContext.getSystemService(Context.BLUETOOTH_SERVICE);
-
-        //region Bluetooth 연결 시 필요한 사항
-        //mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mBluetoothAdapter = bluetoothManager.getAdapter();
     }
 
 
@@ -1455,22 +1480,29 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                             if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE ||
                                     characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) {
                                 cmdCharacteristic = characteristic;
+                                logData_Ble("PROPERTY_WRITE connect");
                                 if (cmdCharacteristic == null) {
                                     Log.d(TAG, "onServicesDiscovered - cmdCharacteristic : null");
                                     // 해당 값을 하면 되긴하는데...처음부터 해서 에러 메세지(BleWrite부분에서) 하지않게하기
                                     cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
+                                    logData_Ble("PROPERTY_WRITE Gatt write connect");
                                 }
 
                             } else if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_NOTIFY) {
                                 Log.d(TAG, "onServicesDiscovered - PROPERTY_NOTIFY");
+                                logData_Ble("PROPERTY_NOTIFY read connect");
                                 respCharacteristic = characteristic;
                             }
 
                             // 등명기 블루투스(서비스 이름(PROPERTY_NOTIFY)를 못찾음, 그래서 uuid로 연결)
                             if (characteristic.getUuid().toString().equals(CHARACTERISTIC_COMMAND_STRING_4)) {
-                                cmdCharacteristic = characteristic;
+                                if(cmdCharacteristic == null){
+                                    cmdCharacteristic = characteristic;
+                                    logData_Ble("Bluetooth 4 write connect");
+                                }
                             } else if (characteristic.getUuid().toString().equals(CHARACTERISTIC_RESPONSE_STRING_4)) {
                                 respCharacteristic = characteristic;
+                                logData_Ble("Bluetooth 4 read connect");
                             }
                         }
                     }
@@ -2043,8 +2075,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
 
                                                     bleViewModel.setBleID(data_arr[1]);
-                                                    bleViewModel.setBleInputV(data_arr[1]);
-                                                    bleViewModel.setBleOutputA(data_arr[1]);
+                                                    bleViewModel.setBleInputV(data_arr[2]);
+                                                    bleViewModel.setBleOutputA(data_arr[3]);
                                                     if (data_arr[4].equals("0")) {
                                                         bleViewModel.setBleCDS(getString(R.string.ble_status_cds_0));
                                                     } else {
@@ -2452,6 +2484,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 logData_Ble("cmdCharacteristic : null", "error");
                 Log.d(TAG, "BlewriteData - cmdCharacteristic : null");
                 cmdCharacteristic = BluetoothUtils.findCommandCharacteristic(bleGatt);
+                logData_Ble("PROPERTY_WRITE Gatt write connect - null");
             }
 
             // 연결이 끊겨있다면 종료
@@ -2658,14 +2691,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     @Override
     public void onStart() {
         super.onStart();
-        // 어플 실행 시 블루투스 On 요청
-        checkBluetoothPermission();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // bluetooth Low Energy 지원안할 경우
 
         // 멈출때와 블루투스 연결 상태값이 달라진 경우 초기화면으로
         if (pauseResumeCheck != BleConnecting) {

@@ -30,7 +30,6 @@ public class ble_scan_ListViewAdapter extends BaseAdapter {
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
     @Override
-
     public View getView(int position, View convertView, ViewGroup parent) {
         //final int pos = position;
         final Context context = parent.getContext();

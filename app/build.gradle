@@ -10,8 +10,8 @@ android {
         applicationId "com.msl.mslapp"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 19
-        versionName "1.0.361"
+        versionCode 21
+        versionName "1.0.363"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,8 +27,8 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true
     }
 
     packagingOptions {

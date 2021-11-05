@@ -123,4 +123,8 @@
     <string name="toastMsg_dialog_serverChange_confirm">Please fill in all the port numbers</string>
     <string name="toastMsg_max255_IP">Each IP has a maximum of 255</string>
     <string name="toastMsg_max65535_port">The maximum port value is 65535</string>
+    <string name="modeSelect">Mode Select</string>
+    <string name="mode_remoteControl">" remote control"</string>
+    <string name="controlMode">controlMode</string>
+    <string name="mode_switch">rotate switch</string>
 </resources>

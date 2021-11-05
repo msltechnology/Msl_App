@@ -188,7 +188,8 @@
     <string name="toastMsg_max65535_port">The maximum port value is 65535</string>
     <string name="mode_remoteControl">리모콘</string>
     <string name="controlMode">제어모드</string>
-    <string name="mode_switch">스위치</string>
+    <string name="mode_switch">회전 스위치</string>
+    <string name="modeSelect">모드 선택</string>
 
 
 </resources>

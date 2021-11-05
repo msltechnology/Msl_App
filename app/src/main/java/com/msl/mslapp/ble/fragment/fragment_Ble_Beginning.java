@@ -160,6 +160,9 @@ public class fragment_Ble_Beginning extends Fragment {
         }*/
 
 
+        // 어플 실행 시 블루투스 On 요청
+        BleMainActivity.checkBluetoothPermission();
+
 
         return view;
     }

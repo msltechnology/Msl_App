@@ -124,4 +124,8 @@
     <string name="toastMsg_dialog_serverChange_confirm">Port 번호까지 다 채워주세요</string>
     <string name="toastMsg_max255_IP">각 IP 최댓값은 255입니다</string>
     <string name="toastMsg_max65535_port">Port 최댓값은 65535입니다</string>
+    <string name="modeSelect">모드 선택</string>
+    <string name="mode_remoteControl">리모콘</string>
+    <string name="controlMode">제어모드</string>
+    <string name="mode_switch">회전 스위치</string>
 </resources>

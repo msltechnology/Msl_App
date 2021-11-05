@@ -123,6 +123,30 @@
                 android:id="@+id/ll_Navigation_Password_Change"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                >
+                <!--<ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/language_eng_on"/>-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="4"
+                    android:paddingStart="15dp"
+                    android:text="PasswordChange\n(비밀번호 변경)"
+                    android:autoSizeTextType="uniform"
+                    android:textColor="@color/navigation_text"
+                    android:padding="10dp"/>
+                <View style="@style/view_vertical_line"  />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_Navigation_ModeSelect"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 >
@@ -136,7 +160,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:paddingStart="15dp"
-                    android:text="PasswordChange\n(비밀번호 변경)"
+                    android:text="ModeSelect\n(모드 선택)"
                     android:autoSizeTextType="uniform"
                     android:textColor="@color/navigation_text"
                     android:padding="10dp"/>
