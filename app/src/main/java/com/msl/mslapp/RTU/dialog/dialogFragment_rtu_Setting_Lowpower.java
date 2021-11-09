@@ -1,4 +1,4 @@
-package com.msl.mslapp.ble.Dialog.setting;
+package com.msl.mslapp.RTU.dialog;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,61 +12,60 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
+import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
-import com.msl.mslapp.ble.BleViewModel;
-import com.msl.mslapp.databinding.BleFragmentSettingDialogModeselectBinding;
 
-import static com.msl.mslapp.BleMainActivity.BlewriteData;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
-import static com.msl.mslapp.Public.StringList.GPS_SET_OFF;
-import static com.msl.mslapp.Public.StringList.GPS_SET_ON;
+import static com.msl.mslapp.Public.StringList.LOW_MODE_OFF;
+import static com.msl.mslapp.Public.StringList.LOW_MODE_ON;
+import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
+import static com.msl.mslapp.RTUMainActivity.mRTUContext;
 
-public class dialogFragment_ble_Setting_ModeSelect extends DialogFragment {
+public class dialogFragment_rtu_Setting_Lowpower extends DialogFragment {
 
     // 로그 이름 용
-    public static final String TAG = "Msl-RTU-Setting-Dialog-ModeSelect";
+    public static final String TAG = "Msl-RTU-Setting-Dialog-GMT_Change";
 
-    Button btn_Remote, btn_Rotate;
+    Button btn_On, btn_Off;
+
+    String from = "rtu";
 
     View view;
+
+    Bundle mArgs;
 
     Context mContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        try {
+            mArgs = getArguments();
+            from = mArgs.getString("from");
+        }catch (Exception e){
+            Log.d(TAG, "Bundle Error : " + e.toString());
+        }
     }
 
-    BleFragmentSettingDialogModeselectBinding bleFragmentSettingDialogModeselectBinding;
-    BleViewModel bleViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "dialogFragment_ble_Setting_GPS_Change onCreateView");
+        Log.d(TAG, "dialogFragment_rtu_Setting_GMT_Change onCreateView");
 
-        bleFragmentSettingDialogModeselectBinding = DataBindingUtil.inflate(inflater,R.layout.ble_fragment_setting_dialog_modeselect,container, false);
-        view = bleFragmentSettingDialogModeselectBinding.getRoot();
+        view = inflater.inflate(R.layout.rtu_fragment_setting_dialog_lowpower, null);
 
-
-        //view = inflater.inflate(R.layout.ble_fragment_setting_dialog_gps_change, null);
-
-        bleViewModel = new ViewModelProvider(requireActivity()).get(BleViewModel.class);
-
-        bleFragmentSettingDialogModeselectBinding.setBleViewModel(bleViewModel);
-        bleFragmentSettingDialogModeselectBinding.setLifecycleOwner(getViewLifecycleOwner());
-
-        mContext = mBleContext;
+        if(from.equals("ble")){
+            mContext = mBleContext;
+        }else{
+            mContext = mRTUContext;
+        }
 
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -74,23 +73,29 @@ public class dialogFragment_ble_Setting_ModeSelect extends DialogFragment {
 
         return view;
     }
-
     void btn_Setting() {
-        btn_Remote = view.findViewById(R.id.btn_mode_remote);
-        btn_Rotate = view.findViewById(R.id.btn_mode_rotate);
-        btn_Remote.setOnClickListener(v -> {
-            bleViewModel.setRemoteMode();
-            Toast.makeText(mContext, "Remote Mode Selected", Toast.LENGTH_SHORT).show();
+        btn_On = view.findViewById(R.id.btn_Lowpower_On);
+        btn_Off = view.findViewById(R.id.btn_Lowpower_Off);
+        btn_On.setOnClickListener(v -> {
+
+            if(from.equals("ble")) {
+                BleMainActivity.BlewriteData("<"+LOW_MODE_ON);
+            }else{
+                send(LOW_MODE_ON);
+            }
             dismiss();
         });
 
-        btn_Rotate.setOnClickListener(v -> {
-            bleViewModel.setRotateMode();
-            Toast.makeText(mContext, "RotateSwitch Mode Selected", Toast.LENGTH_SHORT).show();
+        btn_Off.setOnClickListener(v -> {
+
+            if(from.equals("ble")) {
+                BleMainActivity.BlewriteData("<"+LOW_MODE_OFF);
+            }else{
+                send(LOW_MODE_OFF);
+            }
             dismiss();
         });
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -113,7 +118,7 @@ public class dialogFragment_ble_Setting_ModeSelect extends DialogFragment {
         display.getSize(size);
 
         final String x = String.valueOf(Math.round((size.x * 0.8)));
-        final String y = String.valueOf(Math.round((size.y * 0.2)));
+        final String y = String.valueOf(Math.round((size.y * 0.25)));
         int dialogWidth = Integer.parseInt(x);
         int dialogHeight = Integer.parseInt(y);
         getDialog().getWindow().setLayout(dialogWidth, dialogHeight);

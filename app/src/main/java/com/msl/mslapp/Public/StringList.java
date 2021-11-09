@@ -36,12 +36,16 @@ public class StringList {
     public static final String DATA_TYPE_GP0 = "GP0"; //저녁동안에만 활성화
     public static final String DATA_TYPE_DEL = "DEL"; //저녁동안에만 활성화
     public static final String DATA_TYPE_ADMIN = "ZFVVS"; //저녁동안에만 활성화
+    public static final String DATA_TYPE_0 = "0";
     public static final String DATA_TYPE_1 = "1"; //상태요청
     public static final String DATA_TYPE_2 = "2"; //강제점등
     public static final String DATA_TYPE_3 = "3"; //강제소등
     public static final String DATA_TYPE_4 = "4"; //리셋
     public static final String DATA_TYPE_5 = "5"; //부동광
+    public static final String DATA_TYPE_13 = "13"; // Lowpower 모드
     public static final String DATA_TYPE_14 = "14"; // RTU 통신 시작
+    public static final String DATA_TYPE_3dot8 = "3.8"; // Lowpower startpoint
+    public static final String DATA_TYPE_4dot0 = "4.0"; // Lowpower endpoint
     //디바이스 ID
     public static final String DATA_ID_255 = "255";
     //$MUCMD,14,1*11<CR><LF> : RTU에서 데이터 보내게함
@@ -166,4 +170,28 @@ public class StringList {
             + DATA_TYPE_1 + DATA_SIGN_COMMA
             + DATA_ID_255
             + DATA_SIGN_CHECKSUM;
+    //$MUCMD,13,1,1,3.8,4.0*11 : lowpower 모드 ( on/off, 주기(시간), on 값, off 값)
+    public final static String LOW_MODE_ON = DATA_SIGN_START
+            + DATA_TYPE_MUCMD + DATA_SIGN_COMMA
+            + DATA_TYPE_13 + DATA_SIGN_COMMA
+            + DATA_TYPE_1 + DATA_SIGN_COMMA
+            + DATA_TYPE_1 + DATA_SIGN_COMMA
+            + DATA_TYPE_3dot8 + DATA_SIGN_COMMA
+            + DATA_TYPE_4dot0
+            + DATA_SIGN_CHECKSUM
+            + DATA_TYPE_1 + DATA_TYPE_1
+            + DATA_SIGN_CR + DATA_SIGN_LF;
+    ;
+    //$MUCMD,13,1,1,3.8,4.0*11 : lowpower 모드
+    public final static String LOW_MODE_OFF = DATA_SIGN_START
+            + DATA_TYPE_MUCMD + DATA_SIGN_COMMA
+            + DATA_TYPE_13 + DATA_SIGN_COMMA
+            + DATA_TYPE_0 + DATA_SIGN_COMMA
+            + DATA_TYPE_1 + DATA_SIGN_COMMA
+            + DATA_TYPE_3dot8 + DATA_SIGN_COMMA
+            + DATA_TYPE_4dot0
+            + DATA_SIGN_CHECKSUM
+            + DATA_TYPE_1 + DATA_TYPE_1
+            + DATA_SIGN_CR + DATA_SIGN_LF;
+    ;
 }

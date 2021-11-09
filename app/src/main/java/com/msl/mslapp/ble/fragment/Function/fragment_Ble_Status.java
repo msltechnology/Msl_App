@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Battery;
 import com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Solar;
 import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
+import com.msl.mslapp.ble.Dialog.setting.dialogFragment_ble_Setting_ModeSelect;
 import com.msl.mslapp.databinding.BleFragmentStatusBinding;
 
 import static com.msl.mslapp.ble.Dialog.Status.dialogFragment_Ble_Status_Battery.iv_ble_status_bat1;
@@ -151,7 +153,12 @@ public class fragment_Ble_Status extends Fragment {
 
         // 최초 1회 정보 요청
         ((BleMainActivity) getActivity()).BlewriteData(DATA_REQUEST_STATUS);
-        RTUsend(DATA_RTU_BLUETOOTH_SENDING);
+
+        // RTU로 보내느 명령이 씹혀서 텀을 두고 명령 보냄.
+        Handler postHandler = new Handler(Looper.getMainLooper());
+        postHandler.postDelayed(() -> {
+            RTUsend(DATA_RTU_BLUETOOTH_SENDING);
+        }, 200);
 
     }
 

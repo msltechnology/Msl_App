@@ -71,6 +71,7 @@ import com.msl.mslapp.ble.Dialog.setting.dialogFragment_Ble_Setting_FL_Setting;
 import com.msl.mslapp.ble.Dialog.setting.dialogFragment_Ble_Setting_Password_Change;
 import com.msl.mslapp.ble.Dialog.setting.dialogFragment_ble_Setting_GPS_Change;
 import com.msl.mslapp.ble.BleViewModel;
+import com.msl.mslapp.ble.Dialog.setting.dialogFragment_ble_Setting_ModeSelect;
 import com.msl.mslapp.ble.fragment.fragment_Ble_Beginning;
 import com.msl.mslapp.ble.fragment.fragment_Ble_Scan;
 import com.msl.mslapp.ble.fragment.Function.fragment_Ble_Status;
@@ -115,7 +116,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
     // 관리자용 앱 설정
     public static final boolean adminApp = false;
-    // delaytime 이용고객용
+    // delaytime 이용고객용 // 현재는 다 보이게 설정하여 안쓰임
     public static final boolean delaytimeApp = true;
 
     public static Context mBleContext = null;
@@ -742,14 +743,14 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             }
         });
 
-        // 비밀번호 변경
+        // 리모콘 or 회전 스위치 모드 변경
         navigationView.findViewById(R.id.ll_Navigation_ModeSelect).setOnClickListener(v -> {
 
             if (BleConnecting) {
                 postHandler.postDelayed(() -> {
                     FragmentManager fm = getSupportFragmentManager();
-                    dialogFragment_Ble_Setting_Password_Change setting_PasswordChange_DialogFragment = new dialogFragment_Ble_Setting_Password_Change();
-                    setting_PasswordChange_DialogFragment.show(fm, "fragment_setting_dialog_Password");
+                    dialogFragment_ble_Setting_ModeSelect setting_modeSelect_DialogFragment = new dialogFragment_ble_Setting_ModeSelect();
+                    setting_modeSelect_DialogFragment.show(fm, "fragment_setting_dialog_ModeSelect");
                 }, 200);
             } else {
                 Toast.makeText(mBleContext, "bluetooth not connecting", Toast.LENGTH_SHORT).show();
@@ -768,12 +769,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         if (visble) {
             ll_navigation_GPS.setVisibility(View.VISIBLE);
             ll_navigation_PasswordChange.setVisibility(View.VISIBLE);
-            //ll_navigation_ModeSelect.setVisibility(View.VISIBLE);
+            ll_navigation_ModeSelect.setVisibility(View.VISIBLE);
             ll_navigation_Language.setVisibility(View.GONE);
         } else {
             ll_navigation_GPS.setVisibility(View.GONE);
             ll_navigation_PasswordChange.setVisibility(View.GONE);
-            //ll_navigation_ModeSelect.setVisibility(View.GONE);
+            ll_navigation_ModeSelect.setVisibility(View.GONE);
             ll_navigation_Language.setVisibility(View.VISIBLE);
         }
     }
@@ -955,6 +956,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                         log_listViewAdapter.addItem(getTime, "RTU Data Set", color);
                         break;
                 }
+                return;
+            } else if (dataArr[0].contains("AT$$MDN")) {
+                log_listViewAdapter.addItem(getTime, "Modem CallNum Request", color);
                 return;
             }
         }
@@ -1464,16 +1468,14 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     if (characteristics != null) {
                         for (BluetoothGattCharacteristic characteristic : characteristics) {
 
-
                             try {
                                 Log.d(TAG, "BluetoothGattCharacteristic characteristic : " + characteristic.getUuid().toString() + " property : " + characteristic.getProperties());
                                 if (characteristic.getUuid().toString().equals(Serial_Number_String)) {
                                     nameCharacteristic = characteristic;
-                                    Log.d(TAG, " 성공!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + nameCharacteristic.getStringValue(0));
-
+                                    Log.d(TAG, " 성공!!" + nameCharacteristic.getStringValue(0));
                                 }
                             } catch (Exception e) {
-                                Log.d(TAG, "실패!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + e.toString());
+                                Log.d(TAG, "실패!!" + e.toString());
                             }
 
                             // bluetooth 5 및 일반적 블루투스
@@ -2499,7 +2501,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             readDataOverlapCheck = "";
 
             String sendBlewriteData = data + ToCheckSum(data);
-            logData_Ble("Write : " + sendBlewriteData, "write");
+            logData_Ble(sendBlewriteData, "write");
             sendBlewriteData = sendBlewriteData + StringList.DATA_SIGN_CR + StringList.DATA_SIGN_LF;
             Log.d(TAG, "BleWriteData data : " + data + ", sendData : " + sendBlewriteData);
 

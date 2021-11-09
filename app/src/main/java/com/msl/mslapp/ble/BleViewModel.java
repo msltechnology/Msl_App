@@ -725,12 +725,27 @@ public class BleViewModel extends ViewModel {
     // GPS 셋팅
     MutableLiveData<String> BleGPSAlways = new MutableLiveData<>("2");
 
+    // GPS 모드
     MutableLiveData<Integer> BleGPSAlways_Iv_On = new MutableLiveData<>(R.drawable.custom_ble_setting_gps_on);
     MutableLiveData<Integer> BleGPSAlways_Iv_Off = new MutableLiveData<>(R.drawable.custom_ble_setting_gps_off);
     MutableLiveData<Integer> BleGPSAlways_Iv_On_Text = new MutableLiveData<>(Color.BLACK);
     MutableLiveData<Integer> BleGPSAlways_Iv_Off_Text = new MutableLiveData<>(Color.BLACK);
     // Delay Time
     MutableLiveData<String> BleDelayTime = new MutableLiveData<>("+000 sec");
+
+    // 리모콘 및 회전 스위치 모드 선택
+    public void setRemoteMode(){
+        BlewriteData(StringList.DATA_SET_RMC);
+        handler.postDelayed(() -> BlewriteData(DATA_REQUEST_STATUS), 200);
+        Log.d(TAG,"setting RemoteMode");
+    }
+
+    public void setRotateMode(){
+        BlewriteData(StringList.DATA_SET_DIP);
+        handler.postDelayed(() -> BlewriteData(DATA_REQUEST_STATUS), 200);
+        Log.d(TAG,"setting RotateMode");
+    }
+
 
     public void reinitializeData() {
         BleID.setValue("000");

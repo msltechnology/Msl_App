@@ -17,7 +17,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_rtu_setting_dialog_gmt_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -36,32 +35,30 @@
             android:padding="5dp">
 
             <Button
-                android:id="@+id/btn_GPS_On"
+                android:id="@+id/btn_mode_remote"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:autoSizeTextType="uniform"
-                app:btnRes="@{bleViewModel.bleGPSAlways_Iv_On}"
-                android:textColor="@{bleViewModel.bleGPSAlways_Iv_On_Text}"
                 android:elevation="3dp"
-                android:text="@string/GPS_On"
+                android:text="@string/mode_remoteControl"
                 android:padding="10dp"
-                android:translationZ="5dp" />
+                android:translationZ="5dp"
+                android:background="@drawable/custom_ble_setting_remote_rotate_mode"/>
 
             <Button
-                android:id="@+id/btn_GPS_Off"
+                android:id="@+id/btn_mode_rotate"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                app:btnRes="@{bleViewModel.bleGPSAlways_Iv_Off}"
-                android:textColor="@{bleViewModel.bleGPSAlways_Iv_Off_Text}"
-                android:text="@string/GPS_Off"
+                android:text="@string/mode_switch"
                 android:autoSizeTextType="uniform"
                 android:padding="10dp"
                 android:translationZ="5dp"
-                android:elevation="3dp" />
+                android:elevation="3dp"
+                android:background="@drawable/custom_ble_setting_remote_rotate_mode"/>
         </LinearLayout>
 
 

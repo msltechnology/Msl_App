@@ -86,14 +86,13 @@ public class fragment_Ble_Setting extends Fragment {
 
 
         if(adminApp){
-            ll_ble_fragment_setting_delay.setVisibility(View.VISIBLE);
             ll_ble_fragment_setting_version.setVisibility(View.VISIBLE);
             ll_mode.setVisibility(View.VISIBLE);
         }
         
-        if(delaytimeApp){
+        /*if(delaytimeApp){
             ll_ble_fragment_setting_delay.setVisibility(View.VISIBLE);
-        }
+        }*/
 
         return view;
     }

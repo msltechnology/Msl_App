@@ -74,30 +74,39 @@ public class fragment_Ble_Function extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // RTU가 있는버젼
-        //tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
-        if (adminApp) {
-            tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
-        } else {
-            tavTitle = new String[]{"Status", "Setting", "Test"};
-        }
 
         tabLayout_ble = view.findViewById(R.id.tab_bluetooth);
 
         viewPager = view.findViewById(R.id.bluetoothViewpageSpace);
 
         Log.d(TAG, "Viewpage 작업");
+
+        // admin 버전만 블루투스로 RTU 통신 사용하였으나 일반에도 적용하도록하여 주석
+        /*// RTU가 있는버젼
+        //tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
         if (adminApp) {
+            tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
+
             adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this, 4);
             viewPager.setAdapter(adapter_ble_Function_tab);
             viewPager.setCurrentItem(0);
             viewPager.setOffscreenPageLimit(3);
         } else {
+            tavTitle = new String[]{"Status", "Setting", "Test"};
+
             adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this, 3);
             viewPager.setAdapter(adapter_ble_Function_tab);
             viewPager.setCurrentItem(0);
             viewPager.setOffscreenPageLimit(2);
-        }
+        }*/
+
+        tavTitle = new String[]{"Status", "Setting", "Test", "RTU"};
+
+        adapter_ble_Function_tab = new adapter_Ble_Function_Tab(this, 4);
+        viewPager.setAdapter(adapter_ble_Function_tab);
+        viewPager.setCurrentItem(0);
+        viewPager.setOffscreenPageLimit(3);
+
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
 
         // RTU가 있는버젼

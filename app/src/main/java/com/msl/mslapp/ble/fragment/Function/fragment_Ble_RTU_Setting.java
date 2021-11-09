@@ -17,11 +17,13 @@ import androidx.fragment.app.FragmentManager;
 import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
 import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_GMT_Change;
+import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Lowpower;
 import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Modem_Change;
 import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Protocol_Change;
 import com.msl.mslapp.RTUMainActivity;
 
 import static com.msl.mslapp.BleMainActivity.logData_Ble;
+import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_1;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_6;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_7;
@@ -41,8 +43,8 @@ public class fragment_Ble_RTU_Setting extends Fragment {
 
     String TotalReadData = "";
 
-    TextView tv_modem_power, tv_GMT, tv_protocol, tv_Modem_Num, tv_Network, tv_Socket;
-    Button btn_rtu_setting_send, btn_rtu_setting_reset, btn_rtu_setting_status, btn_modem_power, btn_GMT, btn_protocol, btn_Modem_Num;
+    TextView tv_modem_power, tv_GMT, tv_protocol, tv_Modem_Num, tv_Network, tv_Socket, tv_Lowpower;
+    Button btn_rtu_setting_send, btn_rtu_setting_reset, btn_rtu_setting_status, btn_modem_power, btn_GMT, btn_protocol, btn_Modem_Num, btn_Lowpower;
 
     String call_TCP = "AT$$TCP_STATE??" +
             DATA_SIGN_CR + DATA_SIGN_LF;
@@ -83,6 +85,7 @@ public class fragment_Ble_RTU_Setting extends Fragment {
         tv_Modem_Num = view.findViewById(R.id.tv_Modem_Num);
         tv_Network = view.findViewById(R.id.tv_Network);
         tv_Socket = view.findViewById(R.id.tv_Socket);
+        tv_Lowpower = view.findViewById(R.id.tv_Lowpower);
     }
 
     void btn_Setting() {
@@ -94,6 +97,7 @@ public class fragment_Ble_RTU_Setting extends Fragment {
         btn_GMT = view.findViewById(R.id.btn_GMT);
         btn_protocol = view.findViewById(R.id.btn_protocol);
         btn_Modem_Num = view.findViewById(R.id.btn_Modem_Num);
+        btn_Lowpower = view.findViewById(R.id.btn_Lowpower);
 
         btn_rtu_setting_status.setOnClickListener(v -> {
             send(STATUS_CALL);
@@ -145,6 +149,17 @@ public class fragment_Ble_RTU_Setting extends Fragment {
             }
         });
 
+        btn_Lowpower.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Setting_Lowpower customDialog_Lowpower = new dialogFragment_rtu_Setting_Lowpower();
+                customDialog_Lowpower.setArguments(args);
+                customDialog_Lowpower.show(fm, "dialogFragment_rtu_Setting_Lowpower");
+            }
+        });
+
         btn_Modem_Num.setOnClickListener(v -> {
             send(call_Modem_Num);
         });
@@ -154,8 +169,6 @@ public class fragment_Ble_RTU_Setting extends Fragment {
     public void readData(String data) {
         Log.d(TAG, "fragment_Ble_RTU_Setting readData 들어옴 : " + data);
         TotalReadData += data;
-
-        Log.d(TAG, "fragment_Ble_RTU_Setting TotalReadData : " + TotalReadData);
 
         int configIndex = 0;
         int lfIndex = 0;
@@ -185,9 +198,6 @@ public class fragment_Ble_RTU_Setting extends Fragment {
                 } else {
                     //logData_Ble(readData, "read");
                 }
-
-                Log.d(TAG, "fragment_Ble_RTU_Setting readData : " + readData);
-
                 readData = readData.replace("[ ConfMsg] ", "");
 
                 if (readData.contains("Use 0x51")) { //프로토콜 변경 여부 상태
@@ -218,9 +228,15 @@ public class fragment_Ble_RTU_Setting extends Fragment {
                     readData = readData.replace("Reset Time:", "");
                 } else if (readData.contains("Low Power Mode")) { //Low Power 상태
                     readData = readData.replace("Low Power Mode:", "");
+                    readData = readData.trim();
+                    if (readData.equals("0")) {
+                        tv_Lowpower.setText("OFF");
+                    } else if (readData.equals("1")) {
+                        tv_Lowpower.setText("ON");
+                    }
 
                 } else if (readData.contains("Low Power Interval")) { //Low Power 주기
-                    readData = readData.replace("Low Power Interval:", "");
+                    readData = readData.replace("Low Power Interval(Hour):", "");
 
                 } else if (readData.contains("Low Power Cutoff Voltage")) { //Low Power 모드로 전환되는 V
                     readData = readData.replace("Low Power Cutoff Voltage:", "");

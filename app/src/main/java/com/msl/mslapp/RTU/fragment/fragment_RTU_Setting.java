@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.msl.mslapp.R;
 import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_GMT_Change;
+import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Lowpower;
 import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Modem_Change;
 import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Setting_Protocol_Change;
 import com.msl.mslapp.RTUMainActivity;
@@ -45,8 +46,8 @@ public class fragment_RTU_Setting extends Fragment {
 
     String TotalReadData = "";
 
-    TextView tv_modem_power, tv_GMT, tv_protocol, tv_Modem_Num, tv_Network, tv_Socket;
-    Button btn_rtu_setting_send, btn_rtu_setting_reset, btn_rtu_setting_status, btn_modem_power, btn_GMT, btn_protocol, btn_Modem_Num;
+    TextView tv_modem_power, tv_GMT, tv_protocol, tv_Modem_Num, tv_Network, tv_Socket, tv_Lowpower;
+    Button btn_rtu_setting_send, btn_rtu_setting_reset, btn_rtu_setting_status, btn_modem_power, btn_GMT, btn_protocol, btn_Modem_Num, btn_Lowpower;
 
     String call_TCP = "AT$$TCP_STATE??" +
             DATA_SIGN_CR + DATA_SIGN_LF;
@@ -91,6 +92,7 @@ public class fragment_RTU_Setting extends Fragment {
         tv_Modem_Num = view.findViewById(R.id.tv_Modem_Num);
         tv_Network = view.findViewById(R.id.tv_Network);
         tv_Socket = view.findViewById(R.id.tv_Socket);
+        tv_Lowpower = view.findViewById(R.id.tv_Lowpower);
 
     }
 
@@ -103,6 +105,7 @@ public class fragment_RTU_Setting extends Fragment {
         btn_GMT = view.findViewById(R.id.btn_GMT);
         btn_protocol = view.findViewById(R.id.btn_protocol);
         btn_Modem_Num = view.findViewById(R.id.btn_Modem_Num);
+        btn_Lowpower = view.findViewById(R.id.btn_Lowpower);
 
         btn_rtu_setting_status.setOnClickListener(v -> {
             send(STATUS_CALL);
@@ -154,6 +157,16 @@ public class fragment_RTU_Setting extends Fragment {
             }
         });
 
+        btn_Lowpower.setOnClickListener(new RTUMainActivity.OnSingleClickListener() {
+            @Override
+            public void onSingleClick(View v) {
+                // 설정값 조회하여 rtu 및 lantern id 값 받아야함.
+                send(STATUS_CALL);
+                dialogFragment_rtu_Setting_Lowpower customDialog_Lowpower = new dialogFragment_rtu_Setting_Lowpower();
+                customDialog_Lowpower.show(fm, "dialogFragment_rtu_Setting_Lowpower");
+            }
+        });
+
         btn_Modem_Num.setOnClickListener(v -> {
             send(call_Modem_Num);
         });
@@ -187,15 +200,7 @@ public class fragment_RTU_Setting extends Fragment {
                     Log.e(TAG, "fragment_RTU_Setting readData Error : " + e.toString());
                 }
 
-                if (readData.contains("Low Power") || readData.contains("DebugMode") || readData.contains("Phone Number") || readData.contains("Reset Time")) {
-                    configIndex = TotalReadData.indexOf("[ ConfMsg]");
-                    lfIndex = TotalReadData.indexOf("\n", configIndex);
-                    if (configIndex < 0 | lfIndex < 0) {
-                        break;
-                    }
-                } else {
-                    logData_RTU(readData, "read");
-                }
+                logData_RTU(readData, "read");
 
                 Log.d(TAG, "fragment_RTU_Setting readData : " + readData);
 
@@ -230,6 +235,12 @@ public class fragment_RTU_Setting extends Fragment {
                     readData = readData.replace("Reset Time:", "");
                 } else if (readData.contains("Low Power Mode")) { //Low Power 상태
                     readData = readData.replace("Low Power Mode:", "");
+                    readData = readData.trim();
+                    if (readData.equals("0")) {
+                        tv_Lowpower.setText("OFF");
+                    } else if (readData.equals("1")) {
+                        tv_Lowpower.setText("ON");
+                    }
 
                 } else if (readData.contains("Low Power Interval")) { //Low Power 주기
                     readData = readData.replace("Low Power Interval:", "");
@@ -299,7 +310,7 @@ public class fragment_RTU_Setting extends Fragment {
 
                     String textNetworkData = "";
 
-                    switch (readDataArr[3]){
+                    switch (readDataArr[3]) {
                         case "-1":
                             textNetworkData = "확인 중";
                             break;
@@ -340,7 +351,7 @@ public class fragment_RTU_Setting extends Fragment {
 
                     String textSocketData = "";
 
-                    switch (readDataArr[4]){
+                    switch (readDataArr[4]) {
                         case "0":
                             textSocketData = "Off";
                             break;

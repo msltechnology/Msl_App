@@ -190,6 +190,7 @@
     <string name="controlMode">제어모드</string>
     <string name="mode_switch">회전 스위치</string>
     <string name="modeSelect">모드 선택</string>
+    <string name="Lowpower">저전력 모드</string>
 
 
 </resources>

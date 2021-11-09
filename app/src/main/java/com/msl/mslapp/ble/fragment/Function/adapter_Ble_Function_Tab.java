@@ -24,7 +24,8 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         int index = getRealPosition(position);
 
-        // 관리자용 앱이면 RTU 도 보이게
+
+        /*// 관리자용 앱이면 RTU 도 보이게
         if(adminApp){
             if(index==0) return new fragment_Ble_Status();
             else if(index==1) return new fragment_Ble_Setting();
@@ -35,15 +36,20 @@ public class adapter_Ble_Function_Tab extends FragmentStateAdapter {
             if(index==0) return new fragment_Ble_Status();
             else if(index==1) return new fragment_Ble_Setting();
             else return new fragment_Ble_Test();
-        }
+        }*/
+        if(index==0) return new fragment_Ble_Status();
+        else if(index==1) return new fragment_Ble_Setting();
+        else if(index==2) return new fragment_Ble_Test();
+        else return new fragment_Ble_RTU();
 
     }
     @Override
     public int getItemCount() {
-        if(adminApp){
+        /*if(adminApp){
             return 4;
         }
-        return 3;
+        return 3;*/
+        return 4;
     }
 
     public int getRealPosition(int position) { return position % mCount; }
