@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,10 @@ public class fragment_Ble_Password extends Fragment {
 
     TextView btn_connect, btn_change_num, btn_change_key;
 
+    TextView tv_connecting;
+
+    ProgressBar pb_connecting;
+
     LinearLayout btn_delete, btn_delete_num, llkeyboard, llnumboard;
 
     int passwordOrder = 0;
@@ -64,7 +69,6 @@ public class fragment_Ble_Password extends Fragment {
         btnSetting();
 
         tv_userdata.setText(selectedSerialNum);
-
 
 
         llkeyboard = view.findViewById(R.id.password_keyboard);
@@ -96,6 +100,8 @@ public class fragment_Ble_Password extends Fragment {
                 passwordCheck(password);
             }
         });
+        tv_connecting = view.findViewById(R.id.tv_ble_fragment_password_connecting);
+        pb_connecting = view.findViewById(R.id.pb_ble_fragment_password_connecting);
 
 
         return view;
@@ -106,12 +112,15 @@ public class fragment_Ble_Password extends Fragment {
 
 
         if (data.contains("$PS,R")) {
-            if(dialog.isShowing()){
+            if (dialog.isShowing()) {
                 dialog.dismiss();
                 Toast.makeText(mBleContext, "Bluetooth Connect!", Toast.LENGTH_SHORT).show();
                 // 더이상 비밀번호 요청문을 안보냄.
                 BlewriteData("$PS,A,0000H*");
             }
+            tv_connecting.setText("Connect Success");
+            pb_connecting.setVisibility(View.GONE);
+
             readPassword = data.substring(6, 11);
             Log.d(TAG, "readPassword = " + readPassword);
         }
@@ -128,7 +137,7 @@ public class fragment_Ble_Password extends Fragment {
             //BlewriteData("$PS,A," + readPassword + "*");
             ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
             //readPassword = inputPassword;
-        }else if(inputPassword.equals("AHFFK")){
+        } else if (inputPassword.equals("AHFFK")) {
             Log.d(TAG, "passwordCheck : Admin");
             String deCrypPassword = psDecryptionTable(readPassword);
             BlewriteData("$PS,A," + readPassword + "*");
@@ -136,7 +145,7 @@ public class fragment_Ble_Password extends Fragment {
             // 근데 3마일은 복호하 비밀번호 보내야해서 걍 일단 2개다 보내고 3마일 펌웨어 다 완료할 경우 암호화(readPassword) 데이터만 보내기로.. - 07-09
             BlewriteData("$PS,A," + deCrypPassword + "*");
             ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
-        }else{
+        } else {
             Toast.makeText(mBleContext, "잘못된 비밀번호입니다.\nInvalid password.", Toast.LENGTH_SHORT).show();
         }
     }

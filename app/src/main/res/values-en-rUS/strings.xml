@@ -3,10 +3,9 @@
     <string name="ble_setting_FLSetting_title">FL Setting</string>
     <string name="ble_main_scanItem_scan">Lantern Scan</string>
     <string name="ble_main_scanItem_stopScanning">Stop</string>
-    <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">Location information permission request failed</string>
-    <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">You have declined the request for location information.\nBluetooth scanning usage is restricted.\nDo you want to check again?</string>
-    <string name="ble_main_checkPermission_GPS_reFail_alertDialog_title">Denial of requesting permission for location information</string>
-    <string name="ble_main_checkPermission_GPS_reFail_alertDialog_message">You have rejected your request for location information permission.\nPlease allow permission in the application information.</string>
+    <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">Denial of requesting permission for location information</string>
+    <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">You have declined the request for location information.\nBluetooth scanning usage is restricted.
+        \nPlease allow permission in the application information.</string>
     <string name="ble_main_checkPermission_GPS_alertDialog_title">Location information permission request</string>
     <string name="ble_main_checkPermission_GPS_alertDialog_message">GPS (location information) is OFF.\nBluetooth scan usage is restricted.\nDo you want to go to the setting window?</string>
     <string name="ble_password_dialog_message">Connecting</string>
@@ -124,8 +123,8 @@
     <string name="toastMsg_max255_IP">Each IP has a maximum of 255</string>
     <string name="toastMsg_max65535_port">The maximum port value is 65535</string>
     <string name="modeSelect">Mode Select</string>
-    <string name="mode_remoteControl">" remote control"</string>
-    <string name="controlMode">controlMode</string>
-    <string name="mode_switch">rotate switch</string>
+    <string name="mode_remoteControl">remote control</string>
+    <string name="controlMode">control Mode</string>
+    <string name="mode_switch">inside switch</string>
     <string name="Lowpower">Lowpower</string>
 </resources>

@@ -4,11 +4,9 @@
     <string name="ble_main_scanItem_scan">등명기 검색</string>
     <string name="ble_main_scanItem_stopScanning">중지</string>
     <string name="ble_main_title">MSL Technology</string>
-    <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">위치정보 권한 요청 실패</string>
+    <string name="ble_main_checkPermission_GPS_fail_alertDialog_title">위치정보 권한 요청 거부</string>
     <string name="ble_main_checkPermission_GPS_fail_alertDialog_message">위치정보 권한 요청을 거절하셨습니다.\n블루투스 스캔
-        이용이 제한됩니다.\n다시 확인하시겠습니까?</string>
-    <string name="ble_main_checkPermission_GPS_reFail_alertDialog_title">위치정보 권한 요청 거부</string>
-    <string name="ble_main_checkPermission_GPS_reFail_alertDialog_message">위치정보 권한 요청을 거부하셨습니다.\n어플리케이션 정보에서 권한을 허용해주십시오.</string>
+        이용이 제한됩니다.\n어플리케이션 정보에서 권한을 허용해주십시오.</string>
     <string name="ble_main_checkPermission_GPS_alertDialog_title">위치정보 권한 요청 </string>
     <string name="ble_main_checkPermission_GPS_alertDialog_message">GPS(위치정보)가 OFF 상태입니다.\n블루투스 스캔 이용이 제한됩니다.\n설정창으로 이동하시겠습니까?</string>
     <string name="ble_password_dialog_message">연결 중</string>
@@ -106,7 +104,7 @@
     <string name="Network">Network</string>
     <string name="Socket">Socket</string>
     <string name="tv_ble_fragment_password_passwordInsert">비밀번호를 입력해 주세요.</string>
-    <string name="ble_scan_status_scanning">검색중...</string>
+    <string name="ble_scan_status_scanning">검색중…</string>
     <string name="ble_scan_status_pause">검색 완료</string>
     <string name="temperature">온도</string>
     <string name="Delay_Time_change">시간 변경</string>
@@ -127,6 +125,6 @@
     <string name="modeSelect">모드 선택</string>
     <string name="mode_remoteControl">리모콘</string>
     <string name="controlMode">제어모드</string>
-    <string name="mode_switch">회전 스위치</string>
+    <string name="mode_switch">내부 스위치</string>
     <string name="Lowpower">저전력 모드</string>
 </resources>

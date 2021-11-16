@@ -147,7 +147,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
 
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 51;
-    private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE = 52;
     // handler msg코드
     public static final int ConnectSuccess = 0;
     public static final int readDataSuccess = 1;
@@ -483,7 +482,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         mBleBinding.setBleViewModel(bleViewModel);
 
-        mBleContext = this;
+        mBleContext = this.getApplicationContext();
         mBleMain = this;
 
         // gps on 시키는데 사용
@@ -1240,28 +1239,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                     builder.setTitle(R.string.ble_main_checkPermission_GPS_fail_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_fail_alertDialog_message);
 
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-
-                            if (Build.VERSION.SDK_INT >= 29) {
-                                // 필요없어 보임
-                                /*int permissionCheck = ContextCompat.checkSelfPermission(mBleMain,
-                                        Manifest.permission.ACCESS_FINE_LOCATION);*/
-
-                                ActivityCompat.requestPermissions(mBleMain,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE);
-
-
-                            } else {
-                                ActivityCompat.requestPermissions(mBleMain,
-                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE);
-                            }
-
-                        }
-                    });
 
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -1276,33 +1253,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 return;
             }
 
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS_RE: {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                builder.setTitle(R.string.ble_main_checkPermission_GPS_reFail_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_reFail_alertDialog_message);
-                builder.setPositiveButton("Setting", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Intent appDetail = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
-                        appDetail.addCategory(Intent.CATEGORY_DEFAULT);
-                        appDetail.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(appDetail);
-
-                    }
-                });
-
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-
-                alertDialog.show();
-
-            }
 
 
             // other 'case' lines to check for other
@@ -2077,8 +2027,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
 
                                                     bleViewModel.setBleID(data_arr[1]);
-                                                    bleViewModel.setBleInputV(data_arr[2]);
-                                                    bleViewModel.setBleOutputA(data_arr[3]);
+                                                    bleViewModel.setBleInputV(data_arr[2] + "V");
+                                                    bleViewModel.setBleOutputA(data_arr[3] + "A");
                                                     if (data_arr[4].equals("0")) {
                                                         bleViewModel.setBleCDS(getString(R.string.ble_status_cds_0));
                                                     } else {
@@ -2094,7 +2044,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                                     bleViewModel.setBleBatteryV(data_arr[8] + "V");
                                                     bleViewModel.setBleBatteryV_iv(data_arr[11]);
                                                     bleViewModel.setBleOutputV(data_arr[9] + "V");
-                                                    bleViewModel.setBleChargingA(data_arr[10] + "V");
+                                                    bleViewModel.setBleChargingA(data_arr[10] + "A");
                                                     bleViewModel.setBleBatteryPer(data_arr[11] + "%");
                                                     int battery_percent = Integer.parseInt(data_arr[11]);
                                                     /*if (battery_percent >= 75) {
@@ -2645,7 +2595,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     };
 
     // 블루투스 검색 or 검색 중이 아닐 때
-    private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
+    /*private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -2668,7 +2618,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 }
             }
         }
-    };
+    };*/
 
     // 블루투스 연결 시 or 해제 시
     private final BroadcastReceiver mBroadcastReceiver3 = new BroadcastReceiver() {
