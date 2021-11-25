@@ -115,7 +115,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = false;
+    public static final boolean adminApp = true;
     // delaytime 이용고객용 // 현재는 다 보이게 설정하여 안쓰임
     public static final boolean delaytimeApp = true;
 
@@ -482,7 +482,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         mBleBinding.setBleViewModel(bleViewModel);
 
-        mBleContext = this.getApplicationContext();
+        mBleContext = this;
         mBleMain = this;
 
         // gps on 시키는데 사용
@@ -639,7 +639,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         Handler postHandler = new Handler(Looper.getMainLooper());
 
-        Display display = null;
+        Display display;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             display = mBleContext.getDisplay();
         }else{
@@ -1433,6 +1433,13 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                     characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) {
                                 cmdCharacteristic = characteristic;
                                 logData_Ble("PROPERTY_WRITE connect");
+                                if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE ){
+                                    Log.d(TAG, "PROPERTY_WRITE connect W: " + characteristic.getProperties() + " , " + BluetoothGattCharacteristic.PROPERTY_WRITE);
+                                }
+                                if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE ){
+                                    Log.d(TAG, "PROPERTY_WRITE connect No: " + characteristic.getProperties() + " , " + BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE);
+                                }
+
                                 if (cmdCharacteristic == null) {
                                     Log.d(TAG, "onServicesDiscovered - cmdCharacteristic : null");
                                     // 해당 값을 하면 되긴하는데...처음부터 해서 에러 메세지(BleWrite부분에서) 하지않게하기
@@ -1448,11 +1455,13 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                             // 등명기 블루투스(서비스 이름(PROPERTY_NOTIFY)를 못찾음, 그래서 uuid로 연결)
                             if (characteristic.getUuid().toString().equals(CHARACTERISTIC_COMMAND_STRING_4)) {
+                                Log.d(TAG, "CHARACTERISTIC_COMMAND_STRING_4 is");
                                 if(cmdCharacteristic == null){
                                     cmdCharacteristic = characteristic;
                                     logData_Ble("Bluetooth 4 write connect");
                                 }
                             } else if (characteristic.getUuid().toString().equals(CHARACTERISTIC_RESPONSE_STRING_4)) {
+                                Log.d(TAG, "CHARACTERISTIC_RESPONSE_STRING_4 is : " + characteristic.getProperties() + " , " + BluetoothGattCharacteristic.PROPERTY_NOTIFY);
                                 respCharacteristic = characteristic;
                                 logData_Ble("Bluetooth 4 read connect");
                             }
@@ -2464,6 +2473,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 if (!success) {
                     logData_Ble("Failed to write command", "error");
                     Log.e(TAG, "Failed to write command");
+                }else{
+                    Log.e(TAG, "Success to write command");
                 }
             } else {
                 Log.d(TAG, "BleWriteData data length : " + sendBlewriteData.length());
@@ -2486,7 +2497,9 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     Boolean success = bleGatt.writeCharacteristic(cmdCharacteristic);
                     if (!success) {
                         logData_Ble("Failed to write command", "error");
-                        Log.e(TAG, "Failed to write command");
+                        Log.e(TAG, "Failed to write command - 2");
+                    }else{
+                        Log.e(TAG, "Success to write command - 2");
                     }
 
                     // 0.1 초 정도 텀을 둬서 데이터 보내고 이어서 보내기

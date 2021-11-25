@@ -129,21 +129,19 @@ public class fragment_Ble_Password extends Fragment {
     void passwordCheck(String inputPassword) {
         if (readPassword.equals(psEncryptionTable(inputPassword))) {
             Log.d(TAG, "passwordCheck : OK");
+            BlewriteData("$PS,A," + inputPassword + "*");
+            // 원래는 주석문이었는데 알고보니 3마일은 위와같이 보내야하고 7마일은 비번그딴거 상관없이 어차피 답장함...?..?..?(???) - 07-08
             BlewriteData("$PS,A," + readPassword + "*");
             // 7마일은 암호화한 비밀번호를 번호를 보내야 한번에 인식하고 아니면 다시 비밀번호 요청 메세지를 보낸다.
             // 근데 3마일은 복호하 비밀번호 보내야해서 걍 일단 2개다 보내고 3마일 펌웨어 다 완료할 경우 암호화(readPassword) 데이터만 보내기로.. - 07-09
-            BlewriteData("$PS,A," + inputPassword + "*");
-            // 원래는 주석문이었는데 알고보니 3마일은 위와같이 보내야하고 7마일은 비번그딴거 상관없이 어차피 답장함...?..?..?(???) - 07-08
             //BlewriteData("$PS,A," + readPassword + "*");
             ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
             //readPassword = inputPassword;
         } else if (inputPassword.equals("AHFFK")) {
             Log.d(TAG, "passwordCheck : Admin");
             String deCrypPassword = psDecryptionTable(readPassword);
-            BlewriteData("$PS,A," + readPassword + "*");
-            // 7마일은 암호화한 비밀번호를 번호를 보내야 한번에 인식하고 아니면 다시 비밀번호 요청 메세지를 보낸다.
-            // 근데 3마일은 복호하 비밀번호 보내야해서 걍 일단 2개다 보내고 3마일 펌웨어 다 완료할 경우 암호화(readPassword) 데이터만 보내기로.. - 07-09
             BlewriteData("$PS,A," + deCrypPassword + "*");
+            BlewriteData("$PS,A," + readPassword + "*");
             ((BleMainActivity) requireActivity()).fragmentChange("fragment_ble_function");
         } else {
             Toast.makeText(mBleContext, "잘못된 비밀번호입니다.\nInvalid password.", Toast.LENGTH_SHORT).show();
