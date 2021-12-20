@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,10 +18,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.msl.mslapp.BleMainActivity;
 import com.msl.mslapp.R;
+import com.msl.mslapp.ble.Dialog.setting.dialogFragment_ble_Setting_ModeSelect;
 
+import static com.msl.mslapp.BleMainActivity.readPassword;
+import static com.msl.mslapp.ble.fragment.fragment_Ble_Password.psDecryptionTable;
 import static com.msl.mslapp.ble.fragment.fragment_Ble_Scan.selectedSerialNum;
 import static com.msl.mslapp.Public.StringList.ADMIN_PASSWORD;
 import static com.msl.mslapp.BleMainActivity.BlewriteData;
@@ -80,13 +85,24 @@ public class fragment_SN_Setting extends Fragment {
         return view;
     }
 
+    Handler postHandler = new Handler(Looper.getMainLooper());
     public void readData(String data) {
 
         Log.d(TAG, "readData! : " + data);
 
         if (data.contains("$PS,R,")) {
             Log.d(TAG, "readData : $PS,R");
-            BlewriteData(ADMIN_PASSWORD);
+            readPassword = data.substring(6, 11);
+
+            String deCrypPassword = psDecryptionTable(readPassword);
+            BlewriteData("$PS,A," + deCrypPassword + "*");
+
+            postHandler.postDelayed(() -> {
+                BlewriteData(ADMIN_PASSWORD);
+            }, 200);
+            postHandler.postDelayed(() -> {
+                BlewriteData("$PS,A," + readPassword + "*");
+            }, 200);
             if(dialog != null){
                 Log.d(TAG, "dialog not null");
                 dialog.dismiss();

@@ -24,6 +24,7 @@ import static com.msl.mslapp.Public.StringList.DATA_LAMP_OFF;
 import static com.msl.mslapp.Public.StringList.DATA_LAMP_ON;
 import static com.msl.mslapp.BleMainActivity.disconnectGattServer;
 import static com.msl.mslapp.BleMainActivity.mBleContext;
+import static com.msl.mslapp.Public.StringList.RTU_RESET;
 
 public class fragment_Ble_Test extends Fragment {
 
@@ -136,6 +137,9 @@ public class fragment_Ble_Test extends Fragment {
         public void handleMessage(Message message) {
 
             try {
+                // RTU 리셋 명령어 먼저 보낸 후 등명기 리셋 명령
+                BlewriteData(RTU_RESET);
+                Thread.sleep(500);
                 BlewriteData(DATA_DEVICE_RESET);
                 Thread.sleep(100);
                 disconnectGattServer("fragment_Ble_Test - handleMessage - DATA_DEVICE_RESET");

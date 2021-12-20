@@ -1,5 +1,8 @@
 package com.msl.mslapp.Public;
 
+import static com.msl.mslapp.RTUMainActivity.DATA_NUM_1;
+import static com.msl.mslapp.RTUMainActivity.DATA_NUM_6;
+
 public class StringList {
     //region 블루투스 데이터 용
     //데이터 기호
@@ -42,10 +45,14 @@ public class StringList {
     public static final String DATA_TYPE_3 = "3"; //강제소등
     public static final String DATA_TYPE_4 = "4"; //리셋
     public static final String DATA_TYPE_5 = "5"; //부동광
+    public static final String DATA_TYPE_6 = "6";
     public static final String DATA_TYPE_13 = "13"; // Lowpower 모드
     public static final String DATA_TYPE_14 = "14"; // RTU 통신 시작
     public static final String DATA_TYPE_3dot8 = "3.8"; // Lowpower startpoint
     public static final String DATA_TYPE_4dot0 = "4.0"; // Lowpower endpoint
+
+
+
     //디바이스 ID
     public static final String DATA_ID_255 = "255";
     //$MUCMD,14,1*11<CR><LF> : RTU에서 데이터 보내게함
@@ -182,7 +189,7 @@ public class StringList {
             + DATA_TYPE_1 + DATA_TYPE_1
             + DATA_SIGN_CR + DATA_SIGN_LF;
     ;
-    //$MUCMD,13,1,1,3.8,4.0*11 : lowpower 모드
+    //$MUCMD,13,0,1,3.8,4.0*11 : lowpower 모드
     public final static String LOW_MODE_OFF = DATA_SIGN_START
             + DATA_TYPE_MUCMD + DATA_SIGN_COMMA
             + DATA_TYPE_13 + DATA_SIGN_COMMA
@@ -193,5 +200,11 @@ public class StringList {
             + DATA_SIGN_CHECKSUM
             + DATA_TYPE_1 + DATA_TYPE_1
             + DATA_SIGN_CR + DATA_SIGN_LF;
+    ;
+    // RTU 리셋
+    public final static String RTU_RESET = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
+            DATA_TYPE_6 + DATA_SIGN_CHECKSUM +
+            DATA_NUM_1 + DATA_NUM_1 +
+            DATA_SIGN_CR + DATA_SIGN_LF;
     ;
 }

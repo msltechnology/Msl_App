@@ -115,7 +115,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = true;
+    public static final boolean adminApp = false;
     // delaytime 이용고객용 // 현재는 다 보이게 설정하여 안쓰임
     public static final boolean delaytimeApp = true;
 
