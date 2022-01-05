@@ -91,15 +91,36 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
 
     private SerialInputOutputManager serialInputOutputManager;
 
+
+    // 데이터 요청 및 연결상태
+    public static Toast toastStatusCall = Toast.makeText(mRTUMain, "Status Call",Toast.LENGTH_SHORT);
+    public static Toast toastDataReceive = Toast.makeText(mRTUMain, "Data Receive Success!", Toast.LENGTH_SHORT);
+    Toast toastConnect = Toast.makeText(mRTUMain, "Connect",Toast.LENGTH_SHORT);
+    Toast toastDisConnect = Toast.makeText(mRTUMain, "Disconnect",Toast.LENGTH_SHORT);
+    public static Toast toastNotConnect = Toast.makeText(mRTUMain, "Not Connect",Toast.LENGTH_SHORT);
+
+    public static void setToastStatusCall(){
+        toastDataReceive.cancel();
+        toastStatusCall.cancel();
+        toastStatusCall.show();
+    }
+    public static void setToastDataReceive(){
+        toastStatusCall.cancel();
+        toastDataReceive.cancel();
+        toastDataReceive.show();
+    }
+
     public fragment_RTU_Function() {
         // 브로드 캐스트 설정(USB 연결 확인)
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.d(TAG, "fragment_RTU_Function broadcastReceiver - onReceive");
+                Toast.makeText(mRTUMain, "attach",Toast.LENGTH_SHORT).show();
                 if (INTENT_ACTION_GRANT_USB.equals(intent.getAction())) {
                     usbPermission = intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)
                             ? UsbPermission.Granted : UsbPermission.Denied;
-                    connect();
+                    //connect();
                 }
             }
         };
@@ -154,7 +175,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
             deviceId = getArguments().getInt("device");
             portNum = getArguments().getInt("port");
             baudRate = getArguments().getInt("baud");
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -177,6 +198,30 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     public void onStop() {
 
         Log.d(TAG, "fragment_RTU_Function - onStop start");
+
+        try {
+
+            if (usbSerialPort != null) {
+                Log.d(TAG, "fragment_RTU_Function - onPause - usbSerialPort not null");
+                disconnect();
+                mRTUMain.unregisterReceiver(broadcastReceiver);
+            } else {
+                Log.d(TAG, "fragment_RTU_Function - onPause - usbSerialPort null");
+            }
+
+
+            /*if (usbSerialPort.isOpen()) {
+                Log.d(TAG, "fragment_RTU_Function - onPause Connected");
+                disconnect();
+                mRTUMain.unregisterReceiver(broadcastReceiver);
+            }else{
+                Log.d(TAG, "fragment_RTU_Function - onPause notConnected");
+            }*/
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "fragment_RTU_Function - onPause - " + e);
+            //logData_RTU(e.toString(), "error");
+        }
+
         Log.d(TAG, "fragment_RTU_Function - onStop leave");
         super.onStop();
     }
@@ -185,8 +230,8 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     public void onResume() {
         Log.d(TAG, "fragment_RTU_Function - onResume start");
         super.onResume();
-
-        if(!connected){
+/*
+        if(!usbSerialPort.isOpen()){
             UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
             UsbSerialProber usbDefaultProber = UsbSerialProber.getDefaultProber();
             UsbSerialProber usbCustomProber = CustomProber.getCustomProber();
@@ -207,6 +252,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
                         portNum = item.port;
                         baudRate = 115200;
 
+                        Log.d(TAG, "onResume - driver.getPorts().size() == 1");
                         mainLooper.post(this::connect);
                     }
                 }
@@ -215,10 +261,11 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
             mRTUMain.registerReceiver(broadcastReceiver, new IntentFilter(INTENT_ACTION_GRANT_USB));
 
             if (usbPermission == UsbPermission.Unknown || usbPermission == UsbPermission.Granted) {
-                mainLooper.post(this::connect);
                 Log.d(TAG, "onResume - usbPermission == UsbPermission.Unknown || usbPermission == UsbPermission.Granted");
+                mainLooper.post(this::connect);
             }
-        }
+        }*/
+        mainLooper.post(this::connect);
 
         Log.d(TAG, "fragment_RTU_Function - onResume leave");
     }
@@ -226,16 +273,30 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     @Override
     public void onPause() {
         Log.d(TAG, "fragment_RTU_Function - onPause start");
-        try{
-            if (connected) {
+        try {
+
+            if (usbSerialPort != null) {
+                Log.d(TAG, "fragment_RTU_Function - onPause - usbSerialPort not null");
                 disconnect();
                 mRTUMain.unregisterReceiver(broadcastReceiver);
+            } else {
+                Log.d(TAG, "fragment_RTU_Function - onPause - usbSerialPort null");
             }
-        }catch (IllegalArgumentException e){
-            logData_RTU(e.toString(), "error");
+
+
+            /*if (usbSerialPort.isOpen()) {
+                Log.d(TAG, "fragment_RTU_Function - onPause Connected");
+                disconnect();
+                mRTUMain.unregisterReceiver(broadcastReceiver);
+            }else{
+                Log.d(TAG, "fragment_RTU_Function - onPause notConnected");
+            }*/
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "fragment_RTU_Function - onPause - " + e);
+            //logData_RTU(e.toString(), "error");
         }
-        super.onPause();
         Log.d(TAG, "fragment_RTU_Function - onPause leave");
+        super.onPause();
     }
 
     /*
@@ -256,7 +317,9 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
     public void onRunError(Exception e) {
         mainLooper.post(() -> {
             status("connection lost: " + e.getMessage());
-            disconnect();
+            if (usbSerialPort != null) {
+                disconnect();
+            }
         });
     }
 
@@ -266,8 +329,37 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
 
     // 시리얼 연결
     private void connect() {
+        status("connect start");
+
+        // usbSerialPort 연결 상태 확인할 때 값이 없으면 에러 뜨는 등의 확인하기 위해 연결 요청마다 확인.
+        UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+        UsbSerialProber usbDefaultProber = UsbSerialProber.getDefaultProber();
+        UsbSerialProber usbCustomProber = CustomProber.getCustomProber();
+
+        for (UsbDevice device : usbManager.getDeviceList().values()) {
+            UsbSerialDriver driver = usbDefaultProber.probeDevice(device);
+            if (driver == null) {
+                driver = usbCustomProber.probeDevice(device);
+            }
+            if (driver != null) {
+                if (driver.getPorts().size() == 1) {
+
+                    UsbSerialDriver finalDriver = driver;
+
+                    fragment_RTU_Scan.ListItem item = new fragment_RTU_Scan.ListItem(device, 0, finalDriver);
+
+                    deviceId = item.device.getDeviceId();
+                    portNum = item.port;
+                    baudRate = 115200;
+
+                    Log.d(TAG, "driver.getPorts().size() == 1");
+                }
+            }
+        }
+
+
         UsbDevice device = null;
-        UsbManager usbManager = (UsbManager) mRTUMain.getSystemService(Context.USB_SERVICE);
+        //UsbManager usbManager = (UsbManager) mRTUMain.getSystemService(Context.USB_SERVICE);
         for (UsbDevice v : usbManager.getDeviceList().values())
             if (v.getDeviceId() == deviceId)
                 device = v;
@@ -287,6 +379,8 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
             status("connection failed: not enough ports at device");
             return;
         }
+
+        // usb에 연결 된 첫번째 단자와 연결(2개 이상 연결을 잘 안하고 선택창 만들었는데 사람들이 헷갈려하거나 굳이 눌러야하는 등의 상황으로 인해 자동으로 선택)
         usbSerialPort = driver.getPorts().get(0);
         PendingIntent permissionIntent = PendingIntent.getBroadcast(mRTUContext, 0, new Intent(INTENT_ACTION_GRANT_USB), 0);
         usbManager.requestPermission(device, permissionIntent);
@@ -306,31 +400,42 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
             return;
         }
 
-        try {
-            usbSerialPort.open(usbConnection);
-            // 시리얼에 해당하는 수치 값 설정
-            usbSerialPort.setParameters(baudRate, 8, 1, UsbSerialPort.PARITY_NONE);
-            // 들어오는 시리얼 데이터를 관리하는
-            serialInputOutputManager = new SerialInputOutputManager(usbSerialPort, this);
-            Executors.newSingleThreadExecutor().submit(serialInputOutputManager);
-            status("connected");
-            connected = true;
-            send("$MUCMD,8,1*11\r\n");
-            Toast.makeText(mRTUMain, "Connect Success!", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            status("connection failed: " + e.getMessage());
-            disconnect();
+
+        // usb 연결이 안되어 있을 시
+        if (!usbSerialPortOpenCheck()) {
+            try {
+                usbSerialPort.open(usbConnection);
+                // 시리얼에 해당하는 수치 값 설정
+                usbSerialPort.setParameters(baudRate, 8, 1, UsbSerialPort.PARITY_NONE);
+                // 들어오는 시리얼 데이터를 관리하는
+                serialInputOutputManager = new SerialInputOutputManager(usbSerialPort, this);
+                Executors.newSingleThreadExecutor().submit(serialInputOutputManager);
+                status("connecting");
+                connected = true;
+                // 연결되면 자동으로 데이터 요청을 하는데 연결 오류가 나서 연결-연결끊김이 오당 수회가 일어나면 에러가 발생하여 주석 처리 => 해결된거 같아 다시 실행
+                send("$MUCMD,8,1*11\r\n");
+                toastConnect.cancel();
+                toastConnect.show();
+            } catch (Exception e) {
+                status("connection failed: " + e.getMessage());
+                disconnect();
+            }
+        } else {
+            status("connect - connected");
         }
+        status("connect end");
 
     }
 
     // 연결 끊기
     public void disconnect() {
-        Toast.makeText(mRTUMain, "Disconnect!", Toast.LENGTH_SHORT).show();
+        toastDisConnect.cancel();
+        toastDisConnect.show();
         status("disconnect");
         connected = false;
         if (usbSerialPort == null) {
             status("disconnect usbSerialPort null");
+            Log.d(TAG, "disconnect - disconnect usbSerialPort null");
             return;
         }
         try {
@@ -344,24 +449,64 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
 
     // 데이터 보내는 부분
     public static void send(String str) {
-        if (!connected) {
-            Toast.makeText(mRTUMain, "not connected", Toast.LENGTH_SHORT).show();
-            return;
+        if (usbSerialPort != null) {
+            if (!usbSerialPort.isOpen()) {
+                Log.d(TAG, "send : not connected");
+                toastNotConnect.cancel();
+                toastNotConnect.show();
+                return;
+            }
+            try {
+                byte[] data = (str).getBytes();
+                usbSerialPort.write(data, WRITE_WAIT_MILLIS);
+                Log.d(TAG, "send : " + new String(data));
+                logData_RTU(new String(data), "write");
+            } catch (Exception e) {
+                Log.d(TAG, "send error : " + e);
+            }
+        } else {
+            Log.d(TAG, "send : usbSerialPort null");
         }
-        try {
-            byte[] data = (str).getBytes();
-            usbSerialPort.write(data, WRITE_WAIT_MILLIS);
-            Log.d(TAG, "send : " + new String(data));
-            logData_RTU(new String(data), "write");
-        } catch (Exception e) {
-            Log.d(TAG, "send error : " + e.toString());
-        }
+
+
     }
 
+    public boolean usbSerialPortOpenCheck() {
+        UsbManager usbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
+        UsbDevice device = null;
+        //UsbManager usbManager = (UsbManager) mRTUMain.getSystemService(Context.USB_SERVICE);
+        for (UsbDevice v : usbManager.getDeviceList().values())
+            if (v.getDeviceId() == deviceId)
+                device = v;
+        if (device == null) {
+            status("connection failed: device not found");
+            return false;
+        }
+        UsbSerialDriver driver = UsbSerialProber.getDefaultProber().probeDevice(device);
+        if (driver == null) {
+            driver = CustomProber.getCustomProber().probeDevice(device);
+        }
+        if (driver == null) {
+            status("connection failed: no driver for device");
+            return false;
+        }
+        if (driver.getPorts().size() < portNum) {
+            status("connection failed: not enough ports at device");
+            return false;
+        }
+
+        if (usbSerialPort == null)
+            return false;
+
+        return usbSerialPort.isOpen();
+
+    }
+
+
     // 수동으로 읽어들이기(비추천) syc 써야하나
-    public void read() {
+    /*public void read() {
         status("read ");
-        if (!connected) {
+        if (!usbSerialPort.isOpen()) {
             Toast.makeText(mRTUMain, "not connected", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -413,13 +558,13 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
 
 
         } catch (IOException e) {
-            status("connection lost: " + e.getMessage());
+            status("connection lost2: " + e.getMessage());
             disconnect();
         }
-    }
+    }*/
 
     // 자동으로 읽기 사용할 때 사용함(근데 핸드폰 멈춤 엌ㅋ)
-    Handler cycleHandler = new Handler() {
+    /*Handler cycleHandler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
@@ -439,7 +584,7 @@ public class fragment_RTU_Function extends Fragment implements SerialInputOutput
                     break;
             }
         }
-    };
+    };*/
 
 
     // 들어온 데이터 처리하는 부분

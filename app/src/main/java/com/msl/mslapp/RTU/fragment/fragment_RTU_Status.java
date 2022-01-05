@@ -23,6 +23,8 @@ import com.msl.mslapp.RTU.dialog.dialogFragment_rtu_Status_Server_2_Change;
 import com.msl.mslapp.RTUMainActivity;
 
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
+import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.setToastDataReceive;
+import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.setToastStatusCall;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_1;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_7;
 import static com.msl.mslapp.RTUMainActivity.DATA_SIGN_CHECKSUM;
@@ -97,7 +99,10 @@ public class fragment_RTU_Status extends Fragment {
         Button btn_rtu_server1_change = view.findViewById(R.id.btn_server_1);
         Button btn_rtu_server2_change = view.findViewById(R.id.btn_server_2);
 
-        btn_rtu_status_call.setOnClickListener(v -> send(STATUS_CALL));
+        btn_rtu_status_call.setOnClickListener(v -> {
+            setToastStatusCall();
+            send(STATUS_CALL);
+        });
         btn_rtu_status_send.setOnClickListener(v -> {
 
             String data = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
@@ -256,7 +261,7 @@ public class fragment_RTU_Status extends Fragment {
                     Server_Port_2 = serverData[1];
                     tv_readData_server2_ip.setText("IP : " + serverData[0]);
                     tv_readData_server2_port.setText("Port : " + serverData[1]);
-                    Toast.makeText(mRTUMain, "Data Receive Success!", Toast.LENGTH_SHORT).show();
+                    setToastDataReceive();
                 }
                 // Setting 관련
                 else if (readData.contains("Use 0x51")) { //프로토콜 변경 여부 상태

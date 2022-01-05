@@ -67,7 +67,9 @@ public class RTUMainActivity extends AppCompatActivity {
     public static String DATA_NUM_255 = "255";
 
     public static String STATUS_CALL = DATA_SIGN_START + DATA_TYPE_MUCMD + DATA_SIGN_COMMA +
-            DATA_NUM_8 + DATA_SIGN_CHECKSUM +
+            DATA_NUM_8 + DATA_SIGN_COMMA +
+            DATA_NUM_1 +
+            DATA_SIGN_CHECKSUM +
             DATA_NUM_1 + DATA_NUM_1 +
             DATA_SIGN_CR + DATA_SIGN_LF;
 

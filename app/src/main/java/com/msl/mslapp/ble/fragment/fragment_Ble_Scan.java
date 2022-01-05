@@ -367,13 +367,13 @@ public class fragment_Ble_Scan extends Fragment {
 
                 try {
                     if (name.contains("MSL TECH")) {
-                        adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi, true);
+                        adapter.addItem(userdata, name, deviceAddress, "signal : " + rssi, true);
                     } else {
-                        adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi);
+                        adapter.addItem(userdata, name, deviceAddress, "signal : " + rssi);
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "scanResult name Null : " + e.getMessage());
-                    adapter.addItem(userdata, name, deviceAddress, "신호 세기 : " + rssi);
+                    adapter.addItem(userdata, name, deviceAddress, "signal : " + rssi);
                 }
 
                 adapter.notifyDataSetChanged();

@@ -24,6 +24,8 @@ import com.msl.mslapp.RTUMainActivity;
 
 import static com.msl.mslapp.Public.StringList.DATA_REQUEST_STATUS;
 import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.send;
+import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.setToastDataReceive;
+import static com.msl.mslapp.RTU.fragment.fragment_RTU_Function.setToastStatusCall;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_1;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_2;
 import static com.msl.mslapp.RTUMainActivity.DATA_NUM_6;
@@ -72,6 +74,7 @@ public class fragment_RTU_Setting extends Fragment {
 
     View view;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class fragment_RTU_Setting extends Fragment {
         btn_Lowpower = view.findViewById(R.id.btn_Lowpower);
 
         btn_rtu_setting_status.setOnClickListener(v -> {
+            setToastStatusCall();
             send(STATUS_CALL);
         });
         btn_rtu_setting_send.setOnClickListener(v -> {
@@ -230,7 +234,7 @@ public class fragment_RTU_Setting extends Fragment {
                     } else if (readData.equals("1")) {
                         tv_modem_power.setText("ON");
                     }
-                    Toast.makeText(mRTUMain, "Data Receive Success!", Toast.LENGTH_SHORT).show();
+                    setToastDataReceive();
                 } else if (readData.contains("Reset Time")) { //리셋 주기
                     readData = readData.replace("Reset Time:", "");
                 } else if (readData.contains("Low Power Mode")) { //Low Power 상태
