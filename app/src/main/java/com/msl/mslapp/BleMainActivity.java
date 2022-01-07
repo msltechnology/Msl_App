@@ -2,18 +2,13 @@
 
 package com.msl.mslapp;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -105,7 +100,6 @@ import static com.msl.mslapp.Public.StringList.DATA_TYPE_LISET;
 import static com.msl.mslapp.Public.StringList.DATA_TYPE_LISTS;
 import static com.msl.mslapp.Public.StringList.DATA_TYPE_S;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class BleMainActivity extends AppCompatActivity implements fragment_Ble_Scan.Ble_Scan_Listener, fragment_Ble_Status.Ble_Status_Listener,
         fragment_SN_Setting.SN_Setting_Listener, fragment_CDS_Setting.CDS_Setting_Listener {
 
@@ -147,6 +141,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
 
     private final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 51;
+    private final int MY_PERMISSIONS_REQUEST_BLUETOOTH_SCAN = 52;
+    private final int MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT = 53;
     // handler msg코드
     public static final int ConnectSuccess = 0;
     public static final int readDataSuccess = 1;
@@ -396,7 +392,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         switch (item.getItemId()) {
             case R.id.action_bar_scanBle:
 
-                fragmentChange("fragment_ble_scan");
+                // 블루투스 및 gps 관련 권한이 없다면 스캔부분 못들어가게. 권한없이 스캔 시도 시 팅길 수 있음.
+                if(permissioncheck_Scan()){
+                    fragmentChange("fragment_ble_scan");
+                }
 
                 // 이전에 사용하던 기능
 /*
@@ -536,7 +535,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         navigation_Setting();
 
 
-
         // 블루투스 관련 권한 확인 및 필터 정리
         class MainBleFilterPermissionRunnable implements Runnable {
             MainBleFilterPermissionRunnable() {
@@ -621,7 +619,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         //endregion
     }
 
-    Handler NO_GATT_SUCCESS_Fail_handler = new Handler(Looper.getMainLooper()) {};
+    Handler NO_GATT_SUCCESS_Fail_handler = new Handler(Looper.getMainLooper()) {
+    };
 
     void navigation_Setting() {
         // 사이드바 관련
@@ -642,7 +641,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         Display display;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             display = mBleContext.getDisplay();
-        }else{
+        } else {
             display = ((WindowManager) mBleContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         }
         Point size = new Point();
@@ -1031,11 +1030,14 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         mBluetoothAdapter = bluetoothManager.getAdapter();
     }*/
 
+
     private void permission_check() {
         Log.d(TAG, "buile Version : " + Build.VERSION.SDK_INT);
 
-        // 버전 별 권한 확인이 다름.
+
+        // 버전 별 권한 확인이 다름. Fine : GPS, 네트워크를 사용한 위치정보/ coarse : 네트워크만 사용한 위치정보
         if (Build.VERSION.SDK_INT >= 29) {
+            Log.d(TAG, "buile Version sdk 29 same or UP : " + Build.VERSION.SDK_INT);
             int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
                     Manifest.permission.ACCESS_FINE_LOCATION);
 
@@ -1043,21 +1045,85 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
             //
             if (permissionCheck < 0) {
-                ActivityCompat.requestPermissions(mBleMain,
+                String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+
+                requestPermissions(permissions, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                /*ActivityCompat.requestPermissions(mBleMain,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);*/
+            }else{
+                permissionCheckingBLUETOOTHSCAN();
             }
         } else {
+            Log.d(TAG, "buile Version sdk 29 down : " + Build.VERSION.SDK_INT);
             int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
                     Manifest.permission.ACCESS_COARSE_LOCATION);
 
             Log.d(TAG, "GPS 권한 ACCESS_COARSE_LOCATION" + permissionCheck);
 
             if (permissionCheck < 0) {
-                ActivityCompat.requestPermissions(mBleMain,
+                String[] permissions = new String[]{
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                };
+                requestPermissions(permissions, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                /*ActivityCompat.requestPermissions(mBleMain,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);*/
             }
+        }
+    }
+
+    // 스캔 버튼 눌러서 스캔 fragment 로 이동 시 권한을 확인하여 없으면 이동 못하게 함.
+    public boolean permissioncheck_Scan(){
+        if (Build.VERSION.SDK_INT >= 29) {
+            int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+
+            if (permissionCheck < 0) {
+                Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_FINE_LOCATION), Toast.LENGTH_LONG).show();
+                return false;
+            }else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    int permissionCheckSCAN = ContextCompat.checkSelfPermission(mBleContext,
+                            Manifest.permission.BLUETOOTH_SCAN);
+
+                    if(permissionCheckSCAN < 0){
+                        Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_BLUETOOTH_SCAN), Toast.LENGTH_LONG).show();
+                        return false;
+                    }
+                }
+            }
+            return true;
+        } else {
+            int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (permissionCheck < 0) {
+                Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_FINE_LOCATION), Toast.LENGTH_LONG).show();
+                return false;
+            }
+            return true;
+        }
+    }
+
+    // sdk 31 이상일 경우 블루투스 SCAN 권한이 따로있어서 확인하는 부분.
+    public void permissionCheckingBLUETOOTHSCAN(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.d(TAG, "buile Version sdk 31 UP : " + Build.VERSION.SDK_INT);
+
+            String[] permissionCheck = new String[]{
+                    Manifest.permission.BLUETOOTH_SCAN
+            };
+
+            int permissionChecking = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.BLUETOOTH_SCAN);
+
+            if(permissionChecking < 0){
+                Log.d(TAG, "RequestPermissions BLUETOOTH_SCAN : 권한 없음");
+                requestPermissions(permissionCheck, MY_PERMISSIONS_REQUEST_BLUETOOTH_SCAN);
+            }else{
+                Log.d(TAG, "RequestPermissions BLUETOOTH_SCAN : 권한 가짐");
+            }
+
         }
     }
 
@@ -1230,7 +1296,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // 허용 시
+
                     Log.d(TAG, "RequestPermissions GPS : 허용");
+
+                    permissionCheckingBLUETOOTHSCAN();
 
                 } else {
                     // 거부 시
@@ -1252,7 +1321,49 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 }
                 return;
             }
+            case MY_PERMISSIONS_REQUEST_BLUETOOTH_SCAN: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 허용 시
+                    Log.d(TAG, "RequestPermissions BLUETOOTH_SCAN : 허용");
 
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+
+                        String[] permissionsCheck = new String[]{
+                                Manifest.permission.BLUETOOTH_CONNECT
+                        };
+
+                        int permissionChecking = ContextCompat.checkSelfPermission(mBleContext,
+                                Manifest.permission.BLUETOOTH_CONNECT);
+
+                        if(permissionChecking < 0){
+                            Log.d(TAG, "RequestPermissions BLUETOOTH_CONNECT : 권한 없음");
+                            requestPermissions(permissionsCheck, MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT);
+                        }else{
+                            Log.d(TAG, "RequestPermissions BLUETOOTH_CONNECT : 권한 가짐");
+                        }
+                    }
+
+                } else {
+                    // 거부 시
+                    Log.d(TAG, "RequestPermissions BLUETOOTH_SCAN : 거부");
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_BLUETOOTH_CONNECT: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 허용 시
+                    Log.d(TAG, "RequestPermissions BLUETOOTH_CONNECT 허용");
+
+                } else {
+                    // 거부 시
+                    Log.d(TAG, "RequestPermissions BLUETOOTH_CONNECT : 거부");
+                }
+                return;
+            }
 
 
             // other 'case' lines to check for other
@@ -1433,10 +1544,10 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                                     characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) {
                                 cmdCharacteristic = characteristic;
                                 logData_Ble("PROPERTY_WRITE connect");
-                                if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE ){
+                                if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE) {
                                     Log.d(TAG, "PROPERTY_WRITE connect W: " + characteristic.getProperties() + " , " + BluetoothGattCharacteristic.PROPERTY_WRITE);
                                 }
-                                if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE ){
+                                if (characteristic.getProperties() == BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) {
                                     Log.d(TAG, "PROPERTY_WRITE connect No: " + characteristic.getProperties() + " , " + BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE);
                                 }
 
@@ -1456,7 +1567,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                             // 등명기 블루투스(서비스 이름(PROPERTY_NOTIFY)를 못찾음, 그래서 uuid로 연결)
                             if (characteristic.getUuid().toString().equals(CHARACTERISTIC_COMMAND_STRING_4)) {
                                 Log.d(TAG, "CHARACTERISTIC_COMMAND_STRING_4 is");
-                                if(cmdCharacteristic == null){
+                                if (cmdCharacteristic == null) {
                                     cmdCharacteristic = characteristic;
                                     logData_Ble("Bluetooth 4 write connect");
                                 }
@@ -2473,7 +2584,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 if (!success) {
                     logData_Ble("Failed to write command", "error");
                     Log.e(TAG, "Failed to write command");
-                }else{
+                } else {
                     Log.e(TAG, "Success to write command");
                 }
             } else {
@@ -2498,7 +2609,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     if (!success) {
                         logData_Ble("Failed to write command", "error");
                         Log.e(TAG, "Failed to write command - 2");
-                    }else{
+                    } else {
                         Log.e(TAG, "Success to write command - 2");
                     }
 

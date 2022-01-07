@@ -127,4 +127,6 @@
     <string name="controlMode">control Mode</string>
     <string name="mode_switch">inside switch</string>
     <string name="Lowpower">Lowpower</string>
+    <string name="permissioncheck_no_FINE_LOCATION">Do not have GPS permission. Bluetooth scan is not possible.</string>
+    <string name="permissioncheck_no_BLUETOOTH_SCAN">Do not have \'Scan near Device\' permission. Bluetooth scan is not possible.</string>
 </resources>

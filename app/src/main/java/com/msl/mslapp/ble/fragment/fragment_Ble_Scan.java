@@ -104,6 +104,7 @@ public class fragment_Ble_Scan extends Fragment {
 
         bleListview.setOnItemClickListener((parent, v, position, id) -> {
 
+            Log.d(TAG, "stopScan : bleListview click");
             stopScan();
 
             if (!BleMainActivity.BleConnecting) {
@@ -149,6 +150,8 @@ public class fragment_Ble_Scan extends Fragment {
         //stopScan();
         scanningFlag = true;
         // 필터(특정 uuid 등 조건으로 검색), 세팅(저전력, 풀파워 검색할지) 등 설정.
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         mBluetoothAdapter.getBluetoothLeScanner().startScan(filters, settings, BLEScanCallback);
         // 필터 및 세팅 없이 기본 스캔
         //mBluetoothAdapter.getBluetoothLeScanner().startScan(BLEScanCallback);
@@ -162,6 +165,7 @@ public class fragment_Ble_Scan extends Fragment {
 
     public void reFresh() {
         Log.d(TAG, "reSearch");
+        Log.d(TAG, "stopScan : reSearch");
         stopScan();
         scanResults = new ArrayList();
         adapter = new ble_scan_ListViewAdapter();
@@ -203,6 +207,7 @@ public class fragment_Ble_Scan extends Fragment {
 
     final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
+            Log.d(TAG, "stopScan : handler");
             stopScan();
         }
     };
@@ -210,9 +215,7 @@ public class fragment_Ble_Scan extends Fragment {
 
     // 블루투스 스캔하기
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    public ScanCallback
-
-            BLEScanCallback = new ScanCallback() {
+    public ScanCallback BLEScanCallback = new ScanCallback() {
 
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -243,7 +246,6 @@ public class fragment_Ble_Scan extends Fragment {
                 if (TextUtils.isEmpty(name)) {
                     return;
                 }
-
 
 
                 // 이름이 MSL 관련이 아니면 제외(IOT는 블루투스가 초기화 됐을 경우 초기값으로 나오므로 설정)
@@ -352,10 +354,9 @@ public class fragment_Ble_Scan extends Fragment {
                 }
 
                 if (name == null) {
+                    Log.d(TAG, "Scan - addScanResult - name null");
                     userdata = "";
-                }
-
-                if (name.contains("MSL TECH5")) {
+                }else if(name.contains("MSL TECH5")) {
                     Log.d(TAG, "scan name msl tech 5 들어옴");
                     name = "MSL TECH 5";
                 }
@@ -390,6 +391,7 @@ public class fragment_Ble_Scan extends Fragment {
 
         Log.d(TAG, "onPause");
         ((Ble_Scan_Listener) activity).onPauseFragment_Ble_Scan();
+        Log.d(TAG, "stopScan : onPause");
         stopScan();
     }
 

@@ -189,6 +189,8 @@
     <string name="mode_switch">내부 스위치</string>
     <string name="modeSelect">모드 선택</string>
     <string name="Lowpower">저전력 모드</string>
+    <string name="permissioncheck_no_FINE_LOCATION">위치 권한이 없습니다. 블루투스 스캔이 불가능합니다.</string>
+    <string name="permissioncheck_no_BLUETOOTH_SCAN">블루투스 근처 기기 권한이 없습니다. 블루투스 스캔이 불가능 합니다.</string>
 
 
 </resources>
