@@ -188,8 +188,8 @@ public class fragment_Ble_RTU_Setting extends Fragment {
                     TotalReadData = "";
                     Log.e(TAG, "fragment_RTU_Setting readData Error : " + e.toString());
                 }
-
-                if (readData.contains("Low Power") || readData.contains("DebugMode") || readData.contains("Phone Number") || readData.contains("Reset Time")) {
+                //readData.contains("Low Power") ||
+                if (readData.contains("DebugMode") || readData.contains("Phone Number") || readData.contains("Reset Time")) {
                     configIndex = TotalReadData.indexOf("[ ConfMsg]");
                     lfIndex = TotalReadData.indexOf("\n", configIndex);
                     if (configIndex < 0 | lfIndex < 0) {
@@ -198,6 +198,7 @@ public class fragment_Ble_RTU_Setting extends Fragment {
                 } else {
                     //logData_Ble(readData, "read");
                 }
+
                 readData = readData.replace("[ ConfMsg] ", "");
 
                 if (readData.contains("Use 0x51")) { //프로토콜 변경 여부 상태
@@ -234,6 +235,7 @@ public class fragment_Ble_RTU_Setting extends Fragment {
                     } else if (readData.equals("1")) {
                         tv_Lowpower.setText("ON");
                     }
+                    Log.d(TAG, "fragment_RTU_Setting LowPower Mode readData : " + readData);
 
                 } else if (readData.contains("Low Power Interval")) { //Low Power 주기
                     readData = readData.replace("Low Power Interval(Hour):", "");

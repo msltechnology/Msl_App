@@ -9,11 +9,6 @@
         android:visible="false"
         />
 
-    <item
-        android:id="@+id/action_bar_scanRefresh"
-        android:title="@string/ble_main_scanItem_refresh"
-        app:showAsAction="never"
-        android:visible="false"/>
 
     <item
         android:id="@+id/action_bar_bleDisconnect"

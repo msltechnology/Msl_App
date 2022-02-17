@@ -3,15 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_activity_main.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_beginning.xml" value="0.31302083333333336" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_function.xml" value="0.2890625" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_scan.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_setting.xml" value="0.2890625" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_setting_dialog_fl_setting.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_setting_dialog_fl_setting_fl_select.xml" value="0.4322916666666667" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_sn.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_status_dialog_battery.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_fragment_status_dialog_solar.xml" value="0.3859375" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_scan_listview.xml" value="0.5536458333333333" />
+        <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/drawer_header.xml" value="0.3958333333333333" />
+        <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/navigation_main.xml" value="0.39947916666666666" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/rtu_fragment_function.xml" value="0.3859375" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/rtu_fragment_setting.xml" value="0.3859375" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/rtu_fragment_status.xml" value="0.3859375" />

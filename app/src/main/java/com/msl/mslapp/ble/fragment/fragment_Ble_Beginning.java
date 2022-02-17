@@ -73,7 +73,7 @@ public class fragment_Ble_Beginning extends Fragment {
         CdsFlag = false;
         SnFlag = false;
 
-        navigation_icon_Change("beggining");
+        navigation_icon_Change("beginning");
 
         //Button bleScanBtn = view.findViewById(R.id.bleScan);
         ImageButton bleScanIb = view.findViewById(R.id.ib_ble_Scan);

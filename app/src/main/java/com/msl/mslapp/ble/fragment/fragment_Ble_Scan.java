@@ -361,7 +361,7 @@ public class fragment_Ble_Scan extends Fragment {
                     name = "MSL TECH 5";
                 }
 
-                Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- addScanList : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);
+                Log.d(TAG, "scanResults.size : " + scanResults.size() + " ---- scanResult : " + stringBuffer + " ------ name : " + name + " ------- address : " + deviceAddress);
 
                 // 중복되지 않은 주소는 list에 추가
                 scanResults.add(result.getDevice());

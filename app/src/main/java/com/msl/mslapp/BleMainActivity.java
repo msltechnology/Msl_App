@@ -5,6 +5,7 @@ package com.msl.mslapp;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -109,7 +110,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = false;
+    public static final boolean adminApp = true;
     // delaytime 이용고객용 // 현재는 다 보이게 설정하여 안쓰임
     public static final boolean delaytimeApp = true;
 
@@ -118,6 +119,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static AppCompatActivity mBleMain = null;
     public static String tLanguage;
     public BleActivityMainBinding mBleBinding;
+
     public static BleViewModel bleViewModel;
 
     // bluetooth 관련
@@ -217,7 +219,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     //region layout
 
     MenuItem ScanItem;
-    MenuItem reFreshItem;
     MenuItem bleDisconnectItem;
 
     // 현재 프래그먼트 확인용
@@ -260,17 +261,22 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         connectToDevice(mBleContext, bleConnectDevice, gattClientCallback);
         //bleGatt = bleConnectDevice.connectGatt(mBleContext, false, gattClientCallback);
     }
-
     public static void connectToDevice(Context context,
                                        BluetoothDevice device,
                                        BluetoothGattCallback mGattCallBack) {
         if (device != null) {
             // 각 os 별 연결 시 세부 조정이 다양함. 블루투스 연결 방식을 정함.
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 Log.d(TAG, "connectToDevice - O up");
                 bleGatt = device.connectGatt(context, false, mGattCallBack,
                         BluetoothDevice.DEVICE_TYPE_LE, BluetoothDevice.PHY_LE_2M | BluetoothDevice.PHY_LE_1M);
-            } else if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            } else {
+                Log.d(TAG, "connectToDevice - M up");
+                bleGatt = device.connectGatt(context, false, mGattCallBack,
+                        BluetoothDevice.DEVICE_TYPE_LE);
+            }
+            // 최소버전이 마시멜로 이상만 가능하게해서 필요없음!
+            /*else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Log.d(TAG, "connectToDevice - M up");
                 bleGatt = device.connectGatt(context, false, mGattCallBack,
                         BluetoothDevice.DEVICE_TYPE_LE);
@@ -278,7 +284,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 Log.d(TAG, "connectToDevice - M down");
                 bleGatt = device.connectGatt(context, false,
                         mGattCallBack);
-            }
+            }*/
+
         } else {
             //WiSeSdkFileWritter.writeToFile(fileName, TAG + " FAILED could not find remote device/ remote device is null >>" + macAddress);
         }
@@ -360,25 +367,23 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         bleDisconnectItem.setVisible(false);
     }
 
-
-    // toolbar 생성
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu");
-        getMenuInflater().inflate(R.menu.actionbar_bluetooth, menu);
-        ScanItem = menu.findItem(R.id.action_bar_scanBle);
-        reFreshItem = menu.findItem(R.id.action_bar_scanRefresh);
-        bleDisconnectItem = menu.findItem(R.id.action_bar_bleDisconnect);
-
-        return true;
-    }
-
     public void ble_stopscanning() {
         ScanItem.setTitle(R.string.ble_main_scanItem_scan);
     }
 
 
-    //toolbar 기능 선택시
+    // menu 생성 - 생성 및 초기화 실시
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu");
+        getMenuInflater().inflate(R.menu.actionbar_bluetooth, menu);
+        ScanItem = menu.findItem(R.id.action_bar_scanBle);
+        bleDisconnectItem = menu.findItem(R.id.action_bar_bleDisconnect);
+
+        return true;
+    }
+
+    // menu 는
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Log.d(TAG, "onOptionsItemSelected");
@@ -397,23 +402,6 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     fragmentChange("fragment_ble_scan");
                 }
 
-                // 이전에 사용하던 기능
-/*
-                if (scanningFlag) {
-                    fragment_bleScan.stopScan();
-                    ScanItem.setTitle(R.string.ble_main_scanItem_scan);
-                } else {
-                    fragment_bleScan.Scan();
-                    ScanItem.setTitle(R.string.ble_main_scanItem_stopScanning);
-                }
-*/
-
-                return true;
-            case R.id.action_bar_scanRefresh:
-
-                fragment_bleScan.reFresh();
-                ScanItem.setTitle(R.string.ble_main_scanItem_stopScanning);
-
                 return true;
 
             case R.id.action_bar_bleDisconnect:
@@ -424,11 +412,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                 ScanItem.setTitle(R.string.ble_main_scanItem_scan);
                 toolbar_title.setText("");
                 //fragmentChange("fragment_ble_beginning");
-
-            case android.R.id.home:
-                //Toast.makeText(mBleContext, "Test Success", Toast.LENGTH_SHORT).show();
                 return true;
-
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -440,7 +424,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     // toolbar 왼쪽 버튼의 기능 및 이미지 변경.
     public static void navigation_icon_Change(String fragment) {
         switch (fragment) {
-            case "beggining":
+            case "beginning":
                 drawerToggle = new ActionBarDrawerToggle(mBleMain, bleDrawerLayout, toolbarMain, R.string.app_name, R.string.app_name);
                 drawerToggle.syncState(); // 메뉴 버튼 추가
                 bleDrawerLayout.addDrawerListener(drawerToggle); // 삼선 메뉴 사용 시 뱅그르르 돈다.
@@ -529,8 +513,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
         setSupportActionBar(toolbarMain);
 
-        // toolbar 왼쪽 버튼 추가
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        // toolbar 왼쪽 버튼 추가. true 값을 주면 뒤로가기 버튼으로 변경.
+        // null 체크 안하면 한번씩 nullpoint 에러 뜰 수 있다함.(실제로 한번씩 에러 기록(구글 콘솔) 값이 들어오는데 해당 사항인지는 확실치 않음)
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
         navigation_Setting();
 
