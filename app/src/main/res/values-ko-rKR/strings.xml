@@ -129,4 +129,6 @@
     <string name="Lowpower">저전력 모드</string>
     <string name="permissioncheck_no_FINE_LOCATION">위치 권한이 없습니다. 블루투스 스캔이 불가능합니다.</string>
     <string name="permissioncheck_no_BLUETOOTH_SCAN">블루투스 근처 기기 권한이 없습니다. 블루투스 스캔이 불가능 합니다.</string>
+    <string name="ble_main_checkGPSManager_alertDialog_title">위치 정보 활성화</string>
+    <string name="ble_main_checkGPSManager_alertDialog_message">위치정보가 꺼져있습니다. 위치정보 설정창으로 이동하시겠습니까?</string>
 </resources>

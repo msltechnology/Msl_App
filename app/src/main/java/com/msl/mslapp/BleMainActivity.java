@@ -110,7 +110,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     public static final String TAG = "Msl-Ble-MainAct";
 
     // 관리자용 앱 설정
-    public static final boolean adminApp = true;
+    public static final boolean adminApp = false;
     // delaytime 이용고객용 // 현재는 다 보이게 설정하여 안쓰임
     public static final boolean delaytimeApp = true;
 
@@ -529,6 +529,8 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             }
 
             public void run() {
+
+                // 블루투스 상태가 변경되었을 때 감지하여 알려줌.
                 IntentFilter filter1 = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
                 registerReceiver(mBroadcastReceiver1, filter1);
 
@@ -539,7 +541,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         filter2.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
         registerReceiver(mBroadcastReceiver2, filter2);*/
 
-
+                // 블루투스가 연결되었는지, 끊겼는지 알려줌.
                 IntentFilter filter3 = new IntentFilter();
                 filter3.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
                 filter3.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
@@ -565,7 +567,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
                     Log.d(TAG, "bluetooth 5 모드 온");
 
-                    Log.d(TAG, "BluetoothAdapter isLe2MPhySupported() : " + mBluetoothAdapter.isLe2MPhySupported());
+                    /*Log.d(TAG, "BluetoothAdapter isLe2MPhySupported() : " + mBluetoothAdapter.isLe2MPhySupported());
                     Log.d(TAG, "BluetoothAdapter isLeCodedPhySupported() : " + mBluetoothAdapter.isLeCodedPhySupported());
                     Log.d(TAG, "BluetoothAdapter isLeExtendedAdvertisingSupported() : " + mBluetoothAdapter.isLeExtendedAdvertisingSupported());
                     Log.d(TAG, "BluetoothAdapter isLePeriodicAdvertisingSupported() : " + mBluetoothAdapter.isLePeriodicAdvertisingSupported());
@@ -573,7 +575,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
                     Log.d(TAG, "BluetoothSetting getPhy() : " + settings.getPhy());
                     Log.d(TAG, "BluetoothSetting getScanMode() : " + settings.getScanMode());
                     Log.d(TAG, "BluetoothSetting getScanResultType() : " + settings.getScanResultType());
-                    Log.d(TAG, "BluetoothSetting getCallbackType() : " + settings.getCallbackType());
+                    Log.d(TAG, "BluetoothSetting getCallbackType() : " + settings.getCallbackType());*/
                 }
 
                 // 특정 장치만 스캔하도록 할 수 있다. => scanFilter 부분 - .setServiceUuid()대신 .setDeviceAddress(MAC_ADDR)를 사용해 Uuid 말고 특정 mac address만 스캔
@@ -983,44 +985,11 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         alertDialog.show();
     }
 
-    /*// 권한 확인(GPS 확인, 블루투스 확인)
-    public void permission_check() {
+
+    // gps 권한 확인
+    private boolean permission_check() {
+
         Log.d(TAG, "buile Version : " + Build.VERSION.SDK_INT);
-
-        if (Build.VERSION.SDK_INT >= 29) {
-            int permissionCheck = ContextCompat.checkSelfPermission(mBleMain,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
-            if (permissionCheck < 0) {
-                permission_message();
-            }
-        } else {
-            int permissionCheck = ContextCompat.checkSelfPermission(mBleMain,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
-
-            Log.d(TAG, "GPS 권한 ACCESS_COARSE_LOCATION" + permissionCheck);
-
-            //
-            if (permissionCheck < 0) {
-                permission_message();
-            }
-        }
-
-
-
-        // gps on 시키는데 사용
-        locationManager = (LocationManager) mBleContext.getSystemService(LOCATION_SERVICE);
-
-        bluetoothManager = (BluetoothManager) mBleContext.getSystemService(Context.BLUETOOTH_SERVICE);
-
-        //region Bluetooth 연결 시 필요한 사항
-        //mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        mBluetoothAdapter = bluetoothManager.getAdapter();
-    }*/
-
-
-    private void permission_check() {
-        Log.d(TAG, "buile Version : " + Build.VERSION.SDK_INT);
-
 
         // 버전 별 권한 확인이 다름. Fine : GPS, 네트워크를 사용한 위치정보/ coarse : 네트워크만 사용한 위치정보
         if (Build.VERSION.SDK_INT >= 29) {
@@ -1030,70 +999,66 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
             Log.d(TAG, "GPS 권한 ACCESS_FINE_LOCATION" + permissionCheck);
 
-            //
             if (permissionCheck < 0) {
                 String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
 
                 requestPermissions(permissions, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-                /*ActivityCompat.requestPermissions(mBleMain,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);*/
+                return false;
             }else{
-                permissionCheckingBLUETOOTHSCAN();
+                return permissionCheckingBLUETOOTHSCAN();
             }
         } else {
-            Log.d(TAG, "buile Version sdk 29 down : " + Build.VERSION.SDK_INT);
             int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
                     Manifest.permission.ACCESS_COARSE_LOCATION);
-
-            Log.d(TAG, "GPS 권한 ACCESS_COARSE_LOCATION" + permissionCheck);
 
             if (permissionCheck < 0) {
                 String[] permissions = new String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION
                 };
                 requestPermissions(permissions, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-                /*ActivityCompat.requestPermissions(mBleMain,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);*/
+                return false;
             }
         }
+
+        return true;
     }
+
+
 
     // 스캔 버튼 눌러서 스캔 fragment 로 이동 시 권한을 확인하여 없으면 이동 못하게 함.
     public boolean permissioncheck_Scan(){
-        if (Build.VERSION.SDK_INT >= 29) {
-            int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
-                    Manifest.permission.ACCESS_FINE_LOCATION);
+        // GPS 가 켜져있는지 확인
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
 
-            if (permissionCheck < 0) {
-                Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_FINE_LOCATION), Toast.LENGTH_LONG).show();
-                return false;
-            }else{
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    int permissionCheckSCAN = ContextCompat.checkSelfPermission(mBleContext,
-                            Manifest.permission.BLUETOOTH_SCAN);
+            //GPS 설정화면으로 이동
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
 
-                    if(permissionCheckSCAN < 0){
-                        Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_BLUETOOTH_SCAN), Toast.LENGTH_LONG).show();
-                        return false;
-                    }
-                }
-            }
-            return true;
-        } else {
-            int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
-                    Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (permissionCheck < 0) {
-                Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_FINE_LOCATION), Toast.LENGTH_LONG).show();
-                return false;
-            }
-            return true;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle(R.string.ble_main_checkGPSManager_alertDialog_title).setMessage(R.string.ble_main_checkGPSManager_alertDialog_message);
+
+            builder.setPositiveButton("OK", (dialog, id) -> {
+
+                mBleMain.startActivity(intent);
+            });
+
+            builder.setNegativeButton("Cancel", (dialog, id) -> {
+
+            });
+            AlertDialog alertDialog = builder.create();
+
+            alertDialog.show();
+
+            return false;
         }
+
+
+        return permission_check();
     }
 
     // sdk 31 이상일 경우 블루투스 SCAN 권한이 따로있어서 확인하는 부분.
-    public void permissionCheckingBLUETOOTHSCAN(){
+    public boolean permissionCheckingBLUETOOTHSCAN(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Log.d(TAG, "buile Version sdk 31 UP : " + Build.VERSION.SDK_INT);
 
@@ -1107,11 +1072,15 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
             if(permissionChecking < 0){
                 Log.d(TAG, "RequestPermissions BLUETOOTH_SCAN : 권한 없음");
                 requestPermissions(permissionCheck, MY_PERMISSIONS_REQUEST_BLUETOOTH_SCAN);
+                return false;
             }else{
                 Log.d(TAG, "RequestPermissions BLUETOOTH_SCAN : 권한 가짐");
             }
 
         }
+
+
+        return true;
     }
 
 
@@ -1359,39 +1328,82 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
     }
 
     // 블루투스 권한 확인
-    public static void checkBluetoothPermission() {
+    public static boolean checkBluetoothPermission() {
         // 블루투스 권한 확인 시작
         Intent intent;
 
+        // 블루투스 활성화 체크
         if (mBluetoothAdapter.isEnabled()) {
             BluetoothStatus = "On";
             // 이후 GPS 상태 요청
-            checkGPSserviceOn();
+            return checkGPSserviceOn();
         } else {
             // 블루투스 활성화 하도록
             intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             requestPermissionBle.launch(intent);
             //mBleMain.startActivityForResult(intent, bluetooth_permission_check);
+            return false;
         }
         // 블루투스 권한 확인 끝
     }
 
     // 위치정보(GPS) 확인
-    public static void checkGPSserviceOn() {
+    public static boolean checkGPSserviceOn() {
 
-        // 위치정보 on 확인 시작
+        // 각 버젼 별 gps의 권한을 가지고 있는지 확인.
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+
+            int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+            if (permissionCheck < 0) {
+
+                Log.d(TAG, "permissioncheck_no_FINE_LOCATION");
+                Toast.makeText(mBleContext, "GPS permission is not found. please check permission.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            int permissionCheckSCAN = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.BLUETOOTH_SCAN);
+
+            if(permissionCheckSCAN < 0){
+                Log.d(TAG, "permissioncheck_no_BLUETOOTH_SCAN");
+                Toast.makeText(mBleContext, "bluetooth permission is not found. please check permission.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            return true;
+        }else{
+
+            int permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (permissionCheck < 0) {
+
+                Toast.makeText(mBleContext, "GPS permission is not found. please check permission.", Toast.LENGTH_LONG).show();
+
+                Log.d(TAG, "ACCESS_COARSE_LOCATION no");
+                return false;
+            }
+            return true;
+        }
+
+
+
+
+        /*// 위치정보 on 확인 시작
         Intent intent;
 
         // 위치정보 설정 Intent
         intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 
-        if (!locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)) {
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(mBleContext);
 
             builder.setTitle(R.string.ble_main_checkPermission_GPS_alertDialog_title).setMessage(R.string.ble_main_checkPermission_GPS_alertDialog_message);
 
-            builder.setPositiveButton("OK", (dialog, id) -> mBleMain.startActivity(intent));
+            builder.setPositiveButton("OK", (dialog, id) -> {
+
+                mBleMain.startActivity(intent);
+            });
 
             builder.setNegativeButton("Cancel", (dialog, id) -> {
 
@@ -1400,8 +1412,12 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
             alertDialog.show();
 
+            return false;
+
         }
         // 위치정보 on 확인 끝
+
+        return true;*/
     }
 
     // 연결 실패 시 n회 연결 재시도용
@@ -1409,7 +1425,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
 
 
     // 블루투스 각종 기능.
-    private BluetoothGattCallback gattClientCallback = new BluetoothGattCallback() {
+    private final BluetoothGattCallback gattClientCallback = new BluetoothGattCallback() {
 
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {

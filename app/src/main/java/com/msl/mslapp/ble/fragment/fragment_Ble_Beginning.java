@@ -1,11 +1,13 @@
 package com.msl.mslapp.ble.fragment;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -17,10 +19,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -161,7 +165,7 @@ public class fragment_Ble_Beginning extends Fragment {
 
 
         // 어플 실행 시 블루투스 On 요청
-        BleMainActivity.checkBluetoothPermission();
+        //BleMainActivity.checkBluetoothPermission();
 
 
         return view;
@@ -176,7 +180,88 @@ public class fragment_Ble_Beginning extends Fragment {
 
 
     void permissionCheck(){
-        if(BluetoothStatus.contains("On")){
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+
+            //GPS 설정화면으로 이동
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(mBleContext);
+
+            builder.setTitle(R.string.ble_main_checkGPSManager_alertDialog_title).setMessage(R.string.ble_main_checkGPSManager_alertDialog_message);
+
+            builder.setPositiveButton("OK", (dialog, id) -> {
+
+                mBleMain.startActivity(intent);
+            });
+
+            builder.setNegativeButton("Cancel", (dialog, id) -> {
+
+            });
+            AlertDialog alertDialog = builder.create();
+
+            alertDialog.show();
+
+            return;
+        }
+
+
+        int permissionCheck;
+        if (Build.VERSION.SDK_INT >= 29) {
+            permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+
+            if (permissionCheck < 0) {
+                Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_FINE_LOCATION), Toast.LENGTH_LONG).show();
+
+                String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+
+                requestPermissions(permissions, 51);
+                return;
+            }else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    int permissionCheckSCAN = ContextCompat.checkSelfPermission(mBleContext,
+                            Manifest.permission.BLUETOOTH_SCAN);
+
+                    if(permissionCheckSCAN < 0){
+                        Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_BLUETOOTH_SCAN), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+            }
+        } else {
+            permissionCheck = ContextCompat.checkSelfPermission(mBleContext,
+                    Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (permissionCheck < 0) {
+                Toast.makeText(mBleContext, getString(R.string.permissioncheck_no_FINE_LOCATION), Toast.LENGTH_LONG).show();
+
+                String[] permissions = new String[]{
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                };
+                requestPermissions(permissions, 51);
+
+                return;
+            }
+        }
+
+        // 블루투스 권한 확인 시작
+        Intent intent;
+
+        // 블루투스 활성화 체크
+        if (BleMainActivity.mBluetoothAdapter.isEnabled()) {
+            BluetoothStatus = "On";
+            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_function");
+        } else {
+            // 블루투스 활성화 하도록
+            intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            requestPermissionBle.launch(intent);
+        }
+
+        /*if(BleMainActivity.checkBluetoothPermission()){
+            ((BleMainActivity) getActivity()).fragmentChange("fragment_ble_function");
+        }*/
+
+        /*if(BluetoothStatus.contains("On")){
             if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                 //GPS 설정화면으로 이동
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -199,7 +284,7 @@ public class fragment_Ble_Beginning extends Fragment {
             }
         }else{
             checkBluetoothPermission();
-        }
+        }*/
     }
 
     void fragmentScanChange() {

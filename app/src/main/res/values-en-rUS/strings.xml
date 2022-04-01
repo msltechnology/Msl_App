@@ -129,4 +129,6 @@
     <string name="Lowpower">Lowpower</string>
     <string name="permissioncheck_no_FINE_LOCATION">Do not have GPS permission. Bluetooth scan is not possible.</string>
     <string name="permissioncheck_no_BLUETOOTH_SCAN">Do not have \'Scan near Device\' permission. Bluetooth scan is not possible.</string>
+    <string name="ble_main_checkGPSManager_alertDialog_title">GPS On/Off</string>
+    <string name="ble_main_checkGPSManager_alertDialog_message">Location information is turned off. Do you want to move to the location information setting window?</string>
 </resources>
