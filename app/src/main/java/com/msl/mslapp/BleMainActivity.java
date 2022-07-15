@@ -1332,7 +1332,7 @@ public class BleMainActivity extends AppCompatActivity implements fragment_Ble_S
         // 블루투스 권한 확인 시작
         Intent intent;
 
-        // 블루투스 활성화 체크
+        // 블루투스 활성화 체크`
         if (mBluetoothAdapter.isEnabled()) {
             BluetoothStatus = "On";
             // 이후 GPS 상태 요청

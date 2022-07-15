@@ -20,6 +20,7 @@
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/rtu_fragment_setting.xml" value="0.3859375" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/layout/rtu_fragment_status.xml" value="0.3859375" />
         <entry key="..\:/Users/MSL_GW/AndroidStudioProjects/MslApp/app/src/main/res/menu/actionbar_bluetooth.xml" value="0.390625" />
+        <entry key="..\:/Users/kgw/AndroidStudioProjects/MslApp/app/src/main/res/layout/ble_activity_main.xml" value="0.42552083333333335" />
       </map>
     </option>
   </component>
@@ -66,7 +67,7 @@
       </value>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

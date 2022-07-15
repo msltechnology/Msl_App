@@ -244,11 +244,13 @@ public class RTUMainActivity extends AppCompatActivity {
 
         if (color.equals("read")) {
             if (data.contains("[ ConfMsg]")) {
+            // 앞에 붙는 [ModemMsg]를 지우기위해 11부터 시작
                 log_listViewAdapter.addItem(getTime, data.substring(11), color);
                 log_listViewAdapter.notifyDataSetChanged();
                 return;
             }
-        } else if (color.equals("write")) {
+        }
+        else if (color.equals("write")) {
             String[] dataArr = data.split(DATA_SIGN_COMMA);
 
             try {

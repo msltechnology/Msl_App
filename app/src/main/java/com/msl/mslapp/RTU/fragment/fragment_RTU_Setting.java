@@ -288,8 +288,11 @@ public class fragment_RTU_Setting extends Fragment {
 
             }
         } else if (TotalReadData.contains("[ModemMsg]") && TotalReadData.contains("\n")) {
+            logData_RTU("####TotalReadData : " + TotalReadData + "####", "read");
+
             configIndex = TotalReadData.indexOf("[ModemMsg]");
             lfIndex = TotalReadData.indexOf("\n", configIndex);
+
             while (configIndex < lfIndex) {
 
                 String readData = TotalReadData.substring(configIndex, lfIndex);
@@ -314,7 +317,9 @@ public class fragment_RTU_Setting extends Fragment {
 
                     String textNetworkData = "";
 
-                    switch (readDataArr[3]) {
+                    Log.d("220715Test","readDataArr[3] : " + readDataArr[3]);
+
+                    switch (readDataArr[3].trim()) {
                         case "-1":
                             textNetworkData = "확인 중";
                             break;
@@ -355,7 +360,9 @@ public class fragment_RTU_Setting extends Fragment {
 
                     String textSocketData = "";
 
-                    switch (readDataArr[4]) {
+                    Log.d("220715Test","readDataArr[4] : " + readDataArr[4]);
+
+                    switch (readDataArr[4].trim()) {
                         case "0":
                             textSocketData = "Off";
                             break;
